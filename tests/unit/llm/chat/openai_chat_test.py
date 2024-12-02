@@ -1,5 +1,4 @@
 import pytest
-from tenacity import RetryError
 from unittest.mock import AsyncMock, MagicMock
 
 from tigergraphx.config import OpenAIChatConfig

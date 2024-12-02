@@ -43,6 +43,11 @@ loggers:
     handlers: []    # Inherit handlers from the root logger
     propagate: yes
 
+  pyTigerGraph:
+    level: WARNING
+    handlers: []    # Inherit handlers from the root logger
+    propagate: yes
+
 root:
   level: INFO
   handlers: [console]
