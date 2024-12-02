@@ -1,5 +1,4 @@
 from typing import Optional
-import logging
 
 from pyTigerGraph import TigerGraphConnection
 from tigergraphx.config import (

@@ -51,11 +51,11 @@ class NodeSchema(BaseConfig):
     @model_validator(mode="before")
     def parse_attributes(cls, values: Dict[str, Any]) -> Dict[str, Any]:
         """Parse shorthand attributes into full AttributeSchema."""
+
         attributes = values.get("attributes", {})
         if attributes:
             values["attributes"] = {
-                k: v if isinstance(v, AttributeSchema) else AttributeSchema(data_type=v)
-                for k, v in attributes.items()
+                k: create_attribute_schema(v) for k, v in attributes.items()
             }
         return values
 
@@ -81,8 +81,7 @@ class EdgeSchema(BaseConfig):
         attributes = values.get("attributes", {})
         if attributes:
             values["attributes"] = {
-                k: v if isinstance(v, AttributeSchema) else AttributeSchema(data_type=v)
-                for k, v in attributes.items()
+                k: create_attribute_schema(v) for k, v in attributes.items()
             }
         return values
 
@@ -117,9 +116,38 @@ class GraphSchema(BaseConfig):
         return values
 
 
-AttributesType = (
-    Dict[str, DataType] | Dict[str, tuple[DataType, Optional[int | float | bool | str]]]
+AttributeType = (
+    str | DataType | tuple[str | DataType, Optional[int | float | bool | str]]
 )
+AttributesType = Dict[str, AttributeType]
+
+
+# Helper function to convert string to DataType
+def string_to_data_type(data_type_str: str) -> DataType:
+    try:
+        return DataType[data_type_str.upper()]
+    except KeyError:
+        raise ValueError(
+            f"Invalid data type string: '{data_type_str}'. Expected one of {[dt.name for dt in DataType]}."
+        )
+
+
+# Helper function to create AttributeSchema with simpler syntax
+def create_attribute_schema(attr: AttributeType) -> AttributeSchema:
+    if isinstance(attr, str):
+        return AttributeSchema(data_type=string_to_data_type(attr))
+    elif isinstance(attr, DataType):
+        return AttributeSchema(data_type=attr)
+    elif isinstance(attr, tuple) and len(attr) > 0:
+        data_type = (
+            string_to_data_type(attr[0]) if isinstance(attr[0], str) else attr[0]
+        )
+        default_value = attr[1] if len(attr) > 1 else None
+        return AttributeSchema(data_type=data_type, default_value=default_value)
+    else:
+        raise ValueError(
+            f"Invalid attribute type: {attr}. Expected: str | DataType | tuple[str | DataType, Optional[int | float | bool | str]]."
+        )
 
 
 # Helper function to create NodeSchema with simpler syntax
@@ -131,12 +159,7 @@ def create_node_schema(
     Helper function to simplify creation of NodeSchema by handling conversion to AttributeSchema.
     """
     attribute_schemas = {
-        name: (
-            AttributeSchema(data_type=attr[0], default_value=attr[1])
-            if isinstance(attr, tuple)
-            else AttributeSchema(data_type=attr)
-        )
-        for name, attr in attributes.items()
+        name: create_attribute_schema(attr) for name, attr in attributes.items()
     }
     return NodeSchema(primary_key=primary_key, attributes=attribute_schemas)
 
@@ -152,12 +175,7 @@ def create_edge_schema(
     Helper function to simplify creation of EdgeSchema by handling conversion to AttributeSchema.
     """
     attribute_schemas = {
-        name: (
-            AttributeSchema(data_type=attr[0], default_value=attr[1])
-            if isinstance(attr, tuple)
-            else AttributeSchema(data_type=attr)
-        )
-        for name, attr in attributes.items()
+        name: create_attribute_schema(attr) for name, attr in attributes.items()
     }
     return EdgeSchema(
         is_directed_edge=is_directed_edge,

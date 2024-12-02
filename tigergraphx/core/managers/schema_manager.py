@@ -1,6 +1,7 @@
 import logging
 
-from tigergraphx.core.base_manager import BaseManager
+from .base_manager import BaseManager
+
 from tigergraphx.core.graph_context import GraphContext
 from tigergraphx.config import GraphSchema
 

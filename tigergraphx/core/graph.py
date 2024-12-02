@@ -17,6 +17,29 @@ class Graph(BaseGraph):
         node_type = self._validate_node_type(node_type)
         self._add_node(node_id, node_type, **attr)
 
+    def has_node(self, node_id: str, node_type: str = "") -> bool:
+        node_type = self._validate_node_type(node_type)
+        return self._has_node(node_id, node_type)
+
+    def get_node_data(self, node_id: str, node_type: str = "") -> dict:
+        node_type = self._validate_node_type(node_type)
+        return self._get_node_data(node_id, node_type)
+
+    def get_node_edges(
+        self,
+        node_id: str,
+        node_type: str = "",
+        edge_types: List | str = [],
+        num_edge_samples: int = 1000,
+    ):
+        node_type = self._validate_node_type(node_type)
+        return self._get_node_edges(
+            node_id,
+            node_type,
+            edge_types,
+            num_edge_samples,
+        )
+
     def add_edge(
         self,
         src_node_id: str,
@@ -38,10 +61,6 @@ class Graph(BaseGraph):
             **attr,
         )
 
-    def has_node(self, node_id: str, node_type: str = "") -> bool:
-        node_type = self._validate_node_type(node_type)
-        return self._has_node(node_id, node_type)
-
     def has_edge(
         self,
         src_node_id: str | int,
@@ -60,10 +79,6 @@ class Graph(BaseGraph):
             edge_type,
             tgt_node_type,
         )
-
-    def get_node_data(self, node_id: str, node_type: str = "") -> dict:
-        node_type = self._validate_node_type(node_type)
-        return self._get_node_data(node_id, node_type)
 
     def get_edge_data(
         self,
@@ -87,21 +102,6 @@ class Graph(BaseGraph):
     def degree(self, node_id: str, node_type: str = "", edge_types: List = []) -> int:
         node_type = self._validate_node_type(node_type)
         return self._degree(node_id, node_type, edge_types)
-
-    def get_node_edges(
-        self,
-        node_id: str,
-        node_type: str = "",
-        edge_types: List | str = [],
-        num_edge_samples: int = 1000,
-    ):
-        node_type = self._validate_node_type(node_type)
-        return self._get_node_edges(
-            node_id,
-            node_type,
-            edge_types,
-            num_edge_samples,
-        )
 
     def get_nodes(
         self,
@@ -180,7 +180,7 @@ class Graph(BaseGraph):
             )
 
         # Check for edge type
-        if not edge_type and not self.edge_type:
+        if not edge_type and not self._context.edge_type:
             raise ValueError(
                 "Please specify an edge type, as the graph has multiple edge types."
             )
@@ -194,6 +194,6 @@ class Graph(BaseGraph):
         # Determine and return effective types
         return (
             src_node_type if src_node_type else self.node_type,
-            edge_type if edge_type else self.edge_type,
+            edge_type if edge_type else self._context.edge_type,
             tgt_node_type if tgt_node_type else self.node_type,
         )

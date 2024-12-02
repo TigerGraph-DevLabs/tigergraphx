@@ -2,20 +2,12 @@ import pytest
 from typing import Optional, List
 
 from tigergraphx import Graph
-from tigergraphx import (
-    QuoteType,
-    CsvParsingOptions,
-    NodeMappingConfig,
-    EdgeMappingConfig,
-    FileConfig,
-    LoadingJobConfig,
-)
-from tigergraphx import (
-    GraphSchema,
+from tigergraphx import GraphSchema
+from .base_graph_test import TestBaseGraph
+from tigergraphx.config import (
     NodeSpec,
     NeighborSpec,
 )
-from .base_graph_test import TestBaseGraph
 
 
 class TestGraph(TestBaseGraph):
@@ -27,17 +19,17 @@ class TestGraph(TestBaseGraph):
                 "User": {
                     "primary_key": "id",
                     "attributes": {
-                        "id": {"data_type": "STRING"},
-                        "name": {"data_type": "STRING"},
-                        "age": {"data_type": "UINT"},
+                        "id": "STRING",
+                        "name": "STRING",
+                        "age": "UINT",
                     },
                 },
                 "Product": {
                     "primary_key": "id",
                     "attributes": {
-                        "id": {"data_type": "STRING"},
-                        "name": {"data_type": "STRING"},
-                        "price": {"data_type": "DOUBLE"},
+                        "id": "STRING",
+                        "name": "STRING",
+                        "price": "DOUBLE",
                     },
                 },
             },
@@ -47,8 +39,8 @@ class TestGraph(TestBaseGraph):
                     "from_node_type": "User",
                     "to_node_type": "Product",
                     "attributes": {
-                        "purchase_date": {"data_type": "DATETIME"},
-                        "quantity": {"data_type": "DOUBLE"},
+                        "purchase_date": "DATETIME",
+                        "quantity": "DOUBLE",
                     },
                 },
                 "similar_to": {
@@ -56,8 +48,8 @@ class TestGraph(TestBaseGraph):
                     "from_node_type": "Product",
                     "to_node_type": "Product",
                     "attributes": {
-                        "purchase_date": {"data_type": "DATETIME"},
-                        "quantity": {"data_type": "DOUBLE"},
+                        "purchase_date": "DATETIME",
+                        "quantity": "DOUBLE",
                     },
                 },
             },
@@ -222,9 +214,9 @@ class TestGraph(TestBaseGraph):
                 "Product": {
                     "primary_key": "id",
                     "attributes": {
-                        "id": {"data_type": "STRING"},
-                        "name": {"data_type": "STRING"},
-                        "price": {"data_type": "DOUBLE"},
+                        "id": "STRING",
+                        "name": "STRING",
+                        "price": "DOUBLE",
                     },
                 },
             },
@@ -234,7 +226,7 @@ class TestGraph(TestBaseGraph):
                     "from_node_type": "Product",
                     "to_node_type": "Product",
                     "attributes": {
-                        "similarity_score": {"data_type": "DOUBLE"},
+                        "similarity_score": "DOUBLE",
                     },
                 },
             },
@@ -273,10 +265,10 @@ class TestGraph(TestBaseGraph):
                 "Entity": {
                     "primary_key": "id",
                     "attributes": {
-                        "id": {"data_type": "STRING"},
-                        "entity_type": {"data_type": "STRING"},
-                        "description": {"data_type": "STRING"},
-                        "source_id": {"data_type": "STRING"},
+                        "id": "STRING",
+                        "entity_type": "STRING",
+                        "description": "STRING",
+                        "source_id": "STRING",
                     },
                 },
             },
@@ -286,10 +278,10 @@ class TestGraph(TestBaseGraph):
                     "from_node_type": "Entity",
                     "to_node_type": "Entity",
                     "attributes": {
-                        "weight": {"data_type": "DOUBLE"},
-                        "description": {"data_type": "STRING"},
-                        "keywords": {"data_type": "STRING"},
-                        "source_id": {"data_type": "STRING"},
+                        "weight": "DOUBLE",
+                        "description": "STRING",
+                        "keywords": "STRING",
+                        "source_id": "STRING",
                     },
                 },
             },
@@ -299,62 +291,62 @@ class TestGraph(TestBaseGraph):
         # Initialize the graph with the schema
         self.G = Graph(graph_schema=graph_schema)
 
-    def create_loading_job_config(self) -> LoadingJobConfig:
-        """
-        Generate the LoadingJobConfig using a dictionary.
-        """
-        config_dict = {
-            "loading_job_name": "loading_job_HeteGraph3",
-            "files": [
-                {
-                    "file_alias": "f_entity",
-                    "file_path": "/home/tigergraph/data/lightrag/ultradomain_fin/entity.csv",
-                    "csv_parsing_options": {
-                        "separator": ",",
-                        "header": True,
-                        "EOL": "\\n",
-                        "quote": "DOUBLE",
-                    },
-                    "node_mappings": [
-                        {
-                            "target_name": "Entity",
-                            "attribute_column_mappings": {
-                                "id": "id",
-                                "entity_type": "entity_type",
-                                "description": "description",
-                                "source_id": "source_id",
-                            },
-                        }
-                    ],
-                },
-                {
-                    "file_alias": "f_relationship",
-                    "file_path": "/home/tigergraph/data/lightrag/ultradomain_fin/relationship.csv",
-                    "csv_parsing_options": {
-                        "separator": ",",
-                        "header": True,
-                        "EOL": "\\n",
-                        "quote": "DOUBLE",
-                    },
-                    "edge_mappings": [
-                        {
-                            "target_name": "relationship",
-                            "source_node_column": "source",
-                            "target_node_column": "target",
-                            "attribute_column_mappings": {
-                                "weight": "weight",
-                                "description": "description",
-                                "keywords": "keywords",
-                                "source_id": "source_id",
-                            },
-                        }
-                    ],
-                },
-            ],
-        }
-
-        # Generate the LoadingJobConfig from the dictionary
-        return LoadingJobConfig.ensure_config(config_dict)
+    # def create_loading_job_config(self) -> LoadingJobConfig:
+    #     """
+    #     Generate the LoadingJobConfig using a dictionary.
+    #     """
+    #     config_dict = {
+    #         "loading_job_name": "loading_job_HeteGraph3",
+    #         "files": [
+    #             {
+    #                 "file_alias": "f_entity",
+    #                 "file_path": "/home/tigergraph/data/lightrag/ultradomain_fin/entity.csv",
+    #                 "csv_parsing_options": {
+    #                     "separator": ",",
+    #                     "header": True,
+    #                     "EOL": "\\n",
+    #                     "quote": "DOUBLE",
+    #                 },
+    #                 "node_mappings": [
+    #                     {
+    #                         "target_name": "Entity",
+    #                         "attribute_column_mappings": {
+    #                             "id": "id",
+    #                             "entity_type": "entity_type",
+    #                             "description": "description",
+    #                             "source_id": "source_id",
+    #                         },
+    #                     }
+    #                 ],
+    #             },
+    #             {
+    #                 "file_alias": "f_relationship",
+    #                 "file_path": "/home/tigergraph/data/lightrag/ultradomain_fin/relationship.csv",
+    #                 "csv_parsing_options": {
+    #                     "separator": ",",
+    #                     "header": True,
+    #                     "EOL": "\\n",
+    #                     "quote": "DOUBLE",
+    #                 },
+    #                 "edge_mappings": [
+    #                     {
+    #                         "target_name": "relationship",
+    #                         "source_node_column": "source",
+    #                         "target_node_column": "target",
+    #                         "attribute_column_mappings": {
+    #                             "weight": "weight",
+    #                             "description": "description",
+    #                             "keywords": "keywords",
+    #                             "source_id": "source_id",
+    #                         },
+    #                     }
+    #                 ],
+    #             },
+    #         ],
+    #     }
+    #
+    #     # Generate the LoadingJobConfig from the dictionary
+    #     return LoadingJobConfig.ensure_config(config_dict)
 
     # def test_graph_3(self):
     #     # Set up
@@ -380,7 +372,7 @@ class TestGraph(TestBaseGraph):
             return_attributes=return_attributes,
             limit=limit,
         )
-        return self.G._create_gsql_get_nodes(self.G.name, spec)
+        return self.G._query_manager._create_gsql_get_nodes(self.G.name, spec)
 
     def test_create_gsql_get_nodes(self):
         # Set up
@@ -491,7 +483,9 @@ INTERPRET QUERY() FOR GRAPH HeteGraph3 {
             return_attributes=return_attributes,
             limit=limit,
         )
-        gsql_script, _ = self.G._create_gsql_get_neighbors(self.G.name, spec)
+        gsql_script, _ = self.G._query_manager._create_gsql_get_neighbors(
+            self.G.name, spec
+        )
         return gsql_script
 
     def test_create_gsql_get_neighbors(self):
