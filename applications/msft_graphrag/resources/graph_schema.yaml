@@ -1,0 +1,75 @@
+graph_name: "GraphRAG"
+nodes:
+  Document:
+    primary_key: "id"
+    attributes:
+      id: STRING
+      title: STRING
+  TextUnit:
+    primary_key: "id"
+    attributes:
+      id: STRING
+      text: STRING
+      n_tokens: UINT
+  Entity:
+    primary_key: "id"
+    attributes:
+      id: STRING
+      human_readable_id: UINT
+      name: STRING
+      entity_type: STRING
+      description: STRING
+  Relationship:
+    primary_key: "id"
+    attributes:
+      id: STRING
+      human_readable_id: UINT
+      rank: UINT
+      weight: DOUBLE
+      description: STRING
+  Community:
+    primary_key: "id"
+    attributes:
+      id: STRING
+      level: UINT
+      rank: DOUBLE
+      rank_explanation: STRING
+      title: STRING
+      full_content: STRING
+      summary: STRING
+edges:
+  document_contains_text_unit:
+    is_directed_edge: false
+    from_node_type: "Document"
+    to_node_type: "TextUnit"
+    attributes: {}
+  text_unit_contains_entity:
+    is_directed_edge: false
+    from_node_type: "TextUnit"
+    to_node_type: "Entity"
+    attributes: {}
+  text_unit_contains_relationship:
+    is_directed_edge: false
+    from_node_type: "TextUnit"
+    to_node_type: "Relationship"
+    attributes: {}
+  relationship_source:
+    is_directed_edge: false
+    from_node_type: "Relationship"
+    to_node_type: "Entity"
+    attributes: {}
+  relationship_target:
+    is_directed_edge: false
+    from_node_type: "Relationship"
+    to_node_type: "Entity"
+    attributes: {}
+  community_contains_entity:
+    is_directed_edge: false
+    from_node_type: "Community"
+    to_node_type: "Entity"
+    attributes: {}
+  community_contains_relationship:
+    is_directed_edge: false
+    from_node_type: "Community"
+    to_node_type: "Relationship"
+    attributes: {}

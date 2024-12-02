@@ -1,0 +1,49 @@
+version: 1
+disable_existing_loggers: False
+
+formatters:
+  detailed:
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+  simple:
+    format: '%(levelname)s - %(message)s'
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: detailed
+    stream: ext://sys.stdout
+
+#  file:
+#    class: logging.handlers.RotatingFileHandler
+#    level: DEBUG
+#    formatter: detailed
+#    filename: logs/tigergraphx.log
+#    maxBytes: 10485760  # 10 MB
+#    backupCount: 50
+
+loggers:
+  tigergraphx:
+    level: WARNING  # Default level for the package
+    handlers: []    # Inherit handlers from the root logger
+    propagate: yes
+
+  tigergraphx.vector_search:
+    level: INFO
+    handlers: []    # Inherit handlers from the root logger
+    propagate: yes
+
+  tigergraphx.graphrag:
+    level: INFO
+    handlers: []    # Inherit handlers from the root logger
+    propagate: yes
+
+  tigergraphx.llm:
+    level: INFO
+    handlers: []    # Inherit handlers from the root logger
+    propagate: yes
+
+root:
+  level: INFO
+  handlers: [console]
+  # handlers: [console, file]

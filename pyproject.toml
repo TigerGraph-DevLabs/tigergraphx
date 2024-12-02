@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "tigergraphx"
+version = "0.1.0"
+description = "TigerGraphX is a high-level Python library that simplifies working with TigerGraph by abstracting away low-level REST API details. Inspired by NetworkX, it provides an intuitive interface for common graph tasks, making TigerGraph more accessible for developers and supporting GraphRAG ecosystems and applications."
+authors = ["Xuanlei Lin <xuanlei.lin@tigergraph.com>"]
+readme = "README.md"
+packages = [{ include = "tigergraphx" }]
+
+[tool.poetry.dependencies]
+# Core Python Version
+python = "^3.12"
+
+# Data Processing
+pandas = "^2.2.3"
+
+# Configuration Management
+pydantic = "^2.10.1"
+pydantic-settings = "^2.6.1"
+
+# Database and Storage
+lancedb = "^0.16.0"
+pytigergraph = "^1.8.1"
+
+# Large Language Model (LLM) Utilities
+tiktoken = "^0.8.0"
+openai = "^1.55.0"
+tenacity = "^9.0.0"
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.31.0"
+pytest = "^8.3.3"
+pytest-asyncio = "^0.24.0"
+pytest-mock = "^3.14.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poe.tasks]
+test_unit = {cmd = "pytest ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_unit_one = {cmd = "pytest -vs -k 'TestLanceDBSearchEngine'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+graphrag = "python -m examples.graphrag.main"

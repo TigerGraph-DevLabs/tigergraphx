@@ -1,0 +1,109 @@
+loading_job_name: "loading_job_GraphRAG"
+files:
+  - file_alias: "file_documents"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/create_final_documents.csv"
+    node_mappings:
+      - target_name: "Document"
+        attribute_column_mappings:
+          id: "id"
+          title: "title"
+
+  - file_alias: "file_text_units"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/create_final_text_units.csv"
+    node_mappings:
+      - target_name: "TextUnit"
+        attribute_column_mappings:
+          id: "id"
+          text: "text"
+          n_tokens: "n_tokens"
+
+  - file_alias: "file_entities"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/create_final_entities.csv"
+    node_mappings:
+      - target_name: "Entity"
+        attribute_column_mappings:
+          id: "id"
+          human_readable_id: "human_readable_id"
+          name: "name"
+          entity_type: "type"
+          description: "description"
+
+  - file_alias: "file_relationships"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/create_final_relationships.csv"
+    node_mappings:
+      - target_name: "Relationship"
+        attribute_column_mappings:
+          id: "id"
+          human_readable_id: "human_readable_id"
+          rank: "rank"
+          weight: "weight"
+          description: "description"
+
+  - file_alias: "file_communities"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/create_final_communities.csv"
+    node_mappings:
+      - target_name: "Community"
+        attribute_column_mappings:
+          id: "id"
+          level: "level"
+          title: "title"
+
+  - file_alias: "file_community_reports"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/create_final_community_reports.csv"
+    node_mappings:
+      - target_name: "Community"
+        attribute_column_mappings:
+          id: "community"
+          rank: "rank"
+          rank_explanation: "rank_explanation"
+          full_content: "full_content"
+          summary: "summary"
+
+  - file_alias: "file_doc_cont_txt"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/document_contains_text_unit.csv"
+    edge_mappings:
+      - target_name: "document_contains_text_unit"
+        source_node_column: "document_id"
+        target_node_column: "text_unit_id"
+
+  - file_alias: "file_txt_cont_ent"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/text_unit_contains_entity.csv"
+    edge_mappings:
+      - target_name: "text_unit_contains_entity"
+        source_node_column: "text_unit_id"
+        target_node_column: "entity_id"
+
+  - file_alias: "file_txt_cont_rel"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/text_unit_contains_relationship.csv"
+    edge_mappings:
+      - target_name: "text_unit_contains_relationship"
+        source_node_column: "text_unit_id"
+        target_node_column: "relationship_id"
+
+  - file_alias: "file_rel_src"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/relationship_source.csv"
+    edge_mappings:
+      - target_name: "relationship_source"
+        source_node_column: "id"
+        target_node_column: "entity_id"
+
+  - file_alias: "file_rel_tgt"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/relationship_target.csv"
+    edge_mappings:
+      - target_name: "relationship_target"
+        source_node_column: "id"
+        target_node_column: "entity_id"
+
+  - file_alias: "file_com_con_rel"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/community_contains_relationship.csv"
+    edge_mappings:
+      - target_name: "community_contains_relationship"
+        source_node_column: "community_id"
+        target_node_column: "relationship_id"
+
+  - file_alias: "file_com_con_ent"
+    file_path: "/home/tigergraph/data/graphrag/ultradomain_fin/community_contains_entity.csv"
+    edge_mappings:
+      - target_name: "community_contains_entity"
+        source_node_column: "community"
+        target_node_column: "id"

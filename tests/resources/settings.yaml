@@ -1,0 +1,19 @@
+vector_db:
+  type: "LanceDB"
+  uri: "test_uri"
+
+llm:
+  type: "OpenAI"
+  # NOTE: The api_key must be provided via the environment variable OPENAI_API_KEY
+  # base_url: ""
+  # organization: ""
+  # max_retries: 5
+  # request_timeout: 150.0
+
+embedding:
+  type: "OpenAI"
+  model: "text-embedding-3-small"
+  # max_tokens: 8191
+  # max_retries: 10
+  # request_timeout: 180.0
+  # encoding_name: "cl100k_base"
