@@ -37,6 +37,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
-test_unit = {cmd = "pytest ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_unit_one = {cmd = "pytest -vs -k 'TestLanceDBSearchEngine'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_all_units = {cmd = "pytest ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_single_unit_case = {cmd = "pytest -vs -k 'TestQueryManager'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_all_unit_cases_in_folder = {cmd = "pytest -vs tests/unit/core/managers", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 graphrag = "python -m examples.graphrag.main"
