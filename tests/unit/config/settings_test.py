@@ -5,6 +5,7 @@ from tigergraphx import (
     LanceDBConfig,
     OpenAIConfig,
     OpenAIEmbeddingConfig,
+    OpenAIChatConfig,
 )
 
 
@@ -22,6 +23,7 @@ class TestSettings:
             "vector_db": {"type": "LanceDB", "uri": "test_uri"},
             "llm": {"type": "OpenAI", "base_url": "https://api.openai.com"},
             "embedding": {"type": "OpenAI", "model": "text-embedding-3-small"},
+            "chat": {"type": "OpenAI", "model": "gpt-4o-mini", "max_retries": 10},
         }
         settings = Settings.ensure_config(config_data)
 
@@ -42,6 +44,12 @@ class TestSettings:
         assert isinstance(settings.embedding, OpenAIEmbeddingConfig)
         assert settings.embedding.model == "text-embedding-3-small"
         assert settings.embedding.max_tokens == 8191
+
+        # Validate chat configuration
+        assert settings.chat.type == "OpenAI"
+        assert isinstance(settings.chat, OpenAIChatConfig)
+        assert settings.chat.model == "gpt-4o-mini"
+        assert settings.chat.max_retries == 10
 
     def test_settings_from_file(self, set_valid_env_vars):
         # Load the configuration from the YAML file
@@ -64,3 +72,9 @@ class TestSettings:
         assert isinstance(settings.embedding, OpenAIEmbeddingConfig)
         assert settings.embedding.model == "text-embedding-3-small"
         assert settings.embedding.max_tokens == 8191
+
+        # Validate chat configuration
+        assert settings.chat.type == "OpenAI"
+        assert isinstance(settings.chat, OpenAIChatConfig)
+        assert settings.chat.model == "gpt-4o-mini"
+        assert settings.chat.max_retries == 10

@@ -121,6 +121,7 @@ AttributeType = (
     | DataType
     | str
     | tuple[DataType | str, Optional[int | float | bool | str]]
+    | Dict[str, str]
 )
 AttributesType = Dict[str, AttributeType]
 
@@ -149,9 +150,22 @@ def create_attribute_schema(attr: AttributeType) -> AttributeSchema:
         )
         default_value = attr[1] if len(attr) > 1 else None
         return AttributeSchema(data_type=data_type, default_value=default_value)
+    elif (
+        isinstance(attr, Dict)
+        and "data_type" in attr
+        and isinstance(attr["data_type"], str)
+    ):
+        data_type = string_to_data_type(attr["data_type"])
+        default_value = attr["default_value"] if "default_value" in attr else None
+        return AttributeSchema(data_type=data_type, default_value=default_value)
     else:
         raise ValueError(
-            f"Invalid attribute type: {attr}. Expected: str | DataType | tuple[str | DataType, Optional[int | float | bool | str]]."
+            f"""Invalid attribute type: {attr}. Expected: 
+    AttributeSchema
+    | DataType
+    | str
+    | tuple[DataType | str, Optional[int | float | bool | str]]
+    | Dict[str, str]."""
         )
 
 

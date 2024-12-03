@@ -10,7 +10,7 @@ from tigergraphx.config import (
     NeighborSpec,
 )
 from tigergraphx.core.graph_context import GraphContext
-from tigergraphx.core.gsql import (
+from tigergraphx.core.graph.gsql import (
     CREATE_QUERY_API_DEGREE,
     CREATE_QUERY_API_GET_NODE_EDGES,
 )
