@@ -117,7 +117,10 @@ class GraphSchema(BaseConfig):
 
 
 AttributeType = (
-    str | DataType | tuple[str | DataType, Optional[int | float | bool | str]]
+    AttributeSchema
+    | DataType
+    | str
+    | tuple[DataType | str, Optional[int | float | bool | str]]
 )
 AttributesType = Dict[str, AttributeType]
 
@@ -134,10 +137,12 @@ def string_to_data_type(data_type_str: str) -> DataType:
 
 # Helper function to create AttributeSchema with simpler syntax
 def create_attribute_schema(attr: AttributeType) -> AttributeSchema:
-    if isinstance(attr, str):
-        return AttributeSchema(data_type=string_to_data_type(attr))
+    if isinstance(attr, AttributeSchema):
+        return attr
     elif isinstance(attr, DataType):
         return AttributeSchema(data_type=attr)
+    elif isinstance(attr, str):
+        return AttributeSchema(data_type=string_to_data_type(attr))
     elif isinstance(attr, tuple) and len(attr) > 0:
         data_type = (
             string_to_data_type(attr[0]) if isinstance(attr[0], str) else attr[0]

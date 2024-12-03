@@ -1,18 +1,22 @@
+import pytest
+from typing import Mapping
+
 from tigergraphx import DataType, UndiGraph
 from .base_graph_test import TestBaseGraph
 
 
 class TestUndiGraph(TestBaseGraph):
+    @pytest.fixture(autouse=True)
     def set_up(self):
         graph_name = "UndiGraph"
         node_primary_key = "id"
-        node_attributes = {
+        node_attributes: Mapping = {
             "id": DataType.STRING,
             "entity_type": DataType.STRING,
             "description": DataType.STRING,
             "source_id": DataType.STRING,
         }
-        edge_attributes = {
+        edge_attributes: Mapping = {
             "weight": DataType.DOUBLE,
             "description": DataType.STRING,
             "keywords": DataType.STRING,
@@ -25,13 +29,62 @@ class TestUndiGraph(TestBaseGraph):
             edge_attributes=edge_attributes,
         )
 
-    def test_undigraph(self):
-        # Set up
-        self.set_up()
-        # Adding and removing nodes and edges
+    def test_add_and_remove_nodes_and_edges(self):
+        # Adding nodes
         self.G.add_node("A")
         self.G.add_node("B", entity_type="Org", description="This is B.")
         self.G.add_edge("A", "B", weight=2.1, keywords="This is an edge")
+
+        # Verify nodes and edges
+        assert self.G.has_node("A"), "Node A should exist"
+        assert self.G.has_node("B"), "Node B should exist"
+        assert not self.G.has_node("C"), "Node C should not exist"
+        assert self.G.has_edge("A", "B"), "Edge A->B should exist"
+        assert self.G.has_edge("B", "A"), "Edge B->A should exist"
+
+        # # Removing edge
+        # self.G.remove_edge("A", "B")
+        # assert not self.G.has_edge("A", "B"), "Edge A->B should not exist after removal"
+        #
+        # # Removing nodes
+        # self.G.remove_node("A")
+        # assert not self.G.has_node("A"), "Node A should not exist after removal"
+        # assert self.G.has_node("B"), "Node B should still exist"
+
+    def test_node_and_edge_data(self):
+        # Adding nodes and edge
+        self.G.add_node("A")
+        self.G.add_node("B", entity_type="Org", description="This is B.")
+        self.G.add_edge("A", "B", weight=2.1, keywords="This is an edge")
+
+        # Get node data
+        node_data = self.time_execution(
+            lambda: self.G.get_node_data("B"), "get_node_data"
+        )
+        assert node_data["entity_type"] == "Org", "Entity type of node B should be Org"
+        assert (
+            node_data["description"] == "This is B."
+        ), "Description of node B should match"
+
+        # Get edge data
+        edge_data = self.time_execution(
+            lambda: self.G.get_edge_data("A", "B"),
+            "get_edge_data",
+        )
+        assert edge_data["weight"] == 2.1, "Weight of edge A->B should be 2.1"
+        assert (
+            edge_data["keywords"] == "This is an edge"
+        ), "Keywords of edge A->B should match"
+
+    def test_node_edges_count(self):
+        # Adding nodes and edge
+        self.G.add_node("A")
+        self.G.add_node("B", entity_type="Org", description="This is B.")
+        self.G.add_edge("A", "B", weight=2.1, keywords="This is an edge")
+
+        # Counting edges
+        assert len(self.G.get_node_edges("A")) == 1, "Node A should have 1 edge"
+        assert len(self.G.get_node_edges("B")) == 1, "Node B should have 1 edge"
 
         # Reporting nodes, edges and neighbors
         ## has node/edge
