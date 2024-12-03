@@ -2,74 +2,127 @@ import pytest
 from typing import Optional, List
 
 from tigergraphx import Graph
-from tigergraphx import (
-    QuoteType,
-    CsvParsingOptions,
-    NodeMappingConfig,
-    EdgeMappingConfig,
-    FileConfig,
-    LoadingJobConfig,
-)
-from tigergraphx import (
-    GraphSchema,
+from tigergraphx import GraphSchema
+from .base_graph_test import TestBaseGraph
+from tigergraphx.config import (
     NodeSpec,
     NeighborSpec,
 )
-from .base_graph_test import TestBaseGraph
+
+
+@pytest.fixture
+def graph_setup_1():
+    schema_config = {
+        "graph_name": "HeteGraph",
+        "nodes": {
+            "User": {
+                "primary_key": "id",
+                "attributes": {
+                    "id": "STRING",
+                    "name": "STRING",
+                    "age": "UINT",
+                },
+            },
+            "Product": {
+                "primary_key": "id",
+                "attributes": {
+                    "id": "STRING",
+                    "name": "STRING",
+                    "price": "DOUBLE",
+                },
+            },
+        },
+        "edges": {
+            "purchased": {
+                "is_directed_edge": True,
+                "from_node_type": "User",
+                "to_node_type": "Product",
+                "attributes": {
+                    "purchase_date": "DATETIME",
+                    "quantity": "DOUBLE",
+                },
+            },
+            "similar_to": {
+                "is_directed_edge": False,
+                "from_node_type": "Product",
+                "to_node_type": "Product",
+                "attributes": {
+                    "purchase_date": "DATETIME",
+                    "quantity": "DOUBLE",
+                },
+            },
+        },
+    }
+    graph_schema = GraphSchema.ensure_config(schema_config)
+    return Graph(graph_schema=graph_schema)
+
+
+@pytest.fixture
+def graph_setup_2():
+    schema_config = {
+        "graph_name": "HeteGraph2",
+        "nodes": {
+            "Product": {
+                "primary_key": "id",
+                "attributes": {
+                    "id": "STRING",
+                    "name": "STRING",
+                    "price": "DOUBLE",
+                },
+            },
+        },
+        "edges": {
+            "similar_to": {
+                "is_directed_edge": False,
+                "from_node_type": "Product",
+                "to_node_type": "Product",
+                "attributes": {
+                    "similarity_score": "DOUBLE",
+                },
+            },
+        },
+    }
+    graph_schema = GraphSchema.ensure_config(schema_config)
+    return Graph(graph_schema=graph_schema)
+
+
+@pytest.fixture
+def graph_setup_3():
+    schema_config = {
+        "graph_name": "HeteGraph3",
+        "nodes": {
+            "Entity": {
+                "primary_key": "id",
+                "attributes": {
+                    "id": "STRING",
+                    "entity_type": "STRING",
+                    "description": "STRING",
+                    "source_id": "STRING",
+                },
+            },
+        },
+        "edges": {
+            "relationship": {
+                "is_directed_edge": True,
+                "from_node_type": "Entity",
+                "to_node_type": "Entity",
+                "attributes": {
+                    "weight": "DOUBLE",
+                    "description": "STRING",
+                    "keywords": "STRING",
+                    "source_id": "STRING",
+                },
+            },
+        },
+    }
+    graph_schema = GraphSchema.ensure_config(schema_config)
+    return Graph(graph_schema=graph_schema)
 
 
 class TestGraph(TestBaseGraph):
-    def set_up(self):
-        # Define the schema configuration as a dictionary
-        schema_config = {
-            "graph_name": "HeteGraph",
-            "nodes": {
-                "User": {
-                    "primary_key": "id",
-                    "attributes": {
-                        "id": {"data_type": "STRING"},
-                        "name": {"data_type": "STRING"},
-                        "age": {"data_type": "UINT"},
-                    },
-                },
-                "Product": {
-                    "primary_key": "id",
-                    "attributes": {
-                        "id": {"data_type": "STRING"},
-                        "name": {"data_type": "STRING"},
-                        "price": {"data_type": "DOUBLE"},
-                    },
-                },
-            },
-            "edges": {
-                "purchased": {
-                    "is_directed_edge": True,
-                    "from_node_type": "User",
-                    "to_node_type": "Product",
-                    "attributes": {
-                        "purchase_date": {"data_type": "DATETIME"},
-                        "quantity": {"data_type": "DOUBLE"},
-                    },
-                },
-                "similar_to": {
-                    "is_directed_edge": False,
-                    "from_node_type": "Product",
-                    "to_node_type": "Product",
-                    "attributes": {
-                        "purchase_date": {"data_type": "DATETIME"},
-                        "quantity": {"data_type": "DOUBLE"},
-                    },
-                },
-            },
-        }
-        # Use GraphSchema.ensure_config to create the schema
-        graph_schema = GraphSchema.ensure_config(schema_config)
-        # Initialize the graph with the schema
-        self.G = Graph(graph_schema=graph_schema)
-
-    def test_graph(self):
-        # Set up
-        self.set_up()
+    @pytest.mark.usefixtures("graph_setup_1")
+    def test_graph(self, graph_setup_1):
+        self.G = graph_setup_1
         # Adding and removing nodes and edges
         self.G.add_node("User_A", "User")
         self.G.add_node("User_B", "User", name="B")
@@ -214,39 +267,9 @@ class TestGraph(TestBaseGraph):
         ):
             self.G.has_node("D", "")
 
-    def set_up_2(self):
-        # Define the schema configuration as a dictionary
-        schema_config = {
-            "graph_name": "HeteGraph2",
-            "nodes": {
-                "Product": {
-                    "primary_key": "id",
-                    "attributes": {
-                        "id": {"data_type": "STRING"},
-                        "name": {"data_type": "STRING"},
-                        "price": {"data_type": "DOUBLE"},
-                    },
-                },
-            },
-            "edges": {
-                "similar_to": {
-                    "is_directed_edge": False,
-                    "from_node_type": "Product",
-                    "to_node_type": "Product",
-                    "attributes": {
-                        "similarity_score": {"data_type": "DOUBLE"},
-                    },
-                },
-            },
-        }
-        # Use GraphSchema.ensure_config to create the schema
-        graph_schema = GraphSchema.ensure_config(schema_config)
-        # Initialize the graph with the schema
-        self.G = Graph(graph_schema=graph_schema)
-
-    def test_graph_2(self):
-        # Set up
-        self.set_up_2()
+    @pytest.mark.usefixtures("graph_setup_2")
+    def test_graph_2(self, graph_setup_2):
+        self.G = graph_setup_2
         # Adding and removing nodes and edges
         self.G.add_node("Product_1", "Product")
         self.G.add_node("Product_2", "Product", name="2")
@@ -265,96 +288,62 @@ class TestGraph(TestBaseGraph):
         assert self.G.has_node("Product_3")
         assert self.G.has_edge("Product_1", "Product_3")
 
-    def set_up_3(self):
-        # Define the schema configuration as a dictionary
-        schema_config = {
-            "graph_name": "HeteGraph3",
-            "nodes": {
-                "Entity": {
-                    "primary_key": "id",
-                    "attributes": {
-                        "id": {"data_type": "STRING"},
-                        "entity_type": {"data_type": "STRING"},
-                        "description": {"data_type": "STRING"},
-                        "source_id": {"data_type": "STRING"},
-                    },
-                },
-            },
-            "edges": {
-                "relationship": {
-                    "is_directed_edge": True,
-                    "from_node_type": "Entity",
-                    "to_node_type": "Entity",
-                    "attributes": {
-                        "weight": {"data_type": "DOUBLE"},
-                        "description": {"data_type": "STRING"},
-                        "keywords": {"data_type": "STRING"},
-                        "source_id": {"data_type": "STRING"},
-                    },
-                },
-            },
-        }
-        # Use GraphSchema.ensure_config to create the schema
-        graph_schema = GraphSchema.ensure_config(schema_config)
-        # Initialize the graph with the schema
-        self.G = Graph(graph_schema=graph_schema)
-
-    def create_loading_job_config(self) -> LoadingJobConfig:
-        """
-        Generate the LoadingJobConfig using a dictionary.
-        """
-        config_dict = {
-            "loading_job_name": "loading_job_HeteGraph3",
-            "files": [
-                {
-                    "file_alias": "f_entity",
-                    "file_path": "/home/tigergraph/data/lightrag/ultradomain_fin/entity.csv",
-                    "csv_parsing_options": {
-                        "separator": ",",
-                        "header": True,
-                        "EOL": "\\n",
-                        "quote": "DOUBLE",
-                    },
-                    "node_mappings": [
-                        {
-                            "target_name": "Entity",
-                            "attribute_column_mappings": {
-                                "id": "id",
-                                "entity_type": "entity_type",
-                                "description": "description",
-                                "source_id": "source_id",
-                            },
-                        }
-                    ],
-                },
-                {
-                    "file_alias": "f_relationship",
-                    "file_path": "/home/tigergraph/data/lightrag/ultradomain_fin/relationship.csv",
-                    "csv_parsing_options": {
-                        "separator": ",",
-                        "header": True,
-                        "EOL": "\\n",
-                        "quote": "DOUBLE",
-                    },
-                    "edge_mappings": [
-                        {
-                            "target_name": "relationship",
-                            "source_node_column": "source",
-                            "target_node_column": "target",
-                            "attribute_column_mappings": {
-                                "weight": "weight",
-                                "description": "description",
-                                "keywords": "keywords",
-                                "source_id": "source_id",
-                            },
-                        }
-                    ],
-                },
-            ],
-        }
-
-        # Generate the LoadingJobConfig from the dictionary
-        return LoadingJobConfig.ensure_config(config_dict)
+    # def create_loading_job_config(self) -> LoadingJobConfig:
+    #     """
+    #     Generate the LoadingJobConfig using a dictionary.
+    #     """
+    #     config_dict = {
+    #         "loading_job_name": "loading_job_HeteGraph3",
+    #         "files": [
+    #             {
+    #                 "file_alias": "f_entity",
+    #                 "file_path": "/home/tigergraph/data/lightrag/ultradomain_fin/entity.csv",
+    #                 "csv_parsing_options": {
+    #                     "separator": ",",
+    #                     "header": True,
+    #                     "EOL": "\\n",
+    #                     "quote": "DOUBLE",
+    #                 },
+    #                 "node_mappings": [
+    #                     {
+    #                         "target_name": "Entity",
+    #                         "attribute_column_mappings": {
+    #                             "id": "id",
+    #                             "entity_type": "entity_type",
+    #                             "description": "description",
+    #                             "source_id": "source_id",
+    #                         },
+    #                     }
+    #                 ],
+    #             },
+    #             {
+    #                 "file_alias": "f_relationship",
+    #                 "file_path": "/home/tigergraph/data/lightrag/ultradomain_fin/relationship.csv",
+    #                 "csv_parsing_options": {
+    #                     "separator": ",",
+    #                     "header": True,
+    #                     "EOL": "\\n",
+    #                     "quote": "DOUBLE",
+    #                 },
+    #                 "edge_mappings": [
+    #                     {
+    #                         "target_name": "relationship",
+    #                         "source_node_column": "source",
+    #                         "target_node_column": "target",
+    #                         "attribute_column_mappings": {
+    #                             "weight": "weight",
+    #                             "description": "description",
+    #                             "keywords": "keywords",
+    #                             "source_id": "source_id",
+    #                         },
+    #                     }
+    #                 ],
+    #             },
+    #         ],
+    #     }
+    #
+    #     # Generate the LoadingJobConfig from the dictionary
+    #     return LoadingJobConfig.ensure_config(config_dict)
 
     # def test_graph_3(self):
     #     # Set up
@@ -380,11 +369,11 @@ class TestGraph(TestBaseGraph):
             return_attributes=return_attributes,
             limit=limit,
         )
-        return self.G._create_gsql_get_nodes(self.G.name, spec)
+        return self.G._query_manager._create_gsql_get_nodes(self.G.name, spec)
 
-    def test_create_gsql_get_nodes(self):
-        # Set up
-        self.set_up_3()
+    @pytest.mark.usefixtures("graph_setup_3")
+    def test_create_gsql_get_nodes(self, graph_setup_3):
+        self.G = graph_setup_3
         # Test case 1: Simple query without filters, limits, or return attributes
         actual_gsql_script = self.create_gsql_get_nodes(node_type="Community")
         expected_gsql_script = """
@@ -491,12 +480,14 @@ INTERPRET QUERY() FOR GRAPH HeteGraph3 {
             return_attributes=return_attributes,
             limit=limit,
         )
-        gsql_script, _ = self.G._create_gsql_get_neighbors(self.G.name, spec)
+        gsql_script, _ = self.G._query_manager._create_gsql_get_neighbors(
+            self.G.name, spec
+        )
         return gsql_script
 
-    def test_create_gsql_get_neighbors(self):
-        # Set up
-        self.set_up_3()
+    @pytest.mark.usefixtures("graph_setup_3")
+    def test_create_gsql_get_neighbors(self, graph_setup_3):
+        self.G = graph_setup_3
         # Get neighbors
         actual_gsql_script = self.create_gsql_get_neighbors(
             start_nodes=["CYTOSORB"],
@@ -617,9 +608,9 @@ INTERPRET QUERY(
 """.strip()
         assert actual_gsql_script == expected_gsql_script
 
-    def test_get_nodes(self):
-        # Set up the graph (assuming `set_up_graph` initializes a test graph)
-        self.set_up_3()
+    @pytest.mark.usefixtures("graph_setup_3")
+    def test_get_nodes(self, graph_setup_3):
+        self.G = graph_setup_3
 
         # Define the return attributes and test parameters
         return_attributes = ["id", "entity_type"]
@@ -640,9 +631,9 @@ INTERPRET QUERY(
             return_attributes
         ), f"Expected columns {return_attributes}, but got {list(nodes.columns)}."
 
-    def test_get_neighbors(self):
-        # Set up
-        self.set_up_3()
+    @pytest.mark.usefixtures("graph_setup_3")
+    def test_get_neighbors(self, graph_setup_3):
+        self.G = graph_setup_3
         # Get neighbors
         return_attributes = ["id", "entity_type"]
         neighbors = self.time_execution(
