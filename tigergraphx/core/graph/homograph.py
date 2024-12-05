@@ -22,6 +22,10 @@ class HomoGraph(BaseGraph):
         tigergraph_connection_config: Optional[TigerGraphConnectionConfig] = None,
         drop_existing_graph: bool = False,
     ):
+        if not node_type:
+            raise ValueError("node_type cannot be an empty string.")
+        if not edge_type:
+            raise ValueError("edge_type cannot be an empty string.")
         schema_config = GraphSchema(
             graph_name=graph_name,
             nodes={node_type: node_schema},
@@ -33,6 +37,7 @@ class HomoGraph(BaseGraph):
             drop_existing_graph=drop_existing_graph,
         )
 
+    # ------------------------------ Node Operations ------------------------------
     def add_node(self, node_id: str, **attr):
         self._add_node(node_id, self.node_type, **attr)
 
@@ -49,6 +54,20 @@ class HomoGraph(BaseGraph):
     def has_node(self, node_id: str) -> bool:
         return self._has_node(node_id, self.node_type)
 
+    def get_nodes(
+        self,
+        filter_expression: Optional[str] = None,
+        return_attributes: Optional[str | List[str]] = None,
+        limit: Optional[int] = None,
+    ) -> pd.DataFrame | None:
+        return self._get_nodes(
+            node_type=self.node_type,
+            filter_expression=filter_expression,
+            return_attributes=return_attributes,
+            limit=limit,
+        )
+
+    # ------------------------------ Edge Operations ------------------------------
     def has_edge(self, src_node_id: str | int, tgt_node_id: str | int) -> bool:
         return self._has_edge(
             src_node_id, tgt_node_id, self.node_type, self.edge_type, self.node_type
@@ -62,9 +81,14 @@ class HomoGraph(BaseGraph):
             src_node_id, tgt_node_id, self.node_type, self.edge_type, self.node_type
         )
 
+    # ------------------------------ Statistics Operations ------------------------------
     def degree(self, node_id: str) -> int:
         return self._degree(node_id, self.node_type, self.edge_type)
 
+    def number_of_nodes(self) -> int:
+        return self._number_of_nodes()
+
+    # ------------------------------ Query Operations ------------------------------
     def get_node_edges(
         self,
         node_id: str,
@@ -78,19 +102,6 @@ class HomoGraph(BaseGraph):
         )
         result = [(edge["from_id"], edge["to_id"]) for edge in edges]
         return result
-
-    def get_nodes(
-        self,
-        filter_expression: Optional[str] = None,
-        return_attributes: Optional[str | List[str]] = None,
-        limit: Optional[int] = None,
-    ) -> pd.DataFrame | None:
-        return self._get_nodes(
-            node_type=self.node_type,
-            filter_expression=filter_expression,
-            return_attributes=return_attributes,
-            limit=limit,
-        )
 
     def get_neighbors(
         self,

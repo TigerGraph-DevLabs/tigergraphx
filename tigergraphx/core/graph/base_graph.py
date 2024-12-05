@@ -41,8 +41,14 @@ class BaseGraph:
             graph_schema=graph_schema,
             tigergraph_connection_config=tigergraph_connection_config,
         )
-        self.node_type = self._context.node_type
-        self.edge_type = self._context.edge_type
+        self.node_types = set(graph_schema.nodes.keys())
+        self.edge_types = set(graph_schema.edges.keys())
+        self.node_type = (
+            next(iter(self.node_types)) if len(self.node_types) == 0 else ""
+        )
+        self.edge_type = (
+            next(iter(self.edge_types)) if len(self.edge_types) == 0 else ""
+        )
 
         # Initialize managers for handling different aspects of the graph
         self._schema_manager = SchemaManager(self._context)
@@ -66,15 +72,22 @@ class BaseGraph:
                 logger.error(error_msg)
                 raise RuntimeError(error_msg)
 
-    # ------------------------------ Category 1: Schema Operations ------------------------------
+    @property
+    def nodes(self):
+        """Return a NodeView instance."""
+        from tigergraphx.core.view.node_view import NodeView
+
+        return NodeView(self)
+
+    # ------------------------------ Schema Operations ------------------------------
     def create_schema(self, drop_existing_graph=False) -> bool:
         return self._schema_manager.create_schema(drop_existing_graph)
 
-    # ------------------------------ Category 2: Data Loading Operations ------------------------------
+    # ------------------------------ Data Loading Operations ------------------------------
     def load_data(self, loading_job_config: LoadingJobConfig):
         return self._data_manager.load_data(loading_job_config)
 
-    # ------------------------------ Category 3: Node Operations ------------------------------
+    # ------------------------------ Node Operations ------------------------------
     def _add_node(self, node_id: str, node_type: str, **attr):
         return self._node_manager.add_node(node_id, node_type, **attr)
 
@@ -95,7 +108,7 @@ class BaseGraph:
             node_id, node_type, edge_types, num_edge_samples
         )
 
-    # ------------------------------ Category 4: Edge Operations ------------------------------
+    # ------------------------------ Edge Operations ------------------------------
     def _add_edge(
         self,
         src_node_id: str,
@@ -133,17 +146,22 @@ class BaseGraph:
             src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type
         )
 
-    # ------------------------------ Category 5: Statistics Operations ------------------------------
+    # ------------------------------ Statistics Operations ------------------------------
     def _degree(self, node_id: str, node_type: str, edge_types: List | str) -> int:
         return self._statistics_manager.degree(node_id, node_type, edge_types)
 
-    # ------------------------------ Category 6: Query Operations ------------------------------
+    # ------------------------------ Statistics Operations ------------------------------
+    def _number_of_nodes(self, node_type: Optional[str] = None) -> int:
+        """Return the number of nodes for the given vertex type(s)."""
+        return self._statistics_manager.number_of_nodes(node_type)
+
+    # ------------------------------ Query Operations ------------------------------
     def run_query(self, query_name: str, params: Dict = {}):
         return self._query_manager.run_query(query_name, params)
 
     def _get_nodes(
         self,
-        node_type: str,
+        node_type: str = "",
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,

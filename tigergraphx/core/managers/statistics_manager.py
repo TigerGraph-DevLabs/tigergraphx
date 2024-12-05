@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List, Optional
 
 from .base_manager import BaseManager
 
@@ -25,3 +25,20 @@ class StatisticsManager(BaseManager):
         except Exception as e:
             logger.error(f"Error retrieving degree of node {node_id}: {e}")
         return 0
+
+    def number_of_nodes(
+        self, node_type: Optional[str] = None
+    ) -> int:
+        """Return the number of nodes for the given vertex type(s)."""
+        try:
+            if node_type is None or node_type == "":
+                node_type = "*"
+            result = self._connection.getVertexCount(node_type)
+            if isinstance(result, dict):
+                return sum(result.values())
+            return result
+        except Exception as e:
+            logger.error(
+                f"Error retrieving number of nodes for vertex type {node_type}: {e}"
+            )
+            return 0

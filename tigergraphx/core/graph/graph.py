@@ -13,6 +13,7 @@ class Graph(BaseGraph):
     - DiMultiGraph
     """
 
+    # ------------------------------ Node Operations ------------------------------
     def add_node(self, node_id: str, node_type: str = "", **attr) -> None:
         node_type = self._validate_node_type(node_type)
         self._add_node(node_id, node_type, **attr)
@@ -40,6 +41,7 @@ class Graph(BaseGraph):
             num_edge_samples,
         )
 
+    # ------------------------------ Edge Operations ------------------------------
     def add_edge(
         self,
         src_node_id: str,
@@ -99,13 +101,20 @@ class Graph(BaseGraph):
             tgt_node_type,
         )
 
+    # ------------------------------ Statistics Operations ------------------------------
     def degree(self, node_id: str, node_type: str = "", edge_types: List = []) -> int:
         node_type = self._validate_node_type(node_type)
         return self._degree(node_id, node_type, edge_types)
 
+    def number_of_nodes(self, node_type: Optional[str] = None) -> int:
+        if node_type:
+            node_type = self._validate_node_type(node_type)
+        return self._number_of_nodes(node_type)
+
+    # ------------------------------ Query Operations ------------------------------
     def get_nodes(
         self,
-        node_type: str,
+        node_type: str = "",
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
@@ -139,61 +148,51 @@ class Graph(BaseGraph):
             limit=limit,
         )
 
-    def _validate_node_type(self, node_type: str) -> str:
-        """Validate and determine the effective node type.
-
-        Args:
-            node_type (str): The node type provided by the user.
-
-        Returns:
-            str: The effective node type to be used.
-
-        Raises:
-            ValueError: If both node_type and self.node_type are empty.
-        """
-        if not node_type and not self.node_type:
+    # ------------------------------ Utilities ------------------------------
+    def _validate_node_type(self, node_type: Optional[str]) -> str:
+        """Validate and determine the effective node type."""
+        if node_type:
+            # Check if the specified node type is valid
+            if node_type not in self.node_types:
+                raise ValueError(
+                    f"Invalid node type '{node_type}'. Must be one of {self.node_types}."
+                )
+            return node_type
+        # Handle cases where node_type is not specified
+        if len(self.node_types) == 0:
+            raise ValueError("The graph has no node types defined.")
+        if len(self.node_types) > 1:
             raise ValueError(
-                "Please specify a node type, as the graph has multiple node types."
+                "Multiple node types detected. Please specify a node type."
             )
-        return node_type if node_type else self.node_type
+        return next(iter(self.node_types))  # Return the single node type
 
     def _validate_edge_type(
-        self, src_node_type: str = "", edge_type: str = "", tgt_node_type: str = ""
-    ):
-        """Validate node types and edge type, and determine effective types.
+        self,
+        src_node_type: Optional[str],
+        edge_type: Optional[str],
+        tgt_node_type: Optional[str],
+    ) -> tuple[str, str, str]:
+        """Validate node types and edge type, and determine effective types."""
+        # Validate source and target node types
+        src_node_type = self._validate_node_type(src_node_type)
+        tgt_node_type = self._validate_node_type(tgt_node_type)
 
-        Args:
-            src_node_type (str): The source node type.
-            tgt_node_type (str): The target node type.
-            edge_type (str): The edge type.
+        # Validate or determine edge type
+        if edge_type:
+            # Check if the specified edge type is valid
+            if edge_type not in self.edge_types:
+                raise ValueError(
+                    f"Invalid edge type '{edge_type}'. Must be one of {self.edge_types}."
+                )
+        else:
+            if len(self.edge_types) == 0:
+                raise ValueError("The graph has no edge types defined.")
+            if len(self.edge_types) > 1:
+                raise ValueError(
+                    "Multiple edge types detected. Please specify an edge type."
+                )
+            edge_type = next(iter(self.edge_types))  # Use the single edge type
 
-        Returns:
-            Tuple[str, str, str]: Effective source node type, effective target node type, and edge type.
-
-        Raises:
-            ValueError: If both source and target node types are not specified, or if the edge type is not specified.
-        """
-        # Check for node type of the source node
-        if not src_node_type and not self.node_type:
-            raise ValueError(
-                "Please specify a node type for the source node, as the graph has multiple node types."
-            )
-
-        # Check for edge type
-        if not edge_type and not self._context.edge_type:
-            raise ValueError(
-                "Please specify an edge type, as the graph has multiple edge types."
-            )
-
-        # Check for node type of the target node
-        if not tgt_node_type and not self.node_type:
-            raise ValueError(
-                "Please specify a node type for the target node, as the graph has multiple node types."
-            )
-
-        # Determine and return effective types
-        return (
-            src_node_type if src_node_type else self.node_type,
-            edge_type if edge_type else self._context.edge_type,
-            tgt_node_type if tgt_node_type else self.node_type,
-        )
+        # Return effective types
+        return src_node_type, edge_type, tgt_node_type

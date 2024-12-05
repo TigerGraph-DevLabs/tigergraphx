@@ -30,7 +30,7 @@ class QueryManager(BaseManager):
 
     def get_nodes(
         self,
-        node_type: str,
+        node_type: str = "",
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
@@ -69,7 +69,7 @@ class QueryManager(BaseManager):
                 rename_map = {
                     col: col.replace("attributes.", "") for col in attribute_columns
                 }
-                reordered_columns = df.columns
+                reordered_columns = []
             else:
                 rename_map = {
                     f"attributes.{attr}": attr for attr in spec.return_attributes
@@ -80,7 +80,11 @@ class QueryManager(BaseManager):
                     if attr in rename_map.values()
                 ]
             df.rename(columns=rename_map, inplace=True)
-            drop_columns = [col for col in ["v_id", "v_type"] if col in df.columns]
+            drop_columns = []
+            if spec.return_attributes is not None:
+                drop_columns = ["v_id"]
+                if spec.node_type is not None and "v_type" in df.columns:
+                    drop_columns.append("v_type")
             df.drop(columns=drop_columns, inplace=True)
             remaining_columns = [
                 col for col in df.columns if col not in reordered_columns
@@ -139,7 +143,7 @@ class QueryManager(BaseManager):
                 rename_map = {
                     col: col.replace("attributes.", "") for col in attribute_columns
                 }
-                reordered_columns = df.columns
+                reordered_columns = []
             else:
                 rename_map = {
                     f"attributes.{attr}": attr for attr in spec.return_attributes
@@ -167,7 +171,7 @@ class QueryManager(BaseManager):
         """
         Core function to generate a GSQL query based on a NodeSpec object.
         """
-        node_type = spec.node_type
+        node_type_str = f"{spec.node_type}.*" if spec.node_type else "ANY"
         filter_expression_str = (
             f"WHERE {spec.filter_expression}" if spec.filter_expression else ""
         )
@@ -177,7 +181,7 @@ class QueryManager(BaseManager):
         # Generate the base query
         query = f"""
 INTERPRET QUERY() FOR GRAPH {graph_name} {{
-  Nodes = {{{node_type}.*}};
+  Nodes = {{{node_type_str}}};
 """
         # Add SELECT block only if filter or limit is specified
         if filter_expression_str or limit_clause:
