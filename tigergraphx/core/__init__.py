@@ -1,6 +1,8 @@
-from .graph import Graph
-from .digraph import DiGraph
-from .undigraph import UndiGraph
+from .graph import (
+    Graph,
+    DiGraph,
+    UndiGraph,
+)
 
 __all__ = [
     "Graph",

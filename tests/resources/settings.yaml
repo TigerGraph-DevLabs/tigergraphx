@@ -17,3 +17,8 @@ embedding:
   # max_retries: 10
   # request_timeout: 180.0
   # encoding_name: "cl100k_base"
+
+chat:
+  type: "OpenAI"
+  model: "gpt-4o-mini"
+  # max_retries: 10

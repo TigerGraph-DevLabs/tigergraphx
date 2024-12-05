@@ -5,7 +5,7 @@ from ..base_config import BaseConfig
 
 
 class NodeSpec(BaseConfig):
-    node_type: str = Field(
+    node_type: Optional[str] = Field(
         ..., description="The type of nodes to select."
     )
     filter_expression: Optional[str] = Field(

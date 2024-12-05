@@ -29,13 +29,13 @@ class TestUndiGraph(TestBaseGraph):
             edge_attributes=edge_attributes,
         )
 
-    def test_add_and_remove_nodes_and_edges(self):
-        # Adding nodes
+        # Adding nodes and edge
         self.G.add_node("A")
         self.G.add_node("B", entity_type="Org", description="This is B.")
         self.G.add_edge("A", "B", weight=2.1, keywords="This is an edge")
 
-        # Verify nodes and edges
+    def test_add_and_remove_nodes_and_edges(self):
+        # Verify initial state
         assert self.G.has_node("A"), "Node A should exist"
         assert self.G.has_node("B"), "Node B should exist"
         assert not self.G.has_node("C"), "Node C should not exist"
@@ -52,11 +52,6 @@ class TestUndiGraph(TestBaseGraph):
         # assert self.G.has_node("B"), "Node B should still exist"
 
     def test_node_and_edge_data(self):
-        # Adding nodes and edge
-        self.G.add_node("A")
-        self.G.add_node("B", entity_type="Org", description="This is B.")
-        self.G.add_edge("A", "B", weight=2.1, keywords="This is an edge")
-
         # Get node data
         node_data = self.time_execution(
             lambda: self.G.get_node_data("B"), "get_node_data"
@@ -77,11 +72,6 @@ class TestUndiGraph(TestBaseGraph):
         ), "Keywords of edge A->B should match"
 
     def test_node_edges_count(self):
-        # Adding nodes and edge
-        self.G.add_node("A")
-        self.G.add_node("B", entity_type="Org", description="This is B.")
-        self.G.add_edge("A", "B", weight=2.1, keywords="This is an edge")
-
         # Counting edges
         assert len(self.G.get_node_edges("A")) == 1, "Node A should have 1 edge"
         assert len(self.G.get_node_edges("B")) == 1, "Node B should have 1 edge"

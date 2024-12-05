@@ -30,15 +30,15 @@ class TestDiGraph(TestBaseGraph):
             # drop_existing_graph=True,
         )
 
-    def test_add_and_remove_nodes_and_edges(self):
-        # Adding nodes
+        # Adding nodes and edge
         self.G.add_node("A")
         self.G.add_node("B", entity_type="Org", description="This is B.")
+        self.G.add_edge("A", "B", weight=2.1, keywords="This is an edge")
+
+    def test_add_and_remove_nodes_and_edges(self):
+        # Verify initial state
         assert self.G.has_node("A"), "Node A should exist"
         assert self.G.has_node("B"), "Node B should exist"
-
-        # Adding edge
-        self.G.add_edge("A", "B", weight=2.1, keywords="This is an edge")
         assert self.G.has_edge("A", "B"), "Edge A->B should exist"
         assert not self.G.has_edge("B", "A"), "Edge B->A should not exist"
 
@@ -50,19 +50,18 @@ class TestDiGraph(TestBaseGraph):
         # self.G.remove_node("A")
         # assert not self.G.has_node("A"), "Node A should not exist after removal"
         # assert self.G.has_node("B"), "Node B should still exist"
+        # assert not self.G.has_edge("A", "B"), "Edge A->B should not exist after node A removal"
+        # assert not self.G.has_edge("B", "A"), "Edge B->A should not exist after node A removal"
 
     def test_node_and_edge_data(self):
-        # Adding nodes and edge
-        self.G.add_node("A")
-        self.G.add_node("B", entity_type="Org", description="This is B.")
-        self.G.add_edge("A", "B", weight=2.1, keywords="This is an edge")
-
         # Get node data
         node_data = self.time_execution(
             lambda: self.G.get_node_data("B"), "get_node_data"
         )
         assert node_data["entity_type"] == "Org", "Entity type of node B should be Org"
-        assert node_data["description"] == "This is B.", "Description of node B should match"
+        assert (
+            node_data["description"] == "This is B."
+        ), "Description of node B should match"
 
         # Get edge data
         edge_data = self.time_execution(
@@ -70,22 +69,14 @@ class TestDiGraph(TestBaseGraph):
             "get_edge_data",
         )
         assert edge_data["weight"] == 2.1, "Weight of edge A->B should be 2.1"
-        assert edge_data["keywords"] == "This is an edge", "Keywords of edge A->B should match"
+        assert (
+            edge_data["keywords"] == "This is an edge"
+        ), "Keywords of edge A->B should match"
 
     def test_node_edges_count(self):
-        # Adding nodes and edge
-        self.G.add_node("A")
-        self.G.add_node("B", entity_type="Org", description="This is B.")
-        self.G.add_edge("A", "B", weight=2.1, keywords="This is an edge")
-
         # Counting edges
         assert len(self.G.get_node_edges("A")) == 1, "Node A should have 1 edge"
         assert len(self.G.get_node_edges("B")) == 0, "Node B should have 0 edges"
-
-        # Adding and removing nodes and edges
-        self.G.add_node("A")
-        self.G.add_node("B", entity_type="Org", description="This is B.")
-        self.G.add_edge("A", "B", weight=2.1, keywords="This is an edge")
 
         # Reporting nodes, edges and neighbors
         ## has node/edge

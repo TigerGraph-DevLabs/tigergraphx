@@ -38,13 +38,13 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
 # Unit Test
-test_units = {cmd = "pytest ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_unit_single = {cmd = "pytest -vs -k 'TestGraph'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_units_folder = {cmd = "pytest -vs tests/unit/core/managers", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_unit = {cmd = "pytest ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_unit_class = {cmd = "pytest -vs -k 'TestStatisticsManager'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_unit_folder = {cmd = "pytest -vs tests/unit/core/managers", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Integration Test
 test_integration = {cmd = "pytest ./tests/integration", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_integration_single = {cmd = "pytest -vs -k 'TestGraph'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_integration_class = {cmd = "pytest -vs -k 'TestGraph'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 test_integration_folder = {cmd = "pytest -vs tests/integration/core", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Applications
