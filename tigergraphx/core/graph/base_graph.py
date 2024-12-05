@@ -44,10 +44,10 @@ class BaseGraph:
         self.node_types = set(graph_schema.nodes.keys())
         self.edge_types = set(graph_schema.edges.keys())
         self.node_type = (
-            next(iter(self.node_types)) if len(self.node_types) == 0 else ""
+            next(iter(self.node_types)) if len(self.node_types) == 1 else ""
         )
         self.edge_type = (
-            next(iter(self.edge_types)) if len(self.edge_types) == 0 else ""
+            next(iter(self.edge_types)) if len(self.edge_types) == 1 else ""
         )
 
         # Initialize managers for handling different aspects of the graph

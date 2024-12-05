@@ -1,5 +1,6 @@
 from unittest.mock import MagicMock
 import pytest
+import pandas as pd
 
 from tigergraphx.core.graph.base_graph import BaseGraph
 from tigergraphx.core.view.node_view import NodeView
@@ -81,11 +82,11 @@ class TestNodeView:
     def test_iter_homogeneous(self):
         graph = MockGraph(node_type="Person")
         graph._get_nodes = MagicMock(
-            return_value=[
-                {"id": "1"},
-                {"id": "2"},
-                {"id": "3"},
-            ]
+            return_value=pd.DataFrame([
+                {"v_id": "1"},
+                {"v_id": "2"},
+                {"v_id": "3"},
+            ])
         )
         node_view = NodeView(graph)
         result = list(node_view)
@@ -95,11 +96,11 @@ class TestNodeView:
     def test_iter_heterogeneous(self):
         graph = MockGraph()
         graph._get_nodes = MagicMock(
-            return_value=[
-                {"type": "Person", "id": "1"},
-                {"type": "Company", "id": "2"},
-                {"type": "Person", "id": "3"},
-            ]
+            return_value=pd.DataFrame([
+                {"v_type": "Person", "v_id": "1"},
+                {"v_type": "Company", "v_id": "2"},
+                {"v_type": "Person", "v_id": "3"},
+            ])
         )
         node_view = NodeView(graph)
         result = list(node_view)
