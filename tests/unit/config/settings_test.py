@@ -59,6 +59,9 @@ class TestSettings:
         assert settings.vector_db.type == "LanceDB"
         assert isinstance(settings.vector_db, LanceDBConfig)
         assert settings.vector_db.uri == "test_uri"
+        assert settings.vector_db.api_key == "test_api_key"
+        assert settings.vector_db.region == "test_region"
+        assert settings.vector_db.host_override == "test_host_override"
 
         # Validate llm configuration
         assert settings.llm.type == "OpenAI"
