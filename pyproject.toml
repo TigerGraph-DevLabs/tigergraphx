@@ -8,7 +8,7 @@ packages = [{ include = "tigergraphx" }]
 
 [tool.poetry.dependencies]
 # Core Python Version
-python = "^3.12"
+python = "3.12.*"
 
 # Data Processing
 pandas = "^2.2.3"
@@ -18,11 +18,12 @@ pydantic = "^2.10.1"
 pydantic-settings = "^2.6.1"
 
 # Database and Storage
-lancedb = "^0.16.0"
 pytigergraph = "^1.8.1"
+lancedb = "^0.13.0"
+nano-vectordb = "^0.0.4.3"
 
 # Large Language Model (LLM) Utilities
-tiktoken = "^0.8.0"
+tiktoken = "^0.7.0"
 openai = "^1.55.0"
 tenacity = "^9.0.0"
 
@@ -31,6 +32,8 @@ poethepoet = "^0.31.0"
 pytest = "^8.3.3"
 pytest-asyncio = "^0.24.0"
 pytest-mock = "^3.14.0"
+notebook = "^7.3.1"
+graphrag = "^0.4.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -39,7 +42,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poe.tasks]
 # Unit Test
 test_unit = {cmd = "pytest ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_unit_class = {cmd = "pytest -vs -k 'TestStatisticsManager'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_unit_class = {cmd = "pytest -vs -k 'TestParquetProcessor'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 test_unit_folder = {cmd = "pytest -vs tests/unit/core/managers", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Integration Test

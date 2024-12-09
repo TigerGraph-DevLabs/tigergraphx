@@ -37,6 +37,7 @@ from .config import (
     OpenAIEmbeddingConfig,
     BaseVectorDBConfig,
     LanceDBConfig,
+    NanoVectorDBConfig,
 )
 from .graphrag import (
     BaseContextBuilder,
@@ -50,11 +51,13 @@ from .llm import (
 from .vector_search import (
     BaseEmbedding,
     OpenAIEmbedding,
-    BaseSearchEngine,
-    LanceDBSearchEngine,
     BaseVectorDB,
     LanceDBManager,
+    NanoVectorDBManager,
+    BaseSearchEngine,
+    LanceDBSearchEngine,
 )
+from .pipelines import ParquetProcessor
 from .utils import (
     safe_call,
     setup_logging,
@@ -100,6 +103,7 @@ __all__ = [
     "OpenAIEmbeddingConfig",
     "BaseVectorDBConfig",
     "LanceDBConfig",
+    "NanoVectorDBConfig",
     # GraphRAG
     "BaseContextBuilder",
     "BaseLLMManager",
@@ -108,10 +112,13 @@ __all__ = [
     "OpenAIChat",
     "BaseEmbedding",
     "OpenAIEmbedding",
-    "BaseSearchEngine",
-    "LanceDBSearchEngine",
     "BaseVectorDB",
     "LanceDBManager",
+    "NanoVectorDBManager",
+    "BaseSearchEngine",
+    "LanceDBSearchEngine",
+    # Pipelines
+    "ParquetProcessor",
     # Utils
     "safe_call",
     "setup_logging",

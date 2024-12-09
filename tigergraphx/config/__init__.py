@@ -27,12 +27,13 @@ from .settings import (
     Settings,
     BaseLLMConfig,
     OpenAIConfig,
-    BaseChatConfig,
-    OpenAIChatConfig,
     BaseEmbeddingConfig,
     OpenAIEmbeddingConfig,
     BaseVectorDBConfig,
     LanceDBConfig,
+    NanoVectorDBConfig,
+    BaseChatConfig,
+    OpenAIChatConfig,
 )
 
 __all__ = [
@@ -63,10 +64,11 @@ __all__ = [
     "Settings",
     "BaseLLMConfig",
     "OpenAIConfig",
-    "BaseChatConfig",
-    "OpenAIChatConfig",
     "BaseEmbeddingConfig",
     "OpenAIEmbeddingConfig",
     "BaseVectorDBConfig",
     "LanceDBConfig",
+    "NanoVectorDBConfig",
+    "BaseChatConfig",
+    "OpenAIChatConfig",
 ]
