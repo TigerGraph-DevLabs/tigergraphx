@@ -1,0 +1,62 @@
+site_name: TigerGraphX
+
+theme:
+  name: material
+  icon:
+    logo: octicons/share-android-24
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  features:
+    - content.code.copy
+    - content.code.select
+    - navigation.footer
+    - navigation.tabs
+
+plugins:
+  - search
+  - exclude-search:
+      paths:
+        - "private.md"
+
+nav:
+  - Home: 
+      - Welcome: index.md
+      - Introduction to TigerGraphX: introduction.md
+  - Getting Started:
+      - Installation: getting_started/installation.md
+      - Quick Start: getting_started/quick_start.md
+  - GraphRAG:
+      - Overview: graphrag/overview.md
+      - Why TigerGraph for GraphRAG?: graphrag/why_tigergraph.md
+      - Microsoft GraphRAG: graphrag/msft_graphrag.md
+      - Example Workflow: graphrag/example_workflow.md
+  - API Reference:
+      - Features Overview: reference/features_overview.md
+      - Schema Management (Graph DB): reference/schema_management.md
+      - Data Loading Management (Graph DB): reference/data_loading.md
+      - Graph Library Interface (Graph DB, Graph Query Language): reference/graph_library.md
+      - Graph Query Interface (Graph DB, Graph Query Language): reference/graph_query.md
+      - Vector Search Capabilities (Vector DB): reference/vector_search.md
+      - LLM Integration and Support (LLM): reference/llm_integration.md
+      - Configuration Management (Graph DB, Vector DB, LLM): reference/config_management.md
+      - GraphRAG Support (Graph DB, Vector DB, LLM): reference/graphrag_support.md
+
+markdown_extensions:
+  - codehilite
+  - admonition

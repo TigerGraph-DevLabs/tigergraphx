@@ -1,6 +1,6 @@
 vector_db:
   type: "LanceDB"
-  uri: "applications/graphrag/msft_graphrag/data/output/lancedb"
+  uri: "applications/msft_graphrag/data/output/lancedb"
   table_name: "default-entity-description"
 
 llm:

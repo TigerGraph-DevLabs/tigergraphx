@@ -28,12 +28,25 @@ openai = "^1.55.0"
 tenacity = "^9.0.0"
 
 [tool.poetry.group.dev.dependencies]
+# Task Runner
 poethepoet = "^0.31.0"
+
+# Testing Frameworks
 pytest = "^8.3.3"
 pytest-asyncio = "^0.24.0"
 pytest-mock = "^3.14.0"
+
+# Interactive Development
 notebook = "^7.3.1"
+
+# GraphRAG Integration
 graphrag = "^0.4.0"
+
+# Documentation Generation
+mkdocs = "^1.6.1"
+mkdocs-material = "^9.5.48"
+mkdocs-jupyter = "^0.25.1"
+mkdocs-exclude-search = "^0.6.6"
 
 [build-system]
 requires = ["poetry-core"]

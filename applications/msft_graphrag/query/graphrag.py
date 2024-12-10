@@ -30,11 +30,11 @@ class QueryParam:
 
 @dataclass
 class GraphRAG:
-    schema_path: str = "applications/graphrag/msft_graphrag/query/resources/graph_schema.yaml"
+    schema_path: str = "applications/msft_graphrag/query/resources/graph_schema.yaml"
     loading_job_path: str = (
-        "applications/graphrag/msft_graphrag/query/resources/loading_job_config.yaml"
+        "applications/msft_graphrag/query/resources/loading_job_config.yaml"
     )
-    settings_path: str = "applications/graphrag/msft_graphrag/query/resources/settings.yaml"
+    settings_path: str = "applications/msft_graphrag/query/resources/settings.yaml"
     to_load_data: bool = True
 
     def __post_init__(self):
