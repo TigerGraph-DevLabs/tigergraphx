@@ -1,6 +1,7 @@
 vector_db:
   type: "LanceDB"
-  uri: "~/Documents/Local/github/server/lang/python/python_2024/graphrag/output/lancedb"
+  uri: "applications/graphrag/msft_graphrag/data/output/lancedb"
+  table_name: "default-entity-description"
 
 llm:
   type: "OpenAI"

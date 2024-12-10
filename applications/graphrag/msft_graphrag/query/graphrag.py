@@ -1,17 +1,20 @@
 import logging
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Literal
 import asyncio
 import json
 
-from .utils import always_get_an_event_loop
-from .graph_manager import GraphManager
 from .prompt import PROMPTS
 from .context_builder import (
     LocalContextBuilder,
     GlobalContextBuilder,
 )
 
+from tigergraphx import (
+    Graph,
+    GraphSchema,
+    LoadingJobConfig,
+)
 from tigergraphx import create_openai_components
 
 logger = logging.getLogger(__name__)
@@ -22,38 +25,53 @@ class QueryParam:
     mode: Literal["local", "global"] = "global"
     only_need_context: bool = False
     response_type: str = "Multiple Paragraphs"
-    level: int = 2
     top_k: int = 20
-    # local search
-    local_max_token_for_text_unit: int = 4000  # 12000 * 0.33
-    local_max_token_for_local_context: int = 4800  # 12000 * 0.4
-    local_max_token_for_community_report: int = 3200  # 12000 * 0.27
-    local_community_single_one: bool = False
-    # global search
-    global_min_community_rating: float = 0
-    global_max_consider_community: float = 512
-    global_max_token_for_community_report: int = 16384
-    global_special_community_map_llm_kwargs: dict = field(
-        default_factory=lambda: {"response_format": {"type": "json_object"}}
-    )
 
 
+@dataclass
 class GraphRAG:
-    settings_path: str = "resources/settings.yaml"
+    schema_path: str = "applications/graphrag/msft_graphrag/query/resources/graph_schema.yaml"
+    loading_job_path: str = (
+        "applications/graphrag/msft_graphrag/query/resources/loading_job_config.yaml"
+    )
+    settings_path: str = "applications/graphrag/msft_graphrag/query/resources/settings.yaml"
+    to_load_data: bool = True
 
-    def __init__(self):
-        graph_manager = GraphManager(to_load_data=False)
+    def __post_init__(self):
+        logger.info(
+            "Initializing GraphRAG with schema_path: %s, loading_job_path: %s, settings_path: %s",
+            self.schema_path,
+            self.loading_job_path,
+            self.settings_path,
+        )
+        # Create Graph Schema
+        graph = Graph(
+            graph_schema=GraphSchema.ensure_config(self.schema_path),
+            drop_existing_graph=False,
+        )
+        # Load Data
+        if self.to_load_data:
+            logger.info(
+                "Loading data into graph using loading job config: %s",
+                self.loading_job_path,
+            )
+            graph.load_data(
+                loading_job_config=LoadingJobConfig.ensure_config(self.loading_job_path)
+            )
+        # Create Context Builders
         (self.openai_chat, search_engine) = create_openai_components(self.settings_path)
         self.local_context_builder = LocalContextBuilder(
-            graph=graph_manager.graph, search_engine=search_engine
+            graph=graph, search_engine=search_engine
         )
-        self.global_context_builder = GlobalContextBuilder(graph=graph_manager.graph)
+        self.global_context_builder = GlobalContextBuilder(graph=graph)
 
     def query(self, query: str, param: QueryParam = QueryParam()):
-        loop = always_get_an_event_loop()
+        logger.info("Executing query with parameters: %s", param)
+        loop = self.always_get_an_event_loop()
         return loop.run_until_complete(self.aquery(query, param))
 
     async def aquery(self, query: str, param: QueryParam = QueryParam()):
+        logger.info("Starting asynchronous query execution.")
         if param.mode == "local":
             response = await self.local_query(
                 query,
@@ -76,6 +94,7 @@ class GraphRAG:
         """
         Perform a local search using the context builder and return the result.
         """
+        logger.info("Performing local query with top_k: %d", query_param.top_k)
         # Generate context using the local context builder
         context = await self.local_context_builder.build_context(
             query,
@@ -96,6 +115,7 @@ class GraphRAG:
         )
 
         # Perform the query using OpenAIChat
+        logger.info("Executing final query with OpenAIChat.")
         try:
             response = await self.openai_chat.chat(
                 [
@@ -117,6 +137,7 @@ class GraphRAG:
         Execute a global query using the provided context and query parameters.
         """
 
+        logger.info("Performing global query.")
         # Retrieve context using the global context builder
         context_list = await self.global_context_builder.build_context()
 
@@ -153,6 +174,7 @@ class GraphRAG:
 
         # Apply the map process to all contexts in context_list
         try:
+            logger.info("Mapping contexts.")
             mapped_contexts = await asyncio.gather(
                 *[_process_context(context) for context in context_list]
             )
@@ -165,6 +187,7 @@ class GraphRAG:
         for context in mapped_contexts:
             combined_points.extend(context)
 
+        logger.info("Combining and sorting mapped contexts.")
         # Sort combined points by score in descending order
         combined_points.sort(key=lambda x: x.get("score", 0), reverse=True)
 
@@ -179,7 +202,6 @@ class GraphRAG:
             report_data=combined_context,
             response_type=query_param.response_type,
         )
-        print(system_prompt)
 
         # Perform the final query using OpenAIChat
         try:
@@ -193,3 +215,17 @@ class GraphRAG:
         except Exception as e:
             logger.error(f"Error during global_query: {e}")
             return "An error occurred while processing the query."
+
+    @staticmethod
+    def always_get_an_event_loop() -> asyncio.AbstractEventLoop:
+        try:
+            logger.info("Retrieving existing event loop.")
+            # If there is already an event loop, use it.
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            logger.info("No existing event loop found. Creating a new event loop.")
+            # If in a sub-thread, create a new event loop.
+            logger.info("Creating a new event loop in a sub-thread.")
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        return loop

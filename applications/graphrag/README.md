@@ -1,0 +1,3 @@
+- [ ] Overal introduction
+    - [ ] Two options: GSQL v.s. Python-native TigerGraphX
+    - [ ] TigerGraph's GraphRAG Support Introduction
