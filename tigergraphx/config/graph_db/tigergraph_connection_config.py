@@ -1,8 +1,7 @@
-from dataclasses import dataclass
+from tigergraphx.config import BaseConfig
 
 
-@dataclass
-class TigerGraphConnectionConfig:
+class TigerGraphConnectionConfig(BaseConfig):
     host: str = "http://127.0.0.1"
     user_name: str = "tigergraph"
     password: str = "tigergraph"

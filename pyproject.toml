@@ -1,10 +1,14 @@
 [tool.poetry]
 name = "tigergraphx"
-version = "0.1.0"
-description = "TigerGraphX is a high-level Python library that simplifies working with TigerGraph by abstracting away low-level REST API details. Inspired by NetworkX, it provides an intuitive interface for common graph tasks, making TigerGraph more accessible for developers and supporting GraphRAG ecosystems and applications."
+version = "0.1.2"
+description = "TigerGraphX is a high-level Python library offering a unified, Python-native interface for graph databases, advanced analytics, and GraphRAG workflows. Combining the simplicity of NetworkX with the advanced capabilities of TigerGraph, including tgCloud, it empowers Python developers to harness the power of graphs without the need to learn query languages like Cypher or GSQL."
 authors = ["Xuanlei Lin <xuanlei.lin@tigergraph.com>"]
+license = "MIT"
 readme = "README.md"
+homepage = "https://github.com/xuanleilin/TigerGraphX"
+repository = "https://github.com/xuanleilin/TigerGraphX"
 packages = [{ include = "tigergraphx" }]
+keywords = ["tigergraph", "graph database", "graphrag", "machine learning", "graph analytics"]
 
 [tool.poetry.dependencies]
 # Core Python Version
@@ -16,6 +20,7 @@ pandas = "^2.2.3"
 # Configuration Management
 pydantic = "^2.10.1"
 pydantic-settings = "^2.6.1"
+pyyaml = "^6.0.2"
 
 # Database and Storage
 pytigergraph = "^1.8.1"
@@ -45,8 +50,8 @@ graphrag = "^0.4.0"
 # Documentation Generation
 mkdocs = "^1.6.1"
 mkdocs-material = "^9.5.48"
-mkdocs-jupyter = "^0.25.1"
 mkdocs-exclude-search = "^0.6.6"
+mkdocs-jupyter = "^0.25.1"
 
 [build-system]
 requires = ["poetry-core"]

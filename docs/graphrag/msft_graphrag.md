@@ -1,4 +1,4 @@
-# Microsoft’s GraphRAG with TigerGraph Integration
+# Supporting Microsoft’s GraphRAG
 
 [Microsoft's GraphRAG](https://microsoft.github.io/graphrag/) is a method for creating structured knowledge graphs from raw text, enhancing Retrieval Augmented Generation (RAG) tasks. By organizing information hierarchically, it enables more efficient data retrieval and summarization.
 

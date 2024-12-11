@@ -1,46 +1,12 @@
 site_name: TigerGraphX
 
-theme:
-  name: material
-  icon:
-    logo: octicons/share-android-24
-  palette:
-    # Palette toggle for automatic mode
-    - media: "(prefers-color-scheme)"
-      toggle:
-        icon: material/brightness-auto
-        name: Switch to light mode
-    # Palette toggle for light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: default
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-    # Palette toggle for dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: Switch to system preference
-  features:
-    - content.code.copy
-    - content.code.select
-    - navigation.footer
-    - navigation.tabs
-
-plugins:
-  - search
-  - exclude-search:
-      paths:
-        - "private.md"
-
 nav:
-  - Home: 
-      - Welcome: index.md
-      - Introduction to TigerGraphX: introduction.md
+  - Home:
+      - "Welcome": index.md
+      - "Introduction to TigerGraphX": introduction.md
   - Getting Started:
       - Installation: getting_started/installation.md
-      - Quick Start: getting_started/quick_start.md
+      - "Jupyter Quick Start": getting_started/quick_start.ipynb
   - GraphRAG:
       - Overview: graphrag/overview.md
       - Why TigerGraph for GraphRAG?: graphrag/why_tigergraph.md
@@ -48,15 +14,70 @@ nav:
       - Example Workflow: graphrag/example_workflow.md
   - API Reference:
       - Features Overview: reference/features_overview.md
-      - Schema Management (Graph DB): reference/schema_management.md
-      - Data Loading Management (Graph DB): reference/data_loading.md
-      - Graph Library Interface (Graph DB, Graph Query Language): reference/graph_library.md
-      - Graph Query Interface (Graph DB, Graph Query Language): reference/graph_query.md
-      - Vector Search Capabilities (Vector DB): reference/vector_search.md
-      - LLM Integration and Support (LLM): reference/llm_integration.md
-      - Configuration Management (Graph DB, Vector DB, LLM): reference/config_management.md
-      - GraphRAG Support (Graph DB, Vector DB, LLM): reference/graphrag_support.md
+      - Schema Management: reference/schema_management.md
+      - Data Loading Management: reference/data_loading.md
+      - Graph Library Interface: reference/graph_library.md
+      - Graph Query Interface: reference/graph_query.md
+      - Vector Search Capabilities: reference/vector_search.md
+      - LLM Integration and Support: reference/llm_integration.md
+      - Configuration Management: reference/config_management.md
+      - GraphRAG Support: reference/graphrag_support.md
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.footer
+    - content.code.copy
+    - content.code.select
+  language: en
+  logo: images/logo.png
+  favicon: images/logo.png
+  palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/auto-mode
+        name: Switch to light mode
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue grey
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+
+plugins:
+  - mkdocs-jupyter
+  - search
+#  - exclude-search:
+#      paths:
+#        - "private.md"
 
 markdown_extensions:
-  - codehilite
-  - admonition
+  # Styled blocks for notes, warnings, tips, and other types of content
+  - admonition 
+  - pymdownx.details:
+  # Emoji
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  # Code block highlight
+  - pymdownx.inlinehilite:
+  - pymdownx.snippets:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid # Diagrams
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  # Tabs
+  - pymdownx.tabbed:
+      alternate_style: true

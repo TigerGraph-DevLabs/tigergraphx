@@ -16,6 +16,8 @@ GraphRAG empowers applications with:
 
 ## How Does TigerGraph Support GraphRAG?
 
+![Supporting Microsoft’s GraphRAG](../images/graphrag/GraphRAG.png)
+
 TigerGraph is uniquely equipped to enable GraphRAG workflows by providing:
 
 - **Graph-Structured Data**: Powerful graph modeling with schema-defined nodes and edges.
@@ -99,4 +101,7 @@ Explore practical implementations of GraphRAG with TigerGraph in the [Microsoft 
 
 1. Understand why TigerGraph is ideal for GraphRAG in [Why TigerGraph](why_tigergraph.md).
 2. Explore a practical use case in [Microsoft GraphRAG](msft_graphrag.md).
-3. Dive into the [API Reference](../reference/api.md) to learn more about TigerGraphX’s capabilities.
+
+---
+
+Start unlocking the power of graphs with **TigerGraphX** today!

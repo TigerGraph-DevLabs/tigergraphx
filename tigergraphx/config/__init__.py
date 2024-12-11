@@ -1,5 +1,7 @@
 from .base_config import BaseConfig
 from .graph_db import (
+    # configurations for TigerGraph server
+    TigerGraphConnectionConfig,
     # configurations for graph schema
     DataType,
     AttributeSchema,
@@ -17,7 +19,6 @@ from .graph_db import (
     FileConfig,
     LoadingJobConfig,
 )
-from .tigergraph_server_config import TigerGraphConnectionConfig
 from .query import (
     NodeSpec,
     NeighborSpec,
@@ -39,6 +40,8 @@ from .settings import (
 __all__ = [
     # base class for configurations
     "BaseConfig",
+    # configurations for TigerGraph server
+    "TigerGraphConnectionConfig",
     # configurations for graph schema
     "DataType",
     "AttributeSchema",
