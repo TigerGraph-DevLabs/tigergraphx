@@ -1,8 +1,19 @@
-# Supporting Microsoft’s GraphRAG
+# Supporting Microsoft’s GraphRAG: Part 1
 
 [Microsoft's GraphRAG](https://microsoft.github.io/graphrag/) is a method for creating structured knowledge graphs from raw text, enhancing Retrieval Augmented Generation (RAG) tasks. By organizing information hierarchically, it enables more efficient data retrieval and summarization.
 
-This guide demonstrates how to integrate **GraphRAG** with **TigerGraph** using **TigerGraphX**, transforming documents into structured data, importing them into TigerGraph, and enabling complex queries without relying on the GraphRAG package.
+This guide provides a step-by-step walkthrough for integrating **Microsoft's GraphRAG** with **TigerGraph** using **TigerGraphX**. It focuses on utilizing **Microsoft's GraphRAG** for indexing and demonstrates how to use the demo code for **data preprocessing** and **querying** tasks, combining the power of TigerGraphX and TigerGraph.
+
+### What You’ll Learn in This Guide
+
+- **Indexing**: Leverage **Microsoft's GraphRAG** to transform unstructured documents into structured data.
+- **Data Preprocessing and Querying**:  Use the provided demo code to import structured data into TigerGraph and perform querying tasks. This involves retrieving data from TigerGraph, building context, and generating answers with an LLM. Note that the **Data Preprocessing** and **Querying** steps operate independently of the GraphRAG package.
+
+| ![Indexing](../images/graphrag/indexing.png) | ![Querying](../images/graphrag/querying.png) |
+|:--------------------------------------------:|:--------------------------------------------:|
+|                   Indexing                   |                   Querying                   |
+
+This section explains how to use the demo code without delving into its implementation details. For a deeper understanding of the demo’s implementation or to explore developing your own GraphRAG algorithm with TigerGraph, refer to the [source code](https://github.com/xuanleilin/tigergraphx/tree/main/applications/msft_graphrag). 
 
 ---
 
@@ -10,9 +21,8 @@ This guide demonstrates how to integrate **GraphRAG** with **TigerGraph** using 
 
 Before proceeding, ensure you’ve completed the installation and setup steps outlined in the [Installation Guide](../getting_started/installation.md), including:
 
-- Installing TigerGraphX with development dependencies.
-
-- Setting up TigerGraph and ensuring API tokens are configured.
+- Setting up Python and TigerGraph. For more details, refer to the [Requirements](../../getting_started/installation/#requirements) section.
+- Install TigerGraphX along with its development dependencies. For more details, refer to the [Development Installation](../../getting_started/installation/#development-installation) section.
 
 ---
 
@@ -103,7 +113,7 @@ scp data/tg_csv/* username@tigergraph-server:/home/tigergraph/data/graphrag
 
 ---
 
-## 3. Query
+## 3. Querying
 
 Once the data is imported, you can query it using the `poe graphrag` command. Adjust the mode and query to fit your needs.
 
@@ -125,13 +135,10 @@ poe graphrag --mode global --query "What are the key topics discussed in the art
 
 ---
 
-## Learn More
+## Next Steps
 
-- [GraphRAG Overview](overview.md): Understand the fundamentals of GraphRAG and how TigerGraph supports it.
-- [Why TigerGraph](why_tigergraph.md): Explore TigerGraph's unique capabilities for GraphRAG workflows.
-- [Installation Guide](../getting_started/installation.md): Ensure your environment is correctly set up.
-- [API Reference](../reference/api.md): Dive into TigerGraphX’s Python-native APIs.
+- [Supporting Microsoft’s GraphRAG: Part 2](msft_graphrag_2.ipynb): Use Jupyter Notebook to explore graph data and perform Graph Analysis.
 
 ---
 
-By combining Microsoft’s GraphRAG and TigerGraph’s capabilities, you can unlock new possibilities for data retrieval, summarization, and advanced querying. Start building today!
+Start transforming your GraphRAG workflows with the power of **TigerGraphX** today!

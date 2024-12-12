@@ -1,107 +1,68 @@
-# GraphRAG Overview
+# TigerGraph: Unlocking the Potential of GraphRAG
 
-## What is GraphRAG?
+## Overview
 
-**GraphRAG (Graph-Retrieval Augmented Generation)** is a cutting-edge workflow that combines the strengths of graph databases and retrieval-augmented generation (RAG). By leveraging graph structures, semantic relationships, and vector embeddings, GraphRAG enhances the contextual understanding and response generation of large language models (LLMs).
+TigerGraph is a highly scalable and efficient graph database, making it the ideal foundation for advanced **GraphRAG** workflows. It excels in handling both graph and vector data, enabling seamless integration and performance at scale. With built-in support for complex queries, multi-hop traversals, and real-time analytics, TigerGraph ensures fast and reliable results. Its versatility and performance make it the ideal choice for powering data-intensive workflows, while **TigerGraphX** simplifies access with a Python-native interface.
 
-GraphRAG empowers applications with:
-
-- **Contextual Retrieval**: Combining graph traversals with semantic and vector-based searches for precise context.
-
-- **Scalability**: Supporting large-scale knowledge graphs and real-time data processing.
-
-- **Explainability**: Allowing insights into the relationships and structures behind generated responses.
+![Supporting Microsoft’s GraphRAG](../images/graphrag/overview.png)
 
 ---
 
-## How Does TigerGraph Support GraphRAG?
+## Why TigerGraph for GraphRAG?
 
-![Supporting Microsoft’s GraphRAG](../images/graphrag/GraphRAG.png)
+### **1. Scalability and Performance**
 
-TigerGraph is uniquely equipped to enable GraphRAG workflows by providing:
+TigerGraph excels in handling massive datasets with high-speed multi-hop queries and vector search capabilities. It is ideal for real-world GraphRAG applications that demand extensive and efficient data processing.
 
-- **Graph-Structured Data**: Powerful graph modeling with schema-defined nodes and edges.
+### **2. Unified Graph and Vector Data Support**
 
-- **Hybrid Retrieval**: Seamless integration of graph traversal, semantic search, and vector retrieval.
+With native support for schema-defined nodes, edges, and vectors, TigerGraph streamlines data integration. Its advanced query optimization enables efficient graph traversal and vector-based retrieval, which is perfectly suited for LLM workflows.
 
-- **High-Performance Queries**: Real-time execution of complex multi-hop queries and hybrid retrieval tasks.
+### **3. Cost-Effectiveness**
 
-For more details on TigerGraph's specific capabilities, see [Why TigerGraph](why_tigergraph.md).
+TigerGraph reduces computational overhead through optimized queries and highly efficient storage, significantly cutting infrastructure costs while maintaining top-tier performance.
+
+### **4. Flexibility and Hybrid Integration**
+
+Seamlessly combines structured, semantic, and vector-based retrieval methods in one unified platform. Its compatibility with vector search and LLMs enables advanced hybrid retrieval strategies, unlocking new possibilities for GraphRAG workflows.
+
+---
+
+## GraphRAG Workflow with TigerGraph
+
+### **1. Schema Design**
+
+Define the graph schema with nodes, edges, and attributes tailored to your application, leveraging TigerGraph’s native support for structured graph data.
+
+### **2. Data Preparation and Loading**
+
+Transform raw data into TigerGraph-compatible formats, including graph structures and embeddings, and load it efficiently into TigerGraph using TigerGraphX.
+
+### **3. Knowledge Graph Management and Analysis**
+Maintain and enhance the knowledge graph to ensure data quality, relevance, and scalability. Perform in-depth analysis to uncover patterns, infer insights, and optimize data retrieval strategies; ensure the knowledge graph remains a dynamic, accurate, and actionable source of information, enriching context for LLMs while supporting explainability and scalability in the GraphRAG workflow.
+
+### **4. Hybrid Retrieval**
+
+Combine structured queries, semantic search, and vector-based methods to fetch relevant data and embeddings from TigerGraph for context construction.
+
+### **5. Context Building**
+
+Use TigerGraphX to process retrieved data, making it token-aware and formatted to meet the requirements of LLMs.
+
+### **6. LLM Integration**
+
+Pass the context to an LLM to generate responses, enabling advanced GraphRAG workflows with seamless data flow and high efficiency.
 
 ---
 
 ## Two Options for Implementing GraphRAG with TigerGraph
 
-TigerGraph offers flexibility in how you implement GraphRAG workflows, with two distinct approaches tailored to different developer preferences:
-
-### **1. GSQL (Graph Query Language)**
-- **Ideal for**: Advanced users who require full control over query logic.
-- **Key Features**:
-  - Write custom GSQL queries for complex hybrid retrieval and multi-hop graph traversals.
-  - Integrate vector embeddings directly into graph queries for hybrid search.
-
-#### Example GSQL Query
-```gsql
-CREATE OR REPLACE QUERY query (List<float> embedding, int k) {
-  Nodes = TopKVectorSearch({Entity.entity_embedding}, embedding, k);
-
-  Neighbors =
-    SELECT t
-    FROM Nodes:s -(relationship:e)- :t;
-
-  PRINT Neighbors;
-}
-```
-
----
-
-### **2. Python-Native TigerGraphX**
-- **Ideal for**: Python developers looking for an intuitive, high-level interface.
-- **Key Features**:
-  - Programmatically define graph schemas and load data.
-  - Use Python-native APIs to perform hybrid retrieval without writing GSQL.
-  - Simplify complex workflows with a developer-friendly approach.
-
-#### Example TigerGraphX Workflow
-```python
-from tigergraphx import Graph
-
-# Define schema
-schema = {
-    "vertices": {"Entity": {"primary_key": "id", "attributes": {"id": "string"}}},
-    "edges": {"Relationship": {"from_node_type": "Entity", "to_node_type": "Entity"}}
-}
-
-# Initialize the graph
-graph = Graph(schema)
-
-# Perform hybrid retrieval
-query_embedding = [0.1, 0.2, 0.3]  # Example embedding vector
-top_k_objects = graph.retrieve_top_k_objects(query_embedding, k=5)
-neighbors = graph.get_neighbors(vertex_id=top_k_objects[0]["id"], depth=2)
-
-print("Top-K Objects:", top_k_objects)
-print("Neighbors:", neighbors)
-```
-
----
-
-## TigerGraphX and GraphRAG Workflows
-
-While GSQL provides complete control, **TigerGraphX** offers a Python-native interface that makes it easier to:
-- Define schemas and load data programmatically.
-- Perform hybrid retrieval with minimal learning curve.
-- Build token-aware context for LLMs in a seamless, developer-friendly way.
-
-Explore practical implementations of GraphRAG with TigerGraph in the [Microsoft GraphRAG](msft_graphrag.md) section.
-
 ---
 
 ## Next Steps
 
-1. Understand why TigerGraph is ideal for GraphRAG in [Why TigerGraph](why_tigergraph.md).
-2. Explore a practical use case in [Microsoft GraphRAG](msft_graphrag.md).
+- Explore a practical use case in [Microsoft GraphRAG: Part 1](msft_graphrag_1.md).
 
 ---
 
-Start unlocking the power of graphs with **TigerGraphX** today!
+Start transforming your GraphRAG workflows with the power of **TigerGraphX** today!

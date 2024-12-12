@@ -6,12 +6,11 @@ nav:
       - "Introduction to TigerGraphX": introduction.md
   - Getting Started:
       - Installation: getting_started/installation.md
-      - "Jupyter Quick Start": getting_started/quick_start.ipynb
+      - "Quick Start Guide": getting_started/quick_start.ipynb
   - GraphRAG:
       - Overview: graphrag/overview.md
-      - Why TigerGraph for GraphRAG?: graphrag/why_tigergraph.md
-      - Microsoft GraphRAG: graphrag/msft_graphrag.md
-      - Example Workflow: graphrag/example_workflow.md
+      - "Microsoft GraphRAG: Part 1": graphrag/msft_graphrag_1.md
+      - "Microsoft GraphRAG: Part 2": graphrag/msft_graphrag_2.ipynb
   - API Reference:
       - Features Overview: reference/features_overview.md
       - Schema Management: reference/schema_management.md
@@ -55,7 +54,8 @@ theme:
         name: Switch to system preference
 
 plugins:
-  - mkdocs-jupyter
+  - mkdocs-jupyter:
+      ignore_h1_titles: True
   - search
 #  - exclude-search:
 #      paths:

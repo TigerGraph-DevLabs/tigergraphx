@@ -96,7 +96,7 @@ This ensures all required dependencies (including optional ones) are successfull
 
 ## Next Steps
 
-- [Quick Start](quick_start.md): Learn how to build your first graph with TigerGraphX.
+- [Quick Start](quick_start.ipynb): Learn how to build your first graph with TigerGraphX.
 
 ---
 
