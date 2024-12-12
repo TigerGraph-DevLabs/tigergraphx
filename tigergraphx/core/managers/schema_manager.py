@@ -1,9 +1,10 @@
 import logging
+from typing import Dict, Literal, Optional
 
 from .base_manager import BaseManager
 
 from tigergraphx.core.graph_context import GraphContext
-from tigergraphx.config import GraphSchema
+from tigergraphx.config import GraphSchema, TigerGraphConnectionConfig
 
 
 logger = logging.getLogger(__name__)
@@ -12,6 +13,11 @@ logger = logging.getLogger(__name__)
 class SchemaManager(BaseManager):
     def __init__(self, context: GraphContext):
         super().__init__(context)
+
+    def get_schema(self, format: Literal["json", "dict"] = "dict") -> str | Dict:
+        if format == "json":
+            return self._graph_schema.model_dump_json()
+        return self._graph_schema.model_dump()
 
     def create_schema(self, drop_existing_graph=False) -> bool:
         logger.info(
@@ -37,6 +43,66 @@ class SchemaManager(BaseManager):
                 raise RuntimeError(error_msg)
             return True
         return False
+
+    @staticmethod
+    def get_schema_from_db(
+        graph_name: str,
+        tigergraph_connection_config: Optional[TigerGraphConnectionConfig] = None,
+    ) -> GraphSchema:
+        # Create a minimal GraphSchema to initialize the context
+        initial_graph_schema = GraphSchema(graph_name=graph_name, nodes={}, edges={})
+        context = GraphContext(
+            graph_schema=initial_graph_schema,
+            tigergraph_connection_config=tigergraph_connection_config,
+        )
+        # Retrieve the schema from TigerGraph DB
+        raw_schema = context.connection.getSchema()
+        # Construct nodes dictionary
+        nodes = {}
+        for vertex in raw_schema["VertexTypes"]:
+            # Collect attributes
+            attributes = {
+                attr["AttributeName"]: {
+                    "data_type": attr["AttributeType"]["Name"],
+                    "default_value": attr.get("DefaultValue"),
+                }
+                for attr in vertex["Attributes"]
+            }
+            # Include primary key as an attribute if PrimaryIdAsAttribute is True
+            primary_id = vertex["PrimaryId"]
+            if primary_id["PrimaryIdAsAttribute"]:
+                attributes[primary_id["AttributeName"]] = {
+                    "data_type": primary_id["AttributeType"]["Name"],
+                    "default_value": None,  # Primary keys typically do not have default values
+                }
+            nodes[vertex["Name"]] = {
+                "primary_key": primary_id["AttributeName"],
+                "attributes": attributes,
+            }
+        # Construct edges dictionary
+        edges = {
+            edge["Name"]: {
+                "is_directed_edge": edge["IsDirected"],
+                "from_node_type": edge["FromVertexTypeName"],
+                "to_node_type": edge["ToVertexTypeName"],
+                "attributes": {
+                    attr["AttributeName"]: {
+                        "data_type": attr["AttributeType"]["Name"],
+                        "default_value": attr.get("DefaultValue"),
+                    }
+                    for attr in edge["Attributes"]
+                },
+            }
+            for edge in raw_schema["EdgeTypes"]
+        }
+        # Combine into a dictionary format for GraphSchema.ensure_config
+        schema_config = {
+            "graph_name": graph_name,
+            "nodes": nodes,
+            "edges": edges,
+        }
+        # Use ensure_config to construct the final GraphSchema
+        return GraphSchema.ensure_config(schema_config)
 
     def _check_graph_exists(self) -> bool:
         """Check if the specified graph name exists in the gsql_script."""
