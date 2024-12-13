@@ -26,7 +26,7 @@ Before proceeding, ensure you’ve completed the installation and setup steps ou
 
 ---
 
-## 1. Indexing
+## 1. Indexing (Microsoft GraphRAG)
 
 The indexing process transforms raw documents into structured data using Microsoft’s GraphRAG. Follow these steps to prepare your data:
 

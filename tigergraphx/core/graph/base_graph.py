@@ -176,9 +176,13 @@ class BaseGraph:
         return self._statistics_manager.degree(node_id, node_type, edge_types)
 
     # ------------------------------ Statistics Operations ------------------------------
-    def _number_of_nodes(self, node_type: Optional[str] = None) -> int:
-        """Return the number of nodes for the given vertex type(s)."""
+    def _number_of_nodes(self, node_type: Optional[str | list] = None) -> int:
+        """Return the number of nodes for the given node type(s)."""
         return self._statistics_manager.number_of_nodes(node_type)
+
+    def _number_of_edges(self, edge_type: Optional[str] = None) -> int:
+        """Return the number of edges for the given edge type(s)."""
+        return self._statistics_manager.number_of_edges(edge_type)
 
     # ------------------------------ Query Operations ------------------------------
     def run_query(self, query_name: str, params: Dict = {}):
