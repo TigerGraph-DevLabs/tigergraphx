@@ -2030,7 +2030,7 @@ id|rank|title|full_content
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
 <h3 id="example-local-context-builder">Example: Local Context Builder<a class="anchor-link" href="#example-local-context-builder">¶</a></h3><p>To understand the functionality of the <code>LocalContextBuilder</code> class, let's review the key code from its <code>build_context</code> method.</p>
-<p><img alt="" src="/images/graphrag/local_context_builder.png"/></p>
+<p><img alt="" src="https://github.com/xuanleilin/tigergraphx/blob/main/docs/images/graphrag/local_context_builder.png?raw=true"/></p>
 <pre><code># Retrieve top-k objects
 top_k_objects: List[str] = await self.retrieve_top_k_objects(query, k=k)
 ...
@@ -2066,7 +2066,7 @@ return "\n\n".join(context)
 <h2 id="integrate-with-llm">Integrate with LLM<a class="anchor-link" href="#integrate-with-llm">¶</a></h2><p>After successfully building context from TigerGraph, the final step is integrating it with LLMs, including chat models and embedding models.</p>
 <p>We have provided an example implementation, which you can find here: <a href="https://github.com/xuanleilin/tigergraphx/blob/main/applications/msft_graphrag/query/graphrag.py">Example Code</a>.</p>
 <h3 id="workflow-overview">Workflow Overview<a class="anchor-link" href="#workflow-overview">¶</a></h3><p>The integration process follows the workflow illustrated below:</p>
-<p><img alt="" src="/images/graphrag/querying.png"/></p>
+<p><img alt="" src="https://github.com/xuanleilin/tigergraphx/blob/main/docs/images/graphrag/querying.png?raw=true"/></p>
 </div>
 </div>
 </div>
