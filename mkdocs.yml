@@ -9,9 +9,9 @@ nav:
       - "Quick Start Guide": getting_started/quick_start.ipynb
   - GraphRAG:
       - Overview: graphrag/overview.md
-      - "Microsoft GraphRAG: Part 1": graphrag/msft_graphrag_1.md
-      - "Microsoft GraphRAG: Part 2": graphrag/msft_graphrag_2.ipynb
-      - "Microsoft GraphRAG: Part 3": graphrag/msft_graphrag_3.ipynb
+      - "Supporting Microsoft's GraphRAG: Part 1": graphrag/msft_graphrag_1.md
+      - "Supporting Microsoft's GraphRAG: Part 2": graphrag/msft_graphrag_2.ipynb
+      - "Supporting Microsoft's GraphRAG: Part 3": graphrag/msft_graphrag_3.ipynb
   - API Reference:
       - Features Overview: reference/features_overview.md
       # - Schema Management: reference/schema_management.md
