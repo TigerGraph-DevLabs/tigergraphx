@@ -27,9 +27,9 @@ class StatisticsManager(BaseManager):
         return 0
 
     def number_of_nodes(
-        self, node_type: Optional[str] = None
+        self, node_type: Optional[str | list] = None
     ) -> int:
-        """Return the number of nodes for the given vertex type(s)."""
+        """Return the number of nodes for the given node type(s)."""
         try:
             if node_type is None or node_type == "":
                 node_type = "*"
@@ -39,6 +39,23 @@ class StatisticsManager(BaseManager):
             return result
         except Exception as e:
             logger.error(
-                f"Error retrieving number of nodes for vertex type {node_type}: {e}"
+                f"Error retrieving number of nodes for node type {node_type}: {e}"
+            )
+            return 0
+
+    def number_of_edges(
+        self, edge_type: Optional[str] = None
+    ) -> int:
+        """Return the number of edges for the given edge type(s)."""
+        try:
+            if edge_type is None or edge_type == "":
+                edge_type = "*"
+            result = self._connection.getEdgeCount(edge_type)
+            if isinstance(result, dict):
+                return sum(result.values())
+            return result
+        except Exception as e:
+            logger.error(
+                f"Error retrieving number of edges for edge type {edge_type}: {e}"
             )
             return 0

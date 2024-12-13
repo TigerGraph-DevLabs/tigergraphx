@@ -1,3 +1,4 @@
+import logging
 import lancedb
 from typing import Any, Dict, List
 from pathlib import Path
@@ -8,6 +9,7 @@ from .base_vector_db import BaseVectorDB
 
 from tigergraphx.config import LanceDBConfig
 
+logger = logging.getLogger(__name__)
 
 class LanceDBManager(BaseVectorDB):
     """Implementation of LanceDB vector database management."""
@@ -47,16 +49,22 @@ class LanceDBManager(BaseVectorDB):
             uri (str): The URI to connect to the LanceDB database.
             **kwargs: Additional connection parameters.
         """
+        logger.info(f"Attempting to connect to LanceDB at URI: {uri}")
+
         # Establish connection to the LanceDB database
         self._connection = lancedb.connect(uri, **kwargs)
+        logger.info("Successfully connected to LanceDB.")
 
         # Check if the table exists; if so, open it, otherwise create a new table
         if self.TABLE_NAME in self._connection.table_names():
+            logger.info(f"Table '{self.TABLE_NAME}' found. Opening the table.")
             self._table = self._connection.open_table(self.TABLE_NAME)
         else:
+            logger.info(f"Table '{self.TABLE_NAME}' not found. Creating a new table.")
             self._table = self._connection.create_table(
                 self.TABLE_NAME, schema=self.SCHEMA
             )
+            logger.info(f"Table '{self.TABLE_NAME}' created successfully.")
 
     def get_table(self):
         return self._table

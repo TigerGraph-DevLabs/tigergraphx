@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, Dict, List
+from typing import Optional, Dict, List, Literal
 import pandas as pd
 
 from tigergraphx.config import (
@@ -33,16 +33,18 @@ class BaseGraph:
         tigergraph_connection_config: Optional[TigerGraphConnectionConfig] = None,
         drop_existing_graph: bool = False,
     ):
-        # Set graph name
-        self.name = graph_schema.graph_name
-
         # Initialize the graph context with the provided schema and connection config
         self._context = GraphContext(
             graph_schema=graph_schema,
             tigergraph_connection_config=tigergraph_connection_config,
         )
+
+        # Extract graph name, node types, and edge types from the graph schema.
+        self.name = graph_schema.graph_name
         self.node_types = set(graph_schema.nodes.keys())
         self.edge_types = set(graph_schema.edges.keys())
+
+        # If there's only one node or edge type, set it as a default type.
         self.node_type = (
             next(iter(self.node_types)) if len(self.node_types) == 1 else ""
         )
@@ -72,6 +74,26 @@ class BaseGraph:
                 logger.error(error_msg)
                 raise RuntimeError(error_msg)
 
+    @classmethod
+    def from_db(
+        cls,
+        graph_name: str,
+        tigergraph_connection_config: Optional[TigerGraphConnectionConfig] = None,
+    ):
+        """
+        Retrieve an existing graph schema from TigerGraph and initialize a BaseGraph.
+        """
+        # Retrieve schema using SchemaManager
+        graph_schema = SchemaManager.get_schema_from_db(
+            graph_name, tigergraph_connection_config
+        )
+
+        # Initialize the graph with the retrieved schema
+        return cls(
+            graph_schema=graph_schema,
+            tigergraph_connection_config=tigergraph_connection_config,
+        )
+
     @property
     def nodes(self):
         """Return a NodeView instance."""
@@ -80,6 +102,9 @@ class BaseGraph:
         return NodeView(self)
 
     # ------------------------------ Schema Operations ------------------------------
+    def get_schema(self, format: Literal["json", "dict"] = "dict") -> str | Dict:
+        return self._schema_manager.get_schema(format)
+
     def create_schema(self, drop_existing_graph=False) -> bool:
         return self._schema_manager.create_schema(drop_existing_graph)
 
@@ -151,9 +176,13 @@ class BaseGraph:
         return self._statistics_manager.degree(node_id, node_type, edge_types)
 
     # ------------------------------ Statistics Operations ------------------------------
-    def _number_of_nodes(self, node_type: Optional[str] = None) -> int:
-        """Return the number of nodes for the given vertex type(s)."""
+    def _number_of_nodes(self, node_type: Optional[str | list] = None) -> int:
+        """Return the number of nodes for the given node type(s)."""
         return self._statistics_manager.number_of_nodes(node_type)
+
+    def _number_of_edges(self, edge_type: Optional[str] = None) -> int:
+        """Return the number of edges for the given edge type(s)."""
+        return self._statistics_manager.number_of_edges(edge_type)
 
     # ------------------------------ Query Operations ------------------------------
     def run_query(self, query_name: str, params: Dict = {}):

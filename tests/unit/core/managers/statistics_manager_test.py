@@ -82,3 +82,22 @@ class TestStatisticsManager:
         result = self.statistics_manager.number_of_nodes()
         self.mock_connection.getVertexCount.assert_called_once_with("*")
         assert result == 0
+
+    def test_number_of_edges_single_type(self):
+        edge_type = "Friend"
+        self.mock_connection.getEdgeCount.return_value = 10
+        result = self.statistics_manager.number_of_edges(edge_type)
+        self.mock_connection.getEdgeCount.assert_called_once_with(edge_type)
+        assert result == 10
+
+    def test_number_of_edges_all_types(self):
+        self.mock_connection.getEdgeCount.return_value = {"Friend": 7, "Colleague": 5}
+        result = self.statistics_manager.number_of_edges()
+        self.mock_connection.getEdgeCount.assert_called_once_with("*")
+        assert result == 12
+
+    def test_number_of_edges_exception(self):
+        self.mock_connection.getEdgeCount.side_effect = Exception("Error")
+        result = self.statistics_manager.number_of_edges()
+        self.mock_connection.getEdgeCount.assert_called_once_with("*")
+        assert result == 0

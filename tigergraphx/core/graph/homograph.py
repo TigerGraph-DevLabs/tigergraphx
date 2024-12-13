@@ -88,6 +88,9 @@ class HomoGraph(BaseGraph):
     def number_of_nodes(self) -> int:
         return self._number_of_nodes()
 
+    def number_of_edges(self) -> int:
+        return self._number_of_edges()
+
     # ------------------------------ Query Operations ------------------------------
     def get_node_edges(
         self,

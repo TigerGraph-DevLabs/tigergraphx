@@ -3,7 +3,7 @@ import pytest
 from .base_graph_test import TestBaseGraph
 
 from tigergraphx.core import Graph
-from tigergraphx.config import GraphSchema
+from tigergraphx.config import GraphSchema, LoadingJobConfig
 from tigergraphx.core.view.node_view import NodeView
 
 
@@ -430,67 +430,100 @@ class TestGraph(TestBaseGraph):
             "Entity_1", "Entity_2", "Entity", "relationship", "Entity"
         )
 
-    # ------------------------------ Loading Data ------------------------------
-    # def create_loading_job_config(self) -> LoadingJobConfig:
-    #     """
-    #     Generate the LoadingJobConfig using a dictionary.
-    #     """
-    #     config_dict = {
-    #         "loading_job_name": "loading_job_ERGraph",
-    #         "files": [
-    #             {
-    #                 "file_alias": "f_entity",
-    #                 "file_path": "/home/tigergraph/data/lightrag/ultradomain_fin/entity.csv",
-    #                 "csv_parsing_options": {
-    #                     "separator": ",",
-    #                     "header": True,
-    #                     "EOL": "\\n",
-    #                     "quote": "DOUBLE",
-    #                 },
-    #                 "node_mappings": [
-    #                     {
-    #                         "target_name": "Entity",
-    #                         "attribute_column_mappings": {
-    #                             "id": "id",
-    #                             "entity_type": "entity_type",
-    #                             "description": "description",
-    #                             "source_id": "source_id",
-    #                         },
-    #                     }
-    #                 ],
-    #             },
-    #             {
-    #                 "file_alias": "f_relationship",
-    #                 "file_path": "/home/tigergraph/data/lightrag/ultradomain_fin/relationship.csv",
-    #                 "csv_parsing_options": {
-    #                     "separator": ",",
-    #                     "header": True,
-    #                     "EOL": "\\n",
-    #                     "quote": "DOUBLE",
-    #                 },
-    #                 "edge_mappings": [
-    #                     {
-    #                         "target_name": "relationship",
-    #                         "source_node_column": "source",
-    #                         "target_node_column": "target",
-    #                         "attribute_column_mappings": {
-    #                             "weight": "weight",
-    #                             "description": "description",
-    #                             "keywords": "keywords",
-    #                             "source_id": "source_id",
-    #                         },
-    #                     }
-    #                 ],
-    #             },
-    #         ],
-    #     }
-    #
-    #     # Generate the LoadingJobConfig from the dictionary
-    #     return LoadingJobConfig.ensure_config(config_dict)
+    # ------------------------------ Schema Operations ------------------------------
+    @pytest.mark.usefixtures("setup_homogeneous_graph")
+    def test_get_schema(self, setup_homogeneous_graph):
+        self.G = setup_homogeneous_graph
 
-    # def test_graph_3(self):
-    #     # Set up
-    #     self.set_up_3()
-    #     # Load data
-    #     loading_job_config = self.create_loading_job_config()
-    #     self.G.load_data(loading_job_config)
+        # Get the graph schema in JSON format
+        schema = self.G.get_schema(format="json")
+        expected_schema = """{"graph_name":"ERGraph","nodes":{"Entity":{"primary_key":"id","attributes":{"id":{"data_type":"STRING","default_value":null},"entity_type":{"data_type":"STRING","default_value":null},"description":{"data_type":"STRING","default_value":null},"source_id":{"data_type":"STRING","default_value":null}}}},"edges":{"relationship":{"is_directed_edge":true,"from_node_type":"Entity","to_node_type":"Entity","attributes":{"weight":{"data_type":"DOUBLE","default_value":null},"description":{"data_type":"STRING","default_value":null},"keywords":{"data_type":"STRING","default_value":null},"source_id":{"data_type":"STRING","default_value":null}}}}}"""
+        assert (
+            expected_schema in schema
+        ), f"Expected schema to contain {expected_schema}, got {schema}"
+
+        # Get the graph schema in Dict format
+        schema = self.G.get_schema(format="dict")
+        assert schema["graph_name"] == "ERGraph"
+        assert "Entity" in schema["nodes"]
+        assert "relationship" in schema["edges"]
+        assert schema["edges"]["relationship"]["is_directed_edge"] is True
+
+    @pytest.mark.usefixtures("setup_homogeneous_graph")
+    def test_from_db(self, setup_homogeneous_graph):
+        self.G = setup_homogeneous_graph
+        G = Graph.from_db(graph_name=self.G.name)
+        # Get the graph schema in Dict format
+        schema = G.get_schema(format="dict")
+        assert isinstance(schema, dict)
+        assert schema["graph_name"] == "ERGraph"
+        assert "Entity" in schema["nodes"]
+        assert "relationship" in schema["edges"]
+        assert schema["edges"]["relationship"]["is_directed_edge"] is True
+
+    # ------------------------------ Data Loading Operations ------------------------------
+    def create_loading_job_config(self) -> LoadingJobConfig:
+        """
+        Generate the LoadingJobConfig using a dictionary.
+        """
+        config_dict = {
+            "loading_job_name": "loading_job_ERGraph",
+            "files": [
+                {
+                    "file_alias": "f_entity",
+                    "file_path": "/home/tigergraph/data/lightrag/ultradomain_fin/entity.csv",
+                    "csv_parsing_options": {
+                        "separator": ",",
+                        "header": True,
+                        "EOL": "\\n",
+                        "quote": "DOUBLE",
+                    },
+                    "node_mappings": [
+                        {
+                            "target_name": "Entity",
+                            "attribute_column_mappings": {
+                                "id": "id",
+                                "entity_type": "entity_type",
+                                "description": "description",
+                                "source_id": "source_id",
+                            },
+                        }
+                    ],
+                },
+                {
+                    "file_alias": "f_relationship",
+                    "file_path": "/home/tigergraph/data/lightrag/ultradomain_fin/relationship.csv",
+                    "csv_parsing_options": {
+                        "separator": ",",
+                        "header": True,
+                        "EOL": "\\n",
+                        "quote": "DOUBLE",
+                    },
+                    "edge_mappings": [
+                        {
+                            "target_name": "relationship",
+                            "source_node_column": "source",
+                            "target_node_column": "target",
+                            "attribute_column_mappings": {
+                                "weight": "weight",
+                                "description": "description",
+                                "keywords": "keywords",
+                                "source_id": "source_id",
+                            },
+                        }
+                    ],
+                },
+            ],
+        }
+
+        # Generate the LoadingJobConfig from the dictionary
+        return LoadingJobConfig.ensure_config(config_dict)
+
+    @pytest.mark.usefixtures("setup_homogeneous_graph")
+    def test_loading_job(self, setup_homogeneous_graph):
+        self.G = setup_homogeneous_graph
+        # Load data
+        loading_job_config = self.create_loading_job_config()
+        assert loading_job_config is not None
+        # self.G.load_data(loading_job_config)
+        # assert len(self.G.nodes) > 0

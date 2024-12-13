@@ -1,3 +1,4 @@
+from .tigergraph_connection_config import TigerGraphConnectionConfig
 from .schema_config import (
     DataType,
     AttributeSchema,
@@ -18,6 +19,8 @@ from .loading_job_config import (
 )
 
 __all__ = [
+    # configurations for TigerGraph server
+    "TigerGraphConnectionConfig",
     # configurations for graph schema
     "DataType",
     "AttributeSchema",

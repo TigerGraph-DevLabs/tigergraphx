@@ -111,6 +111,9 @@ class Graph(BaseGraph):
             node_type = self._validate_node_type(node_type)
         return self._number_of_nodes(node_type)
 
+    def number_of_edges(self, edge_type: Optional[str] = None) -> int:
+        return self._number_of_edges(edge_type)
+
     # ------------------------------ Query Operations ------------------------------
     def get_nodes(
         self,
