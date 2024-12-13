@@ -69,4 +69,4 @@ test_integration_class = {cmd = "pytest -vs -k 'TestGraph'", env = {PYTHONDONTWR
 test_integration_folder = {cmd = "pytest -vs tests/integration/core", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Applications
-graphrag = "python -m applications.graphrag.msft_graphrag.query.main"
+graphrag_query = "python -m applications.msft_graphrag.query.main"
