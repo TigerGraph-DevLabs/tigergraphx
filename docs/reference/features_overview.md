@@ -12,7 +12,7 @@ TigerGraphX provides intuitive, Python-native APIs for defining and managing gra
 - Support for attributes, primary keys, and schema constraints.
 - Compatibility with YAML and JSON schema definitions.
 
-[Learn more about Schema Management](schema_management.md)
+<!-- [Learn more about Schema Management](schema_management.md) -->
 
 ---
 
@@ -24,7 +24,7 @@ Efficiently load data into TigerGraph from a variety of sources. Key capabilitie
 - Automated loading jobs to streamline the data import process.
 - Data transformation utilities for pre-processing and compatibility.
 
-[Learn more about Data Loading Management](data_loading.md)
+<!-- [Learn more about Data Loading Management](data_loading.md) -->
 
 ---
 
@@ -36,7 +36,7 @@ Perform common graph operations using Python-native APIs, including:
 - Multi-hop traversals to analyze relationships in the graph.
 - Graph reporting for insights and analysis.
 
-[Learn more about the Graph Library Interface](graph_library.md)
+<!-- [Learn more about the Graph Library Interface](graph_library.md) -->
 
 ---
 
@@ -47,7 +47,7 @@ Execute advanced queries on your TigerGraph database with ease. This feature inc
 - Simplified query execution with Python-based methods.
 - Query results formatted as Pandas DataFrames for seamless integration with analytics workflows.
 
-[Learn more about the Graph Query Interface](graph_query.md)
+<!-- [Learn more about the Graph Query Interface](graph_query.md) -->
 
 ---
 
@@ -59,7 +59,7 @@ Enhance AI-driven applications with vector embedding support. Key functionalitie
 - Top-K similarity searches for retrieving the most relevant entities.
 - Hybrid retrieval workflows combining graph traversal and vector search.
 
-[Learn more about Vector Search Capabilities](vector_search.md)
+<!-- [Learn more about Vector Search Capabilities](vector_search.md) -->
 
 ---
 
@@ -71,7 +71,7 @@ Enable advanced applications by integrating graph data with large language model
 - Hybrid retrieval combining graph, semantic, and vector-based searches.
 - Direct API integration with LLM platforms like OpenAI.
 
-[Learn more about LLM Integration and Support](llm_integration.md)
+<!-- [Learn more about LLM Integration and Support](llm_integration.md) -->
 
 ---
 
@@ -83,7 +83,7 @@ Simplify configuration for various integrations and workflows:
 - Configure vector search parameters for efficient retrieval.
 - Customize LLM settings for seamless API interaction.
 
-[Learn more about Configuration Management](config_management.md)
+<!-- [Learn more about Configuration Management](config_management.md) -->
 
 ---
 
@@ -95,7 +95,7 @@ TigerGraphX simplifies Graph-Retrieval Augmented Generation (GraphRAG) workflows
 - Hybrid retrieval methods optimized for GraphRAG use cases.
 - Python-native APIs for context building and LLM integration.
 
-[Learn more about GraphRAG Support](graphrag_support.md)
+<!-- [Learn more about GraphRAG Support](graphrag_support.md) -->
 
 ---
 

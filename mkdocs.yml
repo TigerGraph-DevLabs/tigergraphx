@@ -14,14 +14,14 @@ nav:
       - "Microsoft GraphRAG: Part 3": graphrag/msft_graphrag_3.ipynb
   - API Reference:
       - Features Overview: reference/features_overview.md
-      - Schema Management: reference/schema_management.md
-      - Data Loading Management: reference/data_loading.md
-      - Graph Library Interface: reference/graph_library.md
-      - Graph Query Interface: reference/graph_query.md
-      - Vector Search Capabilities: reference/vector_search.md
-      - LLM Integration and Support: reference/llm_integration.md
-      - Configuration Management: reference/config_management.md
-      - GraphRAG Support: reference/graphrag_support.md
+      # - Schema Management: reference/schema_management.md
+      # - Data Loading Management: reference/data_loading.md
+      # - Graph Library Interface: reference/graph_library.md
+      # - Graph Query Interface: reference/graph_query.md
+      # - Vector Search Capabilities: reference/vector_search.md
+      # - LLM Integration and Support: reference/llm_integration.md
+      # - Configuration Management: reference/config_management.md
+      # - GraphRAG Support: reference/graphrag_support.md
 
 theme:
   name: material
