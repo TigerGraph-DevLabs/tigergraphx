@@ -12,7 +12,7 @@
         <link rel="prev" href="../../getting_started/quick_start/">
       
       
-        <link rel="next" href="../msft_graphrag_1/">
+        <link rel="next" href="../lightrag/">
       
       
       <link rel="icon" href="../../images/logo.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Overview - TigerGraphX</title>
+        <title>GraphRAG Overview - TigerGraphX</title>
       
     
     
@@ -105,7 +105,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              GraphRAG Overview
             
           </span>
         </div>
@@ -391,6 +391,238 @@
 
               
             
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    GraphRAG Overview
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    GraphRAG Overview
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-tigergraph-for-graphrag" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why TigerGraph for GraphRAG?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why TigerGraph for GraphRAG?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-scalability-and-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Scalability and Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-unified-graph-and-vector-data-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Unified Graph and Vector Data Support
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cost-effectiveness" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Cost-Effectiveness
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-flexibility-and-hybrid-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Flexibility and Hybrid Integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graphrag-workflow-with-tigergraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      GraphRAG Workflow with TigerGraph
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GraphRAG Workflow with TigerGraph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-schema-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Schema Design
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-data-preparation-and-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Data Preparation and Loading
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-knowledge-graph-management-and-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Knowledge Graph Management and Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-hybrid-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Hybrid Retrieval
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-context-building" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Context Building
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-llm-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. LLM Integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#two-options-for-implementing-graphrag-with-tigergraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Two Options for Implementing GraphRAG with TigerGraph
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Two Options for Implementing GraphRAG with TigerGraph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tigergraph-as-a-storage-and-retrieval-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. TigerGraph as a Storage and Retrieval Engine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-tigergraph-for-storage-retrieval-and-llm-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. TigerGraph for Storage, Retrieval, and LLM Tasks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demonstrations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -548,7 +780,7 @@
           
   
   <span class="md-ellipsis">
-    Overview
+    GraphRAG Overview
   </span>
   
 
@@ -559,7 +791,7 @@
         
   
   <span class="md-ellipsis">
-    Overview
+    GraphRAG Overview
   </span>
   
 
@@ -716,14 +948,38 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
+    <nav class="md-nav" aria-label="Two Options for Implementing GraphRAG with TigerGraph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tigergraph-as-a-storage-and-retrieval-engine" class="md-nav__link">
     <span class="md-ellipsis">
-      Next Steps
+      1. TigerGraph as a Storage and Retrieval Engine
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-tigergraph-for-storage-retrieval-and-llm-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. TigerGraph for Storage, Retrieval, and LLM Tasks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demonstrations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -731,6 +987,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lightrag/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supporting LightRAG
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1034,14 +1311,38 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
+    <nav class="md-nav" aria-label="Two Options for Implementing GraphRAG with TigerGraph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tigergraph-as-a-storage-and-retrieval-engine" class="md-nav__link">
     <span class="md-ellipsis">
-      Next Steps
+      1. TigerGraph as a Storage and Retrieval Engine
     </span>
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-tigergraph-for-storage-retrieval-and-llm-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. TigerGraph for Storage, Retrieval, and LLM Tasks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#demonstrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Demonstrations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1090,10 +1391,16 @@
 <p>Pass the context to an LLM to generate responses, enabling advanced GraphRAG workflows with seamless data flow and high efficiency.</p>
 <hr />
 <h2 id="two-options-for-implementing-graphrag-with-tigergraph">Two Options for Implementing GraphRAG with TigerGraph</h2>
-<hr />
-<h2 id="next-steps">Next Steps</h2>
+<p>There are two approaches to implementing GraphRAG with TigerGraph.</p>
+<h3 id="1-tigergraph-as-a-storage-and-retrieval-engine"><strong>1. TigerGraph as a Storage and Retrieval Engine</strong></h3>
+<p>The first approach primarily utilizes TigerGraph for storing and retrieving graph/vector data. TigerGraphX provides interfaces similar to NetworkX, allowing seamless integration with GraphRAG applications. This approach is recommended for GraphRAG solutions like <a href="https://github.com/HKUDS/LightRAG">LightRAG</a> and <a href="https://github.com/gusye1234/nano-graphrag">Nano-GraphRAG</a>, which abstract their storage layers (e.g., graph storage, key-value storage, and vector storage). Here, you only need to implement these layers in a way that aligns with TigerGraph.</p>
+<h3 id="2-tigergraph-for-storage-retrieval-and-llm-tasks"><strong>2. TigerGraph for Storage, Retrieval, and LLM Tasks</strong></h3>
+<p>The second approach extends beyond storage and retrieval by leveraging TigerGraphX for tasks related to large language models (LLMs), such as chat or embedding generation. This approach is suitable for complex projects like <a href="https://github.com/microsoft/graphrag">Microsoft's GraphRAG</a>. As of December 2024, Microsoft's GraphRAG has not yet abstracted its storage layer, making it challenging to replace the indexing process. However, TigerGraphX can be used to convert the results of the indexing process (e.g., Parquet files) into a format supported by TigerGraph. These results can then be imported into TigerGraph, and TigerGraphX can handle the querying process without relying on Microsoft’s GraphRAG.</p>
+<h3 id="demonstrations"><strong>Demonstrations</strong></h3>
+<p>Both methods are demonstrated on the following pages, each with a real-world project:</p>
 <ul>
-<li>Explore a practical use case in <a href="../msft_graphrag_1/">Microsoft GraphRAG: Part 1</a>.</li>
+<li><strong>LightRAG</strong>: Refer to <a href="lightrag.md">LightRAG</a> for the first approach.</li>
+<li><strong>Microsoft's GraphRAG</strong>: Refer to <a href="../msft_graphrag_1/">Microsoft GraphRAG: Part 1</a> for the second approach.</li>
 </ul>
 <hr />
 <p>Start transforming your GraphRAG workflows with the power of <strong>TigerGraphX</strong> today!</p>
@@ -1143,13 +1450,13 @@
         
         
           
-          <a href="../msft_graphrag_1/" class="md-footer__link md-footer__link--next" aria-label="Next: Supporting Microsoft&#39;s GraphRAG: Part 1">
+          <a href="../lightrag/" class="md-footer__link md-footer__link--next" aria-label="Next: Supporting LightRAG">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Supporting Microsoft's GraphRAG: Part 1
+                Supporting LightRAG
               </div>
             </div>
             <div class="md-footer__button md-icon">
