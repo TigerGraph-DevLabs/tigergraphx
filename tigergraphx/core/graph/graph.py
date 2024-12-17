@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Dict, Optional
 import pandas as pd
 
 from .base_graph import BaseGraph
@@ -18,11 +18,15 @@ class Graph(BaseGraph):
         node_type = self._validate_node_type(node_type)
         self._add_node(node_id, node_type, **attr)
 
+    def remove_node(self, node_id: str, node_type: str = "") -> bool:
+        node_type = self._validate_node_type(node_type)
+        return self._remove_node(node_id, node_type)
+
     def has_node(self, node_id: str, node_type: str = "") -> bool:
         node_type = self._validate_node_type(node_type)
         return self._has_node(node_id, node_type)
 
-    def get_node_data(self, node_id: str, node_type: str = "") -> dict:
+    def get_node_data(self, node_id: str, node_type: str = "") -> Dict | None:
         node_type = self._validate_node_type(node_type)
         return self._get_node_data(node_id, node_type)
 
@@ -32,14 +36,16 @@ class Graph(BaseGraph):
         node_type: str = "",
         edge_types: List | str = [],
         num_edge_samples: int = 1000,
-    ):
+    ) -> List:
         node_type = self._validate_node_type(node_type)
-        return self._get_node_edges(
+        edges = self._get_node_edges(
             node_id,
             node_type,
             edge_types,
             num_edge_samples,
         )
+        result = [(edge["from_id"], edge["to_id"]) for edge in edges]
+        return result
 
     # ------------------------------ Edge Operations ------------------------------
     def add_edge(
@@ -89,7 +95,7 @@ class Graph(BaseGraph):
         src_node_type: str = "",
         edge_type: str = "",
         tgt_node_type: str = "",
-    ) -> dict:
+    ) -> Dict | None:
         src_node_type, edge_type, tgt_node_type = self._validate_edge_type(
             src_node_type, edge_type, tgt_node_type
         )

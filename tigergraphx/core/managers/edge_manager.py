@@ -23,7 +23,7 @@ class EdgeManager(BaseManager):
         **attr,
     ):
         try:
-            result = self._connection.upsertEdge(
+            self._connection.upsertEdge(
                 src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id, attr
             )
         except Exception as e:
@@ -44,9 +44,9 @@ class EdgeManager(BaseManager):
             )
             return bool(result)
         except Exception as e:
-            logger.error(
-                f"Error checking existence of edge from {src_node_id} to {tgt_node_type}: {e}"
-            )
+            # logger.error(
+            #     f"Error checking existence of edge from {src_node_id} to {tgt_node_id}: {e}"
+            # )
             return False
 
     def get_edge_data(
@@ -56,17 +56,17 @@ class EdgeManager(BaseManager):
         src_node_type: str,
         edge_type: str,
         tgt_node_type: str,
-    ) -> Dict:
+    ) -> Dict | None:
         try:
             result = self._connection.getEdges(
                 src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id
             )
             if isinstance(result, List) and result:
-                return result[0].get("attributes", {})
+                return result[0].get("attributes", None)
             else:
                 raise TypeError(f"Unsupported type for result: {type(result)}")
         except Exception as e:
-            logger.error(
-                f"Error retrieving edge from {src_node_id} to {tgt_node_id}: {e}"
-            )
-            return {}
+            # logger.error(
+            #     f"Error retrieving edge from {src_node_id} to {tgt_node_id}: {e}"
+            # )
+            return None

@@ -116,10 +116,13 @@ class BaseGraph:
     def _add_node(self, node_id: str, node_type: str, **attr):
         return self._node_manager.add_node(node_id, node_type, **attr)
 
+    def _remove_node(self, node_id: str, node_type: str) -> bool:
+        return self._node_manager.remove_node(node_id, node_type)
+
     def _has_node(self, node_id: str, node_type: str) -> bool:
         return self._node_manager.has_node(node_id, node_type)
 
-    def _get_node_data(self, node_id: str, node_type: str) -> Dict:
+    def _get_node_data(self, node_id: str, node_type: str) -> Dict | None:
         return self._node_manager.get_node_data(node_id, node_type)
 
     def _get_node_edges(
@@ -166,7 +169,7 @@ class BaseGraph:
         src_node_type: str,
         edge_type: str,
         tgt_node_type: str,
-    ) -> Dict:
+    ) -> Dict | None:
         return self._edge_manager.get_edge_data(
             src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type
         )

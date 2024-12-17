@@ -19,9 +19,9 @@ class GraphContext:
         if tigergraph_connection_config is None:  # Set default options
             tigergraph_connection_config = TigerGraphConnectionConfig()
         self.connection = TigerGraphConnection(
-            host=tigergraph_connection_config.host,
+            host=str(tigergraph_connection_config.host),
             graphname=self.graph_schema.graph_name,
-            username=tigergraph_connection_config.user_name,
+            username=tigergraph_connection_config.username,
             password=tigergraph_connection_config.password,
             restppPort=tigergraph_connection_config.restpp_port,
             gsPort=tigergraph_connection_config.graph_studio_port,
