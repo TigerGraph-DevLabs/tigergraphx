@@ -59,6 +59,7 @@ mkdocs = "^1.6.1"
 mkdocs-material = "^9.5.48"
 mkdocs-exclude-search = "^0.6.6"
 mkdocs-jupyter = "^0.25.1"
+nest-asyncio = "^1.6.0"
 
 [build-system]
 requires = ["poetry-core"]
