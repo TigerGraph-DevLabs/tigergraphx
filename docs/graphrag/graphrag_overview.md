@@ -74,3 +74,4 @@ Both methods are demonstrated on the following pages, each with a real-world pro
 ---
 
 Start transforming your GraphRAG workflows with the power of **TigerGraphX** today!
+

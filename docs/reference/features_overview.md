@@ -102,3 +102,4 @@ TigerGraphX simplifies Graph-Retrieval Augmented Generation (GraphRAG) workflows
 ## Next Steps
 
 To dive deeper into TigerGraphX’s features, explore the detailed API documentation for each section. Start building powerful graph applications today!
+

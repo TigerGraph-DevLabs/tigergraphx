@@ -167,3 +167,4 @@ graph.load_data(loading_job_config=LoadingJobConfig.ensure_config(loading_job_pa
 ---
 
 Start transforming your GraphRAG workflows with the power of **TigerGraphX** today!
+
