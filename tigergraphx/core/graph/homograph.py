@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import List, Dict, Optional
 import pandas as pd
 
 from .base_graph import BaseGraph
@@ -41,6 +41,30 @@ class HomoGraph(BaseGraph):
     def add_node(self, node_id: str, **attr):
         self._add_node(node_id, self.node_type, **attr)
 
+    def remove_node(self, node_id: str) -> bool:
+        return self._remove_node(node_id, self.node_type)
+
+    def has_node(self, node_id: str) -> bool:
+        return self._has_node(node_id, self.node_type)
+
+    def get_node_data(self, node_id: str) -> Dict | None:
+        return self._get_node_data(node_id, self.node_type)
+
+    def get_node_edges(
+        self,
+        node_id: str,
+        num_edge_samples: int = 1000,
+    ) -> List:
+        edges = self._get_node_edges(
+            node_id,
+            self.node_type,
+            self.edge_type,
+            num_edge_samples,
+        )
+        result = [(edge["from_id"], edge["to_id"]) for edge in edges]
+        return result
+
+    # ------------------------------ Edge Operations ------------------------------
     def add_edge(self, src_node_id: str, tgt_node_id: str, **attr):
         self._add_edge(
             src_node_id,
@@ -51,32 +75,12 @@ class HomoGraph(BaseGraph):
             **attr,
         )
 
-    def has_node(self, node_id: str) -> bool:
-        return self._has_node(node_id, self.node_type)
-
-    def get_nodes(
-        self,
-        filter_expression: Optional[str] = None,
-        return_attributes: Optional[str | List[str]] = None,
-        limit: Optional[int] = None,
-    ) -> pd.DataFrame | None:
-        return self._get_nodes(
-            node_type=self.node_type,
-            filter_expression=filter_expression,
-            return_attributes=return_attributes,
-            limit=limit,
-        )
-
-    # ------------------------------ Edge Operations ------------------------------
     def has_edge(self, src_node_id: str | int, tgt_node_id: str | int) -> bool:
         return self._has_edge(
             src_node_id, tgt_node_id, self.node_type, self.edge_type, self.node_type
         )
 
-    def get_node_data(self, node_id: str) -> dict:
-        return self._get_node_data(node_id, self.node_type)
-
-    def get_edge_data(self, src_node_id: str, tgt_node_id: str) -> dict:
+    def get_edge_data(self, src_node_id: str, tgt_node_id: str) -> Dict | None:
         return self._get_edge_data(
             src_node_id, tgt_node_id, self.node_type, self.edge_type, self.node_type
         )
@@ -92,19 +96,18 @@ class HomoGraph(BaseGraph):
         return self._number_of_edges()
 
     # ------------------------------ Query Operations ------------------------------
-    def get_node_edges(
+    def get_nodes(
         self,
-        node_id: str,
-        num_edge_samples: int = 1000,
-    ):
-        edges = self._get_node_edges(
-            node_id,
-            self.node_type,
-            self.edge_type,
-            num_edge_samples,
+        filter_expression: Optional[str] = None,
+        return_attributes: Optional[str | List[str]] = None,
+        limit: Optional[int] = None,
+    ) -> pd.DataFrame | None:
+        return self._get_nodes(
+            node_type=self.node_type,
+            filter_expression=filter_expression,
+            return_attributes=return_attributes,
+            limit=limit,
         )
-        result = [(edge["from_id"], edge["to_id"]) for edge in edges]
-        return result
 
     def get_neighbors(
         self,

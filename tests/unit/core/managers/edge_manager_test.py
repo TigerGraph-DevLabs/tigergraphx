@@ -144,4 +144,4 @@ class TestEdgeManager:
         self.mock_connection.getEdges.assert_called_once_with(
             src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id
         )
-        assert result == {}
+        assert result is None

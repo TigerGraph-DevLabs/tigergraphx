@@ -1,5 +1,6 @@
 import logging
 from typing import List, Optional
+from urllib.parse import urlencode, quote
 
 from .base_manager import BaseManager
 
@@ -16,10 +17,12 @@ class StatisticsManager(BaseManager):
     def degree(self, node_id: str, node_type: str, edge_types: List | str) -> int:
         try:
             params = {
-                "input": (node_id, node_type),
+                "input": node_id,
+                "input.type": node_type,
                 "edge_types": edge_types,
             }
-            result = self._connection.runInstalledQuery("api_degree", params)
+            params_str = urlencode(params, quote_via=quote)
+            result = self._connection.runInstalledQuery("api_degree", params_str)
             if result:
                 return result[0].get("degree", 0)
         except Exception as e:
