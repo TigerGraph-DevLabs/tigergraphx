@@ -8,6 +8,16 @@ from tigergraphx.vector_search import BaseSearchEngine
 
 
 class BaseContextBuilder(ABC):
+    """
+    Abstract base class for building context using graph data and a search engine.
+
+    Attributes:
+        graph (Graph): The graph object.
+        single_batch (bool): Whether to process data in a single batch.
+        search_engine (Optional[BaseSearchEngine]): The search engine for retrieving top-k objects.
+        token_encoder (tiktoken.Encoding): Token encoder for text tokenization.
+    """
+
     def __init__(
         self,
         graph: Graph,
@@ -15,6 +25,15 @@ class BaseContextBuilder(ABC):
         search_engine: Optional[BaseSearchEngine] = None,
         token_encoder: Optional[tiktoken.Encoding] = None,
     ):
+        """
+        Initialize the BaseContextBuilder.
+
+        Args:
+            graph (Graph): The graph object.
+            single_batch (bool): Whether to process data in a single batch.
+            search_engine (Optional[BaseSearchEngine]): The search engine for similarity searches.
+            token_encoder (Optional[tiktoken.Encoding]): Token encoder for text tokenization. Defaults to "cl100k_base".
+        """
         self.graph = graph
         self.single_batch = single_batch
         self.search_engine = search_engine
@@ -22,7 +41,12 @@ class BaseContextBuilder(ABC):
 
     @abstractmethod
     async def build_context(self, *args, **kwargs) -> str | List[str]:
-        """Abstract method to build context."""
+        """
+        Abstract method to build context.
+
+        Returns:
+            str | List[str]: The generated context as a string or list of strings.
+        """
         pass
 
     def batch_and_convert_to_text(
@@ -32,13 +56,23 @@ class BaseContextBuilder(ABC):
         single_batch: bool = False,
         max_tokens: int = 12000,
     ) -> str | List[str]:
-        """Converts graph data to a formatted string or list of strings in batches based on token count."""
+        """
+        Convert graph data to a formatted string or list of strings in batches based on token count.
+
+        Args:
+            graph_data (pd.DataFrame): The graph data to convert.
+            section_name (str): The section name for the header.
+            single_batch (bool, optional): Whether to process data in a single batch. Defaults to False.
+            max_tokens (int, optional): Maximum number of tokens per batch. Defaults to 12000.
+
+        Returns:
+            str | List[str]: The formatted graph data as a string or list of strings.
+        """
         header = f"-----{section_name}-----\n" + "|".join(graph_data.columns) + "\n"
         content_rows = [
             "|".join(str(value) for value in row) for row in graph_data.values
         ]
 
-        # Token count for the header
         header_tokens = self._num_tokens(header, self.token_encoder)
         batches = []
         current_batch = header
@@ -47,21 +81,17 @@ class BaseContextBuilder(ABC):
         for row in content_rows:
             row_tokens = self._num_tokens(row, self.token_encoder)
 
-            # Check if adding this row would exceed max token limit
             if current_tokens + row_tokens > max_tokens:
                 batches.append(current_batch.strip())
                 if single_batch:
                     return batches[0]
 
-                # Start a new batch with the header
                 current_batch = header + row + "\n"
                 current_tokens = header_tokens + row_tokens
             else:
-                # Add the row to the current batch
                 current_batch += row + "\n"
                 current_tokens += row_tokens
 
-        # Append the last batch if it has content
         if current_batch.strip():
             batches.append(current_batch.strip())
 
@@ -70,15 +100,27 @@ class BaseContextBuilder(ABC):
     async def retrieve_top_k_objects(
         self, query: str, k: int = 10, **kwargs: Dict[str, Any]
     ) -> List[str]:
-        """Retrieve the top-k objects most similar to the query."""
+        """
+        Retrieve the top-k objects most similar to the query.
+
+        Args:
+            query (str): The query string.
+            k (int, optional): The number of top results to retrieve. Defaults to 10.
+            **kwargs (Dict[str, Any]): Additional parameters for the search engine.
+
+        Returns:
+            List[str]: A list of the top-k results.
+
+        Raises:
+            ValueError: If `k` is less than or equal to 0 or if the search engine is not initialized.
+        """
         if k <= 0:
             raise ValueError("Parameter 'k' must be greater than 0.")
 
         if not self.search_engine:
-            raise ValueError("Search engine is not initialize.")
+            raise ValueError("Search engine is not initialized.")
 
         if query:
-            # Perform similarity search with oversampling to ensure quality
             oversample_scaler = 2
             search_results = await self.search_engine.search(
                 text=query,
@@ -89,7 +131,16 @@ class BaseContextBuilder(ABC):
 
     @staticmethod
     def _num_tokens(text: str, token_encoder: tiktoken.Encoding | None = None) -> int:
-        """Return the number of tokens in the given text."""
+        """
+        Return the number of tokens in the given text.
+
+        Args:
+            text (str): The text to tokenize.
+            token_encoder (Optional[tiktoken.Encoding]): The token encoder to use. Defaults to None.
+
+        Returns:
+            int: The number of tokens in the text.
+        """
         if token_encoder is None:
             token_encoder = tiktoken.get_encoding("cl100k_base")
         return len(token_encoder.encode(text))  # type: ignore

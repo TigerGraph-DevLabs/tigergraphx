@@ -121,7 +121,11 @@ class TestNodeManager:
 
         self.mock_connection.runInstalledQuery.assert_called_once_with(
             "api_get_node_edges",
-            f"input={node_id}&input.type={node_type}&edge_types={edge_types}&num_edge_samples={num_edge_samples}",
+            {
+                "input": (node_id, node_type),
+                "edge_types": edge_types,
+                "num_edge_samples": num_edge_samples,
+            },
         )
         assert result == ["edge1", "edge2"]
 
@@ -139,6 +143,10 @@ class TestNodeManager:
 
         self.mock_connection.runInstalledQuery.assert_called_once_with(
             "api_get_node_edges",
-            f"input={node_id}&input.type={node_type}&edge_types={edge_types}&num_edge_samples={num_edge_samples}",
+            {
+                "input": (node_id, node_type),
+                "edge_types": edge_types,
+                "num_edge_samples": num_edge_samples,
+            },
         )
         assert result == []

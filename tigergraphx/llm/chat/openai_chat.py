@@ -24,13 +24,32 @@ class OpenAIChat(BaseChat, RetryMixin):
         llm_manager: OpenAIManager,
         config: OpenAIChatConfig | Dict | str | Path,
     ):
+        """
+        Initialize the OpenAIChat with the provided LLM manager and configuration.
+
+        Args:
+            llm_manager (OpenAIManager): Manager for OpenAI LLM interactions.
+            config (OpenAIChatConfig | Dict | str | Path): Configuration for OpenAI chat.
+        """
         config = OpenAIChatConfig.ensure_config(config)
         super().__init__(config)
         self.llm = llm_manager.get_llm()
         self.retryer = self.initialize_retryer(self.config.max_retries, max_wait=10)
 
     async def chat(self, messages: List[ChatCompletionMessageParam]) -> str:
-        """Asynchronously processes the messages and returns the generated response."""
+        """
+        Asynchronously process the messages and return the generated response.
+
+        Args:
+            messages (List[ChatCompletionMessageParam]): List of messages for chat completion.
+
+        Returns:
+            str: The generated response.
+
+        Raises:
+            RetryError: If retry attempts are exhausted.
+            Exception: For any unexpected errors during processing.
+        """
         try:
             async for attempt in self.retryer:
                 with attempt:
@@ -40,12 +59,9 @@ class OpenAIChat(BaseChat, RetryMixin):
                     )
                     return response.choices[0].message.content or ""
         except RetryError as e:
-            # Log retry errors for traceability
             logger.error(f"RetryError in chat for message: {messages}... | {e}")
         except Exception as e:
-            # Log and re-raise unexpected exceptions
             logger.error(f"Unhandled exception in chat: {e}")
             raise
 
-        # Final return statement in case no return occurs in try-except block
         return ""

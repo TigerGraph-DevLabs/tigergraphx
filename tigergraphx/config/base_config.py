@@ -8,19 +8,36 @@ T = TypeVar("T", bound="BaseConfig")
 
 
 class BaseConfig(BaseSettings):
+    """
+    Base configuration class that extends Pydantic's BaseSettings.
+    Provides utility methods to load configurations from various sources.
+    """
+
     @classmethod
     def ensure_config(cls: Type[T], config: T | Path | str | Dict) -> T:
         """
         Ensure the config is an instance of the current config class.
-        If it's a path (YAML/JSON), string, or dictionary, load it as the current config class.
+
+        If the input is a dictionary, string, or path to a YAML/JSON file,
+        it is loaded and converted into an instance of the class.
+
+        Args:
+            config (T | Path | str | Dict): The input configuration, which can be an instance
+                of the config class, a dictionary, a file path, or a string.
+
+        Returns:
+            T: An instance of the current configuration class.
+
+        Raises:
+            FileNotFoundError: If the provided file path does not exist.
+            ValueError: If the file type is unsupported.
+            TypeError: If the input type is not supported.
         """
         if isinstance(config, cls):
             return config
         elif isinstance(config, Dict):
-            # Initialize from a dictionary
             return cls(**config)
         elif isinstance(config, (Path, str)):
-            # Determine file type and load accordingly
             path = Path(config) if isinstance(config, str) else config
             if not path.exists():
                 raise FileNotFoundError(f"Configuration file not found: {path}")

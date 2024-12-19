@@ -20,19 +20,35 @@ class NanoVectorDBManager(BaseVectorDB):
         self,
         config: NanoVectorDBConfig,
     ):
-        """Initialize the NanoVectorDBWrapper."""
+        """
+        Initialize the NanoVectorDBWrapper.
+
+        Args:
+            config (NanoVectorDBConfig): Configuration for NanoVectorDB.
+        """
         super().__init__(config)
         self._db = NanoVectorDB(
             embedding_dim=config.embedding_dim, storage_file=str(config.storage_file)
         )
 
     def connect(self, uri: str | Path, **kwargs: Any) -> None:
-        """Connect to the vector database and set up the connection."""
-        # NanoVectorDB does not require an explicit connection step.
+        """
+        Connect to the vector database and set up the connection.
+
+        Args:
+            uri (str | Path): The URI or path to the database.
+            **kwargs (Any): Additional parameters for the connection.
+        """
         pass
 
     def insert_data(self, data: pd.DataFrame, overwrite: bool = True) -> None:
-        """Insert data into NanoVectorDB."""
+        """
+        Insert data into NanoVectorDB.
+
+        Args:
+            data (pd.DataFrame): DataFrame containing the data to insert.
+            overwrite (bool, optional): Whether to overwrite existing data. Defaults to True.
+        """
         records = []
         for _, row in data.iterrows():
             record = {"__id__": row["__id__"], "__vector__": row["__vector__"]}
@@ -44,7 +60,12 @@ class NanoVectorDBManager(BaseVectorDB):
         self._db.upsert(records)
 
     def delete_data(self, filter_conditions: Dict[str, Any]) -> None:
-        """Delete data from NanoVectorDB based on filter conditions."""
+        """
+        Delete data from NanoVectorDB based on filter conditions.
+
+        Args:
+            filter_conditions (Dict[str, Any]): Conditions to filter rows for deletion.
+        """
 
         def filter_fn(data: Data) -> bool:
             return all(
@@ -62,7 +83,13 @@ class NanoVectorDBManager(BaseVectorDB):
     def update_data(
         self, filter_conditions: Dict[str, Any], new_data: Dict[str, Any]
     ) -> None:
-        """Update existing data in NanoVectorDB."""
+        """
+        Update existing data in NanoVectorDB.
+
+        Args:
+            filter_conditions (Dict[str, Any]): Conditions to filter rows for updating.
+            new_data (Dict[str, Any]): New data to update the filtered rows with.
+        """
 
         def filter_fn(data: Data) -> bool:
             return all(
@@ -86,6 +113,16 @@ class NanoVectorDBManager(BaseVectorDB):
         k: int = 10,
         **kwargs: Any,
     ) -> List[str]:
-        """Perform a similarity search and return results."""
+        """
+        Perform a similarity search and return results.
+
+        Args:
+            query_embedding (List[float]): Query embedding vector for similarity search.
+            k (int, optional): Number of top results to retrieve. Defaults to 10.
+            **kwargs (Any): Additional parameters for the query.
+
+        Returns:
+            List[str]: List of IDs from the search results.
+        """
         results = self._db.query(query=np.array(query_embedding), top_k=k)
         return [result["__id__"] for result in results]

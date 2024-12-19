@@ -20,7 +20,7 @@ Start here:
 
 - [Introduction to TigerGraphX](introduction.md): Discover the features and benefits of using TigerGraphX for graph database management and analytics.
 - [Getting Started](getting_started/installation.md): Learn how to install and set up TigerGraphX.
-- [Quick Start Guide](getting_started/quick_start.md): Quickly set up TigerGraphX and build your first graph with this step-by-step guide.
+- [Quick Start Guide](../getting_started/quick_start): Quickly set up TigerGraphX and build your first graph with this step-by-step guide.
 
 ---
 
@@ -35,7 +35,7 @@ If you’re a Python developer building **GraphRAG** applications, TigerGraphX e
 Start here:
 
 - [Getting Started](getting_started/installation.md): Learn how to install and set up TigerGraphX.
-- [GraphRAG Overview](graphrag/overview.md): Explore how TigerGraphX integrates with GraphRAG workflows.
+- [GraphRAG Overview](graphrag/graphrag_overview.md): Explore how TigerGraphX integrates with GraphRAG workflows.
 - [Supporting Microsoft’s GraphRAG](graphrag/msft_graphrag_1.md): An example of using TigerGraphX for GraphRAG workflows.
 
 ---

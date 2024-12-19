@@ -7,10 +7,18 @@ from tenacity import (
 
 
 class RetryMixin:
-    """Mixin to provide retryer initialization for robust error handling."""
+    """Mixin for initializing a retry mechanism."""
 
     def initialize_retryer(self, max_retries: int, max_wait: int) -> AsyncRetrying:
-        """Initialize retry mechanism with the given configuration."""
+        """Initialize the retry mechanism.
+
+        Args:
+            max_retries (int): Maximum number of retry attempts.
+            max_wait (int): Maximum wait time between retries in seconds.
+
+        Returns:
+            AsyncRetrying: Configured retrying instance.
+        """
         return AsyncRetrying(
             stop=stop_after_attempt(max_retries),
             wait=wait_exponential_jitter(max=max_wait),

@@ -1,0 +1,3 @@
+# BaseContextBuilder
+
+::: tigergraphx.graphrag.BaseContextBuilder

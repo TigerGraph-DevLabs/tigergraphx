@@ -23,7 +23,7 @@ jobs:
       # Step 3: Install dependencies
       - name: Install dependencies
         run: |
-          pip install mkdocs mkdocs-material mkdocs-jupyter mkdocs-exclude-search
+          pip install mkdocs mkdocs-material mkdocs-jupyter mkdocs-exclude-search mkdocstrings-python
 
 
       # Step 4: Build the MkDocs site

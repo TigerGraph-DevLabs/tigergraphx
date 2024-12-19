@@ -14,6 +14,7 @@ from tigergraphx.utils import RetryMixin
 
 logger = logging.getLogger(__name__)
 
+
 class OpenAIEmbedding(BaseEmbedding, RetryMixin):
     """OpenAI Embedding model wrapper with async embedding generation and robust retries."""
 
@@ -24,6 +25,13 @@ class OpenAIEmbedding(BaseEmbedding, RetryMixin):
         llm_manager: OpenAIManager,
         config: OpenAIEmbeddingConfig | Dict | str | Path,
     ):
+        """
+        Initialize the OpenAI Embedding wrapper.
+
+        Args:
+            llm_manager (OpenAIManager): Manager for OpenAI LLM interactions.
+            config (OpenAIEmbeddingConfig | Dict | str | Path): Configuration for the embedding model.
+        """
         config = OpenAIEmbeddingConfig.ensure_config(config)
         super().__init__(config)
         self.llm = llm_manager.get_llm()
@@ -31,13 +39,20 @@ class OpenAIEmbedding(BaseEmbedding, RetryMixin):
         self.retryer = self.initialize_retryer(self.config.max_retries, max_wait=10)
 
     async def generate_embedding(self, text: str) -> List[float]:
-        """Generate embedding asynchronously with retry for robustness."""
+        """
+        Generate embedding asynchronously with retry for robustness.
+
+        Args:
+            text (str): The input text to generate embeddings for.
+
+        Returns:
+            List[float]: The normalized embedding vector.
+        """
         token_chunks = list(self._tokenize(text))
         embedding_results = await asyncio.gather(
             *[self._generate_with_retry(chunk) for chunk in token_chunks]
         )
 
-        # Filter out failed results and compute weighted average if results exist
         embeddings, lengths = (
             zip(*[(emb, length) for emb, length in embedding_results if emb])
             if embedding_results
@@ -52,7 +67,15 @@ class OpenAIEmbedding(BaseEmbedding, RetryMixin):
         return normalized_embedding.tolist()
 
     async def _generate_with_retry(self, text: str) -> Tuple[List[float], int]:
-        """Fetch embedding for a chunk with retry, returning empty list on failure."""
+        """
+        Fetch embedding for a chunk with retry, returning empty list on failure.
+
+        Args:
+            text (str): Text chunk to generate embeddings for.
+
+        Returns:
+            Tuple[List[float], int]: The embedding vector and the length of the chunk.
+        """
         try:
             async for attempt in self.retryer:
                 with attempt:
@@ -64,22 +87,36 @@ class OpenAIEmbedding(BaseEmbedding, RetryMixin):
                     ).data[0].embedding or []
                     return embedding, len(text)
         except RetryError as e:
-            # Log retry errors for traceability
             logger.error(
                 f"RetryError in _generate_with_retry for text chunk: {text[:50]}... | {e}"
             )
 
-        # Final return statement in case no return occurs in try-except block
         return [], 0
 
     def _tokenize(self, text: str) -> List[str]:
-        """Tokenize text into chunks based on token length."""
+        """
+        Tokenize text into chunks based on token length.
+
+        Args:
+            text (str): The input text to tokenize.
+
+        Returns:
+            List[str]: List of tokenized text chunks.
+        """
         tokens = self.token_encoder.encode(text)
         return [
             self.token_encoder.decode(chunk) for chunk in self._batch_tokens(tokens)
         ]
 
     def _batch_tokens(self, tokens: List[int]) -> Generator[List[int], None, None]:
-        """Yield successive batches of tokens up to max_tokens."""
+        """
+        Yield successive batches of tokens up to max_tokens.
+
+        Args:
+            tokens (List[int]): List of token IDs.
+
+        Yields:
+            Generator[List[int], None, None]: Batches of token IDs.
+        """
         for i in range(0, len(tokens), self.config.max_tokens):
             yield tokens[i : i + self.config.max_tokens]

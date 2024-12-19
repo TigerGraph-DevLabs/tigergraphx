@@ -2,6 +2,7 @@ from .core import (
     Graph,
     DiGraph,
     UndiGraph,
+    HomoGraph,
 )
 from .config import (
     # base class for configurations
@@ -56,6 +57,7 @@ from .vector_search import (
     NanoVectorDBManager,
     BaseSearchEngine,
     LanceDBSearchEngine,
+    NanoVectorDBSearchEngine,
 )
 from .pipelines import ParquetProcessor
 from .utils import (
@@ -70,6 +72,7 @@ __all__ = [
     "Graph",
     "DiGraph",
     "UndiGraph",
+    "HomoGraph",
     # base class for configurations
     "BaseConfig",
     # configurations for graph schema
@@ -117,6 +120,7 @@ __all__ = [
     "NanoVectorDBManager",
     "BaseSearchEngine",
     "LanceDBSearchEngine",
+    "NanoVectorDBSearchEngine",
     # Pipelines
     "ParquetProcessor",
     # Utils

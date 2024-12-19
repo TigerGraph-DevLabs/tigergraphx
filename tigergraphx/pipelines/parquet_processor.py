@@ -5,13 +5,30 @@ import pandas as pd
 
 
 class ParquetProcessor:
+    """
+    A class to process Parquet files and generate CSV files with custom transformations.
+    """
+
     def __init__(self, input_dir: str | Path, output_dir: str | Path):
+        """
+        Initialize the ParquetProcessor with input and output directories.
+
+        Args:
+            input_dir (str | Path): Directory containing the input Parquet files.
+            output_dir (str | Path): Directory to save the output CSV files.
+        """
         self.input_dir: Path = Path(input_dir).resolve()
         self.output_dir: Path = Path(output_dir).resolve()
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
     def save_dataframe_to_csv(self, df: pd.DataFrame | pd.Series, csv_file_name: str):
-        """Save DataFrame to CSV with consistent parameters for index, escapechar, and newline handling."""
+        """
+        Save a DataFrame or Series to a CSV file with specific formatting.
+
+        Args:
+            df (pd.DataFrame | pd.Series): The DataFrame or Series to save.
+            csv_file_name (str): Name of the output CSV file.
+        """
         df = df.apply(
             lambda col: col.str.replace("\n", "\\n") if col.dtype == "object" else col
         )
@@ -27,7 +44,14 @@ class ParquetProcessor:
     def convert_parquet_to_csv(
         self, parquet_file_name: str, columns: List[str], csv_file_name: str
     ):
-        """Read a Parquet file, select specific columns, and save as a CSV."""
+        """
+        Convert a Parquet file to a CSV file with specific columns.
+
+        Args:
+            parquet_file_name (str): Name of the input Parquet file.
+            columns (List[str]): List of columns to include in the output CSV.
+            csv_file_name (str): Name of the output CSV file.
+        """
         input_file_path = self.input_dir / parquet_file_name
         df = pd.read_parquet(input_file_path)[columns]
         self.save_dataframe_to_csv(df, csv_file_name)
@@ -41,7 +65,17 @@ class ParquetProcessor:
         collection_new_name: str,
         output_name: str,
     ):
-        """Generate a CSV file for a relationship mapping from a given column."""
+        """
+        Generate a CSV file for relationship mapping based on input DataFrame.
+
+        Args:
+            df (pd.DataFrame): Input DataFrame containing relationship data.
+            element_list_name (str): Name of the column containing element lists.
+            element_name (str): Name of the element to map.
+            collection_name (str): Name of the collection column.
+            collection_new_name (str): New name for the collection in the output.
+            output_name (str): Name of the output CSV file.
+        """
         relationships = [
             {element_name: element, collection_new_name: row[collection_name]}
             for _, row in df.iterrows()
@@ -51,14 +85,24 @@ class ParquetProcessor:
         self.save_dataframe_to_csv(rel_df, output_name)
 
     def process_parquet_files(self, configs: List[Dict[str, Any]]):
-        """Process a list of Parquet file configurations."""
+        """
+        Process a list of Parquet file configurations and convert them to CSV.
+
+        Args:
+            configs (List[Dict[str, Any]]): List of configuration dictionaries for processing Parquet files.
+        """
         for config in configs:
             self.convert_parquet_to_csv(
                 config["parquet_file"], config["columns"], config["csv_file"]
             )
 
     def process_relationship_files(self, configs: List[Dict[str, Any]]):
-        """Process a list of relationship file configurations."""
+        """
+        Process a list of relationship file configurations and generate CSV files.
+
+        Args:
+            configs (List[Dict[str, Any]]): List of configuration dictionaries for generating relationship files.
+        """
         for config in configs:
             df = pd.read_parquet(self.input_dir / config["parquet_file"])
             self.create_relationship_file(
