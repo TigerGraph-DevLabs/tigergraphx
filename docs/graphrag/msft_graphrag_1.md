@@ -134,7 +134,7 @@ In addition to defining the schema, a connection configuration is necessary to e
 ```py
 connection = TigerGraphConnectionConfig.ensure_config({
     "host": "http://127.0.0.1",
-    "user_name": "tigergraph",
+    "username": "tigergraph",
     "password": "tigergraph",
 })
 ```

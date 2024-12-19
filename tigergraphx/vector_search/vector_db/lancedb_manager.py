@@ -1,5 +1,6 @@
 import logging
 import lancedb
+from lancedb.table import Table
 from typing import Any, Dict, List
 from pathlib import Path
 import pandas as pd
@@ -10,6 +11,7 @@ from .base_vector_db import BaseVectorDB
 from tigergraphx.config import LanceDBConfig
 
 logger = logging.getLogger(__name__)
+
 
 class LanceDBManager(BaseVectorDB):
     """Implementation of LanceDB vector database management."""
@@ -28,7 +30,13 @@ class LanceDBManager(BaseVectorDB):
         self,
         config: LanceDBConfig | Dict | str | Path,
     ):
-        """Initialize the LanceDB manager by connecting and setting up schema."""
+        """
+        Initialize the LanceDB manager by connecting and setting up schema.
+
+        Args:
+            config (LanceDBConfig | Dict | str | Path): Configuration for LanceDB, either as a
+                config object, dictionary, string, or path to configuration file.
+        """
         config = LanceDBConfig.ensure_config(config)
         super().__init__(config)
         self.TABLE_NAME = self.config.table_name
@@ -46,7 +54,7 @@ class LanceDBManager(BaseVectorDB):
         Connect to LanceDB and initialize or open the specified table.
 
         Args:
-            uri (str): The URI to connect to the LanceDB database.
+            uri (str | Path): The URI to connect to the LanceDB database.
             **kwargs: Additional connection parameters.
         """
         logger.info(f"Attempting to connect to LanceDB at URI: {uri}")
@@ -66,7 +74,13 @@ class LanceDBManager(BaseVectorDB):
             )
             logger.info(f"Table '{self.TABLE_NAME}' created successfully.")
 
-    def get_table(self):
+    def get_table(self) -> Table:
+        """
+        Retrieve the current table.
+
+        Returns:
+            Table: The LanceDB table object.
+        """
         return self._table
 
     def insert_data(self, data: pd.DataFrame, overwrite: bool = True) -> None:
@@ -75,7 +89,7 @@ class LanceDBManager(BaseVectorDB):
 
         Args:
             data (pd.DataFrame): DataFrame containing the data to be inserted.
-            overwrite (bool): Whether to overwrite existing data.
+            overwrite (bool, optional): Whether to overwrite existing data. Defaults to True.
         """
         records = data.to_dict(orient="records")
         if overwrite:

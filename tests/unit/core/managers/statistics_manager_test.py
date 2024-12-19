@@ -20,7 +20,10 @@ class TestStatisticsManager:
         result = self.statistics_manager.degree(node_id, node_type, edge_types)
         self.mock_connection.runInstalledQuery.assert_called_once_with(
             "api_degree",
-            f"input={node_id}&input.type={node_type}&edge_types={edge_types}",
+            {
+                "input": (node_id, node_type),
+                "edge_types": edge_types,
+            },
         )
         assert result == 3
 
@@ -32,7 +35,10 @@ class TestStatisticsManager:
         result = self.statistics_manager.degree(node_id, node_type, edge_types)
         self.mock_connection.runInstalledQuery.assert_called_once_with(
             "api_degree",
-            f"input={node_id}&input.type={node_type}&edge_types={edge_types}",
+            {
+                "input": (node_id, node_type),
+                "edge_types": edge_types,
+            },
         )
         assert result == 0
 
@@ -44,7 +50,10 @@ class TestStatisticsManager:
         result = self.statistics_manager.degree(node_id, node_type, edge_types)
         self.mock_connection.runInstalledQuery.assert_called_once_with(
             "api_degree",
-            f"input={node_id}&input.type={node_type}&edge_types={edge_types}",
+            {
+                "input": (node_id, node_type),
+                "edge_types": edge_types,
+            },
         )
         assert result == 0
 

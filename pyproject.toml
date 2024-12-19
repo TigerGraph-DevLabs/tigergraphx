@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tigergraphx"
-version = "0.1.4"
+version = "0.1.5"
 description = "TigerGraphX is a high-level Python library offering a unified, Python-native interface for graph databases, advanced analytics, and GraphRAG workflows. Combining the simplicity of NetworkX with the advanced capabilities of TigerGraph, including tgCloud, it empowers Python developers to harness the power of graphs without the need to learn query languages like Cypher or GSQL."
 authors = ["Xuanlei Lin <xuanlei.lin@tigergraph.com>"]
 license = "MIT"
@@ -43,6 +43,8 @@ pytest-mock = "^3.14.0"
 
 # Interactive Development
 notebook = "^7.3.1"
+nest-asyncio = "^1.6.0"
+ipywidgets = "^8.1.5"
 
 # GraphRAG Integration
 ## For Microsoft's GraphRAG
@@ -57,9 +59,8 @@ transformers = "^4.47.0"
 # Documentation Generation
 mkdocs = "^1.6.1"
 mkdocs-material = "^9.5.48"
-mkdocs-exclude-search = "^0.6.6"
 mkdocs-jupyter = "^0.25.1"
-nest-asyncio = "^1.6.0"
+mkdocstrings-python = "^1.12.2"
 
 [build-system]
 requires = ["poetry-core"]

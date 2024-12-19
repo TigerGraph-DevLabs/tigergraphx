@@ -1,6 +1,6 @@
 import logging
 from typing import Dict, List
-from urllib.parse import urlencode, quote
+from urllib.parse import quote
 
 from .base_manager import BaseManager
 
@@ -60,14 +60,13 @@ class NodeManager(BaseManager):
         num_edge_samples: int = 1000,
     ) -> List:
         try:
+            node_id = quote(node_id)
             params = {
-                "input": node_id,
-                "input.type": node_type,
+                "input": (node_id, node_type),
                 "edge_types": edge_types,
                 "num_edge_samples": num_edge_samples,
             }
-            params_str = urlencode(params, quote_via=quote)
-            result = self._connection.runInstalledQuery("api_get_node_edges", params_str)
+            result = self._connection.runInstalledQuery("api_get_node_edges", params)
             if result:
                 return result[0].get("edges")
         except Exception as e:

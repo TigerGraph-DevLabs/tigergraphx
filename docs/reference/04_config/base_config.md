@@ -1,0 +1,3 @@
+# BaseConfig
+
+::: tigergraphx.config.BaseConfig

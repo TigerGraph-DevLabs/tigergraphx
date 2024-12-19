@@ -79,7 +79,7 @@ TigerGraphX empowers developers to explore, analyze, and build with graphs like 
 ## Next Steps
 
 - [Getting Started](getting_started/installation.md): Learn how to install and set up TigerGraphX.
-- [GraphRAG Overview](graphrag/overview.md): Explore how TigerGraphX integrates with GraphRAG workflows.
+- [GraphRAG Overview](graphrag/graphrag_overview.md): Explore how TigerGraphX integrates with GraphRAG workflows.
 
 ---
 

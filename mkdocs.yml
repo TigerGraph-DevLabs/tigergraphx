@@ -16,14 +16,51 @@ nav:
       - "Supporting Microsoft's GraphRAG: Part 3": graphrag/msft_graphrag_3.ipynb
   - API Reference:
       - Features Overview: reference/features_overview.md
-      # - Schema Management: reference/schema_management.md
-      # - Data Loading Management: reference/data_loading.md
-      # - Graph Library Interface: reference/graph_library.md
-      # - Graph Query Interface: reference/graph_query.md
-      # - Vector Search Capabilities: reference/vector_search.md
-      # - LLM Integration and Support: reference/llm_integration.md
-      # - Configuration Management: reference/config_management.md
-      # - GraphRAG Support: reference/graphrag_support.md
+      - Core:
+          - Graph: reference/01_core/graph.md
+          - DiGraph: reference/01_core/digraph.md
+          - UndiGraph: reference/01_core/undigraph.md
+          - HomoGraph: reference/01_core/homograph.md
+          - NodeView: reference/01_core/nodeview.md
+      - Vector Search:
+          - Vector DB:
+              - BaseVectorDB: reference/02_vector_search/01_vector_db/base_vector_db.md
+              - LanceDBManager: reference/02_vector_search/01_vector_db/lancedb_manager.md
+              - NanoVectorDBManager: reference/02_vector_search/01_vector_db/nano_vectordb_manager.md
+          - Embedding:
+              - BaseEmbedding: reference/02_vector_search/02_embedding/base_embedding.md
+              - OpenAIEmbedding: reference/02_vector_search/02_embedding/openai_embedding.md
+          - Search:
+              - BaseSearchEngine: reference/02_vector_search/03_search/base_search_engine.md
+              - LanceDBSearchEngine: reference/02_vector_search/03_search/lancedb_search_engine.md
+              - NanoVectorDBSearchEngine: reference/02_vector_search/03_search/nano_vectordb_search_engine.md
+      - LLM:
+          - BaseLLMManager: reference/03_llm/base_llm_manager.md
+          - OpenAIManager: reference/03_llm/openai_manager.md
+          - Chat:
+              - BaseChat: reference/03_llm/01_chat/base_chat.md
+              - OpenAIChat: reference/03_llm/01_chat/openai_chat.md
+      - Config:
+          - BaseConfig: reference/04_config/base_config.md
+          - Graph DB:
+              - TigerGraphConnectionConfig: reference/04_config/01_graph_db/tigergraph_connection_config.md
+              - Schema Configuration: reference/04_config/01_graph_db/schema_config.md
+              - Loading Job Configuration: reference/04_config/01_graph_db/loading_job_config.md
+          - Query:
+              - Node Specification: reference/04_config/02_query/node_spec.md
+              - Neighbor Specification: reference/04_config/02_query/neighbor_spec.md
+          - Settings:
+              - Vector DB Settings: reference/04_config/03_settings/vector_db_settings.md
+              - LLM Settings: reference/04_config/03_settings/llm_settings.md
+              - Embedding Settings: reference/04_config/03_settings/embedding_settings.md
+              - Chat Settings: reference/04_config/03_settings/chat_settings.md
+              - Settings: reference/04_config/03_settings/settings.md
+      - Graphrag:
+          - BaseContextBuilder: reference/05_graphrag/base_context_builder.md
+      - Pipelines:
+          - Parquet Processor: reference/06_pipelines/parquet_processor.md
+      - Utils:
+          - RetryMixin: reference/07_utils/retry_mixin.md
 
 theme:
   name: material
@@ -60,9 +97,25 @@ plugins:
   - mkdocs-jupyter:
       ignore_h1_titles: True
   - search
-#  - exclude-search:
-#      paths:
-#        - "private.md"
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            # General
+            show_source: false
+            # Headings
+            heading_level: 2
+            show_root_heading: true
+            show_root_full_path: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            # Members
+            members_order: source
+            inherited_members: false
+            # Headings
+            docstring_section_style: list
+            # Signatures
+            show_signature: true
 
 markdown_extensions:
   # Styled blocks for notes, warnings, tips, and other types of content

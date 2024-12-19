@@ -5,9 +5,11 @@ from ..base_config import BaseConfig
 
 
 class NodeSpec(BaseConfig):
-    node_type: Optional[str] = Field(
-        ..., description="The type of nodes to select."
-    )
+    """
+    Specification for selecting nodes in a graph query.
+    """
+
+    node_type: Optional[str] = Field(..., description="The type of nodes to select.")
     filter_expression: Optional[str] = Field(
         None, description="A string defining filtering logic for the node selection."
     )

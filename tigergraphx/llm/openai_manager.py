@@ -7,7 +7,9 @@ from ..config import OpenAIConfig
 
 
 class OpenAIManager(BaseLLMManager):
-    """Manages an asynchronous OpenAI instance for LLM operations."""
+    """
+    Manages an asynchronous OpenAI instance for LLM operations.
+    """
 
     config: OpenAIConfig
 
@@ -15,7 +17,15 @@ class OpenAIManager(BaseLLMManager):
         self,
         config: OpenAIConfig | Dict | str | Path,
     ):
-        """Initialize OpenAIManager with OpenAI settings."""
+        """
+        Initialize OpenAIManager with OpenAI settings.
+
+        Args:
+            config (OpenAIConfig | Dict | str | Path): Configuration for OpenAI settings.
+
+        Raises:
+            ValueError: If the API key is not provided in the configuration.
+        """
         config = OpenAIConfig.ensure_config(config)
         super().__init__(config)
         if not self.config.api_key:
@@ -31,5 +41,10 @@ class OpenAIManager(BaseLLMManager):
         )
 
     def get_llm(self) -> AsyncOpenAI:
-        """Retrieve the initialized async OpenAI instance."""
+        """
+        Retrieve the initialized async OpenAI instance.
+
+        Returns:
+            AsyncOpenAI: The initialized OpenAI instance.
+        """
         return self._llm

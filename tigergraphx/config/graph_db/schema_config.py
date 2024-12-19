@@ -1,11 +1,15 @@
 from enum import Enum
 from typing import ClassVar, Dict, Tuple, Type, Optional, Any
-from pydantic import model_validator
+from pydantic import Field, model_validator
 
 from tigergraphx.config import BaseConfig
 
 
 class DataType(Enum):
+    """
+    Enumeration of supported data types.
+    """
+
     INT = "INT"
     UINT = "UINT"
     FLOAT = "FLOAT"
@@ -16,10 +20,15 @@ class DataType(Enum):
 
 
 class AttributeSchema(BaseConfig):
-    data_type: DataType
-    default_value: Optional[int | float | bool | str] = None
+    """
+    Schema for a graph attribute.
+    """
 
-    # Class-level mapping of DataType to accepted Python types
+    data_type: DataType = Field(description="The data type of the attribute.")
+    default_value: Optional[int | float | bool | str] = Field(
+        default=None, description="The default value for the attribute."
+    )
+
     PYTHON_TYPES: ClassVar[Dict[DataType, Type | Tuple[Type, ...]]] = {
         DataType.INT: int,
         DataType.UINT: int,
@@ -32,7 +41,9 @@ class AttributeSchema(BaseConfig):
 
     @model_validator(mode="after")
     def validate_default_value(self):
-        """Ensure the default value matches the expected type."""
+        """
+        Validate that the default value matches the expected data type.
+        """
         if self.default_value is not None:
             expected_types = self.PYTHON_TYPES[self.data_type]
             if not isinstance(self.default_value, expected_types):
@@ -45,13 +56,26 @@ class AttributeSchema(BaseConfig):
 
 
 class NodeSchema(BaseConfig):
-    primary_key: str
-    attributes: Dict[str, AttributeSchema]
+    """
+    Schema for a graph node type.
+    """
+
+    primary_key: str = Field(description="The primary key for the node type.")
+    attributes: Dict[str, AttributeSchema] = Field(
+        description="A dictionary of attribute names to their schemas."
+    )
 
     @model_validator(mode="before")
     def parse_attributes(cls, values: Dict[str, Any]) -> Dict[str, Any]:
-        """Parse shorthand attributes into full AttributeSchema."""
+        """
+        Parse shorthand attributes into full AttributeSchema.
 
+        Args:
+            values (Dict[str, Any]): Input values.
+
+        Returns:
+            Dict[str, Any]: Parsed values with attributes as AttributeSchema.
+        """
         attributes = values.get("attributes", {})
         if attributes:
             values["attributes"] = {
@@ -61,7 +85,9 @@ class NodeSchema(BaseConfig):
 
     @model_validator(mode="after")
     def validate_primary_key_and_attributes(cls, values):
-        """Validate that the primary key exists in attributes."""
+        """
+        Validate that the primary key is present in attributes.
+        """
         if values.primary_key not in values.attributes:
             raise ValueError(
                 f"Primary key '{values.primary_key}' is not defined in attributes."
@@ -70,14 +96,28 @@ class NodeSchema(BaseConfig):
 
 
 class EdgeSchema(BaseConfig):
-    is_directed_edge: bool
-    from_node_type: str
-    to_node_type: str
-    attributes: Dict[str, AttributeSchema]
+    """
+    Schema for a graph edge type.
+    """
+
+    is_directed_edge: bool = Field(description="Whether the edge is directed.")
+    from_node_type: str = Field(description="The type of the source node.")
+    to_node_type: str = Field(description="The type of the target node.")
+    attributes: Dict[str, AttributeSchema] = Field(
+        description="A dictionary of attribute names to their schemas."
+    )
 
     @model_validator(mode="before")
     def parse_attributes(cls, values: Dict[str, Any]) -> Dict[str, Any]:
-        """Parse shorthand attributes into full AttributeSchema."""
+        """
+        Parse shorthand attributes into full AttributeSchema.
+
+        Args:
+            values (Dict[str, Any]): Input values.
+
+        Returns:
+            Dict[str, Any]: Parsed values with attributes as AttributeSchema.
+        """
         attributes = values.get("attributes", {})
         if attributes:
             values["attributes"] = {
@@ -87,19 +127,29 @@ class EdgeSchema(BaseConfig):
 
     @model_validator(mode="after")
     def validate_attributes(cls, values):
-        """Validate default values of attributes in EdgeSchema."""
+        """
+        Validate attributes in the EdgeSchema.
+        """
         return values
 
 
 class GraphSchema(BaseConfig):
-    graph_name: str
-    nodes: Dict[str, NodeSchema]
-    edges: Dict[str, EdgeSchema]
+    """
+    Schema for a graph, including nodes and edges.
+    """
+
+    graph_name: str = Field(description="The name of the graph.")
+    nodes: Dict[str, NodeSchema] = Field(
+        description="A dictionary of node type names to their schemas."
+    )
+    edges: Dict[str, EdgeSchema] = Field(
+        description="A dictionary of edge type names to their schemas."
+    )
 
     @model_validator(mode="after")
     def validate_edge_references(cls, values):
         """
-        Ensure all edges reference existing nodes in GraphSchema.
+        Ensure all edges reference existing nodes in the graph schema.
         """
         node_types = set(values.nodes.keys())
         missing_node_edges = [
@@ -126,8 +176,19 @@ AttributeType = (
 AttributesType = Dict[str, AttributeType]
 
 
-# Helper function to convert string to DataType
 def string_to_data_type(data_type_str: str) -> DataType:
+    """
+    Convert a string to a DataType.
+
+    Args:
+        data_type_str (str): String representation of the data type.
+
+    Returns:
+        DataType: The corresponding DataType.
+
+    Raises:
+        ValueError: If the string is not a valid DataType.
+    """
     try:
         return DataType[data_type_str.upper()]
     except KeyError:
@@ -136,8 +197,19 @@ def string_to_data_type(data_type_str: str) -> DataType:
         )
 
 
-# Helper function to create AttributeSchema with simpler syntax
 def create_attribute_schema(attr: AttributeType) -> AttributeSchema:
+    """
+    Create an AttributeSchema from various input formats.
+
+    Args:
+        attr (AttributeType): Input attribute definition.
+
+    Returns:
+        AttributeSchema: The created schema.
+
+    Raises:
+        ValueError: If the input format is invalid.
+    """
     if isinstance(attr, AttributeSchema):
         return attr
     elif isinstance(attr, DataType):
@@ -169,13 +241,19 @@ def create_attribute_schema(attr: AttributeType) -> AttributeSchema:
         )
 
 
-# Helper function to create NodeSchema with simpler syntax
 def create_node_schema(
     primary_key: str,
     attributes: AttributesType,
 ) -> NodeSchema:
     """
-    Helper function to simplify creation of NodeSchema by handling conversion to AttributeSchema.
+    Create a NodeSchema with simplified syntax.
+
+    Args:
+        primary_key (str): The primary key for the node type.
+        attributes (AttributesType): Attributes for the node.
+
+    Returns:
+        NodeSchema: The created node schema.
     """
     attribute_schemas = {
         name: create_attribute_schema(attr) for name, attr in attributes.items()
@@ -183,7 +261,6 @@ def create_node_schema(
     return NodeSchema(primary_key=primary_key, attributes=attribute_schemas)
 
 
-# Helper function to create EdgeSchema with simpler syntax
 def create_edge_schema(
     is_directed_edge: bool,
     from_node_type: str,
@@ -191,7 +268,16 @@ def create_edge_schema(
     attributes: AttributesType = {},
 ) -> EdgeSchema:
     """
-    Helper function to simplify creation of EdgeSchema by handling conversion to AttributeSchema.
+    Create an EdgeSchema with simplified syntax.
+
+    Args:
+        is_directed_edge (bool): Whether the edge is directed.
+        from_node_type (str): The source node type.
+        to_node_type (str): The target node type.
+        attributes (AttributesType, optional): Attributes for the edge. Defaults to {}.
+
+    Returns:
+        EdgeSchema: The created edge schema.
     """
     attribute_schemas = {
         name: create_attribute_schema(attr) for name, attr in attributes.items()

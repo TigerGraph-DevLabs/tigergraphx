@@ -4,6 +4,10 @@ from tigergraphx.config import BaseConfig
 
 
 class TigerGraphConnectionConfig(BaseConfig):
+    """
+    Configuration for connecting to a TigerGraph instance.
+    """
+
     host: HttpUrl = Field(
         default=HttpUrl("http://127.0.0.1"),
         description="The host URL for the TigerGraph connection.",
@@ -23,7 +27,18 @@ class TigerGraphConnectionConfig(BaseConfig):
 
     @field_validator("host", mode="before")
     def add_http_if_missing(cls, value: str | HttpUrl) -> str | HttpUrl:
-        # Add "http://" if the value doesn't already start with a scheme
+        """
+        Ensure the host URL has an HTTP or HTTPS scheme.
+
+        Args:
+            value (str | HttpUrl): The input host value.
+
+        Returns:
+            str | HttpUrl: The host value with an HTTP or HTTPS scheme.
+
+        Raises:
+            ValueError: If the host is invalid.
+        """
         if isinstance(value, str) and not value.startswith(("http://", "https://")):
             value = f"http://{value}"
         return value
