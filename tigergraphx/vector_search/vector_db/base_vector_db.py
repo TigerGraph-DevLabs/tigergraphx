@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List
-from pathlib import Path
 import pandas as pd
 
 from tigergraphx.config import BaseVectorDBConfig
@@ -17,17 +16,6 @@ class BaseVectorDB(ABC):
             config (BaseVectorDBConfig): Configuration for the vector database connection.
         """
         self.config = config
-
-    @abstractmethod
-    def connect(self, uri: str | Path, **kwargs: Any) -> None:
-        """
-        Connect to the vector database and set up the connection.
-
-        Args:
-            uri (str | Path): The URI or path to connect to the vector database.
-            **kwargs (Any): Additional keyword arguments for the connection.
-        """
-        pass
 
     @abstractmethod
     def insert_data(self, data: pd.DataFrame, overwrite: bool = True) -> None:

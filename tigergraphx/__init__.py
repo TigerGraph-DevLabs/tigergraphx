@@ -10,10 +10,12 @@ from .config import (
     # configurations for graph schema
     DataType,
     AttributeSchema,
+    AttributesType,
+    VectorAttributeSchema,
+    VectorAttributesType,
     NodeSchema,
     EdgeSchema,
     GraphSchema,
-    AttributesType,
     create_node_schema,
     create_edge_schema,
     # configurations for loading job
@@ -37,6 +39,7 @@ from .config import (
     BaseEmbeddingConfig,
     OpenAIEmbeddingConfig,
     BaseVectorDBConfig,
+    TigerVectorConfig,
     LanceDBConfig,
     NanoVectorDBConfig,
 )
@@ -78,10 +81,12 @@ __all__ = [
     # configurations for graph schema
     "DataType",
     "AttributeSchema",
+    "AttributesType",
+    "VectorAttributeSchema",
+    "VectorAttributesType",
     "NodeSchema",
     "EdgeSchema",
     "GraphSchema",
-    "AttributesType",
     "create_node_schema",
     "create_edge_schema",
     # configurations for loading job
@@ -116,6 +121,7 @@ __all__ = [
     "BaseEmbedding",
     "OpenAIEmbedding",
     "BaseVectorDB",
+    "TigerVectorConfig",
     "LanceDBManager",
     "NanoVectorDBManager",
     "BaseSearchEngine",

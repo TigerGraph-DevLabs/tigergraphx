@@ -31,16 +31,6 @@ class NanoVectorDBManager(BaseVectorDB):
             embedding_dim=config.embedding_dim, storage_file=str(config.storage_file)
         )
 
-    def connect(self, uri: str | Path, **kwargs: Any) -> None:
-        """
-        Connect to the vector database and set up the connection.
-
-        Args:
-            uri (str | Path): The URI or path to the database.
-            **kwargs (Any): Additional parameters for the connection.
-        """
-        pass
-
     def insert_data(self, data: pd.DataFrame, overwrite: bool = True) -> None:
         """
         Insert data into NanoVectorDB.

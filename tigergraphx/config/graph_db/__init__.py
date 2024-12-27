@@ -1,11 +1,13 @@
 from .tigergraph_connection_config import TigerGraphConnectionConfig
-from .schema_config import (
+from .schema import (
     DataType,
     AttributeSchema,
+    AttributesType,
+    VectorAttributeSchema,
+    VectorAttributesType,
     NodeSchema,
     EdgeSchema,
     GraphSchema,
-    AttributesType,
     create_node_schema,
     create_edge_schema,
 )
@@ -24,10 +26,12 @@ __all__ = [
     # configurations for graph schema
     "DataType",
     "AttributeSchema",
+    "AttributesType",
+    "VectorAttributeSchema",
+    "VectorAttributesType",
     "NodeSchema",
     "EdgeSchema",
     "GraphSchema",
-    "AttributesType",
     "create_node_schema",
     "create_edge_schema",
     # configurations for loading job
