@@ -68,14 +68,10 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
 # Unit Test
-test_unit = {cmd = "pytest ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_unit_class = {cmd = "pytest -vs -k 'TestParquetProcessor'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_unit_folder = {cmd = "pytest -vs tests/unit/core/managers", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_unit = {cmd = "pytest -vs ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Integration Test
-test_integration = {cmd = "pytest ./tests/integration", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_integration_class = {cmd = "pytest -vs -k 'TestGraph'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_integration_folder = {cmd = "pytest -vs tests/integration/core", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_integration = {cmd = "pytest -vs ./tests/integration", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Applications
 graphrag_query = "python -m applications.msft_graphrag.query.main"

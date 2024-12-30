@@ -4,6 +4,7 @@ from .node_manager import NodeManager
 from .edge_manager import EdgeManager
 from .statistics_manager import StatisticsManager
 from .query_manager import QueryManager
+from .vector_manager import VectorManager
 
 __all__ = [
     "SchemaManager",
@@ -12,4 +13,5 @@ __all__ = [
     "EdgeManager",
     "StatisticsManager",
     "QueryManager",
+    "VectorManager",
 ]

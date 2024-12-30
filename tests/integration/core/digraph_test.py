@@ -6,8 +6,8 @@ from .base_graph_test import TestBaseGraph
 
 
 class TestDiGraph(TestBaseGraph):
-    @pytest.fixture(autouse=True)
-    def set_up(self):
+    def setup_graph(self):
+        """Set up the graph and add nodes and edges."""
         graph_name = "DiGraph"
         node_primary_key = "id"
         node_attributes: Mapping = {
@@ -27,13 +27,29 @@ class TestDiGraph(TestBaseGraph):
             node_primary_key=node_primary_key,
             node_attributes=node_attributes,
             edge_attributes=edge_attributes,
-            # drop_existing_graph=True,
         )
 
-        # Adding nodes and edge
+    @pytest.fixture(autouse=True)
+    def add_nodes_and_edges(self):
+        """Add nodes and edges before each test case."""
+        # Initialize the graph
+        self.setup_graph()
+
+        # Adding nodes and edges
         self.G.add_node("A")
         self.G.add_node("B", entity_type="Org", description="This is B.")
         self.G.add_edge("A", "B", weight=2.1, keywords="This is an edge")
+
+        yield  # The test case runs here
+
+        self.G.clear()
+
+    @pytest.fixture(scope="class", autouse=True)
+    def drop_graph(self):
+        """Drop the graph after all tests are done in the session."""
+        yield
+        self.setup_graph()
+        self.G.drop_graph()
 
     def test_add_and_remove_nodes_and_edges(self):
         # Verify initial state

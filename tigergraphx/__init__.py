@@ -10,10 +10,12 @@ from .config import (
     # configurations for graph schema
     DataType,
     AttributeSchema,
+    AttributesType,
+    VectorAttributeSchema,
+    VectorAttributesType,
     NodeSchema,
     EdgeSchema,
     GraphSchema,
-    AttributesType,
     create_node_schema,
     create_edge_schema,
     # configurations for loading job
@@ -37,6 +39,7 @@ from .config import (
     BaseEmbeddingConfig,
     OpenAIEmbeddingConfig,
     BaseVectorDBConfig,
+    TigerVectorConfig,
     LanceDBConfig,
     NanoVectorDBConfig,
 )
@@ -53,9 +56,11 @@ from .vector_search import (
     BaseEmbedding,
     OpenAIEmbedding,
     BaseVectorDB,
+    TigerVectorManager,
     LanceDBManager,
     NanoVectorDBManager,
     BaseSearchEngine,
+    TigerVectorSearchEngine,
     LanceDBSearchEngine,
     NanoVectorDBSearchEngine,
 )
@@ -78,10 +83,12 @@ __all__ = [
     # configurations for graph schema
     "DataType",
     "AttributeSchema",
+    "AttributesType",
+    "VectorAttributeSchema",
+    "VectorAttributesType",
     "NodeSchema",
     "EdgeSchema",
     "GraphSchema",
-    "AttributesType",
     "create_node_schema",
     "create_edge_schema",
     # configurations for loading job
@@ -105,6 +112,7 @@ __all__ = [
     "BaseEmbeddingConfig",
     "OpenAIEmbeddingConfig",
     "BaseVectorDBConfig",
+    "TigerVectorConfig",
     "LanceDBConfig",
     "NanoVectorDBConfig",
     # GraphRAG
@@ -116,9 +124,11 @@ __all__ = [
     "BaseEmbedding",
     "OpenAIEmbedding",
     "BaseVectorDB",
+    "TigerVectorManager",
     "LanceDBManager",
     "NanoVectorDBManager",
     "BaseSearchEngine",
+    "TigerVectorSearchEngine",
     "LanceDBSearchEngine",
     "NanoVectorDBSearchEngine",
     # Pipelines

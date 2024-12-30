@@ -1,5 +1,6 @@
 import os
 from dataclasses import dataclass
+from typing import Dict, Any
 import numpy as np
 
 from lightrag.base import BaseGraphStorage
@@ -91,12 +92,12 @@ class TigerGraphStorage(BaseGraphStorage):
             return list(edges)
         return None
 
-    async def upsert_node(self, node_id: str, node_data: dict[str, str]):
+    async def upsert_node(self, node_id: str, node_data: Dict[str, Any]):
         node_id = self.clean_quotes(node_id)
         self._graph.add_node(node_id, **node_data)
 
     async def upsert_edge(
-        self, source_node_id: str, target_node_id: str, edge_data: dict[str, str]
+        self, source_node_id: str, target_node_id: str, edge_data: Dict[str, Any]
     ):
         source_node_id = self.clean_quotes(source_node_id)
         target_node_id = self.clean_quotes(target_node_id)
