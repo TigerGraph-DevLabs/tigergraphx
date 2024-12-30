@@ -1,178 +1,131 @@
 import pytest
+import time
+import json
 
 from .base_graph_test import TestBaseGraph
 
 from tigergraphx.core import Graph
-from tigergraphx.config import GraphSchema, LoadingJobConfig
+from tigergraphx.config import LoadingJobConfig
 from tigergraphx.core.view.node_view import NodeView
 
 
-@pytest.fixture
-def setup_hetegeneous_graph():
-    # Create a graph
-    schema_config = {
-        "graph_name": "UserProductGraph",
-        "nodes": {
-            "User": {
-                "primary_key": "id",
-                "attributes": {
-                    "id": "STRING",
-                    "name": "STRING",
-                    "age": "UINT",
+class TestGraph1(TestBaseGraph):
+    def setup_graph(self):
+        """Set up the graph and add nodes and edges."""
+        graph_schema = {
+            "graph_name": "UserProductGraph",
+            "nodes": {
+                "User": {
+                    "primary_key": "id",
+                    "attributes": {
+                        "id": "STRING",
+                        "name": "STRING",
+                        "age": "UINT",
+                    },
+                },
+                "Product": {
+                    "primary_key": "id",
+                    "attributes": {
+                        "id": "STRING",
+                        "name": "STRING",
+                        "price": "DOUBLE",
+                    },
                 },
             },
-            "Product": {
-                "primary_key": "id",
-                "attributes": {
-                    "id": "STRING",
-                    "name": "STRING",
-                    "price": "DOUBLE",
+            "edges": {
+                "purchased": {
+                    "is_directed_edge": True,
+                    "from_node_type": "User",
+                    "to_node_type": "Product",
+                    "attributes": {
+                        "purchase_date": "DATETIME",
+                        "quantity": "DOUBLE",
+                    },
+                },
+                "similar_to": {
+                    "is_directed_edge": False,
+                    "from_node_type": "Product",
+                    "to_node_type": "Product",
+                    "attributes": {
+                        "purchase_date": "DATETIME",
+                        "quantity": "DOUBLE",
+                    },
                 },
             },
-        },
-        "edges": {
-            "purchased": {
-                "is_directed_edge": True,
-                "from_node_type": "User",
-                "to_node_type": "Product",
-                "attributes": {
-                    "purchase_date": "DATETIME",
-                    "quantity": "DOUBLE",
-                },
-            },
-            "similar_to": {
-                "is_directed_edge": False,
-                "from_node_type": "Product",
-                "to_node_type": "Product",
-                "attributes": {
-                    "purchase_date": "DATETIME",
-                    "quantity": "DOUBLE",
-                },
-            },
-        },
-    }
-    graph_schema = GraphSchema.ensure_config(schema_config)
-    G = Graph(graph_schema=graph_schema)
+        }
+        self.G = Graph(graph_schema=graph_schema)
 
-    # Add nodes and edges
-    G.add_node("User_A", "User")
-    G.add_node("User_B", "User", name="B")
-    G.add_node("User_C", "User", name="C", age=30)
-    G.add_node("Product_1", "Product")
-    G.add_node("Product_2", "Product", name="2")
-    G.add_node("Product_3", "Product", name="3", price=50)
-    G.add_edge("User_A", "Product_1", "User", "purchased", "Product")
-    G.add_edge(
-        "User_B",
-        "Product_2",
-        "User",
-        "purchased",
-        "Product",
-        purchase_date="2024-01-12",
-    )
-    G.add_edge(
-        "User_C",
-        "Product_1",
-        "User",
-        "purchased",
-        "Product",
-        purchase_date="2024-01-12",
-        quantity=5.5,
-    )
-    G.add_edge(
-        "User_C",
-        "Product_2",
-        "User",
-        "purchased",
-        "Product",
-        purchase_date="2024-01-12",
-        quantity=15.5,
-    )
-    G.add_edge(
-        "User_C",
-        "Product_3",
-        "User",
-        "purchased",
-        "Product",
-        purchase_date="2024-01-12",
-        quantity=25.5,
-    )
-    G.add_edge(
-        "Product_1",
-        "Product_3",
-        "Product",
-        "similar_to",
-        "Product",
-    )
-    return G
+    @pytest.fixture(autouse=True)
+    def add_nodes_and_edges(self):
+        """Add nodes and edges before each test case."""
+        # Initialize the graph
+        self.setup_graph()
 
+        # Adding nodes and edges
+        self.G.add_node("User_A", "User")
+        self.G.add_node("User_B", "User", name="B")
+        self.G.add_node("User_C", "User", name="C", age=30)
+        self.G.add_node("Product_1", "Product")
+        self.G.add_node("Product_2", "Product", name="2")
+        self.G.add_node("Product_3", "Product", name="3", price=50)
+        self.G.add_edge("User_A", "Product_1", "User", "purchased", "Product")
+        self.G.add_edge(
+            "User_B",
+            "Product_2",
+            "User",
+            "purchased",
+            "Product",
+            purchase_date="2024-01-12",
+        )
+        self.G.add_edge(
+            "User_C",
+            "Product_1",
+            "User",
+            "purchased",
+            "Product",
+            purchase_date="2024-01-12",
+            quantity=5.5,
+        )
+        self.G.add_edge(
+            "User_C",
+            "Product_2",
+            "User",
+            "purchased",
+            "Product",
+            purchase_date="2024-01-12",
+            quantity=15.5,
+        )
+        self.G.add_edge(
+            "User_C",
+            "Product_3",
+            "User",
+            "purchased",
+            "Product",
+            purchase_date="2024-01-12",
+            quantity=25.5,
+        )
+        self.G.add_edge(
+            "Product_1",
+            "Product_3",
+            "Product",
+            "similar_to",
+            "Product",
+        )
+        time.sleep(1)
 
-@pytest.fixture
-def setup_homogeneous_graph():
-    schema_config = {
-        "graph_name": "ERGraph",
-        "nodes": {
-            "Entity": {
-                "primary_key": "id",
-                "attributes": {
-                    "id": "STRING",
-                    "entity_type": "STRING",
-                    "description": "STRING",
-                    "source_id": "STRING",
-                },
-            },
-        },
-        "edges": {
-            "relationship": {
-                "is_directed_edge": True,
-                "from_node_type": "Entity",
-                "to_node_type": "Entity",
-                "attributes": {
-                    "weight": "DOUBLE",
-                    "description": "STRING",
-                    "keywords": "STRING",
-                    "source_id": "STRING",
-                },
-            },
-        },
-    }
-    graph_schema = GraphSchema.ensure_config(schema_config)
-    G = Graph(graph_schema=graph_schema)
+        yield  # The test case runs here
 
-    # Adding nodes and edges
-    G.add_node(
-        "Entity_1",
-        "Entity",
-        entity_type="Type1",
-        description="Desc1",
-        source_id="Source1",
-    )
-    G.add_node(
-        "Entity_2",
-        "Entity",
-        entity_type="Type2",
-        description="Desc2",
-        source_id="Source2",
-    )
-    G.add_edge(
-        "Entity_1",
-        "Entity_2",
-        "Entity",
-        "relationship",
-        "Entity",
-        weight=1.0,
-        description="Relates to",
-        keywords="key1,key2",
-        source_id="SourceRel",
-    )
-    return G
+        self.G.clear()
 
+    @pytest.fixture(scope="class", autouse=True)
+    def drop_graph(self):
+        """Drop the graph after all tests are done in the session."""
+        yield
+        self.setup_graph()
+        self.G.drop_graph()
 
-class TestGraph(TestBaseGraph):
     # ------------------------------ NodeView Property ------------------------------
-    @pytest.mark.usefixtures("setup_hetegeneous_graph")
-    def test_nodes_property(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
+    def test_nodes_property(self):
         # Access the nodes property
         nodes_view = self.G.nodes
         # Verify that it returns a NodeView instance
@@ -206,20 +159,14 @@ class TestGraph(TestBaseGraph):
         assert len(nodes_view) == 6, f"Expected 6 nodes, got {len(nodes_view)}"
 
     # ------------------------------ Node Operations ------------------------------
-    @pytest.mark.usefixtures("setup_hetegeneous_graph")
-    def test_add_node_without_type(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_add_node_without_type(self):
         with pytest.raises(
             ValueError,
             match="Multiple node types detected. Please specify a node type.",
         ):
             self.G.add_node("D", "")
 
-    @pytest.mark.usefixtures("setup_hetegeneous_graph")
-    def test_has_nodes(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_has_nodes(self):
         # Test node existence
         assert self.G.has_node("User_A", "User")
         assert self.G.has_node("User_B", "User")
@@ -229,19 +176,14 @@ class TestGraph(TestBaseGraph):
         assert self.G.has_node("Product_3", "Product")
         assert not self.G.has_node("User_D", "User")
 
-    def test_has_node_without_type(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_has_node_without_type(self):
         with pytest.raises(
             ValueError,
             match="Multiple node types detected. Please specify a node type.",
         ):
             self.G.has_node("D", "")
 
-    @pytest.mark.usefixtures("setup_hetegeneous_graph")
-    def test_get_node_data(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_get_node_data(self):
         # Test fetching node data
         node_data = self.time_execution(
             lambda: self.G.get_node_data("User_C", "User"), "get_node_data"
@@ -250,10 +192,7 @@ class TestGraph(TestBaseGraph):
         assert node_data["name"] == "C"
         assert node_data["age"] == 30
 
-    @pytest.mark.usefixtures("setup_hetegeneous_graph")
-    def test_get_node_edges(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_get_node_edges(self):
         # Test fetching edges of a node
         node_edges = self.time_execution(
             lambda: self.G.get_node_edges("User_C", "User", "purchased"),
@@ -262,37 +201,28 @@ class TestGraph(TestBaseGraph):
         assert len(node_edges) == 3
 
     # ------------------------------ Edge Operations ------------------------------
-    def test_add_edge_without_target_node_type(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_add_edge_without_target_node_type(self):
         with pytest.raises(
             ValueError,
             match="Multiple node types detected. Please specify a node type.",
         ):
             self.G.add_edge("User_A", "Product_2", "User", "purchased", "")
 
-    def test_add_edge_without_source_node_type(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_add_edge_without_source_node_type(self):
         with pytest.raises(
             ValueError,
             match="Multiple node types detected. Please specify a node type.",
         ):
             self.G.add_edge("User_A", "Product_2", "", "purchased", "Product")
 
-    def test_add_edge_without_edge_type(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_add_edge_without_edge_type(self):
         with pytest.raises(
             ValueError,
             match="Multiple edge types detected. Please specify an edge type.",
         ):
             self.G.add_edge("User_A", "Product_2", "User", "", "Product")
 
-    @pytest.mark.usefixtures("setup_hetegeneous_graph")
-    def test_has_edges(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_has_edges(self):
         # Test edge existence
         assert not self.G.has_edge(
             "User_A", "Product_2", "User", "purchased", "Product"
@@ -304,10 +234,7 @@ class TestGraph(TestBaseGraph):
         assert self.G.has_edge("User_C", "Product_2", "User", "purchased", "Product")
         assert self.G.has_edge("User_C", "Product_3", "User", "purchased", "Product")
 
-    @pytest.mark.usefixtures("setup_hetegeneous_graph")
-    def test_get_edge_data(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_get_edge_data(self):
         # Test fetching edge data
         edge_data = self.time_execution(
             lambda: self.G.get_edge_data(
@@ -319,10 +246,7 @@ class TestGraph(TestBaseGraph):
         assert edge_data["quantity"] == 15.5
 
     # ------------------------------ Statistics Operations ------------------------------
-    @pytest.mark.usefixtures("setup_hetegeneous_graph")
-    def test_degree(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_degree(self):
         # Test degree calculations
         degree = self.time_execution(
             lambda: self.G.degree("Product_1", "Product", ["reverse_purchased"]),
@@ -348,10 +272,7 @@ class TestGraph(TestBaseGraph):
         )
         assert degree == 3
 
-    @pytest.mark.usefixtures("setup_hetegeneous_graph")
-    def test_number_of_nodes(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_number_of_nodes(self):
         # Test number of nodes for specific node types
         num_user_nodes = self.G.number_of_nodes(node_type="User")
         assert num_user_nodes == 3, f"Expected 3 User nodes, got {num_user_nodes}"
@@ -370,10 +291,7 @@ class TestGraph(TestBaseGraph):
             self.G.number_of_nodes(node_type="InvalidType")
 
     # ------------------------------ Query Operations ------------------------------
-    @pytest.mark.usefixtures("setup_hetegeneous_graph")
-    def test_get_nodes(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_get_nodes(self):
         # Define the return attributes and test parameters
         return_attributes = ["id", "name", "age"]
         nodes = self.time_execution(
@@ -393,10 +311,7 @@ class TestGraph(TestBaseGraph):
             return_attributes
         ), f"Expected columns {return_attributes}, but got {list(nodes.columns)}."
 
-    @pytest.mark.usefixtures("setup_hetegeneous_graph")
-    def test_get_neighbors(self, setup_hetegeneous_graph):
-        self.G = setup_hetegeneous_graph
-
+    def test_get_neighbors(self):
         # Define return attributes and test parameters
         return_attributes = ["id", "name", "price"]
         neighbors = self.time_execution(
@@ -419,10 +334,85 @@ class TestGraph(TestBaseGraph):
             return_attributes
         ), f"Expected columns {return_attributes}, but got {list(neighbors.columns)}."
 
+
+class TestGraph2(TestBaseGraph):
+    def setup_graph(self):
+        """Set up the graph and add nodes and edges."""
+        graph_schema = {
+            "graph_name": "ERGraph",
+            "nodes": {
+                "Entity": {
+                    "primary_key": "id",
+                    "attributes": {
+                        "id": "STRING",
+                        "entity_type": "STRING",
+                        "description": "STRING",
+                        "source_id": "STRING",
+                    },
+                },
+            },
+            "edges": {
+                "relationship": {
+                    "is_directed_edge": True,
+                    "from_node_type": "Entity",
+                    "to_node_type": "Entity",
+                    "attributes": {
+                        "weight": "DOUBLE",
+                        "description": "STRING",
+                        "keywords": "STRING",
+                        "source_id": "STRING",
+                    },
+                },
+            },
+        }
+        self.G = Graph(graph_schema=graph_schema)
+
+    @pytest.fixture(autouse=True)
+    def add_nodes_and_edges(self):
+        """Add nodes and edges before each test case."""
+        # Initialize the graph
+        self.setup_graph()
+
+        # Adding nodes and edges
+        self.G.add_node(
+            "Entity_1",
+            "Entity",
+            entity_type="Type1",
+            description="Desc1",
+            source_id="Source1",
+        )
+        self.G.add_node(
+            "Entity_2",
+            "Entity",
+            entity_type="Type2",
+            description="Desc2",
+            source_id="Source2",
+        )
+        self.G.add_edge(
+            "Entity_1",
+            "Entity_2",
+            "Entity",
+            "relationship",
+            "Entity",
+            weight=1.0,
+            description="Relates to",
+            keywords="key1,key2",
+            source_id="SourceRel",
+        )
+
+        yield  # The test case runs here
+
+        self.G.clear()
+
+    @pytest.fixture(scope="class", autouse=True)
+    def drop_graph(self):
+        """Drop the graph after all tests are done in the session."""
+        yield
+        self.setup_graph()
+        self.G.drop_graph()
+
     # ------------------------------ Homogeneous Graph ------------------------------
-    @pytest.mark.usefixtures("setup_homogeneous_graph")
-    def test_homogeneous_graph(self, setup_homogeneous_graph):
-        self.G = setup_homogeneous_graph
+    def test_homogeneous_graph(self):
         # Assertions
         assert self.G.has_node("Entity_1")
         assert self.G.has_node("Entity_2")
@@ -431,27 +421,50 @@ class TestGraph(TestBaseGraph):
         )
 
     # ------------------------------ Schema Operations ------------------------------
-    @pytest.mark.usefixtures("setup_homogeneous_graph")
-    def test_get_schema(self, setup_homogeneous_graph):
-        self.G = setup_homogeneous_graph
-
+    def test_get_schema(self):
         # Get the graph schema in JSON format
         schema = self.G.get_schema(format="json")
-        expected_schema = """{"graph_name":"ERGraph","nodes":{"Entity":{"primary_key":"id","attributes":{"id":{"data_type":"STRING","default_value":null},"entity_type":{"data_type":"STRING","default_value":null},"description":{"data_type":"STRING","default_value":null},"source_id":{"data_type":"STRING","default_value":null}}}},"edges":{"relationship":{"is_directed_edge":true,"from_node_type":"Entity","to_node_type":"Entity","attributes":{"weight":{"data_type":"DOUBLE","default_value":null},"description":{"data_type":"STRING","default_value":null},"keywords":{"data_type":"STRING","default_value":null},"source_id":{"data_type":"STRING","default_value":null}}}}}"""
-        assert (
-            expected_schema in schema
-        ), f"Expected schema to contain {expected_schema}, got {schema}"
+        assert isinstance(schema, str)
+        schema_dict = json.loads(schema)
+        expected_schema_dict = {
+            "graph_name": "ERGraph",
+            "nodes": {
+                "Entity": {
+                    "primary_key": "id",
+                    "attributes": {
+                        "id": {"data_type": "STRING", "default_value": None},
+                        "entity_type": {"data_type": "STRING", "default_value": None},
+                        "description": {"data_type": "STRING", "default_value": None},
+                        "source_id": {"data_type": "STRING", "default_value": None},
+                    },
+                    "vector_attributes": {},
+                }
+            },
+            "edges": {
+                "relationship": {
+                    "is_directed_edge": True,
+                    "from_node_type": "Entity",
+                    "to_node_type": "Entity",
+                    "attributes": {
+                        "weight": {"data_type": "DOUBLE", "default_value": None},
+                        "description": {"data_type": "STRING", "default_value": None},
+                        "keywords": {"data_type": "STRING", "default_value": None},
+                        "source_id": {"data_type": "STRING", "default_value": None},
+                    },
+                }
+            },
+        }
+        assert schema_dict == expected_schema_dict
 
         # Get the graph schema in Dict format
         schema = self.G.get_schema(format="dict")
+        assert isinstance(schema, dict)
         assert schema["graph_name"] == "ERGraph"
         assert "Entity" in schema["nodes"]
         assert "relationship" in schema["edges"]
         assert schema["edges"]["relationship"]["is_directed_edge"] is True
 
-    @pytest.mark.usefixtures("setup_homogeneous_graph")
-    def test_from_db(self, setup_homogeneous_graph):
-        self.G = setup_homogeneous_graph
+    def test_from_db(self):
         G = Graph.from_db(graph_name=self.G.name)
         # Get the graph schema in Dict format
         schema = G.get_schema(format="dict")
@@ -519,9 +532,7 @@ class TestGraph(TestBaseGraph):
         # Generate the LoadingJobConfig from the dictionary
         return LoadingJobConfig.ensure_config(config_dict)
 
-    @pytest.mark.usefixtures("setup_homogeneous_graph")
-    def test_loading_job(self, setup_homogeneous_graph):
-        self.G = setup_homogeneous_graph
+    def test_loading_job(self):
         # Load data
         loading_job_config = self.create_loading_job_config()
         assert loading_job_config is not None

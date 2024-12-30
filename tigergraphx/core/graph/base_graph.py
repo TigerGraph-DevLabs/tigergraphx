@@ -1,5 +1,6 @@
 import logging
-from typing import Optional, Dict, List, Literal
+from typing import Any, Dict, List, Literal, Optional, Tuple
+from pathlib import Path
 import pandas as pd
 
 from tigergraphx.config import (
@@ -15,12 +16,13 @@ from tigergraphx.core.graph.gsql import (
     CREATE_QUERY_API_GET_NODE_EDGES,
 )
 from tigergraphx.core.managers import (
+    SchemaManager,
+    DataManager,
     NodeManager,
     EdgeManager,
     QueryManager,
-    SchemaManager,
     StatisticsManager,
-    DataManager,
+    VectorManager,
 )
 
 logger = logging.getLogger(__name__)
@@ -29,11 +31,12 @@ logger = logging.getLogger(__name__)
 class BaseGraph:
     def __init__(
         self,
-        graph_schema: GraphSchema,
+        graph_schema: GraphSchema | Dict | str | Path,
         tigergraph_connection_config: Optional[TigerGraphConnectionConfig] = None,
         drop_existing_graph: bool = False,
     ):
         # Initialize the graph context with the provided schema and connection config
+        graph_schema = GraphSchema.ensure_config(graph_schema)
         self._context = GraphContext(
             graph_schema=graph_schema,
             tigergraph_connection_config=tigergraph_connection_config,
@@ -59,6 +62,7 @@ class BaseGraph:
         self._edge_manager = EdgeManager(self._context)
         self._statistics_manager = StatisticsManager(self._context)
         self._query_manager = QueryManager(self._context)
+        self._vector_manager = VectorManager(self._context)
 
         # Create the schema, drop the graph first if drop_existing_graph is True
         schema_is_created = self._schema_manager.create_schema(
@@ -108,6 +112,9 @@ class BaseGraph:
     def create_schema(self, drop_existing_graph=False) -> bool:
         return self._schema_manager.create_schema(drop_existing_graph)
 
+    def drop_graph(self) -> None:
+        return self._schema_manager.drop_graph()
+
     # ------------------------------ Data Loading Operations ------------------------------
     def load_data(self, loading_job_config: LoadingJobConfig):
         return self._data_manager.load_data(loading_job_config)
@@ -115,6 +122,14 @@ class BaseGraph:
     # ------------------------------ Node Operations ------------------------------
     def _add_node(self, node_id: str, node_type: str, **attr):
         return self._node_manager.add_node(node_id, node_type, **attr)
+
+    def _add_nodes_from(
+        self,
+        nodes_for_adding: List[str | Tuple[str, Dict[str, Any]]],
+        node_type: str,
+        **attr,
+    ):
+        return self._node_manager.add_nodes_from(nodes_for_adding, node_type, **attr)
 
     def _remove_node(self, node_id: str, node_type: str) -> bool:
         return self._node_manager.remove_node(node_id, node_type)
@@ -135,6 +150,9 @@ class BaseGraph:
         return self._node_manager.get_node_edges(
             node_id, node_type, edge_types, num_edge_samples
         )
+
+    def clear(self) -> bool:
+        return self._node_manager.clear()
 
     # ------------------------------ Edge Operations ------------------------------
     def _add_edge(
@@ -227,6 +245,21 @@ class BaseGraph:
 
     def _get_neighbors_from_spec(self, spec: NeighborSpec) -> pd.DataFrame | None:
         return self._query_manager.get_neighbors_from_spec(spec)
+
+    # ------------------------------ Vector Operations ------------------------------
+    def _vector_search(
+        self,
+        query_vector: List[float],
+        vector_attribute_name: str,
+        node_type: str,
+        k: int = 10,
+    ) -> Dict[str, float]:
+        return self._vector_manager.vector_search(
+            query_vector=query_vector,
+            vector_attribute_name=vector_attribute_name,
+            node_type=node_type,
+            k=k,
+        )
 
     # ------------------------------ Utilities ------------------------------
     @staticmethod

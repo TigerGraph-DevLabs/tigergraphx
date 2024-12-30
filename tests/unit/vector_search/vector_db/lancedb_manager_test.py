@@ -67,47 +67,8 @@ class TestLanceDBManager:
             ]
         )
 
-        # Insert data
-        manager.insert_data(data, overwrite=True)
-
-        # Assert that create_table was called with overwrite
-        assert manager._connection.create_table.call_count == 2
-
-        # Test inserting without overwrite
-        manager.insert_data(data, overwrite=False)
-        assert manager._connection.create_table.call_count == 2
-        assert manager._table.add.call_count == 1
-
-    def test_delete_data(self, lancedb_manager):
-        manager = lancedb_manager
-
-        # Mock filtered data to be deleted
-        manager._table.search.return_value.to_list.return_value = [{"id": "1"}]
-
-        # Call delete_data with a condition
-        filter_conditions = {"id": "1"}
-        manager.delete_data(filter_conditions)
-
-        # Ensure delete was called on each matching row
-        assert manager._table.delete.call_count == 1
-
-    def test_update_data(self, lancedb_manager):
-        manager = lancedb_manager
-
-        # Mock data to be updated
-        manager._table.search.return_value.to_list.return_value = [
-            {"id": "1", "text": "old text"}
-        ]
-
-        # Define filter and new data
-        filter_conditions = {"id": "1"}
-        new_data = {"text": "new text"}
-
-        # Update data
-        manager.update_data(filter_conditions, new_data)
-
-        # Ensure the original row was deleted and new row was added
-        assert manager._table.delete.call_count == 1
+        # Test inserting
+        manager.insert_data(data)
         assert manager._table.add.call_count == 1
 
     def test_query(self, lancedb_manager):

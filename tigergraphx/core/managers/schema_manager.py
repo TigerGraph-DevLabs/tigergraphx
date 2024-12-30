@@ -28,12 +28,13 @@ class SchemaManager(BaseManager):
         logger.info("Checking if graph exists: %s", self._graph_schema.graph_name)
         is_graph_existing = self._check_graph_exists()
         if drop_existing_graph and is_graph_existing:
-            gsql_script = self._create_gsql_drop_graph(self._graph_schema.graph_name)
-            result = self._connection.gsql(gsql_script)
+            self.drop_graph()
 
         # Create the schema
         if not is_graph_existing or drop_existing_graph:
-            gsql_script = self._create_gsql_graph_schema(self._graph_schema)
+            gsql_script = self._create_gsql_graph_schema(
+                self._graph_schema
+            ) + self._create_gsql_add_vector_attr(self._graph_schema)
             result = self._connection.gsql(gsql_script)
             if "Failed to create schema change jobs" in result:
                 error_msg = (
@@ -43,6 +44,10 @@ class SchemaManager(BaseManager):
                 raise RuntimeError(error_msg)
             return True
         return False
+
+    def drop_graph(self) -> None:
+        gsql_script = self._create_gsql_drop_graph(self._graph_schema.graph_name)
+        self._connection.gsql(gsql_script)
 
     @staticmethod
     def get_schema_from_db(
@@ -177,7 +182,13 @@ DROP GRAPH {graph_name}
 
         # Generating the full schema string
         graph_name = schema_config.graph_name
-        gsql_script = f"""
+        if len(node_definitions) + len(edge_definitions) == 0:
+            gsql_script = f"""
+# 1. Create graph
+CREATE GRAPH {graph_name} ()
+"""
+        else:
+            gsql_script = f"""
 # 1. Create graph
 CREATE GRAPH {graph_name} ()
 
@@ -195,6 +206,90 @@ RUN SCHEMA_CHANGE JOB schema_change_job_for_graph_{graph_name}
 
 # 4. Drop schema_change job
 DROP JOB schema_change_job_for_graph_{graph_name}
+
+# 5. Install functions in the package gds
+USE GLOBAL
+IMPORT PACKAGE GDS
+INSTALL FUNCTION GDS.*
 """
-        logger.debug("GSQL script for dropping graph: %s", gsql_script)
+        logger.debug("GSQL script for creating graph: %s", gsql_script)
         return gsql_script.strip()
+
+    @staticmethod
+    def _create_gsql_add_vector_attr(schema_config: "GraphSchema") -> str:
+        """
+        Generate the GSQL script to add vector attributes to vertices.
+
+        Args:
+            schema_config (GraphSchema): The graph schema configuration.
+
+        Returns:
+            str: The generated GSQL script.
+        """
+        # List to hold GSQL commands for adding vector attributes
+        vector_attribute_statements = []
+
+        # List to hold GSQL commands for creating vector search query
+        query_statements = []
+
+        # Iterate over all nodes and their vector attributes
+        for node_type, node_schema in schema_config.nodes.items():
+            if node_schema.vector_attributes:
+                for (
+                    vector_attribute_name,
+                    vector_attr,
+                ) in node_schema.vector_attributes.items():
+                    # Extract the fields from VectorAttributeSchema
+                    dimension = vector_attr.dimension
+                    index_type = vector_attr.index_type
+                    data_type = vector_attr.data_type
+                    metric = vector_attr.metric
+
+                    # Generate GSQL for each vector attribute in the node schema
+                    vector_attribute_statements.append(
+                        f"ALTER VERTEX {node_type} ADD VECTOR ATTRIBUTE {vector_attribute_name}"
+                        f'(DIMENSION={dimension}, INDEXTYPE="{index_type}", '
+                        f'DATATYPE="{data_type}", METRIC="{metric}");'
+                    )
+                    query_statements.append(
+                        f"""
+CREATE OR REPLACE QUERY api_vector_search_{node_type}_{vector_attribute_name} (
+  UINT k=10,
+  LIST<float> query_vector
+) SYNTAX v3 {{
+  MapAccum<Vertex, Float> @@map_node_distance;
+
+  v = vectorSearch({{{node_type}.{vector_attribute_name}}}, query_vector, k, {{ distance_map: @@map_node_distance}});
+
+  PRINT @@map_node_distance AS map_node_distance;
+}}
+""".strip()
+                    )
+
+        # Combine all statements and wrap them into the full GSQL script
+        if len(vector_attribute_statements) == 0:
+            gsql_script = ""
+        else:
+            gsql_script = f"""
+# 1. Use graph
+USE GRAPH {schema_config.graph_name}
+
+# 2. Create schema_change job
+CREATE SCHEMA_CHANGE JOB change_schema_of_{schema_config.graph_name} FOR GRAPH {schema_config.graph_name} {{
+  # 2.1 Add vector attributes
+  {'\n  '.join(vector_attribute_statements)}
+}}
+
+# 3. Run schema_change job
+RUN SCHEMA_CHANGE JOB change_schema_of_{schema_config.graph_name}
+
+# 4. Drop schema_change job
+DROP JOB change_schema_of_{schema_config.graph_name}
+"""
+            if len(query_statements) > 0:
+                gsql_script = f"""
+{gsql_script}
+{'\n'.join(query_statements)}
+"""
+        logger.debug("GSQL script for adding vector attributes: %s", gsql_script)
+        return gsql_script.rstrip()

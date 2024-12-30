@@ -20,9 +20,9 @@ class NodeSchema(BaseConfig):
     attributes: Dict[str, AttributeSchema] = Field(
         description="A dictionary of attribute names to their schemas."
     )
-    vector_attributes: Optional[Dict[str, VectorAttributeSchema]] = Field(
-        default=None,
-        description="A dictionary of vector attribute names to their schemas."
+    vector_attributes: Dict[str, VectorAttributeSchema] = Field(
+        default={},
+        description="A dictionary of vector attribute names to their schemas.",
     )
 
     @model_validator(mode="before")
@@ -41,6 +41,12 @@ class NodeSchema(BaseConfig):
             values["attributes"] = {
                 k: create_attribute_schema(v) for k, v in attributes.items()
             }
+        vector_attributes = values.get("vector_attributes", {})
+        if vector_attributes:
+            values["vector_attributes"] = {
+                k: create_vector_attribute_schema(v)
+                for k, v in vector_attributes.items()
+            }
         return values
 
     @model_validator(mode="after")
@@ -58,7 +64,7 @@ class NodeSchema(BaseConfig):
 def create_node_schema(
     primary_key: str,
     attributes: AttributesType,
-    vector_attributes: VectorAttributesType,
+    vector_attributes: Optional[VectorAttributesType] = None,
 ) -> NodeSchema:
     """
     Create a NodeSchema with simplified syntax.
@@ -74,10 +80,12 @@ def create_node_schema(
     attribute_schemas = {
         name: create_attribute_schema(attr) for name, attr in attributes.items()
     }
-    vector_attribute_schemas = {
-        name: create_vector_attribute_schema(attr)
-        for name, attr in vector_attributes.items()
-    }
+    vector_attribute_schemas = {}
+    if vector_attributes:
+        vector_attribute_schemas = {
+            name: create_vector_attribute_schema(attr)
+            for name, attr in vector_attributes.items()
+        }
     return NodeSchema(
         primary_key=primary_key,
         attributes=attribute_schemas,

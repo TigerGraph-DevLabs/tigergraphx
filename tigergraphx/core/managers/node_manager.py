@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, List
+from typing import Any, Dict, List, Tuple
 from urllib.parse import quote
 
 from .base_manager import BaseManager
@@ -19,6 +19,49 @@ class NodeManager(BaseManager):
             self._connection.upsertVertex(node_type, node_id, attr)
         except Exception as e:
             logger.error(f"Error adding node {node_id}: {e}")
+            return None
+
+    def add_nodes_from(
+        self,
+        nodes_for_adding: List[str | Tuple[str, Dict[str, Any]]],
+        node_type: str,
+        **attr,
+    ):
+        nodes_to_upsert = []
+
+        # Process each node
+        for node in nodes_for_adding:
+            if isinstance(node, str):
+                # If node is just a node ID, create an empty attribute dictionary
+                node_id = node
+                attributes = {}
+            elif isinstance(node, tuple) and len(node) == 2:
+                node_id, attributes = node
+                if not isinstance(attributes, dict):
+                    logger.error(
+                        f"Attributes for node {node_id} should be a dictionary."
+                    )
+                    return None
+            else:
+                logger.error(
+                    f"Invalid node format: {node}. Expected str or Tuple[str, Dict[str, Any]]."
+                )
+                return None
+
+            # Combine node-specific attributes with the common attributes
+            node_data = {**attributes, **attr}
+
+            # Append to vertices list
+            nodes_to_upsert.append((node_id, node_data))
+
+        # Call upsertVertices with the list of nodes and attributes
+        try:
+            result = self._connection.upsertVertices(
+                vertexType=node_type, vertices=nodes_to_upsert
+            )
+            return result
+        except Exception as e:
+            logger.error(f"Error adding nodes: {e}")
             return None
 
     def remove_node(self, node_id: str, node_type: str) -> bool:
@@ -72,3 +115,13 @@ class NodeManager(BaseManager):
         except Exception as e:
             logger.error(f"Error retrieving edges for node {node_id}: {e}")
         return []
+
+    def clear(self) -> bool:
+        try:
+            # Attempt to delete vertices for each node type
+            for node_type in self._graph_schema.nodes:
+                self._connection.delVertices(node_type)
+            return True
+        except Exception as e:
+            logger.error(f"Error clearing graph: {e}")
+            return False

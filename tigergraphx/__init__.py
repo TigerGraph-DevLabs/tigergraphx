@@ -56,9 +56,11 @@ from .vector_search import (
     BaseEmbedding,
     OpenAIEmbedding,
     BaseVectorDB,
+    TigerVectorManager,
     LanceDBManager,
     NanoVectorDBManager,
     BaseSearchEngine,
+    TigerVectorSearchEngine,
     LanceDBSearchEngine,
     NanoVectorDBSearchEngine,
 )
@@ -110,6 +112,7 @@ __all__ = [
     "BaseEmbeddingConfig",
     "OpenAIEmbeddingConfig",
     "BaseVectorDBConfig",
+    "TigerVectorConfig",
     "LanceDBConfig",
     "NanoVectorDBConfig",
     # GraphRAG
@@ -121,10 +124,11 @@ __all__ = [
     "BaseEmbedding",
     "OpenAIEmbedding",
     "BaseVectorDB",
-    "TigerVectorConfig",
+    "TigerVectorManager",
     "LanceDBManager",
     "NanoVectorDBManager",
     "BaseSearchEngine",
+    "TigerVectorSearchEngine",
     "LanceDBSearchEngine",
     "NanoVectorDBSearchEngine",
     # Pipelines

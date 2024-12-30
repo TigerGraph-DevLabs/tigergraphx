@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import HttpUrl, Field, model_validator, field_validator
+from pydantic import HttpUrl, Field, model_validator
 
 from tigergraphx.config import BaseConfig
 
@@ -19,10 +19,10 @@ class TigerGraphConnectionConfig(BaseConfig):
         description="The host URL for the TigerGraph connection.",
     )
     restpp_port: int | str = Field(
-        default="9000", description="The port for REST++ API."
+        default="14240", description="The port for REST++ API."
     )
-    graph_studio_port: int | str = Field(
-        default="14240", description="The port for Graph Studio."
+    gsql_port: int | str = Field(
+        default="14240", description="The port for GSQL."
     )
 
     # User/password authentication
@@ -54,58 +54,47 @@ class TigerGraphConnectionConfig(BaseConfig):
         - username/password together, or
         - secret, or
         - api_token.
+        If all fields are empty, username/password will default.
         """
+        # Extract the values of the fields
         username = values.get("username")
         password = values.get("password")
         secret = values.get("secret")
         api_token = values.get("api_token")
 
-        # Case 1: Both username and password provided (valid)
+        # Case 1: If all fields are empty, set default values for username and password
+        if not username and not password and not secret and not api_token:
+            # If all fields are empty, username/password will default.
+            return values
+
+        # Case 2: Both username and password provided (valid)
         if username and password:
-            # Case 1A: Ensure secret and api_token are not provided
+            # Case 2A: Ensure secret and api_token are not provided
             if secret or api_token:
                 raise ValueError(
                     "You can only use 'username/password' OR 'secret' OR 'api_token', not both."
                 )
             return values
 
-        # Case 2: Secret is provided (valid)
+        # Case 3: Secret is provided (valid)
         if secret:
-            # Case 2A: Ensure username/password and api_token are not provided
+            # Case 3A: Ensure username/password and api_token are not provided
             if username or password or api_token:
                 raise ValueError(
                     "You can only use 'username/password' OR 'secret' OR 'api_token', not both."
                 )
             return values
 
-        # Case 3: API token is provided (valid)
+        # Case 4: API token is provided (valid)
         if api_token:
-            # Case 3A: Ensure username/password and secret are not provided
+            # Case 4A: Ensure username/password and secret are not provided
             if username or password or secret:
                 raise ValueError(
                     "You can only use 'username/password' OR 'secret' OR 'api_token', not both."
                 )
             return values
 
-        # Case 4: If none of the valid authentication methods are provided
+        # Case 5: If none of the valid authentication methods are provided
         raise ValueError(
             "You must provide either 'username/password', 'secret', or 'api_token' for authentication."
         )
-
-    @field_validator("host", mode="before")
-    def add_http_if_missing(cls, value: str | HttpUrl) -> str | HttpUrl:
-        """
-        Ensure the host URL has an HTTP or HTTPS scheme.
-
-        Args:
-            value (str | HttpUrl): The input host value.
-
-        Returns:
-            str | HttpUrl: The host value with an HTTP or HTTPS scheme.
-
-        Raises:
-            ValueError: If the host is invalid.
-        """
-        if isinstance(value, str) and not value.startswith(("http://", "https://")):
-            value = f"http://{value}"
-        return value

@@ -7,10 +7,12 @@ class TestNodeManager:
     @pytest.fixture(autouse=True)
     def setup(self):
         """Set up a mock context and NodeManager for all tests."""
+        # Mocking the connection and graph schema
         self.mock_connection = MagicMock()
         mock_context = MagicMock()
         mock_context.connection = self.mock_connection  # Use the mocked connection
-        mock_context.graph_schema = MagicMock()
+        self.mock_graph_schema = MagicMock()
+        mock_context.graph_schema = self.mock_graph_schema
         self.node_manager = NodeManager(mock_context)
 
     def test_add_node_success(self):
@@ -36,6 +38,51 @@ class TestNodeManager:
             node_type, node_id, attributes
         )
         assert result is None
+
+    def test_add_node_from_single_node(self):
+        """Test adding a single node with common attributes."""
+        self.mock_connection.upsertVertices.return_value = 1
+        result = self.node_manager.add_nodes_from(["node1"], "MyNode", size=10)
+        assert result == 1
+        self.mock_connection.upsertVertices.assert_called_once_with(
+            vertexType="MyNode",
+            vertices=[("node1", {"size": 10})],
+        )
+
+    def test_add_node_from_multiple_nodes(self):
+        """Test adding multiple nodes with individual and common attributes."""
+        self.mock_connection.upsertVertices.return_value = 2
+        result = self.node_manager.add_nodes_from(
+            [("node1", {"color": "red"}), "node2"], "MyNode", size=10
+        )
+        assert result == 2
+        self.mock_connection.upsertVertices.assert_called_once_with(
+            vertexType="MyNode",
+            vertices=[
+                ("node1", {"color": "red", "size": 10}),
+                ("node2", {"size": 10}),
+            ],
+        )
+
+    def test_add_node_from_invalid_node_format(self):
+        """Test that an invalid node format raises an error."""
+        result = self.node_manager.add_nodes_from(
+            [("node1", "invalid")],  # pyright: ignore
+            "MyNode",
+            size=10,
+        )
+        assert result is None
+        self.mock_connection.upsertVertices.assert_not_called()
+
+    def test_add_node_from_upsert_exception(self):
+        """Test that an exception in upsertVertices is handled correctly."""
+        self.mock_connection.upsertVertices.side_effect = Exception("Upsert error")
+        result = self.node_manager.add_nodes_from(["node1"], "MyNode", size=10)
+        assert result is None
+        self.mock_connection.upsertVertices.assert_called_once_with(
+            vertexType="MyNode",
+            vertices=[("node1", {"size": 10})],
+        )
 
     def test_remove_node_success(self):
         """Test that remove_node returns True when a node is successfully removed."""
@@ -150,3 +197,19 @@ class TestNodeManager:
             },
         )
         assert result == []
+
+    def test_clear(self):
+        """Test the clear method of NodeManager."""
+        # Define mock behavior
+        self.mock_graph_schema.nodes = {"Entity1": {}, "Entity2": {}}
+        self.mock_connection.delVertices = MagicMock()
+
+        # Run the clear method
+        self.node_manager.clear()
+
+        # Assert delVertices was called for each node type
+        self.mock_connection.delVertices.assert_any_call("Entity1")
+        self.mock_connection.delVertices.assert_any_call("Entity2")
+
+        # Check that delVertices was called exactly twice, once for each node type
+        assert self.mock_connection.delVertices.call_count == 2

@@ -1,4 +1,5 @@
-from typing import List, Dict, Optional, Any
+from typing import Any, Dict, List, Optional, Tuple
+from pathlib import Path
 import pandas as pd
 
 from .base_graph import BaseGraph
@@ -22,7 +23,7 @@ class Graph(BaseGraph):
 
     def __init__(
         self,
-        graph_schema: GraphSchema,
+        graph_schema: GraphSchema | Dict | str | Path,
         tigergraph_connection_config: Optional[TigerGraphConnectionConfig] = None,
         drop_existing_graph: bool = False,
     ):
@@ -31,9 +32,9 @@ class Graph(BaseGraph):
 
         Args:
             graph_schema (GraphSchema): The schema of the graph.
-            tigergraph_connection_config (Optional[TigerGraphConnectionConfig], optional): 
+            tigergraph_connection_config (Optional[TigerGraphConnectionConfig], optional):
                 Configuration for TigerGraph connection. Defaults to None.
-            drop_existing_graph (bool, optional): Whether to drop the existing graph if it exists. 
+            drop_existing_graph (bool, optional): Whether to drop the existing graph if it exists.
                 Defaults to False.
         """
         super().__init__(
@@ -43,9 +44,7 @@ class Graph(BaseGraph):
         )
 
     # ------------------------------ Node Operations ------------------------------
-    def add_node(
-        self, node_id: str, node_type: str = "", **attr: Dict[str, Any]
-    ) -> None:
+    def add_node(self, node_id: str, node_type: str = "", **attr) -> None:
         """
         Add a node to the graph.
 
@@ -56,6 +55,26 @@ class Graph(BaseGraph):
         """
         node_type = self._validate_node_type(node_type)
         self._add_node(node_id, node_type, **attr)
+
+    def add_nodes_from(
+        self,
+        nodes_for_adding: List[str | Tuple[str, Dict[str, Any]]],
+        node_type: str = "",
+        **attr,
+    ):
+        """
+        Add nodes from the given list, with each node being either an ID or a tuple of ID and attributes.
+
+        Args:
+            nodes_for_adding: List of node IDs or tuples of node ID and attribute dictionaries.
+            node_type: Type of the node (e.g., "MyNode").
+            **attr: Common attributes to be added to all nodes.
+
+        Returns:
+            None if there was an error; otherwise, it calls `upsertVertices` on the connection.
+        """
+        node_type = self._validate_node_type(node_type)
+        return self._add_nodes_from(nodes_for_adding, node_type, **attr)
 
     def remove_node(self, node_id: str, node_type: str = "") -> bool:
         """
@@ -136,7 +155,7 @@ class Graph(BaseGraph):
         src_node_type: str = "",
         edge_type: str = "",
         tgt_node_type: str = "",
-        **attr: Dict[str, Any],
+        **attr,
     ) -> None:
         """
         Add an edge to the graph.
@@ -329,6 +348,35 @@ class Graph(BaseGraph):
             filter_expression=filter_expression,
             return_attributes=return_attributes,
             limit=limit,
+        )
+
+    # ------------------------------ Vector Operations ------------------------------
+    def vector_search(
+        self,
+        query_vector: List[float],
+        vector_attribute_name: str,
+        node_type: str = "",
+        k: int = 10,
+    ) -> Dict[str, float]:
+        """
+        Perform a vector search to find the nearest nodes based on a query vector.
+
+        Args:
+            node_type (str): The type of node to search.
+            vector_attribute_name (str): The name of the vector attribute to search against.
+            query_vector (List[float]): The query vector to use for the search.
+            k (int, optional): The number of nearest neighbors to return. Defaults to 10.
+
+        Returns:
+            Dict[str, float]: A dictionary where keys are node names and values are the distances
+            from the query vector to each node.
+        """
+        node_type = self._validate_node_type(node_type)
+        return self._vector_search(
+            query_vector=query_vector,
+            vector_attribute_name=vector_attribute_name,
+            node_type=node_type,
+            k=k,
         )
 
     # ------------------------------ Utilities ------------------------------

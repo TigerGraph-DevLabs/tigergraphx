@@ -22,7 +22,7 @@ class GraphContext:
             graphname=self.graph_schema.graph_name,
             host=str(tigergraph_connection_config.host),
             restppPort=tigergraph_connection_config.restpp_port,
-            gsPort=tigergraph_connection_config.graph_studio_port,
+            gsPort=tigergraph_connection_config.gsql_port,
             username=tigergraph_connection_config.username or "",
             password=tigergraph_connection_config.password or "",
             gsqlSecret=tigergraph_connection_config.secret or "",

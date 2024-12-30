@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 import pandas as pd
 
 from .base_graph import BaseGraph
@@ -54,7 +54,7 @@ class HomoGraph(BaseGraph):
         )
 
     # ------------------------------ Node Operations ------------------------------
-    def add_node(self, node_id: str, **attr: Dict[str, Any]) -> None:
+    def add_node(self, node_id: str, **attr) -> None:
         """
         Add a node to the graph.
 
@@ -63,6 +63,23 @@ class HomoGraph(BaseGraph):
             **attr (Dict[str, Any]): Additional attributes for the node.
         """
         self._add_node(node_id, self.node_type, **attr)
+
+    def add_nodes_from(
+        self,
+        nodes_for_adding: List[str | Tuple[str, Dict[str, Any]]],
+        **attr,
+    ):
+        """
+        Add nodes from the given list, with each node being either an ID or a tuple of ID and attributes.
+
+        Args:
+            nodes_for_adding: List of node IDs or tuples of node ID and attribute dictionaries.
+            **attr: Common attributes to be added to all nodes.
+
+        Returns:
+            None if there was an error; otherwise, it calls `upsertVertices` on the connection.
+        """
+        return self._add_nodes_from(nodes_for_adding, self.node_type, **attr)
 
     def remove_node(self, node_id: str) -> bool:
         """
@@ -125,7 +142,9 @@ class HomoGraph(BaseGraph):
         return result
 
     # ------------------------------ Edge Operations ------------------------------
-    def add_edge(self, src_node_id: str, tgt_node_id: str, **attr: Dict[str, Any]) -> None:
+    def add_edge(
+        self, src_node_id: str, tgt_node_id: str, **attr
+    ) -> None:
         """
         Add an edge to the graph.
 
@@ -260,4 +279,30 @@ class HomoGraph(BaseGraph):
             filter_expression=filter_expression,
             return_attributes=return_attributes,
             limit=limit,
+        )
+
+    # ------------------------------ Vector Operations ------------------------------
+    def vector_search(
+        self,
+        query_vector: List[float],
+        vector_attribute_name: str,
+        k: int = 10,
+    ) -> Dict[str, float]:
+        """
+        Perform a vector search to find the nearest nodes based on a query vector.
+
+        Args:
+            vector_attribute_name (str): The name of the vector attribute to search against.
+            query_vector (List[float]): The query vector to use for the search.
+            k (int, optional): The number of nearest neighbors to return. Defaults to 10.
+
+        Returns:
+            Dict[str, float]: A dictionary where keys are node names and values are the distances
+            from the query vector to each node.
+        """
+        return self._vector_search(
+            vector_attribute_name=vector_attribute_name,
+            query_vector=query_vector,
+            node_type=self.node_type,
+            k=k,
         )

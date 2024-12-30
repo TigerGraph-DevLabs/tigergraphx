@@ -28,19 +28,6 @@ class TestNanoVectorDBManager:
         mock_db.insert_data(data)
         mock_db._db.upsert.assert_called_once()
 
-    def test_delete_data(self, mock_db):
-        filter_conditions = {"attribute": "value1"}
-        mock_db._db.query.return_value = [{"__id__": "id1"}]
-        mock_db.delete_data(filter_conditions)
-        mock_db._db.delete.assert_called_once_with(["id1"])
-
-    def test_update_data(self, mock_db):
-        filter_conditions = {"attribute": "value1"}
-        new_data = {"attribute": "new_value"}
-        mock_db._db.query.return_value = [{"__id__": "id1", "attribute": "value1"}]
-        mock_db.update_data(filter_conditions, new_data)
-        mock_db._db.upsert.assert_called_once()
-
     def test_query(self, mock_db):
         query_embedding = np.random.rand(128).tolist()
         mock_db._db.query.return_value = [{"__id__": "id1"}, {"__id__": "id2"}]

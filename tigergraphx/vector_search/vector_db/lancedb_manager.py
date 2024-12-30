@@ -83,63 +83,17 @@ class LanceDBManager(BaseVectorDB):
         """
         return self._table
 
-    def insert_data(self, data: pd.DataFrame, overwrite: bool = True) -> None:
+    def insert_data(self, data: pd.DataFrame) -> None:
         """
         Insert data into the LanceDB table.
 
         Args:
             data (pd.DataFrame): DataFrame containing the data to be inserted.
-            overwrite (bool, optional): Whether to overwrite existing data. Defaults to True.
         """
         records = data.to_dict(orient="records")
-        if overwrite:
-            self._table = self._connection.create_table(
-                self.TABLE_NAME, data=records, mode="overwrite"
-            )
-        else:
-            if not self._table:
-                self._table = self._connection.open_table(self.TABLE_NAME)
-            self._table.add(records)
-
-    def delete_data(self, filter_conditions: Dict[str, Any]) -> None:
-        """
-        Delete data from LanceDB based on filter conditions.
-
-        Args:
-            filter_conditions (Dict[str, Any]): Conditions to filter rows for deletion.
-        """
         if not self._table:
-            raise ValueError(
-                "Table does not exist. Please ensure the table is created first."
-            )
-
-        # Retrieve filtered rows and delete them
-        for row in self._table.search(filter_conditions).to_list():
-            self._table.delete(row["id"])
-
-    def update_data(
-        self, filter_conditions: Dict[str, Any], new_data: Dict[str, Any]
-    ) -> None:
-        """
-        Update data in the LanceDB table based on filter conditions.
-
-        Args:
-            filter_conditions (Dict[str, Any]): Conditions to filter rows for updating.
-            new_data (Dict[str, Any]): Data to update matching rows with.
-        """
-        if not self._table:
-            raise ValueError(
-                "Table does not exist. Please ensure the table is created first."
-            )
-
-        # Retrieve rows matching the filter
-        rows_to_update = self._table.search(filter_conditions).to_list()
-
-        # Delete and re-insert updated rows
-        for row in rows_to_update:
-            self._table.delete(row["id"])
-            updated_row = {**row, **new_data}
-            self._table.add([updated_row])
+            self._table = self._connection.open_table(self.TABLE_NAME)
+        self._table.add(records)
 
     def query(
         self, query_embedding: List[float], k: int = 10, **kwargs: Any
