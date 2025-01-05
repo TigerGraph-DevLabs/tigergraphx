@@ -12,7 +12,7 @@
         <link rel="prev" href="../installation/">
       
       
-        <link rel="next" href="../../graphrag/graphrag_overview/">
+        <link rel="next" href="../tigervector_quick_start/">
       
       
       <link rel="icon" href="../../images/logo.png">
@@ -697,6 +697,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#clear-and-drop-a-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clear and Drop a Graph
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Clear and Drop a Graph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clear-the-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clear the Graph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drop-the-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Drop the Graph
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#whats-next" class="md-nav__link">
     <span class="md-ellipsis">
       What’s Next?
@@ -709,6 +742,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tigervector_quick_start/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TigerVector Quick Start Guide
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -807,12 +861,50 @@
   
   
   
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Supporting Microsoft's GraphRAG
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Supporting Microsoft's GraphRAG
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../../graphrag/msft_graphrag_1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Supporting Microsoft's GraphRAG: Part 1
+    Part 1
   </span>
   
 
@@ -833,7 +925,7 @@
         
   
   <span class="md-ellipsis">
-    Supporting Microsoft's GraphRAG: Part 2
+    Part 2
   </span>
   
 
@@ -854,11 +946,40 @@
         
   
   <span class="md-ellipsis">
-    Supporting Microsoft's GraphRAG: Part 3
+    Part 3
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graphrag/msft_graphrag_4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part 4
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -2418,6 +2539,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#clear-and-drop-a-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clear and Drop a Graph
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Clear and Drop a Graph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#clear-the-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clear the Graph
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drop-the-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Drop the Graph
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#whats-next" class="md-nav__link">
     <span class="md-ellipsis">
       What’s Next?
@@ -2679,6 +2833,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
                     processEnvironments: true
                 },
                 displayAlign: 'center',
+                messageStyle: 'none',
                 CommonHTML: {
                     linebreaks: {
                     automatic: true
@@ -2909,8 +3064,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span> <span class="nn">tigergraphx</span> <span class="kn">import</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">GraphSchema</span><span class="p">,</span> <span class="n">TigerGraphConnectionConfig</span>
-<span class="n">graph_schema</span> <span class="o">=</span> <span class="n">GraphSchema</span><span class="o">.</span><span class="n">ensure_config</span><span class="p">({</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
+<span class="n">graph_schema</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"graph_name"</span><span class="p">:</span> <span class="s2">"Social"</span><span class="p">,</span>
     <span class="s2">"nodes"</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">"Person"</span><span class="p">:</span> <span class="p">{</span>
@@ -2931,10 +3086,10 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
             <span class="p">},</span>
         <span class="p">},</span>
     <span class="p">},</span>
-<span class="p">})</span>
+<span class="p">}</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-1">from tigergraphx import Graph, GraphSchema, TigerGraphConnectionConfig
-graph_schema = GraphSchema.ensure_config({
+<div class="clipboard-copy-txt" id="cell-1">from tigergraphx import Graph
+graph_schema = {
     "graph_name": "Social",
     "nodes": {
         "Person": {
@@ -2955,7 +3110,7 @@ graph_schema = GraphSchema.ensure_config({
             },
         },
     },
-})</div>
+}</div>
 </div>
 </div>
 </div>
@@ -2991,17 +3146,17 @@ graph_schema = GraphSchema.ensure_config({
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="n">TigerGraphConnectionConfig</span><span class="o">.</span><span class="n">ensure_config</span><span class="p">({</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">connection</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">"host"</span><span class="p">:</span> <span class="s2">"http://127.0.0.1"</span><span class="p">,</span>
     <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"tigergraph"</span><span class="p">,</span>
     <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"tigergraph"</span><span class="p">,</span>
-<span class="p">})</span>
+<span class="p">}</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-2">connection = TigerGraphConnectionConfig.ensure_config({
+<div class="clipboard-copy-txt" id="cell-2">connection = {
     "host": "http://127.0.0.1",
     "username": "tigergraph",
     "password": "tigergraph",
-})</div>
+}</div>
 </div>
 </div>
 </div>
@@ -3018,8 +3173,8 @@ graph_schema = GraphSchema.ensure_config({
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7fa9c4a4-3683-46fd-bd6a-10633cc45cff">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7fa9c4a4-3683-46fd-bd6a-10633cc45cff">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3040,6 +3195,22 @@ graph_schema = GraphSchema.ensure_config({
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">,</span> <span class="n">connection</span><span class="p">)</span>
 </pre></div>
 <div class="clipboard-copy-txt" id="cell-3">G = Graph(graph_schema, connection)</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>2024-12-30 20:08:05,978 - tigergraphx.core.graph.base_graph - INFO - Creating schema...
+2024-12-30 20:08:09,834 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
+2024-12-30 20:08:09,835 - tigergraphx.core.graph.base_graph - INFO - Installing queries...
+2024-12-30 20:09:08,310 - tigergraphx.core.graph.base_graph - INFO - Queries installed successfully.
+</pre>
 </div>
 </div>
 </div>
@@ -3710,6 +3881,146 @@ print(neighbors)</div>
 </div>
 </div>
 </div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fe6d0366-cb7e-4289-b253-a9e39029e6d2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="clear-and-drop-a-graph">Clear and Drop a Graph<a class="anchor-link" href="#clear-and-drop-a-graph">¶</a></h2><h3 id="clear-the-graph">Clear the Graph<a class="anchor-link" href="#clear-the-graph">¶</a></h3><p>To clear the data in the graph without dropping it, use the following code:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=194e3b38-d67a-47fe-9fb6-e545de9af388">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-18">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">())</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-18">print(G.clear())</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>True
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c68cdc61-41da-4923-9bcc-bfd3362b6f59">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Afterwards, you can confirm that there are no nodes in the graph by checking:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=03c18790-63fe-4330-b2fb-3173f73eb70a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-19">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">())</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-19">print(G.number_of_nodes())</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>0
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5c190374-0434-436f-841b-30c53ba63273">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="drop-the-graph">Drop the Graph<a class="anchor-link" href="#drop-the-graph">¶</a></h3><p>To clear the data and completely remove the graph—including schema, loading jobs, and queries—use the following code:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=442428db-8f75-48e7-adfd-86d0ac16fe6c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-20">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">G</span><span class="o">.</span><span class="n">drop_graph</span><span class="p">()</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-20">G.drop_graph()</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a922d3d6-6dcd-40f8-87b5-eb8a2c65eef3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -3719,6 +4030,7 @@ print(neighbors)</div>
 <hr/>
 <h2 id="whats-next">What’s Next?<a class="anchor-link" href="#whats-next">¶</a></h2><p>Now that you’ve set up your graph and performed basic operations, you can explore more advanced features of TigerGraphX:</p>
 <ul>
+<li><a href="../tigervector_quick_start">TigerVector Quick Start Guide</a>: Quickly get started with TigerGraph for storing both graph data and vectors.</li>
 <li><a href="../../graphrag/graphrag_overview">GraphRAG Overview</a>: Learn about integrating graphs with LLMs.</li>
 <li><a href="../../reference/features_overview">API Reference</a>: Dive deeper into TigerGraphX APIs.</li>
 </ul>
@@ -3781,13 +4093,13 @@ print(neighbors)</div>
         
         
           
-          <a href="../../graphrag/graphrag_overview/" class="md-footer__link md-footer__link--next" aria-label="Next: GraphRAG Overview">
+          <a href="../tigervector_quick_start/" class="md-footer__link md-footer__link--next" aria-label="Next: TigerVector Quick Start Guide">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                GraphRAG Overview
+                TigerVector Quick Start Guide
               </div>
             </div>
             <div class="md-footer__button md-icon">
