@@ -1,6 +1,6 @@
 import re
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 import pandas as pd
 
 
@@ -42,7 +42,10 @@ class ParquetProcessor:
             file.write(content)
 
     def convert_parquet_to_csv(
-        self, parquet_file_name: str, columns: List[str], csv_file_name: str
+        self,
+        parquet_file_name: str,
+        columns: List[str],
+        csv_file_name: str,
     ):
         """
         Convert a Parquet file to a CSV file with specific columns.

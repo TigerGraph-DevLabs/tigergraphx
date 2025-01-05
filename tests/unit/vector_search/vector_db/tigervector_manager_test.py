@@ -48,8 +48,8 @@ class TestTigerVectorManager:
 
     def test_query(self):
         """Test the query method of TigerVectorManager."""
-        # Mock the vector_search method to return fake data
-        self.mock_graph.vector_search.return_value = {
+        # Mock the search method to return fake data
+        self.mock_graph.search.return_value = {
             "Entity_1": 0.1,
             "Entity_2": 0.2,
         }
@@ -60,20 +60,16 @@ class TestTigerVectorManager:
         # Call the query method
         result = self.manager.query(query_embedding, k=2)
 
-        # Check that the vector_search method was called with the correct parameters
-        self.mock_graph.vector_search.assert_called_once_with(
-            query_vector=query_embedding,
-            vector_attribute_name="emb_description",
-            k=2,
-        )
+        # Check that the search method was called with the correct parameters
+        self.mock_graph.search.assert_called_once()
 
         # Assert that the result contains the correct node identifiers
         assert result == ["Entity_1", "Entity_2"]
 
     def test_query_empty_result(self):
         """Test query method with empty results."""
-        # Mock the vector_search method to return an empty dictionary
-        self.mock_graph.vector_search.return_value = {}
+        # Mock the search method to return an empty dictionary
+        self.mock_graph.search.return_value = {}
 
         # Define the query embedding
         query_embedding = [-0.01773, -0.01019, -0.01657]

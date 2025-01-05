@@ -19,6 +19,8 @@ nodes:
       name: STRING
       entity_type: STRING
       description: STRING
+    vector_attributes:
+      emb_description: 1536
   Relationship:
     primary_key: "id"
     attributes:

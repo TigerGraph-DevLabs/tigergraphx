@@ -1,11 +1,11 @@
 import pytest
 import time
 import json
+from typing import Dict
 
 from .base_graph_test import TestBaseGraph
 
 from tigergraphx.core import Graph
-from tigergraphx.config import LoadingJobConfig
 from tigergraphx.core.view.node_view import NodeView
 
 
@@ -95,18 +95,18 @@ class TestGraph1(TestBaseGraph):
             purchase_date="2024-01-12",
             quantity=15.5,
         )
-        self.G.add_edge(
-            "User_C",
-            "Product_3",
+        ebunch_to_add = [
+            ("User_C", "Product_3", {"purchase_date": "2024-01-12", "quantity": 25.5})
+        ]
+        self.G.add_edges_from(
+            ebunch_to_add,
             "User",
             "purchased",
             "Product",
-            purchase_date="2024-01-12",
-            quantity=25.5,
         )
-        self.G.add_edge(
-            "Product_1",
-            "Product_3",
+        ebunch_to_add = [("Product_1", "Product_3")]
+        self.G.add_edges_from(
+            ebunch_to_add,
             "Product",
             "similar_to",
             "Product",
@@ -451,6 +451,7 @@ class TestGraph2(TestBaseGraph):
                         "keywords": {"data_type": "STRING", "default_value": None},
                         "source_id": {"data_type": "STRING", "default_value": None},
                     },
+                    "edge_identifier": [],
                 }
             },
         }
@@ -475,7 +476,7 @@ class TestGraph2(TestBaseGraph):
         assert schema["edges"]["relationship"]["is_directed_edge"] is True
 
     # ------------------------------ Data Loading Operations ------------------------------
-    def create_loading_job_config(self) -> LoadingJobConfig:
+    def create_loading_job_config(self) -> Dict:
         """
         Generate the LoadingJobConfig using a dictionary.
         """
@@ -529,8 +530,7 @@ class TestGraph2(TestBaseGraph):
             ],
         }
 
-        # Generate the LoadingJobConfig from the dictionary
-        return LoadingJobConfig.ensure_config(config_dict)
+        return config_dict
 
     def test_loading_job(self):
         # Load data

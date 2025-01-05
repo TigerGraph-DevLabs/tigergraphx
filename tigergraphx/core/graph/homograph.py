@@ -1,4 +1,5 @@
 from typing import Any, Dict, List, Optional, Tuple
+from pathlib import Path
 import pandas as pd
 
 from .base_graph import BaseGraph
@@ -23,7 +24,9 @@ class HomoGraph(BaseGraph):
         node_schema: NodeSchema,
         edge_type: str,
         edge_schema: EdgeSchema,
-        tigergraph_connection_config: Optional[TigerGraphConnectionConfig] = None,
+        tigergraph_connection_config: Optional[
+            TigerGraphConnectionConfig | Dict | str | Path
+        ] = None,
         drop_existing_graph: bool = False,
     ):
         """
@@ -66,7 +69,7 @@ class HomoGraph(BaseGraph):
 
     def add_nodes_from(
         self,
-        nodes_for_adding: List[str | Tuple[str, Dict[str, Any]]],
+        nodes_for_adding: List[str] | List[Tuple[str, Dict[str, Any]]],
         **attr,
     ):
         """
@@ -136,22 +139,19 @@ class HomoGraph(BaseGraph):
             node_id,
             self.node_type,
             self.edge_type,
-            num_edge_samples,
         )
         result = [(edge["from_id"], edge["to_id"]) for edge in edges]
         return result
 
     # ------------------------------ Edge Operations ------------------------------
-    def add_edge(
-        self, src_node_id: str, tgt_node_id: str, **attr
-    ) -> None:
+    def add_edge(self, src_node_id: str, tgt_node_id: str, **attr) -> None:
         """
         Add an edge to the graph.
 
         Args:
             src_node_id (str): Source node identifier.
             tgt_node_id (str): Target node identifier.
-            **attr (Dict[str, Any]): Additional attributes for the edge.
+            **attr: Additional attributes for the edge.
         """
         self._add_edge(
             src_node_id,
@@ -160,6 +160,27 @@ class HomoGraph(BaseGraph):
             self.edge_type,
             self.node_type,
             **attr,
+        )
+
+    def add_edges_from(
+        self,
+        ebunch_to_add: List[Tuple[str, str]] | List[Tuple[str, str, Dict[str, Any]]],
+        **attr,
+    ):
+        """
+        Adds edges to the graph from a list of edge tuples.
+
+        Args:
+            ebunch_to_add (List[Tuple[str, str]] | List[Tuple[str, str, Dict[str, Any]]]):
+                List of edges to add, where each edge is a tuple of source and target node IDs,
+                optionally with attributes.
+            **attr: Additional attributes to add to all edges.
+
+        Returns:
+            The result of adding the edges to the graph.
+        """
+        return self._add_edges_from(
+            ebunch_to_add, self.node_type, self.edge_type, self.node_type, **attr
         )
 
     def has_edge(self, src_node_id: str | int, tgt_node_id: str | int) -> bool:
@@ -282,27 +303,46 @@ class HomoGraph(BaseGraph):
         )
 
     # ------------------------------ Vector Operations ------------------------------
-    def vector_search(
+    def upsert(
         self,
-        query_vector: List[float],
+        data: Dict | List[Dict],
+    ):
+        """
+        Upsert nodes the graph.
+        If data is a Dict, it processes one record, otherwise if it's a List, it processes multiple records.
+
+        Args:
+            data (Dict | List[Dict]): Data to be upserted, can either be a single record (Dict)
+                or multiple records (List[Dict]).
+
+        Returns:
+            The result of the upsert operation or None if an error occurs.
+        """
+        return self._upsert(data, self.node_type)
+
+    def search(
+        self,
+        data: List[float],
         vector_attribute_name: str,
-        k: int = 10,
-    ) -> Dict[str, float]:
+        limit: int = 10,
+    ) -> List[Dict]:
         """
         Perform a vector search to find the nearest nodes based on a query vector.
 
         Args:
+            data (List[float]): The query vector to use for the search.
             vector_attribute_name (str): The name of the vector attribute to search against.
-            query_vector (List[float]): The query vector to use for the search.
-            k (int, optional): The number of nearest neighbors to return. Defaults to 10.
+            limit (int, optional): The number of nearest neighbors to return. Defaults to 10.
 
         Returns:
-            Dict[str, float]: A dictionary where keys are node names and values are the distances
-            from the query vector to each node.
+            List[Dict]: A list of dictionaries, where each dictionary contains:
+                - 'id': The node ID.
+                - 'distance': The distance between the node and the query vector.
+                - Any other attributes associated with the node.
         """
-        return self._vector_search(
+        return self._search(
             vector_attribute_name=vector_attribute_name,
-            query_vector=query_vector,
+            data=data,
             node_type=self.node_type,
-            k=k,
+            limit=limit,
         )

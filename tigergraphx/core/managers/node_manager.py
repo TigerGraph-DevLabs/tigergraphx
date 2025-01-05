@@ -1,6 +1,5 @@
 import logging
 from typing import Any, Dict, List, Tuple
-from urllib.parse import quote
 
 from .base_manager import BaseManager
 
@@ -23,7 +22,7 @@ class NodeManager(BaseManager):
 
     def add_nodes_from(
         self,
-        nodes_for_adding: List[str | Tuple[str, Dict[str, Any]]],
+        nodes_for_adding: List[str] | List[Tuple[str, Dict[str, Any]]],
         node_type: str,
         **attr,
     ):
@@ -100,17 +99,16 @@ class NodeManager(BaseManager):
         node_id: str,
         node_type: str,
         edge_types: List | str,
-        num_edge_samples: int = 1000,
     ) -> List:
+        gsql_script = self._create_gsql_get_node_edges(
+            node_type, edge_types, self._graph_schema.graph_name
+        )
         try:
-            node_id = quote(node_id)
             params = {
-                "input": (node_id, node_type),
-                "edge_types": edge_types,
-                "num_edge_samples": num_edge_samples,
+                "input": node_id,
             }
-            result = self._connection.runInstalledQuery("api_get_node_edges", params)
-            if result:
+            result = self._connection.runInterpretedQuery(gsql_script, params)
+            if result and isinstance(result, list):
                 return result[0].get("edges")
         except Exception as e:
             logger.error(f"Error retrieving edges for node {node_id}: {e}")
@@ -125,3 +123,36 @@ class NodeManager(BaseManager):
         except Exception as e:
             logger.error(f"Error clearing graph: {e}")
             return False
+
+    @staticmethod
+    def _create_gsql_get_node_edges(
+        node_type: str, edge_types: List | str, graph_name: str
+    ) -> str:
+        """
+        Core function to generate a GSQL query to get the edges of a node
+        """
+        if not edge_types:
+            from_clause = "FROM Nodes:s -(:e)- :t"
+        else:
+            if (isinstance(edge_types, list) and len(edge_types) == 1) or isinstance(
+                edge_types, str
+            ):
+                edge_type = edge_types if isinstance(edge_types, str) else edge_types[0]
+                from_clause = f"FROM Nodes:s -({edge_type}:e)- :t"
+            else:
+                edge_types_str = "|".join(edge_types)
+                from_clause = f"FROM Nodes:s -({edge_types_str}:e)- :t"
+
+        # Generate the query
+        query = f"""
+INTERPRET QUERY(VERTEX<{node_type}> input) FOR GRAPH {graph_name} {{
+  SetAccum<EDGE> @@set_edge;
+  Nodes = {{input}};
+  Nodes =
+    SELECT t
+    {from_clause}
+    ACCUM @@set_edge += e
+  ;
+  PRINT @@set_edge AS edges;
+}}"""
+        return query.strip()

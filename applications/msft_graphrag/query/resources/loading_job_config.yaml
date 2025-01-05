@@ -28,6 +28,14 @@ files:
           entity_type: "type"
           description: "description"
 
+  - file_alias: "file_embedding"
+    file_path: "/home/tigergraph/data/graphrag/entity_emb_description.csv"
+    node_mappings:
+      - target_name: "Entity"
+        attribute_column_mappings:
+          id: "id"
+          emb_description: 'SPLIT($"embedding_str", " ")'
+
   - file_alias: "file_relationships"
     file_path: "/home/tigergraph/data/graphrag/create_final_relationships.csv"
     node_mappings:

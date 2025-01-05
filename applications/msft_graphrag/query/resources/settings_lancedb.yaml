@@ -1,8 +1,8 @@
 vector_db:
+  # type: "LanceDB"
+  # uri: "applications/msft_graphrag/data/output/lancedb"
+  # table_name: "default-entity-description"
   type: "TigerVector"
-  graph_name: "GraphRAG"
-  node_type: "Entity"
-  vector_attribute_name: "emb_description"
 
 llm:
   type: "OpenAI"

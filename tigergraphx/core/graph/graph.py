@@ -24,18 +24,19 @@ class Graph(BaseGraph):
     def __init__(
         self,
         graph_schema: GraphSchema | Dict | str | Path,
-        tigergraph_connection_config: Optional[TigerGraphConnectionConfig] = None,
+        tigergraph_connection_config: Optional[
+            TigerGraphConnectionConfig | Dict | str | Path
+        ] = None,
         drop_existing_graph: bool = False,
     ):
         """
         Initialize the Graph instance.
 
         Args:
-            graph_schema (GraphSchema): The schema of the graph.
-            tigergraph_connection_config (Optional[TigerGraphConnectionConfig], optional):
-                Configuration for TigerGraph connection. Defaults to None.
-            drop_existing_graph (bool, optional): Whether to drop the existing graph if it exists.
-                Defaults to False.
+            graph_schema (GraphSchema | Dict | str | Path): Graph schema.
+            tigergraph_connection_config (optional, TigerGraphConnectionConfig | Dict | str | Path):
+                TigerGraph connection configuration. Defaults to None.
+            drop_existing_graph (bool, optional): Whether to drop the existing graph. Defaults to False.
         """
         super().__init__(
             graph_schema=graph_schema,
@@ -51,14 +52,14 @@ class Graph(BaseGraph):
         Args:
             node_id (str): The identifier of the node.
             node_type (str, optional): The type of the node. Defaults to "".
-            **attr (Dict[str, Any]): Additional attributes for the node.
+            **attr: Additional attributes for the node.
         """
         node_type = self._validate_node_type(node_type)
         self._add_node(node_id, node_type, **attr)
 
     def add_nodes_from(
         self,
-        nodes_for_adding: List[str | Tuple[str, Dict[str, Any]]],
+        nodes_for_adding: List[str] | List[Tuple[str, Dict[str, Any]]],
         node_type: str = "",
         **attr,
     ):
@@ -142,7 +143,6 @@ class Graph(BaseGraph):
             node_id,
             node_type,
             edge_types,
-            num_edge_samples,
         )
         result = [(edge["from_id"], edge["to_id"]) for edge in edges]
         return result
@@ -178,6 +178,36 @@ class Graph(BaseGraph):
             edge_type,
             tgt_node_type,
             **attr,
+        )
+
+    def add_edges_from(
+        self,
+        ebunch_to_add: List[Tuple[str, str]] | List[Tuple[str, str, Dict[str, Any]]],
+        src_node_type: str,
+        edge_type: str,
+        tgt_node_type: str,
+        **attr,
+    ):
+        """
+        Adds edges to the graph from a list of edge tuples.
+
+        Args:
+            ebunch_to_add (List[Tuple[str, str]] | List[Tuple[str, str, Dict[str, Any]]]):
+                List of edges to add, where each edge is a tuple of source and target node IDs,
+                optionally with attributes.
+            src_node_type (str): The source node type for the edges.
+            edge_type (str): The type of the edge being added.
+            tgt_node_type (str): The target node type for the edges.
+            **attr: Additional attributes to add to all edges.
+
+        Returns:
+            The result of adding the edges to the graph.
+        """
+        src_node_type, edge_type, tgt_node_type = self._validate_edge_type(
+            src_node_type, edge_type, tgt_node_type
+        )
+        return self._add_edges_from(
+            ebunch_to_add, src_node_type, edge_type, tgt_node_type, **attr
         )
 
     def has_edge(
@@ -351,32 +381,54 @@ class Graph(BaseGraph):
         )
 
     # ------------------------------ Vector Operations ------------------------------
-    def vector_search(
+    def upsert(
         self,
-        query_vector: List[float],
+        data: Dict | List[Dict],
+        node_type: str,
+    ):
+        """
+        Upsert nodes to the specified node type in the graph.
+        If data is a Dict, it processes one record, otherwise if it's a List, it processes multiple records.
+
+        Args:
+            data (Dict | List[Dict]): Data to be upserted, can either be a single record (Dict)
+                or multiple records (List[Dict]).
+            node_type (str): The node type for the upsert operation.
+
+        Returns:
+            The result of the upsert operation or None if an error occurs.
+        """
+        node_type = self._validate_node_type(node_type)
+        return self._upsert(data, node_type)
+
+    def search(
+        self,
+        data: List[float],
         vector_attribute_name: str,
         node_type: str = "",
-        k: int = 10,
-    ) -> Dict[str, float]:
+        limit: int = 10,
+    ) -> List[Dict]:
         """
         Perform a vector search to find the nearest nodes based on a query vector.
 
         Args:
-            node_type (str): The type of node to search.
+            data (List[float]): The query vector to use for the search.
             vector_attribute_name (str): The name of the vector attribute to search against.
-            query_vector (List[float]): The query vector to use for the search.
-            k (int, optional): The number of nearest neighbors to return. Defaults to 10.
+            node_type (str, optional): The type of node to search. Defaults to an empty string.
+            limit (int, optional): The number of nearest neighbors to return. Defaults to 10.
 
         Returns:
-            Dict[str, float]: A dictionary where keys are node names and values are the distances
-            from the query vector to each node.
+            List[Dict]: A list of dictionaries, where each dictionary contains:
+                - 'id': The node ID.
+                - 'distance': The distance between the node and the query vector.
+                - Any other attributes associated with the node.
         """
         node_type = self._validate_node_type(node_type)
-        return self._vector_search(
-            query_vector=query_vector,
+        return self._search(
+            data=data,
             vector_attribute_name=vector_attribute_name,
             node_type=node_type,
-            k=k,
+            limit=limit,
         )
 
     # ------------------------------ Utilities ------------------------------

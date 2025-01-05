@@ -49,7 +49,7 @@ class TigerVectorManager(BaseVectorDB):
         # Call the add_nodes_from method to add nodes to the graph
         if len(nodes_for_adding) > 0:
             self._graph.add_nodes_from(
-                nodes_for_adding=nodes_for_adding, node_type="Entity"
+                nodes_for_adding=nodes_for_adding, node_type=self.config.node_type
             )
 
     def query(self, query_embedding: List[float], k: int = 10) -> List[str]:
@@ -64,13 +64,12 @@ class TigerVectorManager(BaseVectorDB):
             List[str]: List of identifiers for the nearest neighbors.
         """
         # Perform the vector search using the vector_search method
-        search_results = self._graph.vector_search(
-            query_vector=query_embedding,
+        search_results = self._graph.search(
+            data=query_embedding,
             vector_attribute_name=self.config.vector_attribute_name,
-            k=k,
+            node_type=self.config.node_type,
+            limit=k,
         )
 
-        # Extract the node identifiers (keys of the search result dictionary)
-        nearest_neighbors = list(search_results.keys())
-
-        return nearest_neighbors
+        # Extract the node ids
+        return [result["id"] for result in search_results]

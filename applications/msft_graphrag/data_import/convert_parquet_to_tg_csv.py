@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from tigergraphx import ParquetProcessor
 
@@ -114,6 +115,8 @@ def process_community_relationships(processor: ParquetProcessor):
 
 
 def main(input_dir: str, output_dir: str):
+    os.makedirs(output_dir, exist_ok=True)
+
     processor = ParquetProcessor(input_dir=input_dir, output_dir=output_dir)
 
     # Process Parquet files

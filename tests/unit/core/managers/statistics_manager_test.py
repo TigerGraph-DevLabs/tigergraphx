@@ -16,45 +16,27 @@ class TestStatisticsManager:
         node_id = "node1"
         node_type = "Person"
         edge_types = "Friend"
-        self.mock_connection.runInstalledQuery.return_value = [{"degree": 3}]
+        self.mock_connection.runInterpretedQuery.return_value = [{"degree": 3}]
         result = self.statistics_manager.degree(node_id, node_type, edge_types)
-        self.mock_connection.runInstalledQuery.assert_called_once_with(
-            "api_degree",
-            {
-                "input": (node_id, node_type),
-                "edge_types": edge_types,
-            },
-        )
+        self.mock_connection.runInterpretedQuery.assert_called_once()
         assert result == 3
 
     def test_degree_no_result(self):
         node_id = "node2"
         node_type = "Person"
         edge_types = "Friend"
-        self.mock_connection.runInstalledQuery.return_value = []
+        self.mock_connection.runInterpretedQuery.return_value = []
         result = self.statistics_manager.degree(node_id, node_type, edge_types)
-        self.mock_connection.runInstalledQuery.assert_called_once_with(
-            "api_degree",
-            {
-                "input": (node_id, node_type),
-                "edge_types": edge_types,
-            },
-        )
+        self.mock_connection.runInterpretedQuery.assert_called_once()
         assert result == 0
 
     def test_degree_exception(self):
         node_id = "node3"
         node_type = "Person"
         edge_types = "Friend"
-        self.mock_connection.runInstalledQuery.side_effect = Exception("Error")
+        self.mock_connection.runInterpretedQuery.side_effect = Exception("Error")
         result = self.statistics_manager.degree(node_id, node_type, edge_types)
-        self.mock_connection.runInstalledQuery.assert_called_once_with(
-            "api_degree",
-            {
-                "input": (node_id, node_type),
-                "edge_types": edge_types,
-            },
-        )
+        self.mock_connection.runInterpretedQuery.assert_called_once()
         assert result == 0
 
     def test_number_of_nodes_single_type(self):

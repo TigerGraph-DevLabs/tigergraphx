@@ -100,9 +100,9 @@ class TestTigerVector(TestBaseGraph):
             "Entity_1", "Entity_2", "Entity", "relationship", "Entity"
         )
         query_vector = [-0.01926, 0.000496, 0.00671]
-        results = self.G.vector_search(query_vector, "emb_description", k=1)
+        results = self.G.search(query_vector, "emb_description", limit=1)
         assert len(results) == 1
-        results = self.G.vector_search(query_vector, "emb_description", k=2)
+        results = self.G.search(query_vector, "emb_description", limit=2)
         assert len(results) == 2
 
     def test_tigervector_manager(self):
