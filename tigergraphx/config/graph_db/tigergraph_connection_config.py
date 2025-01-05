@@ -42,7 +42,7 @@ class TigerGraphConnectionConfig(BaseConfig):
     )
 
     # Token-based authentication
-    api_token: Optional[str] = Field(
+    token: Optional[str] = Field(
         default=None,
         description="The API token for TigerGraph authentication. Use only for token-based authentication.",
     )
@@ -53,48 +53,48 @@ class TigerGraphConnectionConfig(BaseConfig):
         Ensure that exactly one authentication method is provided:
         - username/password together, or
         - secret, or
-        - api_token.
+        - token.
         If all fields are empty, username/password will default.
         """
         # Extract the values of the fields
         username = values.get("username")
         password = values.get("password")
         secret = values.get("secret")
-        api_token = values.get("api_token")
+        token = values.get("token")
 
         # Case 1: If all fields are empty, set default values for username and password
-        if not username and not password and not secret and not api_token:
+        if not username and not password and not secret and not token:
             # If all fields are empty, username/password will default.
             return values
 
         # Case 2: Both username and password provided (valid)
         if username and password:
-            # Case 2A: Ensure secret and api_token are not provided
-            if secret or api_token:
+            # Case 2A: Ensure secret and token are not provided
+            if secret or token:
                 raise ValueError(
-                    "You can only use 'username/password' OR 'secret' OR 'api_token', not both."
+                    "You can only use 'username/password' OR 'secret' OR 'token', not both."
                 )
             return values
 
         # Case 3: Secret is provided (valid)
         if secret:
-            # Case 3A: Ensure username/password and api_token are not provided
-            if username or password or api_token:
+            # Case 3A: Ensure username/password and token are not provided
+            if username or password or token:
                 raise ValueError(
-                    "You can only use 'username/password' OR 'secret' OR 'api_token', not both."
+                    "You can only use 'username/password' OR 'secret' OR 'token', not both."
                 )
             return values
 
         # Case 4: API token is provided (valid)
-        if api_token:
+        if token:
             # Case 4A: Ensure username/password and secret are not provided
             if username or password or secret:
                 raise ValueError(
-                    "You can only use 'username/password' OR 'secret' OR 'api_token', not both."
+                    "You can only use 'username/password' OR 'secret' OR 'token', not both."
                 )
             return values
 
         # Case 5: If none of the valid authentication methods are provided
         raise ValueError(
-            "You must provide either 'username/password', 'secret', or 'api_token' for authentication."
+            "You must provide either 'username/password', 'secret', or 'token' for authentication."
         )

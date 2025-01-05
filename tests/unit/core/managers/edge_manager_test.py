@@ -74,6 +74,41 @@ class TestEdgeManager:
         )
         assert result is None
 
+    def test_add_edges_from_valid_data(self):
+        """Test adding edges with valid data."""
+        ebunch_to_add = [
+            ("NodeA", "NodeB"),
+            ("NodeB", "NodeC", {"weight": 1.0}),
+        ]
+        src_node_type = "Entity"
+        edge_type = "transfer"
+        tgt_node_type = "Entity"
+        result = self.edge_manager.add_edges_from(
+            ebunch_to_add, src_node_type, edge_type, tgt_node_type
+        )
+        self.mock_connection.upsertEdges.assert_called_once_with(
+            sourceVertexType=src_node_type,
+            edgeType=edge_type,
+            targetVertexType=tgt_node_type,
+            edges=[("NodeA", "NodeB", {}), ("NodeB", "NodeC", {"weight": 1.0})],
+        )
+        assert result is not None
+
+    def test_add_edges_from_invalid_format(self):
+        """Test adding edges with invalid data format."""
+        ebunch_to_add = [("NodeA", "NodeB", "invalid")]
+        src_node_type = "Entity"
+        edge_type = "transfer"
+        tgt_node_type = "Entity"
+        result = self.edge_manager.add_edges_from(
+            ebunch_to_add, # pyright: ignore
+            src_node_type,
+            edge_type,
+            tgt_node_type,
+        )
+        assert result is None
+        self.mock_connection.upsertEdges.assert_not_called()
+
     def test_has_edge_exists(self):
         src_node_id = "node1"
         tgt_node_id = "node2"

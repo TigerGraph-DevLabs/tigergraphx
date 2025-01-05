@@ -28,6 +28,11 @@ loggers:
     handlers: []    # Inherit handlers from the root logger
     propagate: yes
 
+  tigergraphx.core.graph:
+    level: INFO
+    handlers: []    # Inherit handlers from the root logger
+    propagate: yes
+
   tigergraphx.vector_search:
     level: INFO
     handlers: []    # Inherit handlers from the root logger

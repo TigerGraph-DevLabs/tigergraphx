@@ -1,52 +1,63 @@
 import os
 from dataclasses import dataclass
-from typing import Dict, Any
+from typing import Any, Dict
 import numpy as np
 
 from lightrag.base import BaseGraphStorage
 from lightrag.utils import logger
-from tigergraphx import UndiGraph, TigerGraphConnectionConfig
+
+from tigergraphx import Graph
 
 
 @dataclass
 class TigerGraphStorage(BaseGraphStorage):
     def __post_init__(self):
         try:
+            # Define the graph schema
+            graph_schema = {
+                "graph_name": "LightRAG",
+                "nodes": {
+                    "Entity": {
+                        "primary_key": "id",
+                        "attributes": {
+                            "id": "STRING",
+                            "entity_type": "STRING",
+                            "description": "STRING",
+                            "source_id": "STRING",
+                        },
+                    }
+                },
+                "edges": {
+                    "relationship": {
+                        "is_directed_edge": False,
+                        "from_node_type": "Entity",
+                        "to_node_type": "Entity",
+                        "attributes": {
+                            "weight": "DOUBLE",
+                            "description": "STRING",
+                            "keywords": "STRING",
+                            "source_id": "STRING",
+                        },
+                    }
+                },
+            }
+
             # Retrieve connection configuration from environment variables
             connection_config = {
-                "host": os.environ["TG_HOST"],
-                "username": os.environ["TG_USERNAME"],
-                "password": os.environ["TG_PASSWORD"],
+                "host": os.environ.get("TG_HOST", "http://127.0.0.1"),
+                "restpp_port": os.environ.get("TG_RESTPP_PORT", "14240"),
+                "gsql_port": os.environ.get("TG_GSQL_PORT", "14240"),
+                # Option 1: User/password authentication
+                "username": os.environ.get("TG_USERNAME"),
+                "password": os.environ.get("TG_PASSWORD"),
+                # Option 2: Secret-based authentication
+                "secret": os.environ.get("TG_SECRET"),
+                # Option 3: Token-based authentication
+                "token": os.environ.get("TG_TOKEN"),
             }
-            logger.info("TigerGraph connection configuration retrieved successfully.")
+
             # Initialize the graph
-            self._graph = UndiGraph(
-                graph_name="LightRAG",
-                node_type="MyNode",
-                edge_type="MyEdge",
-                node_primary_key="id",
-                node_attributes={
-                    "id": "STRING",
-                    "entity_type": "STRING",
-                    "description": "STRING",
-                    "source_id": "STRING",
-                },
-                edge_attributes={
-                    "weight": "DOUBLE",
-                    "description": "STRING",
-                    "keywords": "STRING",
-                    "source_id": "STRING",
-                },
-                tigergraph_connection_config=TigerGraphConnectionConfig.ensure_config(
-                    connection_config
-                ),
-            )
-            logger.info(
-                "Undirected graph initialized successfully with graph_name 'LightRAG'."
-            )
-        except KeyError as e:
-            logger.error(f"Environment variable {str(e)} is missing.")
-            raise
+            self._graph = Graph(graph_schema, connection_config)
         except Exception as e:
             logger.error(f"An error occurred during initialization: {e}")
             raise

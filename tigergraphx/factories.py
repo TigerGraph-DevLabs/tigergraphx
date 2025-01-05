@@ -1,8 +1,10 @@
-from typing import Dict
+from typing import Dict, Optional
 from pathlib import Path
 
+from tigergraphx.core import Graph
 from tigergraphx.config import (
     Settings,
+    TigerVectorConfig,
     LanceDBConfig,
     OpenAIConfig,
     OpenAIEmbeddingConfig,
@@ -14,24 +16,28 @@ from tigergraphx.llm import (
 )
 from tigergraphx.vector_search import (
     OpenAIEmbedding,
+    TigerVectorManager,
     LanceDBManager,
+    TigerVectorSearchEngine,
     LanceDBSearchEngine,
 )
 
 
 def create_openai_components(
-    config: Settings | Path | str | Dict,
-) -> tuple[OpenAIChat, LanceDBSearchEngine]:
+    config: Settings | Path | str | Dict, graph: Optional[Graph] = None
+) -> tuple[OpenAIChat, TigerVectorSearchEngine | LanceDBSearchEngine]:
     """
-    Creates an OpenAIChat instance and a LanceDBSearchEngine from a shared configuration.
-    Reuses the same OpenAIManager instance for both components.
+    Creates an OpenAIChat instance and a TigerVectorSearchEngine or LanceDBSearchEngine
+    from a shared configuration. Reuses the same OpenAIManager instance for both components.
     """
     # Ensure configuration is a Settings instance
     settings = Settings.ensure_config(config)
 
     # Validate configuration types
-    if not isinstance(settings.vector_db, LanceDBConfig):
-        raise TypeError("Expected `vector_db` to be an instance of LanceDBConfig.")
+    if not isinstance(settings.vector_db, (TigerVectorConfig, LanceDBConfig)):
+        raise TypeError(
+            "Expected `vector_db` to be an instance of TigerVectorConfig or LanceDBConfig."
+        )
     if not isinstance(settings.llm, OpenAIConfig):
         raise TypeError("Expected `llm` to be an instance of OpenAIConfig.")
     if not isinstance(settings.embedding, OpenAIEmbeddingConfig):
@@ -50,12 +56,15 @@ def create_openai_components(
         config=settings.chat,
     )
 
-    # Initialize LanceDB components
     embedding = OpenAIEmbedding(llm_manager, settings.embedding)
-    lancedb_manager = LanceDBManager(settings.vector_db)
-
-    # Initialize LanceDBSearchEngine
-    lancedb_search_engine = LanceDBSearchEngine(embedding, lancedb_manager)
+    if isinstance(settings.vector_db, TigerVectorConfig):
+        if graph is None:
+            raise ValueError("Graph cannot be None when TigerVector is used.")
+        tigervector_manager = TigerVectorManager(settings.vector_db, graph)
+        search_engine = TigerVectorSearchEngine(embedding, tigervector_manager)
+    else:
+        lancedb_manager = LanceDBManager(settings.vector_db)
+        search_engine = LanceDBSearchEngine(embedding, lancedb_manager)
 
     # Return both instances
-    return openai_chat, lancedb_search_engine
+    return openai_chat, search_engine

@@ -1,5 +1,6 @@
 import logging
 from typing import Dict, Literal, Optional
+from pathlib import Path
 
 from .base_manager import BaseManager
 
@@ -52,8 +53,10 @@ class SchemaManager(BaseManager):
     @staticmethod
     def get_schema_from_db(
         graph_name: str,
-        tigergraph_connection_config: Optional[TigerGraphConnectionConfig] = None,
-    ) -> GraphSchema:
+        tigergraph_connection_config: Optional[
+            TigerGraphConnectionConfig | Dict | str | Path
+        ] = None,
+    ) -> Dict:
         # Create a minimal GraphSchema to initialize the context
         initial_graph_schema = GraphSchema(graph_name=graph_name, nodes={}, edges={})
         context = GraphContext(
@@ -100,14 +103,13 @@ class SchemaManager(BaseManager):
             }
             for edge in raw_schema["EdgeTypes"]
         }
-        # Combine into a dictionary format for GraphSchema.ensure_config
-        schema_config = {
+        # Combine into a dictionary format
+        graph_schema = {
             "graph_name": graph_name,
             "nodes": nodes,
             "edges": edges,
         }
-        # Use ensure_config to construct the final GraphSchema
-        return GraphSchema.ensure_config(schema_config)
+        return graph_schema
 
     def _check_graph_exists(self) -> bool:
         """Check if the specified graph name exists in the gsql_script."""
@@ -131,10 +133,10 @@ DROP GRAPH {graph_name}
         return gsql_script.strip()
 
     @staticmethod
-    def _create_gsql_graph_schema(schema_config: GraphSchema) -> str:
+    def _create_gsql_graph_schema(graph_schema: GraphSchema) -> str:
         # Extracting node attributes
         node_definitions = []
-        for node_name, node_schema in schema_config.nodes.items():
+        for node_name, node_schema in graph_schema.nodes.items():
             primary_key_name = node_schema.primary_key
 
             # Extract the primary ID type
@@ -158,13 +160,32 @@ DROP GRAPH {graph_name}
 
         # Extracting edge attributes
         edge_definitions = []
-        for edge_name, edge_schema in schema_config.edges.items():
-            edge_attr_str = ", ".join(
-                [
-                    f"{attribute_name} {attribute_schema.data_type.value}"
-                    for attribute_name, attribute_schema in edge_schema.attributes.items()
-                ]
-            )
+        for edge_name, edge_schema in graph_schema.edges.items():
+            edge_attr_str = []
+
+            # Separate out the regular attributes and discriminator attributes
+            regular_attrs = []
+            discriminator_attrs = []
+            for attribute_name, attribute_schema in edge_schema.attributes.items():
+                if attribute_name in edge_schema.edge_identifier:
+                    # This attribute is part of the edge identifier
+                    discriminator_attrs.append(
+                        f"{attribute_name} {attribute_schema.data_type.value}"
+                    )
+                else:
+                    # This attribute is a regular edge attribute
+                    regular_attrs.append(
+                        f"{attribute_name} {attribute_schema.data_type.value}"
+                    )
+
+            # Combine regular and discriminator attributes
+            if discriminator_attrs:
+                discriminator_str = f"DISCRIMINATOR({', '.join(discriminator_attrs)})"
+                edge_attr_str.append(discriminator_str)
+
+            # Adding regular attributes to edge definition string
+            if regular_attrs:
+                edge_attr_str.append(", ".join(regular_attrs))
 
             # Construct the edge definition, with conditional attribute string and direction
             edge_type_str = "DIRECTED" if edge_schema.is_directed_edge else "UNDIRECTED"
@@ -176,12 +197,12 @@ DROP GRAPH {graph_name}
 
             edge_definitions.append(
                 f"ADD {edge_type_str} EDGE {edge_name}(FROM {edge_schema.from_node_type}, TO {edge_schema.to_node_type}"
-                + (f", {edge_attr_str}" if edge_attr_str else "")
+                + (f", {', '.join(edge_attr_str)}" if edge_attr_str else "")
                 + f"){reverse_edge_clause};"
             )
 
         # Generating the full schema string
-        graph_name = schema_config.graph_name
+        graph_name = graph_schema.graph_name
         if len(node_definitions) + len(edge_definitions) == 0:
             gsql_script = f"""
 # 1. Create graph
@@ -216,12 +237,12 @@ INSTALL FUNCTION GDS.*
         return gsql_script.strip()
 
     @staticmethod
-    def _create_gsql_add_vector_attr(schema_config: "GraphSchema") -> str:
+    def _create_gsql_add_vector_attr(graph_schema: "GraphSchema") -> str:
         """
         Generate the GSQL script to add vector attributes to vertices.
 
         Args:
-            schema_config (GraphSchema): The graph schema configuration.
+            graph_schema (GraphSchema): The graph schema configuration.
 
         Returns:
             str: The generated GSQL script.
@@ -233,7 +254,7 @@ INSTALL FUNCTION GDS.*
         query_statements = []
 
         # Iterate over all nodes and their vector attributes
-        for node_type, node_schema in schema_config.nodes.items():
+        for node_type, node_schema in graph_schema.nodes.items():
             if node_schema.vector_attributes:
                 for (
                     vector_attribute_name,
@@ -259,9 +280,15 @@ CREATE OR REPLACE QUERY api_vector_search_{node_type}_{vector_attribute_name} (
 ) SYNTAX v3 {{
   MapAccum<Vertex, Float> @@map_node_distance;
 
-  v = vectorSearch({{{node_type}.{vector_attribute_name}}}, query_vector, k, {{ distance_map: @@map_node_distance}});
+  Nodes = vectorSearch(
+    {{{node_type}.{vector_attribute_name}}},
+    query_vector,
+    k,
+    {{ distance_map: @@map_node_distance}}
+  );
 
   PRINT @@map_node_distance AS map_node_distance;
+  PRINT Nodes;
 }}
 """.strip()
                     )
@@ -272,24 +299,25 @@ CREATE OR REPLACE QUERY api_vector_search_{node_type}_{vector_attribute_name} (
         else:
             gsql_script = f"""
 # 1. Use graph
-USE GRAPH {schema_config.graph_name}
+USE GRAPH {graph_schema.graph_name}
 
 # 2. Create schema_change job
-CREATE SCHEMA_CHANGE JOB change_schema_of_{schema_config.graph_name} FOR GRAPH {schema_config.graph_name} {{
+CREATE SCHEMA_CHANGE JOB change_schema_of_{graph_schema.graph_name} FOR GRAPH {graph_schema.graph_name} {{
   # 2.1 Add vector attributes
   {'\n  '.join(vector_attribute_statements)}
 }}
 
 # 3. Run schema_change job
-RUN SCHEMA_CHANGE JOB change_schema_of_{schema_config.graph_name}
+RUN SCHEMA_CHANGE JOB change_schema_of_{graph_schema.graph_name}
 
 # 4. Drop schema_change job
-DROP JOB change_schema_of_{schema_config.graph_name}
+DROP JOB change_schema_of_{graph_schema.graph_name}
 """
             if len(query_statements) > 0:
                 gsql_script = f"""
 {gsql_script}
 {'\n'.join(query_statements)}
+INSTALL QUERY *
 """
         logger.debug("GSQL script for adding vector attributes: %s", gsql_script)
         return gsql_script.rstrip()

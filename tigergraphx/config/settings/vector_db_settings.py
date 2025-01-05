@@ -5,8 +5,6 @@ from pydantic import Field
 
 from ..base_config import BaseConfig
 
-from tigergraphx.config import TigerGraphConnectionConfig
-
 
 class BaseVectorDBConfig(BaseConfig):
     """Base configuration class for vector databases."""

@@ -13,11 +13,12 @@ def main():
     custom_rag = CustomLightRAG(
         working_dir=working_dir,
         graph_storage="TigerGraphStorage",
-        vector_storage="NanoVectorDBStorage",
+        vector_storage="TigerVectorStorage",  # Use TigerGraph for storing vectors
+        # vector_storage="NanoVectorDBStorage",
         kv_storage="JsonKVStorage",
     )
 
-    with open(working_dir + "/input/fin.txt") as f:
+    with open(working_dir + "/input/book.txt") as f:
         custom_rag.insert(f.read())
 
 

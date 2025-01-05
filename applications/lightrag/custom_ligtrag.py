@@ -1,4 +1,5 @@
-from .storage import TigerGraphStorage
+from .storage.tigergraph_storage import TigerGraphStorage
+from .storage.tigervector_storage import TigerVectorStorage
 
 from lightrag import LightRAG
 
@@ -9,4 +10,5 @@ class CustomLightRAG(LightRAG):
         # Extend the default storage mapping with your custom storage
         base_mapping = super()._get_storage_class()
         base_mapping["TigerGraphStorage"] = TigerGraphStorage
+        base_mapping["TigerVectorStorage"] = TigerVectorStorage
         return base_mapping

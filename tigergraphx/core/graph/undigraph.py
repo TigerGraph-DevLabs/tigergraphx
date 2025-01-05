@@ -1,4 +1,5 @@
-from typing import Optional
+from typing import Dict, Optional
+from pathlib import Path
 
 from .homograph import HomoGraph
 from tigergraphx.config import (
@@ -29,7 +30,9 @@ class UndiGraph(HomoGraph):
             "weight": "DOUBLE",
             "description": "STRING",
         },
-        tigergraph_connection_config: Optional[TigerGraphConnectionConfig] = None,
+        tigergraph_connection_config: Optional[
+            TigerGraphConnectionConfig | Dict | str | Path
+        ] = None,
         drop_existing_graph: bool = False,
     ):
         """
@@ -55,7 +58,8 @@ class UndiGraph(HomoGraph):
                     "description": "STRING",
                 }
                 ```
-            tigergraph_connection_config (Optional[TigerGraphConnectionConfig], optional): Configuration for TigerGraph connection. Defaults to None.
+            tigergraph_connection_config (Optional[TigerGraphConnectionConfig | Dict | str | Path]):
+                Configuration for TigerGraph connection. Defaults to None.
             drop_existing_graph (bool, optional): Whether to drop the existing graph if it exists. Defaults to False.
         """
         node_schema = create_node_schema(

@@ -38,9 +38,9 @@ class NodeMappingConfig(BaseConfig):
     Configuration for mapping node attributes from a file to the target schema.
     """
 
-    target_name: str = Field(description="The target node type name.")
+    target_name: str = Field(description="The name of the target node type.")
     attribute_column_mappings: Dict[str, str | int] = Field(
-        default={}, description="Mappings between file columns and node attributes."
+        default={}, description="Mapping file columns to node attributes."
     )
 
 
@@ -74,11 +74,11 @@ class FileConfig(BaseConfig):
         default_factory=CsvParsingOptions,
         description="Options for parsing the CSV file.",
     )
-    node_mappings: Optional[List[NodeMappingConfig]] = Field(
-        default=None, description="Node mappings defined for this file."
+    node_mappings: List[NodeMappingConfig] = Field(
+        default=[], description="Node mappings defined for this file."
     )
-    edge_mappings: Optional[List[EdgeMappingConfig]] = Field(
-        default=None, description="Edge mappings defined for this file."
+    edge_mappings: List[EdgeMappingConfig] = Field(
+        default=[], description="Edge mappings defined for this file."
     )
 
     @model_validator(mode="after")

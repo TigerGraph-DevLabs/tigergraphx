@@ -156,46 +156,26 @@ class TestNodeManager:
         node_id = "node1"
         node_type = "Person"
         edge_types = "Friend"
-        num_edge_samples = 1000
 
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_connection.runInterpretedQuery.return_value = [
             {"edges": ["edge1", "edge2"]}
         ]
 
-        result = self.node_manager.get_node_edges(
-            node_id, node_type, edge_types, num_edge_samples
-        )
+        result = self.node_manager.get_node_edges(node_id, node_type, edge_types)
 
-        self.mock_connection.runInstalledQuery.assert_called_once_with(
-            "api_get_node_edges",
-            {
-                "input": (node_id, node_type),
-                "edge_types": edge_types,
-                "num_edge_samples": num_edge_samples,
-            },
-        )
+        self.mock_connection.runInterpretedQuery.assert_called_once()
         assert result == ["edge1", "edge2"]
 
     def test_get_node_edges_failure(self):
         node_id = "node2"
         node_type = "Person"
         edge_types = "Friend"
-        num_edge_samples = 1000
 
-        self.mock_connection.runInstalledQuery.side_effect = Exception("Error")
+        self.mock_connection.runInterpretedQuery.side_effect = Exception("Error")
 
-        result = self.node_manager.get_node_edges(
-            node_id, node_type, edge_types, num_edge_samples
-        )
+        result = self.node_manager.get_node_edges(node_id, node_type, edge_types)
 
-        self.mock_connection.runInstalledQuery.assert_called_once_with(
-            "api_get_node_edges",
-            {
-                "input": (node_id, node_type),
-                "edge_types": edge_types,
-                "num_edge_samples": num_edge_samples,
-            },
-        )
+        self.mock_connection.runInterpretedQuery.assert_called_once()
         assert result == []
 
     def test_clear(self):

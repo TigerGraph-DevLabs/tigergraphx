@@ -10,11 +10,7 @@ from .context_builder import (
     GlobalContextBuilder,
 )
 
-from tigergraphx import (
-    Graph,
-    GraphSchema,
-    LoadingJobConfig,
-)
+from tigergraphx import Graph
 from tigergraphx import create_openai_components
 
 logger = logging.getLogger(__name__)
@@ -46,7 +42,7 @@ class GraphRAG:
         )
         # Create Graph Schema
         graph = Graph(
-            graph_schema=GraphSchema.ensure_config(self.schema_path),
+            graph_schema=self.schema_path,
             drop_existing_graph=False,
         )
         # Load Data
@@ -55,11 +51,9 @@ class GraphRAG:
                 "Loading data into graph using loading job config: %s",
                 self.loading_job_path,
             )
-            graph.load_data(
-                loading_job_config=LoadingJobConfig.ensure_config(self.loading_job_path)
-            )
+            graph.load_data(loading_job_config=self.loading_job_path)
         # Create Context Builders
-        (self.openai_chat, search_engine) = create_openai_components(self.settings_path)
+        (self.openai_chat, search_engine) = create_openai_components(self.settings_path, graph)
         self.local_context_builder = LocalContextBuilder(
             graph=graph, search_engine=search_engine
         )

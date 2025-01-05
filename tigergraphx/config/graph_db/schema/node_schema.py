@@ -18,10 +18,11 @@ class NodeSchema(BaseConfig):
 
     primary_key: str = Field(description="The primary key for the node type.")
     attributes: Dict[str, AttributeSchema] = Field(
-        description="A dictionary of attribute names to their schemas."
+        default_factory=dict,
+        description="A dictionary of attribute names to their schemas.",
     )
     vector_attributes: Dict[str, VectorAttributeSchema] = Field(
-        default={},
+        default_factory=dict,
         description="A dictionary of vector attribute names to their schemas.",
     )
 
