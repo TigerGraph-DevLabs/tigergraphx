@@ -12,7 +12,7 @@
         <link rel="prev" href="../installation/">
       
       
-        <link rel="next" href="../tigervector_quick_start/">
+        <link rel="next" href="../quick_start_vector/">
       
       
       <link rel="icon" href="../../images/logo.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Quick Start Guide - TigerGraphX</title>
+        <title>Using TigerGraph as Graph Storage - TigerGraphX</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#quick-start-guide" class="md-skip">
+        <a href="#tigergraphx-quick-start-using-tigergraph-as-graph-storage" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Quick Start Guide
+              Using TigerGraph as Graph Storage
             
           </span>
         </div>
@@ -493,6 +493,46 @@
   
   
   
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TigerGraphX Quick Start
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            TigerGraphX Quick Start
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
     <li class="md-nav__item md-nav__item--active">
       
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
@@ -505,7 +545,7 @@
           
   
   <span class="md-ellipsis">
-    Quick Start Guide
+    Using TigerGraph as Graph Storage
   </span>
   
 
@@ -516,7 +556,7 @@
         
   
   <span class="md-ellipsis">
-    Quick Start Guide
+    Using TigerGraph as Graph Storage
   </span>
   
 
@@ -754,15 +794,44 @@
   
   
     <li class="md-nav__item">
-      <a href="../tigervector_quick_start/" class="md-nav__link">
+      <a href="../quick_start_vector/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    TigerVector Quick Start Guide
+    Using TigerGraph as Vector Storage
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick_start_both/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using TigerGraph for Graph and Vector Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -904,7 +973,7 @@
         
   
   <span class="md-ellipsis">
-    Part 1
+    Part 1 - Setup and Data Preparation
   </span>
   
 
@@ -925,7 +994,7 @@
         
   
   <span class="md-ellipsis">
-    Part 2
+    Part 2 - Graph Creation and Data Loading
   </span>
   
 
@@ -946,7 +1015,7 @@
         
   
   <span class="md-ellipsis">
-    Part 3
+    Part 3 - Graph Analysis
   </span>
   
 
@@ -967,7 +1036,7 @@
         
   
   <span class="md-ellipsis">
-    Part 4
+    Part 4 - Hybrid Retrieval and Integration with LLM
   </span>
   
 
@@ -3037,8 +3106,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="quick-start-guide">Quick Start Guide<a class="anchor-link" href="#quick-start-guide">¶</a></h1><p>Follow this guide to quickly set up <strong>TigerGraphX</strong> and build your first graph. This guide assumes that you have already installed TigerGraphX and its dependencies as described in the <a href="../installation">Installation Guide</a>.</p>
-<p>To run this Jupyter Notebook, you can download the original <code>.ipynb</code> file from <a href="https://github.com/xuanleilin/tigergraphx/tree/main/docs/getting_started/quick_start.ipynb">quick_start.ipynb</a>.</p>
+<h1 id="tigergraphx-quick-start-using-tigergraph-as-graph-storage">TigerGraphX Quick Start: Using TigerGraph as Graph Storage<a class="anchor-link" href="#tigergraphx-quick-start-using-tigergraph-as-graph-storage">¶</a></h1><p>Follow this guide to quickly set up <strong>TigerGraphX</strong> and build your first graph. This guide assumes that you have already installed TigerGraphX and its dependencies as described in the <a href="../installation">Installation Guide</a>.</p>
+<p>To run this Jupyter Notebook, you can download the original <code>.ipynb</code> file from <a href="https://github.com/xuanleilin/tigergraphx/tree/main/docs/getting_started/quick_start_graph.ipynb">quick_start_graph.ipynb</a>.</p>
 <hr/>
 <h2 id="create-a-graph">Create a Graph<a class="anchor-link" href="#create-a-graph">¶</a></h2><h3 id="define-a-graph-schema">Define a Graph Schema<a class="anchor-link" href="#define-a-graph-schema">¶</a></h3><p>TigerGraph is a schema-based database, which requires defining a schema to structure your graph. This schema specifies the graph name, nodes (vertices), edges (relationships), and their respective attributes.</p>
 <p>In this example, we will create a graph named "Social" that includes one node type, "Person," and one directed edge type, "Friendship." Note that you must define the primary key for each node type, indicate whether an edge type is directed or undirected, and specify the source and target node types for each edge type.</p>
@@ -3206,10 +3275,8 @@ graph_schema = {
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>2024-12-30 20:08:05,978 - tigergraphx.core.graph.base_graph - INFO - Creating schema...
-2024-12-30 20:08:09,834 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
-2024-12-30 20:08:09,835 - tigergraphx.core.graph.base_graph - INFO - Installing queries...
-2024-12-30 20:09:08,310 - tigergraphx.core.graph.base_graph - INFO - Queries installed successfully.
+<pre>2025-01-06 21:27:00,180 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph Social...
+2025-01-06 21:27:03,787 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
 </pre>
 </div>
 </div>
@@ -4028,11 +4095,10 @@ print(neighbors)</div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="whats-next">What’s Next?<a class="anchor-link" href="#whats-next">¶</a></h2><p>Now that you’ve set up your graph and performed basic operations, you can explore more advanced features of TigerGraphX:</p>
+<h2 id="whats-next">What’s Next?<a class="anchor-link" href="#whats-next">¶</a></h2><p>Now that you've set up your graph storage and performed basic operations, you can explore more advanced features of TigerGraphX:</p>
 <ul>
-<li><a href="../tigervector_quick_start">TigerVector Quick Start Guide</a>: Quickly get started with TigerGraph for storing both graph data and vectors.</li>
-<li><a href="../../graphrag/graphrag_overview">GraphRAG Overview</a>: Learn about integrating graphs with LLMs.</li>
-<li><a href="../../reference/features_overview">API Reference</a>: Dive deeper into TigerGraphX APIs.</li>
+<li><a href="../quick_start_vector">TigerGraph Quick Start Guide for Vector Storage</a>: Quickly get started with TigerGraph for storing vector data.</li>
+<li><a href="../../reference/features_overview">API Reference</a>: Dive deeper into TigerGraphX APIs to understand its full capabilities.</li>
 </ul>
 <hr/>
 <p>Start unlocking the power of graphs with <strong>TigerGraphX</strong> today!</p>
@@ -4093,13 +4159,13 @@ print(neighbors)</div>
         
         
           
-          <a href="../tigervector_quick_start/" class="md-footer__link md-footer__link--next" aria-label="Next: TigerVector Quick Start Guide">
+          <a href="../quick_start_vector/" class="md-footer__link md-footer__link--next" aria-label="Next: Using TigerGraph as Vector Storage">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                TigerVector Quick Start Guide
+                Using TigerGraph as Vector Storage
               </div>
             </div>
             <div class="md-footer__button md-icon">

@@ -20,7 +20,7 @@
     
     
       
-        <title>Part 4 - TigerGraphX</title>
+        <title>Part 4 - Hybrid Retrieval and Integration with LLM - TigerGraphX</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#supporting-microsofts-graphrag-part-4" class="md-skip">
+        <a href="#supporting-microsofts-graphrag-part-4-hybrid-retrieval-and-integration-with-llm" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Part 4
+              Part 4 - Hybrid Retrieval and Integration with LLM
             
           </span>
         </div>
@@ -486,12 +486,50 @@
   
   
   
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TigerGraphX Quick Start
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            TigerGraphX Quick Start
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../getting_started/quick_start/" class="md-nav__link">
+      <a href="../../getting_started/quick_start_graph/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Quick Start Guide
+    Using TigerGraph as Graph Storage
   </span>
   
 
@@ -508,15 +546,44 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting_started/tigervector_quick_start/" class="md-nav__link">
+      <a href="../../getting_started/quick_start_vector/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    TigerVector Quick Start Guide
+    Using TigerGraph as Vector Storage
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/quick_start_both/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using TigerGraph for Graph and Vector Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -665,7 +732,7 @@
         
   
   <span class="md-ellipsis">
-    Part 1
+    Part 1 - Setup and Data Preparation
   </span>
   
 
@@ -686,7 +753,7 @@
         
   
   <span class="md-ellipsis">
-    Part 2
+    Part 2 - Graph Creation and Data Loading
   </span>
   
 
@@ -707,7 +774,7 @@
         
   
   <span class="md-ellipsis">
-    Part 3
+    Part 3 - Graph Analysis
   </span>
   
 
@@ -737,7 +804,7 @@
           
   
   <span class="md-ellipsis">
-    Part 4
+    Part 4 - Hybrid Retrieval and Integration with LLM
   </span>
   
 
@@ -748,7 +815,7 @@
         
   
   <span class="md-ellipsis">
-    Part 4
+    Part 4 - Hybrid Retrieval and Integration with LLM
   </span>
   
 
@@ -2955,7 +3022,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="supporting-microsofts-graphrag-part-4">Supporting Microsoft’s GraphRAG: Part 4<a class="anchor-link" href="#supporting-microsofts-graphrag-part-4">¶</a></h1><p>To run this Jupyter Notebook, you can download the original <code>.ipynb</code> file from <a href="https://github.com/xuanleilin/tigergraphx/tree/main/docs/graphrag/msft_graphrag_4.ipynb">msft_graphrag_4.ipynb</a>.</p>
+<h1 id="supporting-microsofts-graphrag-part-4-hybrid-retrieval-and-integration-with-llm">Supporting Microsoft’s GraphRAG: Part 4 - Hybrid Retrieval and Integration with LLM<a class="anchor-link" href="#supporting-microsofts-graphrag-part-4-hybrid-retrieval-and-integration-with-llm">¶</a></h1><p>To run this Jupyter Notebook, you can download the original <code>.ipynb</code> file from <a href="https://github.com/xuanleilin/tigergraphx/tree/main/docs/graphrag/msft_graphrag_4.ipynb">msft_graphrag_4.ipynb</a>.</p>
 <hr/>
 <h2 id="get-the-graph-from-tigergraph">Get the Graph from TigerGraph<a class="anchor-link" href="#get-the-graph-from-tigergraph">¶</a></h2>
 </div>
@@ -3311,14 +3378,18 @@ print(results)</div>
 <li>Use an LLM to convert the query into an embedding.</li>
 <li>Write a GSQL query to retrieve the top-K similar objects and their neighbors, combining structured and vector-based retrieval:</li>
 </ol>
-<div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="n">QUERY</span><span class="w"> </span><span class="n">query</span><span class="w"> </span><span class="p">(</span><span class="n">List</span><span class="o">&lt;</span><span class="nb">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">embedding</span><span class="p">,</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
-<span class="w">  </span><span class="n">Nodes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TopKVectorSearch</span><span class="p">(</span><span class="err">{</span><span class="n">Entity</span><span class="p">.</span><span class="n">entity_embedding</span><span class="err">}</span><span class="p">,</span><span class="w"> </span><span class="n">embedding</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="k">REPLACE</span><span class="w"> </span><span class="n">QUERY</span><span class="w"> </span><span class="n">my_query</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="n">LIST</span><span class="o">&lt;</span><span class="nb">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">query_vector</span><span class="p">,</span>
+<span class="w">    </span><span class="nb">int</span><span class="w"> </span><span class="n">k</span>
+<span class="p">)</span><span class="w"> </span><span class="n">SYNTAX</span><span class="w"> </span><span class="n">v3</span><span class="w"> </span><span class="err">{</span>
+<span class="w">  </span><span class="n">Nodes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">vectorSearch</span><span class="p">(</span><span class="err">{</span><span class="n">Entity</span><span class="p">.</span><span class="n">emb_description</span><span class="err">}</span><span class="p">,</span><span class="w"> </span><span class="n">query_vector</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">);</span>
+<span class="w">  </span><span class="n">PRINT</span><span class="w"> </span><span class="n">Nodes</span><span class="p">;</span>
 
 <span class="w">  </span><span class="n">Neighbors</span><span class="w"> </span><span class="o">=</span>
 <span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="n">t</span>
-<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">Nodes</span><span class="p">:</span><span class="n">s</span><span class="w"> </span><span class="o">-</span><span class="p">(</span><span class="n">community_contains_entity</span><span class="p">:</span><span class="n">e</span><span class="p">)</span><span class="o">-</span><span class="w"> </span><span class="p">:</span><span class="n">t</span><span class="p">;</span>
+<span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="p">:</span><span class="n">Nodes</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="n">e</span><span class="p">:</span><span class="n">community_contains_entity</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">t</span><span class="p">:</span><span class="n">Community</span><span class="p">);</span>
 
-<span class="w">  </span><span class="n">PRINT</span><span class="w"> </span><span class="n">Neighbors</span><span class="p">[</span><span class="n">Neighbors</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">Neighbors</span><span class="p">.</span><span class="n">title</span><span class="p">,</span><span class="w"> </span><span class="n">Neighbors</span><span class="p">.</span><span class="n">full_content</span><span class="p">];</span>
+<span class="w">  </span><span class="n">print</span><span class="w"> </span><span class="n">Neighbors</span><span class="p">[</span><span class="n">Neighbors</span><span class="p">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">Neighbors</span><span class="p">.</span><span class="n">title</span><span class="p">,</span><span class="w"> </span><span class="n">Neighbors</span><span class="p">.</span><span class="n">full_content</span><span class="p">];</span>
 <span class="err">}</span>
 </pre></div>
 </div>
@@ -3629,7 +3700,7 @@ return "\n\n".join(context)
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../msft_graphrag_3/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part 3">
+          <a href="../msft_graphrag_3/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part 3 - Graph Analysis">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3639,7 +3710,7 @@ return "\n\n".join(context)
                 Previous
               </span>
               <div class="md-ellipsis">
-                Part 3
+                Part 3 - Graph Analysis
               </div>
             </div>
           </a>

@@ -9,7 +9,7 @@
       
       
       
-        <link rel="prev" href="../quick_start/">
+        <link rel="prev" href="../quick_start_vector/">
       
       
         <link rel="next" href="../../graphrag/graphrag_overview/">
@@ -20,7 +20,7 @@
     
     
       
-        <title>TigerVector Quick Start Guide - TigerGraphX</title>
+        <title>Using TigerGraph for Graph and Vector Storage - TigerGraphX</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tigervector-quick-start-guide" class="md-skip">
+        <a href="#tigergraphx-quick-start-using-tigergraph-for-graph-and-vector-storage" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              TigerVector Quick Start Guide
+              Using TigerGraph for Graph and Vector Storage
             
           </span>
         </div>
@@ -489,14 +489,75 @@
                 
   
   
+    
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TigerGraphX Quick Start
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            TigerGraphX Quick Start
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
   
   
     <li class="md-nav__item">
-      <a href="../quick_start/" class="md-nav__link">
+      <a href="../quick_start_graph/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Quick Start Guide
+    Using TigerGraph as Graph Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick_start_vector/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using TigerGraph as Vector Storage
   </span>
   
 
@@ -526,7 +587,7 @@
           
   
   <span class="md-ellipsis">
-    TigerVector Quick Start Guide
+    Using TigerGraph for Graph and Vector Storage
   </span>
   
 
@@ -537,7 +598,7 @@
         
   
   <span class="md-ellipsis">
-    TigerVector Quick Start Guide
+    Using TigerGraph for Graph and Vector Storage
   </span>
   
 
@@ -637,6 +698,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#display-the-number-of-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Display the Number of Nodes
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -696,6 +766,14 @@
     </ul>
   
 </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
       
     </li>
   
@@ -838,7 +916,7 @@
         
   
   <span class="md-ellipsis">
-    Part 1
+    Part 1 - Setup and Data Preparation
   </span>
   
 
@@ -859,7 +937,7 @@
         
   
   <span class="md-ellipsis">
-    Part 2
+    Part 2 - Graph Creation and Data Loading
   </span>
   
 
@@ -880,7 +958,7 @@
         
   
   <span class="md-ellipsis">
-    Part 3
+    Part 3 - Graph Analysis
   </span>
   
 
@@ -901,7 +979,7 @@
         
   
   <span class="md-ellipsis">
-    Part 4
+    Part 4 - Hybrid Retrieval and Integration with LLM
   </span>
   
 
@@ -2392,6 +2470,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#display-the-number-of-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Display the Number of Nodes
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2905,7 +2992,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="tigervector-quick-start-guide">TigerVector Quick Start Guide<a class="anchor-link" href="#tigervector-quick-start-guide">¶</a></h1><p>Follow this guide to quickly get started with TigerGraph for storing both graph data and vectors. This guide assumes that you have already installed TigerGraphX and its dependencies, as outlined in the <a href="../installation">Installation Guide</a>.</p>
+<h1 id="tigergraphx-quick-start-using-tigergraph-for-graph-and-vector-storage">TigerGraphX Quick Start: Using TigerGraph for Graph and Vector Storage<a class="anchor-link" href="#tigergraphx-quick-start-using-tigergraph-for-graph-and-vector-storage">¶</a></h1><p>Follow this guide to quickly get started with TigerGraph for storing both graph data and vectors. This guide assumes that you have already installed TigerGraphX and its dependencies, as outlined in the <a href="../installation">Installation Guide</a>.</p>
 <p>To run this Jupyter Notebook, download the original <code>.ipynb</code> file from <a href="https://github.com/xuanleilin/tigergraphx/tree/main/docs/getting_started/tigervector_quick_start.ipynb">tigervector_quick_start.ipynb</a>.</p>
 <hr/>
 <p>In this quick start guide, we will work with the following graph:</p>
@@ -2982,7 +3069,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
             <span class="s2">"is_directed_edge"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
             <span class="s2">"from_node_type"</span><span class="p">:</span> <span class="s2">"Account"</span><span class="p">,</span>
             <span class="s2">"to_node_type"</span><span class="p">:</span> <span class="s2">"Account"</span><span class="p">,</span>
-            <span class="s2">"edge_identifier"</span><span class="p">:</span> <span class="s2">"date"</span><span class="p">,</span>
+            <span class="s2">"discriminator"</span><span class="p">:</span> <span class="s2">"date"</span><span class="p">,</span>
             <span class="s2">"attributes"</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s2">"date"</span><span class="p">:</span> <span class="s2">"DATETIME"</span><span class="p">,</span>
                 <span class="s2">"amount"</span><span class="p">:</span> <span class="s2">"INT"</span><span class="p">,</span>
@@ -3032,7 +3119,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
             "is_directed_edge": True,
             "from_node_type": "Account",
             "to_node_type": "Account",
-            "edge_identifier": "date",
+            "discriminator": "date",
             "attributes": {
                 "date": "DATETIME",
                 "amount": "INT",
@@ -3147,8 +3234,8 @@ G = Graph(graph_schema, connection)</div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>2025-01-05 21:33:13,963 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph FinancialGraph...
-2025-01-05 21:33:14,001 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
+<pre>2025-01-06 21:53:00,459 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph FinancialGraph...
+2025-01-06 21:54:03,285 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
 </pre>
 </div>
 </div>
@@ -3446,7 +3533,58 @@ print(G.upsert(data, "Account"))</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Note: A result of 0 simply indicates that no new nodes were added, as the nodes were already inserted into TigerGraph. This does not mean the update failed. In the next step, we'll perform a vector search to verify that the data has been updated successfully.</p>
+<p>Note: A result of 0 simply indicates that no new nodes were added, as the nodes were already inserted into TigerGraph. This does not mean the update failed.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8ff37fd8-0a13-4fe9-89e1-5a78065611f3">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="display-the-number-of-nodes">Display the Number of Nodes<a class="anchor-link" href="#display-the-number-of-nodes">¶</a></h3><p>Next, let's verify that the data has been inserted into the graph by using the following command. As expected, the number of nodes is 5.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=be635f54-e14b-4232-9022-fbe92b10453f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="CodeMirror cm-s-jupyter">
+<div class="zeroclipboard-container">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-7">
+<div>
+<span class="notice" hidden="">Copied!</span>
+<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
+<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+</clipboard-copy>
+</div>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">())</span>
+</pre></div>
+<div class="clipboard-copy-txt" id="cell-7">print(G.number_of_nodes())</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>11
+</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -3467,10 +3605,10 @@ print(G.upsert(data, "Account"))</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-7">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-8">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3481,10 +3619,10 @@ print(G.upsert(data, "Account"))</div>
 </clipboard-copy>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.017733968794345856</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01019224338233471</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016571875661611557</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">"emb1"</span><span class="p">,</span> <span class="s2">"Account"</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">vector_attribute_name</span><span class="o">=</span><span class="s2">"emb1"</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="s2">"Account"</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-7">data = [-0.017733968794345856, -0.01019224338233471, -0.016571875661611557]
-print(G.search(data, "emb1", "Account", 2))</div>
+<div class="clipboard-copy-txt" id="cell-8">data = [-0.017733968794345856, -0.01019224338233471, -0.016571875661611557]
+print(G.search(data, vector_attribute_name="emb1", node_type="Account", limit=2))</div>
 </div>
 </div>
 </div>
@@ -3496,7 +3634,7 @@ print(G.search(data, "emb1", "Account", 2))</div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>[{'id': 'Scott', 'distance': 0, 'name': 'Scott', 'isBlocked': False}, {'id': 'Steven', 'distance': 0.0325563, 'name': 'Steven', 'isBlocked': True}]
+<pre>[{'id': 'Paul', 'distance': 0.393388, 'name': 'Paul', 'isBlocked': False}, {'id': 'Steven', 'distance': 0.0325563, 'name': 'Steven', 'isBlocked': True}]
 </pre>
 </div>
 </div>
@@ -3520,10 +3658,10 @@ print(G.search(data, "emb1", "Account", 2))</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-8">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-9">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3535,7 +3673,7 @@ print(G.search(data, "emb1", "Account", 2))</div>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">())</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-8">print(G.clear())</div>
+<div class="clipboard-copy-txt" id="cell-9">print(G.clear())</div>
 </div>
 </div>
 </div>
@@ -3571,10 +3709,10 @@ print(G.search(data, "emb1", "Account", 2))</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-9">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-10">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3586,7 +3724,7 @@ print(G.search(data, "emb1", "Account", 2))</div>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">())</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-9">print(G.number_of_nodes())</div>
+<div class="clipboard-copy-txt" id="cell-10">print(G.number_of_nodes())</div>
 </div>
 </div>
 </div>
@@ -3622,10 +3760,10 @@ print(G.search(data, "emb1", "Account", 2))</div>
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-10">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-11">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3637,7 +3775,7 @@ print(G.search(data, "emb1", "Account", 2))</div>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">G</span><span class="o">.</span><span class="n">drop_graph</span><span class="p">()</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-10">G.drop_graph()</div>
+<div class="clipboard-copy-txt" id="cell-11">G.drop_graph()</div>
 </div>
 </div>
 </div>
@@ -3698,7 +3836,7 @@ print(G.search(data, "emb1", "Account", 2))</div>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../quick_start/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Quick Start Guide">
+          <a href="../quick_start_vector/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Using TigerGraph as Vector Storage">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3708,7 +3846,7 @@ print(G.search(data, "emb1", "Account", 2))</div>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Quick Start Guide
+                Using TigerGraph as Vector Storage
               </div>
             </div>
           </a>

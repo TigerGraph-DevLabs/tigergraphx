@@ -20,7 +20,7 @@
     
     
       
-        <title>Part 2 - TigerGraphX</title>
+        <title>Part 2 - Graph Creation and Data Loading - TigerGraphX</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#supporting-microsofts-graphrag-part-2" class="md-skip">
+        <a href="#supporting-microsofts-graphrag-part-2-graph-creation-and-data-loading" class="md-skip">
           Skip to content
         </a>
       
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Part 2
+              Part 2 - Graph Creation and Data Loading
             
           </span>
         </div>
@@ -486,12 +486,50 @@
   
   
   
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TigerGraphX Quick Start
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            TigerGraphX Quick Start
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../getting_started/quick_start/" class="md-nav__link">
+      <a href="../../getting_started/quick_start_graph/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Quick Start Guide
+    Using TigerGraph as Graph Storage
   </span>
   
 
@@ -508,15 +546,44 @@
   
   
     <li class="md-nav__item">
-      <a href="../../getting_started/tigervector_quick_start/" class="md-nav__link">
+      <a href="../../getting_started/quick_start_vector/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    TigerVector Quick Start Guide
+    Using TigerGraph as Vector Storage
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/quick_start_both/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using TigerGraph for Graph and Vector Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -665,7 +732,7 @@
         
   
   <span class="md-ellipsis">
-    Part 1
+    Part 1 - Setup and Data Preparation
   </span>
   
 
@@ -695,7 +762,7 @@
           
   
   <span class="md-ellipsis">
-    Part 2
+    Part 2 - Graph Creation and Data Loading
   </span>
   
 
@@ -706,7 +773,7 @@
         
   
   <span class="md-ellipsis">
-    Part 2
+    Part 2 - Graph Creation and Data Loading
   </span>
   
 
@@ -807,7 +874,7 @@
         
   
   <span class="md-ellipsis">
-    Part 3
+    Part 3 - Graph Analysis
   </span>
   
 
@@ -828,7 +895,7 @@
         
   
   <span class="md-ellipsis">
-    Part 4
+    Part 4 - Hybrid Retrieval and Integration with LLM
   </span>
   
 
@@ -2757,7 +2824,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="supporting-microsofts-graphrag-part-2">Supporting Microsoft’s GraphRAG: Part 2<a class="anchor-link" href="#supporting-microsofts-graphrag-part-2">¶</a></h1><p>In the <a href="../msft_graphrag_1">previous section</a>, we used Microsoft's GraphRAG to convert unstructured documents into Parquet files, and then used TigerGraphX to transform these files into CSV format.</p>
+<h1 id="supporting-microsofts-graphrag-part-2-graph-creation-and-data-loading">Supporting Microsoft’s GraphRAG: Part 2 - Graph Creation and Data Loading<a class="anchor-link" href="#supporting-microsofts-graphrag-part-2-graph-creation-and-data-loading">¶</a></h1><p>In the <a href="../msft_graphrag_1">previous section</a>, we used Microsoft's GraphRAG to convert unstructured documents into Parquet files, and then used TigerGraphX to transform these files into CSV format.</p>
 <p>Now, let’s use Jupyter Notebook to create the schema and load the CSV files into TigerGraph.</p>
 <p>To run this Jupyter Notebook, you can download the original <code>.ipynb</code> file from <a href="https://github.com/xuanleilin/tigergraphx/tree/main/docs/graphrag/msft_graphrag_2.ipynb">msft_graphrag_2.ipynb</a>.</p>
 <h2 id="create-a-graph">Create a Graph<a class="anchor-link" href="#create-a-graph">¶</a></h2><p>TigerGraph is a schema-based database, which requires defining a schema to structure your graph. This schema specifies the graph name, nodes (vertices), edges (relationships), and their respective attributes.</p>
@@ -3099,7 +3166,7 @@ G.load_data(loading_job_config)</div>
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../msft_graphrag_1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part 1">
+          <a href="../msft_graphrag_1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part 1 - Setup and Data Preparation">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -3109,20 +3176,20 @@ G.load_data(loading_job_config)</div>
                 Previous
               </span>
               <div class="md-ellipsis">
-                Part 1
+                Part 1 - Setup and Data Preparation
               </div>
             </div>
           </a>
         
         
           
-          <a href="../msft_graphrag_3/" class="md-footer__link md-footer__link--next" aria-label="Next: Part 3">
+          <a href="../msft_graphrag_3/" class="md-footer__link md-footer__link--next" aria-label="Next: Part 3 - Graph Analysis">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Part 3
+                Part 3 - Graph Analysis
               </div>
             </div>
             <div class="md-footer__button md-icon">
