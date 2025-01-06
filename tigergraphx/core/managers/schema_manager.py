@@ -167,7 +167,7 @@ DROP GRAPH {graph_name}
             regular_attrs = []
             discriminator_attrs = []
             for attribute_name, attribute_schema in edge_schema.attributes.items():
-                if attribute_name in edge_schema.edge_identifier:
+                if attribute_name in edge_schema.discriminator:
                     # This attribute is part of the edge identifier
                     discriminator_attrs.append(
                         f"{attribute_name} {attribute_schema.data_type.value}"

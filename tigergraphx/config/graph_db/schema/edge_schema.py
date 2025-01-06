@@ -16,7 +16,7 @@ class EdgeSchema(BaseConfig):
         description="Whether the edge is directed.")
     from_node_type: str = Field(description="The type of the source node.")
     to_node_type: str = Field(description="The type of the target node.")
-    edge_identifier: Set[str] | str = Field(
+    discriminator: Set[str] | str = Field(
         default_factory=set,
         description="An attribute or set of attributes that uniquely identifies an edge in a graph,"
         "distinguishing it from other edges with the same source and target.",
@@ -37,9 +37,9 @@ class EdgeSchema(BaseConfig):
         Returns:
             Dict[str, Any]: Parsed values with attributes as AttributeSchema.
         """
-        # Convert edge_identifier to a set if it's a string
-        if isinstance(values.get("edge_identifier"), str):
-            values["edge_identifier"] = {values["edge_identifier"]}
+        # Convert discriminator to a set if it's a string
+        if isinstance(values.get("discriminator"), str):
+            values["discriminator"] = {values["discriminator"]}
 
         attributes = values.get("attributes", {})
         if attributes:
@@ -49,17 +49,17 @@ class EdgeSchema(BaseConfig):
         return values
 
     @model_validator(mode="after")
-    def validate_edge_identifier_and_attributes(cls, values):
+    def validate_discriminator_and_attributes(cls, values):
         """
-        Validate that the every edge_identifier is present in attributes.
+        Validate that the every discriminator is present in attributes.
         """
-        if isinstance(values.edge_identifier, str):
-            if values.edge_identifier not in values.attributes:
+        if isinstance(values.discriminator, str):
+            if values.discriminator not in values.attributes:
                 raise ValueError(
-                    f"Edge identifier '{values.edge_identifier}' is not defined in attributes."
+                    f"Edge identifier '{values.discriminator}' is not defined in attributes."
                 )
         else:
-            for attribute in values.edge_identifier:
+            for attribute in values.discriminator:
                 if attribute not in values.attributes:
                     raise ValueError(
                         f"Edge identifier '{attribute}' is not defined in attributes."

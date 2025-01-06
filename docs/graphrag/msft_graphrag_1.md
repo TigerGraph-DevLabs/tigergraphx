@@ -1,4 +1,4 @@
-# Supporting Microsoft’s GraphRAG: Part 1
+# Supporting Microsoft’s GraphRAG: Part 1 - Setup and Data Preparation
 
 [Microsoft's GraphRAG](https://microsoft.github.io/graphrag/) is a method for creating structured knowledge graphs from raw text, enhancing Retrieval Augmented Generation (RAG) tasks. By organizing information hierarchically, it enables more efficient data retrieval and summarization.
 

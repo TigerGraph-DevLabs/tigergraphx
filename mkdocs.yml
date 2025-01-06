@@ -7,16 +7,18 @@ nav:
       - "GraphRAG Overview": graphrag/graphrag_overview.md
   - Getting Started:
       - Installation: getting_started/installation.md
-      - "Quick Start Guide": getting_started/quick_start.ipynb
-      - "TigerVector Quick Start Guide": getting_started/tigervector_quick_start.ipynb
+      - "TigerGraphX Quick Start":
+        - "Using TigerGraph as Graph Database": getting_started/quick_start_graph.ipynb
+        - "Using TigerGraph as Vector Database": getting_started/quick_start_vector.ipynb
+        - "Using TigerGraph for Graph and Vector Database": getting_started/quick_start_both.ipynb
   - GraphRAG:
       - "GraphRAG Overview": graphrag/graphrag_overview.md
       - "Supporting LightRAG": graphrag/lightrag.ipynb
       - "Supporting Microsoft's GraphRAG":
-          - "Part 1": graphrag/msft_graphrag_1.md
-          - "Part 2": graphrag/msft_graphrag_2.ipynb
-          - "Part 3": graphrag/msft_graphrag_3.ipynb
-          - "Part 4": graphrag/msft_graphrag_4.ipynb
+          - "Part 1 - Setup and Data Preparation": graphrag/msft_graphrag_1.md
+          - "Part 2 - Graph Creation and Data Loading": graphrag/msft_graphrag_2.ipynb
+          - "Part 3 - Graph Analysis": graphrag/msft_graphrag_3.ipynb
+          - "Part 4 - Hybrid Retrieval and Integration with LLM": graphrag/msft_graphrag_4.ipynb
   - API Reference:
       - Features Overview: reference/features_overview.md
       - Core:
