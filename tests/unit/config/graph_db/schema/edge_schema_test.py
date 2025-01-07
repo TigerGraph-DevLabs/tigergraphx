@@ -18,13 +18,13 @@ class TestEdgeSchema:
             is_directed_edge=True,
             from_node_type="NodeA",
             to_node_type="NodeB",
-            edge_identifier={"date", "amount"},  # Adding edge_identifier
+            discriminator={"date", "amount"},
             attributes=attributes,
         )
         assert edge.is_directed_edge is True
         assert edge.from_node_type == "NodeA"
         assert edge.to_node_type == "NodeB"
-        assert edge.edge_identifier == {"date", "amount"}
+        assert edge.discriminator == {"date", "amount"}
 
     def test_edge_schema_valid_str(self):
         """Test creating a valid EdgeSchema."""
@@ -37,13 +37,13 @@ class TestEdgeSchema:
             is_directed_edge=True,
             from_node_type="NodeA",
             to_node_type="NodeB",
-            edge_identifier="date",
+            discriminator="date",
             attributes=attributes,
         )
         assert edge.is_directed_edge is True
         assert edge.from_node_type == "NodeA"
         assert edge.to_node_type == "NodeB"
-        assert edge.edge_identifier == {"date"}
+        assert edge.discriminator == {"date"}
 
     def test_edge_schema_invalid_attribute(self):
         """Test EdgeSchema with invalid attribute default value."""
@@ -52,7 +52,7 @@ class TestEdgeSchema:
                 is_directed_edge=True,
                 from_node_type="NodeA",
                 to_node_type="NodeB",
-                edge_identifier={"date", "amount"},  # Adding edge_identifier
+                discriminator={"date", "amount"},
                 attributes={
                     "weight": AttributeSchema(
                         data_type=DataType.DOUBLE, default_value="invalid"

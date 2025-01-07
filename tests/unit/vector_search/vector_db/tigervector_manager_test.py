@@ -14,6 +14,7 @@ class TestTigerVectorManager:
         # Mock the configuration
         self.mock_config = MagicMock(spec=TigerVectorConfig)
         self.mock_config.vector_attribute_name = "emb_description"
+        self.mock_config.node_type = "Entity"
         # Mock the Graph class and its methods
         self.mock_graph = MagicMock(spec=Graph)
         # Instantiate the TigerVectorManager with mock configuration and graph
@@ -49,10 +50,16 @@ class TestTigerVectorManager:
     def test_query(self):
         """Test the query method of TigerVectorManager."""
         # Mock the search method to return fake data
-        self.mock_graph.search.return_value = {
-            "Entity_1": 0.1,
-            "Entity_2": 0.2,
-        }
+        self.mock_graph.search.return_value = [
+            {
+                "id": "Entity_1",
+                "distance": 0.1,
+            },
+            {
+                "id": "Entity_2",
+                "distance": 0.2,
+            },
+        ]
 
         # Define the query embedding
         query_embedding = [-0.01773, -0.01019, -0.01657]

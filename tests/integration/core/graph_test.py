@@ -451,7 +451,7 @@ class TestGraph2(TestBaseGraph):
                         "keywords": {"data_type": "STRING", "default_value": None},
                         "source_id": {"data_type": "STRING", "default_value": None},
                     },
-                    "edge_identifier": [],
+                    "discriminator": [],
                 }
             },
         }
