@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 from pathlib import Path
 import pandas as pd
 
@@ -384,7 +384,7 @@ class Graph(BaseGraph):
     def upsert(
         self,
         data: Dict | List[Dict],
-        node_type: str,
+        node_type: str = "",
     ):
         """
         Upsert nodes to the specified node type in the graph.
@@ -401,27 +401,48 @@ class Graph(BaseGraph):
         node_type = self._validate_node_type(node_type)
         return self._upsert(data, node_type)
 
+    def fetch(
+        self, node_id: str, node_type: str = ""
+    ) -> Optional[Dict[str, List[float]]]:
+        """
+        Retrieve the node with vector attributes by ID and type.
+
+        Args:
+            node_id (str): The ID of the node to fetch.
+            node_type (str, optional): The type of the node. Defaults to an empty string.
+
+        Returns:
+            Optional[Dict[str, List[float]]]: A dictionary containing the node embeddings,
+                or None if not found.
+        """
+        node_type = self._validate_node_type(node_type)
+        return self._fetch(node_id, node_type)
+
     def search(
         self,
         data: List[float],
         vector_attribute_name: str,
         node_type: str = "",
         limit: int = 10,
+        return_attributes: Optional[str | List[str]] = None,
+        candidate_ids: Optional[Set[str]] = None,
     ) -> List[Dict]:
         """
-        Perform a vector search to find the nearest nodes based on a query vector.
+        Perform a vector search to find the most similar nodes based on a query vector for a
+            single vector attribute and node type.
 
         Args:
             data (List[float]): The query vector to use for the search.
-            vector_attribute_name (str): The name of the vector attribute to search against.
-            node_type (str, optional): The type of node to search. Defaults to an empty string.
+            vector_attribute_name (str): The vector attribute name to search against.
+            node_type (str, optional): The node type to search. Defaults to "".
             limit (int, optional): The number of nearest neighbors to return. Defaults to 10.
+            return_attributes (Optional[str | List[str]], optional): The attributes of the node to
+                return. Defaults to None.
+            candidate_ids (Optional[Set[str]], optional): A set of node IDs to limit the search to.
+                Defaults to None.
 
         Returns:
-            List[Dict]: A list of dictionaries, where each dictionary contains:
-                - 'id': The node ID.
-                - 'distance': The distance between the node and the query vector.
-                - Any other attributes associated with the node.
+            List[Dict]: A list of dictionaries containing the node IDs, distances, and attributes, ordered by distance.
         """
         node_type = self._validate_node_type(node_type)
         return self._search(
@@ -429,6 +450,80 @@ class Graph(BaseGraph):
             vector_attribute_name=vector_attribute_name,
             node_type=node_type,
             limit=limit,
+            return_attributes=return_attributes,
+            candidate_ids=candidate_ids,
+        )
+
+    def search_multi_vector_attributes(
+        self,
+        data: List[float],
+        vector_attribute_names: List[str],
+        node_types: Optional[List[str]] = None,
+        limit: int = 10,
+        return_attributes_list: Optional[List[List[str]]] = None,
+    ) -> List[Dict]:
+        """
+        Perform a vector search to find the most similar nodes based on multiple query vectors for
+            specified node types and vector attributes.
+
+        Args:
+            data (List[float]): The query vector to use for the search.
+            vector_attribute_names (List[str]): List of vector attribute names to search against.
+            node_types (Optional[List[str]], optional): List of node types corresponding to the
+                vector attributes. Defaults to None.
+            limit (int, optional): The number of nearest neighbors to return. Defaults to 10.
+            return_attributes_list (Optional[List[List[str]]], optional): A list of lists
+                specifying which attributes to return for each node type.
+
+        Returns:
+            List[Dict]: A list of dictionaries containing the node IDs, distances, and attributes,
+                ordered by distance.
+        """
+        new_node_types = []
+        if node_types is not None:
+            for node_type in node_types:
+                new_node_type = self._validate_node_type(node_type)
+                new_node_types.append(new_node_type)
+        elif len(self.node_types) == 1:
+            new_node_types = [next(iter(self.node_types))] * len(vector_attribute_names)
+        else:
+            raise ValueError("Invalid input: node_types must be provided.")
+        return self._search_multi_vector_attributes(
+            data=data,
+            vector_attribute_names=vector_attribute_names,
+            node_types=new_node_types,
+            limit=limit,
+            return_attributes_list=return_attributes_list,
+        )
+
+    def search_top_k_similar_nodes(
+        self,
+        node_id: str,
+        vector_attribute_name: str,
+        node_type: str = "",
+        limit: int = 5,
+        return_attributes: Optional[List[str]] = None,
+    ) -> List[Dict]:
+        """Retrieve the top-k similar nodes based on a source node's embedding.
+
+        Args:
+            node_id (str): The ID of the source node.
+            vector_attribute_name (str): The name of the embedding attribute to use.
+            node_type (str, optional): The type of nodes to search within. Defaults to "".
+            limit (int, optional): The number of similar nodes to retrieve. Defaults to 5.
+            return_attributes (Optional[List[str]], optional): Attributes to return for each node.
+                Defaults to None.
+
+        Returns:
+            List[Dict]: A list of dictionaries containing the top-k similar nodes.
+        """
+        node_type = self._validate_node_type(node_type)
+        return self._search_top_k_similar_nodes(
+            node_id=node_id,
+            vector_attribute_name=vector_attribute_name,
+            node_type=node_type,
+            limit=limit,
+            return_attributes=return_attributes,
         )
 
     # ------------------------------ Utilities ------------------------------

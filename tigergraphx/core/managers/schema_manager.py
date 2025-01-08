@@ -231,7 +231,7 @@ DROP JOB schema_change_job_for_graph_{graph_name}
 # 5. Install functions in the package gds
 USE GLOBAL
 IMPORT PACKAGE GDS
-INSTALL FUNCTION GDS.*
+INSTALL FUNCTION GDS.**
 """
         logger.debug("GSQL script for creating graph: %s", gsql_script)
         return gsql_script.strip()
@@ -274,18 +274,29 @@ INSTALL FUNCTION GDS.*
                     )
                     query_statements.append(
                         f"""
-CREATE OR REPLACE QUERY api_vector_search_{node_type}_{vector_attribute_name} (
+CREATE OR REPLACE QUERY api_search_{node_type}_{vector_attribute_name} (
   UINT k=10,
-  LIST<float> query_vector
+  LIST<float> query_vector,
+  SET<VERTEX> set_candidate
 ) SYNTAX v3 {{
   MapAccum<Vertex, Float> @@map_node_distance;
 
-  Nodes = vectorSearch(
-    {{{node_type}.{vector_attribute_name}}},
-    query_vector,
-    k,
-    {{ distance_map: @@map_node_distance}}
-  );
+  IF set_candidate.size() > 0 THEN
+    Candidates = {{set_candidate}};
+    Nodes = vectorSearch(
+      {{{node_type}.{vector_attribute_name}}},
+      query_vector,
+      k,
+      {{ distance_map: @@map_node_distance, candidate_set: Candidates}}
+    );
+  ELSE
+    Nodes = vectorSearch(
+      {{{node_type}.{vector_attribute_name}}},
+      query_vector,
+      k,
+      {{ distance_map: @@map_node_distance}}
+    );
+  END;
 
   PRINT @@map_node_distance AS map_node_distance;
   PRINT Nodes;
@@ -297,6 +308,18 @@ CREATE OR REPLACE QUERY api_vector_search_{node_type}_{vector_attribute_name} (
         if len(vector_attribute_statements) == 0:
             gsql_script = ""
         else:
+            query_statements.append(
+                """
+CREATE OR REPLACE QUERY api_fetch(
+  VERTEX input
+) SYNTAX v3 {
+  gds.vector.distance([0], [0], "L2"); // TODO: Remove this line
+  Nodes = {input};
+  PRINT Nodes WITH VECTOR;
+}
+""".strip()
+            )
+
             gsql_script = f"""
 # 1. Use graph
 USE GRAPH {graph_schema.graph_name}

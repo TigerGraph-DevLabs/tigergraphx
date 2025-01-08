@@ -1,5 +1,5 @@
 import logging
-from typing import Dict, List
+from typing import Dict, List, Optional, Set
 
 from .base_manager import BaseManager
 
@@ -75,18 +75,98 @@ class VectorManager(BaseManager):
             logger.error(f"Error adding nodes: {e}")
             return None
 
+    def fetch(self, node_id: str, node_type: str) -> Optional[Dict[str, List[float]]]:
+        """
+        Retrieve the embeddings of a node by its ID and type.
+        """
+        try:
+            query_name = "api_fetch"
+            params = {"input": (node_id, node_type)}
+            result = self._connection.runInstalledQuery(query_name, params)
+
+            if not result:
+                logger.error(
+                    f"Query result is empty or None for node_id: '{node_id}', node_type: '{node_type}'."
+                )
+                return None
+
+            first_result = result[0]
+            nodes = first_result.get("Nodes")
+            if not nodes:
+                if "Nodes" not in first_result:
+                    logger.error(
+                        f"'Nodes' key is missing in the query result for node_id: '{node_id}', "
+                        f"node_type: '{node_type}'."
+                    )
+                else:
+                    logger.warning(
+                        f"No nodes found for node_id: '{node_id}', node_type: '{node_type}'."
+                    )
+                return None
+
+            node = nodes[0]  # Assuming node_id is unique and only one node is returned.
+
+            embeddings = node.get("Embeddings")
+            if embeddings is None:
+                logger.warning(
+                    f"No embeddings found for node_id: '{node_id}', node_type: '{node_type}'."
+                )
+                return None
+
+            if not isinstance(embeddings, dict):
+                logger.error(
+                    f"'Embeddings' should be a dictionary for node_id: '{node_id}', "
+                    f"node_type: '{node_type}'."
+                )
+                return None
+
+            # Validate each embedding
+            for emb_name, emb_vector in embeddings.items():
+                if not isinstance(emb_name, str):
+                    logger.error(
+                        f"Embedding name '{emb_name}' is not a string in node_id: '{node_id}', "
+                        f"node_type: '{node_type}'."
+                    )
+                    return None
+                if not isinstance(emb_vector, list) or not all(
+                    isinstance(x, float) for x in emb_vector
+                ):
+                    logger.error(
+                        f"Embedding vector for '{emb_name}' is not a list of floats in node_id: '{node_id}', "
+                        f"node_type: '{node_type}'."
+                    )
+                    return None
+
+            return embeddings
+
+        except Exception as e:
+            logger.error(
+                f"Error occurred while fetching embeddings for node_id: '{node_id}', "
+                f"node_type: '{node_type}'. Error: {str(e)}"
+            )
+            return None
+
     def search(
         self,
         data: List[float],
         vector_attribute_name: str,
         node_type: str,
         limit: int = 10,
+        return_attributes: Optional[str | List[str]] = None,
+        candidate_ids: Optional[Set[str]] = None,
     ) -> List[Dict]:
         try:
-            query_name = f"api_vector_search_{node_type}_{vector_attribute_name}"
-            params = f"k={limit}&"
-            params += "&".join([f"query_vector={value}" for value in data])
-            result = self._connection.runInstalledQuery(query_name, params)
+            query_name = f"api_search_{node_type}_{vector_attribute_name}"
+            set_candidate = []
+            if candidate_ids:
+                set_candidate = [
+                    {"id": candidate_id, "type": node_type}
+                    for candidate_id in candidate_ids
+                ]
+            params = {"k": limit, "query_vector": data, "set_candidate": set_candidate}
+            result = self._connection.runInstalledQuery(
+                query_name, params, usePost=True
+            )
 
             # Error check to ensure the result has the expected structure
             if not result:
@@ -129,11 +209,27 @@ class VectorManager(BaseManager):
                 if distance is None:
                     logger.warning(f"No distance found for node {node_id}.")
 
+                # Handle the return_attributes logic:
+                if return_attributes is not None:
+                    if isinstance(return_attributes, str):
+                        return_attributes = [return_attributes]
+                    if len(return_attributes) == 0:
+                        # If empty string or list, return no attributes
+                        node_data = {}
+                    else:  # Otherwise, filter by the specified attributes
+                        node_data = {
+                            key: value
+                            for key, value in node.get("attributes", {}).items()
+                            if key in return_attributes
+                        }
+                else:  # Return all attributes if None is passed
+                    node_data = node.get("attributes", {})
+
                 # Create a combined dict with node attributes and distance
                 combined_node = {
                     "id": node_id,
                     "distance": distance,
-                    **node.get("attributes", {}),  # Safely add node attributes
+                    **node_data,  # Add the filtered node attributes
                 }
                 combined_result.append(combined_node)
 
@@ -145,3 +241,94 @@ class VectorManager(BaseManager):
                 f"{vector_attribute_name} of node type {node_type}: {e}"
             )
         return []
+
+    def search_multi_vector_attributes(
+        self,
+        data: List[float],
+        vector_attribute_names: List[str],
+        node_types: List[str],
+        limit: int = 10,
+        return_attributes_list: Optional[List[List[str]]] = None,
+    ) -> List[Dict]:
+        # Ensure vector_attribute_names and node_types have the same length
+        if len(vector_attribute_names) != len(node_types):
+            logger.error(
+                "The number of vector_attribute_names must be equal to the number of node_types."
+            )
+            return []
+
+        combined_results = []
+
+        # If return_attributes_list is not None, ensure its length matches the number of vector_attribute_names
+        if return_attributes_list and len(return_attributes_list) != len(
+            vector_attribute_names
+        ):
+            logger.error(
+                "The number of return_attributes_list must match the number of vector_attribute_names."
+            )
+            return []
+
+        # Perform search for each vector_attribute_name and node_type pair
+        for idx, (vector_attribute_name, node_type) in enumerate(
+            zip(vector_attribute_names, node_types)
+        ):
+            return_attributes = (
+                return_attributes_list[idx] if return_attributes_list else None
+            )
+            result = self.search(
+                data=data,
+                vector_attribute_name=vector_attribute_name,
+                node_type=node_type,
+                limit=limit,
+                return_attributes=return_attributes,
+            )
+            combined_results.extend(result)
+
+        # Sort the results by distance in ascending order
+        combined_results.sort(key=lambda x: x["distance"])
+
+        # Return only the top 'limit' results
+        return combined_results[:limit]
+
+    def search_top_k_similar_nodes(
+        self,
+        node_id: str,
+        vector_attribute_name: str,
+        node_type: str = "",
+        limit: int = 5,
+        return_attributes: Optional[List[str]] = None,
+    ) -> List[Dict]:
+        """
+        Retrieve the top-k similar nodes based on a source node's specified embedding.
+        """
+        # Fetch the embeddings of the source node
+        embeddings = self.fetch(node_id, node_type)
+        if not embeddings:
+            logger.error(
+                f"Could not retrieve embeddings for node_id: '{node_id}', node_type: '{node_type}'."
+            )
+            return []
+
+        # Retrieve the specified embedding vector
+        query_vector = embeddings.get(vector_attribute_name)
+        if not query_vector:
+            logger.error(
+                f"Embedding '{vector_attribute_name}' not found for node_id: '{node_id}', "
+                f"node_type: '{node_type}'."
+            )
+            return []
+
+        # Perform the vector search using the retrieved embedding
+        results = self.search(
+            data=query_vector,
+            vector_attribute_name=vector_attribute_name,
+            node_type=node_type,
+            limit=limit + 1,
+            return_attributes=return_attributes,
+        )
+
+        # Exclude the source node from the results
+        filtered_results = [result for result in results if result.get("id") != node_id]
+
+        # Return only the top 'limit' nodes
+        return filtered_results[:limit]
