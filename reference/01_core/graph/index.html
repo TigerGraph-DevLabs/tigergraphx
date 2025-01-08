@@ -1133,9 +1133,36 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tigergraphx.core.graph.Graph.fetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tigergraphx.core.graph.Graph.search" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;search
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.graph.Graph.search_multi_vector_attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;search_multi_vector_attributes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.graph.Graph.search_top_k_similar_nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;search_top_k_similar_nodes
     </span>
   </a>
   
@@ -2588,9 +2615,36 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tigergraphx.core.graph.Graph.fetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tigergraphx.core.graph.Graph.search" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;search
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.graph.Graph.search_multi_vector_attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;search_multi_vector_attributes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.graph.Graph.search_top_k_similar_nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;search_top_k_similar_nodes
     </span>
   </a>
   
@@ -3683,7 +3737,7 @@ optionally with attributes.</p>
 
 
 <h3 id="tigergraphx.core.graph.Graph.upsert" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">upsert</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">node_type</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">upsert</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span></code>
 
 </h3>
 
@@ -3707,7 +3761,9 @@ or multiple records (List[Dict]).</p>
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code>str</code>)
+              (<code>str</code>, default:
+                  <code>&#39;&#39;</code>
+)
           –
           <div class="doc-md-description">
             <p>The node type for the upsert operation.</p>
@@ -3733,15 +3789,69 @@ or multiple records (List[Dict]).</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="tigergraphx.core.graph.Graph.search" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">search</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">vector_attribute_name</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span></code>
+<h3 id="tigergraphx.core.graph.Graph.fetch" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">fetch</span><span class="p">(</span><span class="n">node_id</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span></code>
 
 </h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Perform a vector search to find the nearest nodes based on a query vector.</p>
+        <p>Retrieve the node with vector attributes by ID and type.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>node_id</code></b>
+              (<code>str</code>)
+          –
+          <div class="doc-md-description">
+            <p>The ID of the node to fetch.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>node_type</code></b>
+              (<code>str</code>, default:
+                  <code>&#39;&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The type of the node. Defaults to an empty string.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="typing.Optional">Optional</span>[<span title="typing.Dict">Dict</span>[str, <span title="typing.List">List</span>[float]]]</code>
+          –
+          <div class="doc-md-description">
+            <p>Optional[Dict[str, List[float]]]: A dictionary containing the node embeddings,
+or None if not found.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="tigergraphx.core.graph.Graph.search" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">search</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">vector_attribute_name</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">return_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">candidate_ids</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Perform a vector search to find the most similar nodes based on a query vector for a
+    single vector attribute and node type.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3759,7 +3869,7 @@ or multiple records (List[Dict]).</p>
               (<code>str</code>)
           –
           <div class="doc-md-description">
-            <p>The name of the vector attribute to search against.</p>
+            <p>The vector attribute name to search against.</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -3769,7 +3879,7 @@ or multiple records (List[Dict]).</p>
 )
           –
           <div class="doc-md-description">
-            <p>The type of node to search. Defaults to an empty string.</p>
+            <p>The node type to search. Defaults to "".</p>
           </div>
         </li>
         <li class="doc-section-item field-body">
@@ -3782,6 +3892,28 @@ or multiple records (List[Dict]).</p>
             <p>The number of nearest neighbors to return. Defaults to 10.</p>
           </div>
         </li>
+        <li class="doc-section-item field-body">
+            <b><code>return_attributes</code></b>
+              (<code><span title="typing.Optional">Optional</span>[str | <span title="typing.List">List</span>[str]]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The attributes of the node to
+return. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>candidate_ids</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="typing.Set">Set</span>[str]]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>A set of node IDs to limit the search to.
+Defaults to None.</p>
+          </div>
+        </li>
     </ul>
 
 
@@ -3791,10 +3923,172 @@ or multiple records (List[Dict]).</p>
               <code><span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>]</code>
           –
           <div class="doc-md-description">
-            <p>List[Dict]: A list of dictionaries, where each dictionary contains:
-- 'id': The node ID.
-- 'distance': The distance between the node and the query vector.
-- Any other attributes associated with the node.</p>
+            <p>List[Dict]: A list of dictionaries containing the node IDs, distances, and attributes, ordered by distance.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="tigergraphx.core.graph.Graph.search_multi_vector_attributes" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">search_multi_vector_attributes</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">vector_attribute_names</span><span class="p">,</span> <span class="n">node_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">return_attributes_list</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Perform a vector search to find the most similar nodes based on multiple query vectors for
+    specified node types and vector attributes.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>data</code></b>
+              (<code><span title="typing.List">List</span>[float]</code>)
+          –
+          <div class="doc-md-description">
+            <p>The query vector to use for the search.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>vector_attribute_names</code></b>
+              (<code><span title="typing.List">List</span>[str]</code>)
+          –
+          <div class="doc-md-description">
+            <p>List of vector attribute names to search against.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>node_types</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[str]]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>List of node types corresponding to the
+vector attributes. Defaults to None.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>limit</code></b>
+              (<code>int</code>, default:
+                  <code>10</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The number of nearest neighbors to return. Defaults to 10.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>return_attributes_list</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[<span title="typing.List">List</span>[str]]]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>A list of lists
+specifying which attributes to return for each node type.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>]</code>
+          –
+          <div class="doc-md-description">
+            <p>List[Dict]: A list of dictionaries containing the node IDs, distances, and attributes,
+ordered by distance.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="tigergraphx.core.graph.Graph.search_top_k_similar_nodes" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">search_top_k_similar_nodes</span><span class="p">(</span><span class="n">node_id</span><span class="p">,</span> <span class="n">vector_attribute_name</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">return_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Retrieve the top-k similar nodes based on a source node's embedding.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>node_id</code></b>
+              (<code>str</code>)
+          –
+          <div class="doc-md-description">
+            <p>The ID of the source node.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>vector_attribute_name</code></b>
+              (<code>str</code>)
+          –
+          <div class="doc-md-description">
+            <p>The name of the embedding attribute to use.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>node_type</code></b>
+              (<code>str</code>, default:
+                  <code>&#39;&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The type of nodes to search within. Defaults to "".</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>limit</code></b>
+              (<code>int</code>, default:
+                  <code>5</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>The number of similar nodes to retrieve. Defaults to 5.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>return_attributes</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[str]]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Attributes to return for each node.
+Defaults to None.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>]</code>
+          –
+          <div class="doc-md-description">
+            <p>List[Dict]: A list of dictionaries containing the top-k similar nodes.</p>
           </div>
         </li>
     </ul>
