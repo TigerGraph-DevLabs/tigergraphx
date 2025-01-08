@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, List, Literal, Optional, Tuple
+from typing import Any, Dict, List, Literal, Optional, Set, Tuple
 from pathlib import Path
 import pandas as pd
 
@@ -254,16 +254,55 @@ class BaseGraph:
     ):
         return self._vector_manager.upsert(data, node_type)
 
+    def _fetch(self, node_id: str, node_type: str) -> Optional[Dict[str, List[float]]]:
+        return self._vector_manager.fetch(node_id, node_type)
+
     def _search(
         self,
         data: List[float],
         vector_attribute_name: str,
         node_type: str,
         limit: int = 10,
+        return_attributes: Optional[str | List[str]] = None,
+        candidate_ids: Optional[Set[str]] = None,
     ) -> List[Dict]:
         return self._vector_manager.search(
             data=data,
             vector_attribute_name=vector_attribute_name,
             node_type=node_type,
             limit=limit,
+            return_attributes=return_attributes,
+            candidate_ids=candidate_ids,
+        )
+
+    def _search_multi_vector_attributes(
+        self,
+        data: List[float],
+        vector_attribute_names: List[str],
+        node_types: List[str],
+        limit: int = 10,
+        return_attributes_list: Optional[List[List[str]]] = None,
+    ) -> List[Dict]:
+        return self._vector_manager.search_multi_vector_attributes(
+            data=data,
+            vector_attribute_names=vector_attribute_names,
+            node_types=node_types,
+            limit=limit,
+            return_attributes_list=return_attributes_list,
+        )
+
+    def _search_top_k_similar_nodes(
+        self,
+        node_id: str,
+        vector_attribute_name: str,
+        node_type: str = "",
+        limit: int = 5,
+        return_attributes: Optional[List[str]] = None,
+    ) -> List[Dict]:
+        return self._vector_manager.search_top_k_similar_nodes(
+            node_id=node_id,
+            vector_attribute_name=vector_attribute_name,
+            node_type=node_type,
+            limit=limit,
+            return_attributes=return_attributes,
         )
