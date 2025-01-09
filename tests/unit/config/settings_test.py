@@ -2,7 +2,7 @@ import pytest
 
 from tigergraphx import (
     Settings,
-    LanceDBConfig,
+    TigerVectorConfig,
     OpenAIConfig,
     OpenAIEmbeddingConfig,
     OpenAIChatConfig,
@@ -20,7 +20,12 @@ class TestSettings:
     def test_settings_from_dict(self, set_valid_env_vars):
         """Test the full Settings class with valid configurations."""
         config_data = {
-            "vector_db": {"type": "LanceDB", "uri": "test_uri"},
+            "vector_db": {
+                "type": "TigerVector",
+                "graph_name": "MyGraph",
+                "node_type": "MyNode",
+                "vector_attribute_name": "emb_description",
+            },
             "llm": {"type": "OpenAI", "base_url": "https://api.openai.com"},
             "embedding": {"type": "OpenAI", "model": "text-embedding-3-small"},
             "chat": {"type": "OpenAI", "model": "gpt-4o-mini", "max_retries": 10},
@@ -28,9 +33,11 @@ class TestSettings:
         settings = Settings.ensure_config(config_data)
 
         # Validate vector_db configuration
-        assert settings.vector_db.type == "LanceDB"
-        assert isinstance(settings.vector_db, LanceDBConfig)
-        assert settings.vector_db.uri == "test_uri"
+        assert settings.vector_db.type == "TigerVector"
+        assert isinstance(settings.vector_db, TigerVectorConfig)
+        assert settings.vector_db.graph_name == "MyGraph"
+        assert settings.vector_db.node_type == "MyNode"
+        assert settings.vector_db.vector_attribute_name == "emb_description"
 
         # Validate llm configuration
         assert settings.llm.type == "OpenAI"
@@ -56,12 +63,11 @@ class TestSettings:
         settings = Settings.ensure_config(config="tests/resources/settings.yaml")
 
         # Validate vector_db configuration
-        assert settings.vector_db.type == "LanceDB"
-        assert isinstance(settings.vector_db, LanceDBConfig)
-        assert settings.vector_db.uri == "test_uri"
-        assert settings.vector_db.api_key == "test_api_key"
-        assert settings.vector_db.region == "test_region"
-        assert settings.vector_db.host_override == "test_host_override"
+        assert settings.vector_db.type == "TigerVector"
+        assert isinstance(settings.vector_db, TigerVectorConfig)
+        assert settings.vector_db.graph_name == "MyGraph"
+        assert settings.vector_db.node_type == "MyNode"
+        assert settings.vector_db.vector_attribute_name == "emb_description"
 
         # Validate llm configuration
         assert settings.llm.type == "OpenAI"

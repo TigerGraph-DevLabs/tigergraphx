@@ -8,7 +8,7 @@ from tigergraphx.vector_search import (
 
 class TigerVectorSearchEngine(BaseSearchEngine):
     """
-    Search engine that performs text embedding and similarity search using OpenAI and LanceDB.
+    Search engine that performs text embedding and similarity search using OpenAI and TigerVector.
     """
 
     embedding_model: OpenAIEmbedding

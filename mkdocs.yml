@@ -30,15 +30,15 @@ nav:
       - Vector Search:
           - Vector DB:
               - BaseVectorDB: reference/02_vector_search/01_vector_db/base_vector_db.md
-              - LanceDBManager: reference/02_vector_search/01_vector_db/lancedb_manager.md
+              - TigerVectorManager: reference/02_vector_search/01_vector_db/tigervector_manager.md
               - NanoVectorDBManager: reference/02_vector_search/01_vector_db/nano_vectordb_manager.md
           - Embedding:
               - BaseEmbedding: reference/02_vector_search/02_embedding/base_embedding.md
               - OpenAIEmbedding: reference/02_vector_search/02_embedding/openai_embedding.md
           - Search:
               - BaseSearchEngine: reference/02_vector_search/03_search/base_search_engine.md
-              - LanceDBSearchEngine: reference/02_vector_search/03_search/lancedb_search_engine.md
               - NanoVectorDBSearchEngine: reference/02_vector_search/03_search/nano_vectordb_search_engine.md
+              - TigerVectorSearchEngine: reference/02_vector_search/03_search/tigervector_search_engine.md
       - LLM:
           - BaseLLMManager: reference/03_llm/base_llm_manager.md
           - OpenAIManager: reference/03_llm/openai_manager.md
