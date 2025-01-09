@@ -107,7 +107,7 @@ class TigerVectorStorage(BaseVectorStorage):
         Perform a vector search to find the most similar nodes based on the query vector.
         """
         embedding = await self.embedding_func([query])
-        embedding = embedding[0]
+        embedding = embedding[0].tolist()
         results = self._graph.search(
             data=embedding,
             vector_attribute_name="vector_attribute",
