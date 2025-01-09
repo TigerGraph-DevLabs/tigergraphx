@@ -1333,11 +1333,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/02_vector_search/01_vector_db/lancedb_manager/" class="md-nav__link">
+      <a href="../../reference/02_vector_search/01_vector_db/tigervector_manager/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    LanceDBManager
+    TigerVectorManager
   </span>
   
 
@@ -1530,11 +1530,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/02_vector_search/03_search/lancedb_search_engine/" class="md-nav__link">
+      <a href="../../reference/02_vector_search/03_search/nano_vectordb_search_engine/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    LanceDBSearchEngine
+    NanoVectorDBSearchEngine
   </span>
   
 
@@ -1551,11 +1551,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/02_vector_search/03_search/nano_vectordb_search_engine/" class="md-nav__link">
+      <a href="../../reference/02_vector_search/03_search/tigervector_search_engine/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    NanoVectorDBSearchEngine
+    TigerVectorSearchEngine
   </span>
   
 
@@ -3524,7 +3524,7 @@ class TigerGraphStorage(BaseGraphStorage):
 <span class="sd">        Perform a vector search to find the most similar nodes based on the query vector.</span>
 <span class="sd">        """</span>
         <span class="n">embedding</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">([</span><span class="n">query</span><span class="p">])</span>
-        <span class="n">embedding</span> <span class="o">=</span> <span class="n">embedding</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">embedding</span> <span class="o">=</span> <span class="n">embedding</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_graph</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
             <span class="n">data</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span>
             <span class="n">vector_attribute_name</span><span class="o">=</span><span class="s2">"vector_attribute"</span><span class="p">,</span>
@@ -3642,7 +3642,7 @@ class TigerVectorStorage(BaseVectorStorage):
         Perform a vector search to find the most similar nodes based on the query vector.
         """
         embedding = await self.embedding_func([query])
-        embedding = embedding[0]
+        embedding = embedding[0].tolist()
         results = self._graph.search(
             data=embedding,
             vector_attribute_name="vector_attribute",
@@ -3756,19 +3756,19 @@ class CustomLightRAG(LightRAG):
 <p>Next, create an <code>input</code> folder inside the <code>data</code> directory to store the documents you want to index:</p>
 <div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>applications/lightrag/data/input
 </pre></div>
-<h4 id="add-documents-to-the-input-folder">Add Documents to the Input Folder<a class="anchor-link" href="#add-documents-to-the-input-folder">¶</a></h4><p>Copy your documents (e.g., <code>fin.txt</code>) into the <code>applications/lightrag/data/input</code> folder.</p>
+<h4 id="add-documents-to-the-input-folder">Add Documents to the Input Folder<a class="anchor-link" href="#add-documents-to-the-input-folder">¶</a></h4><p>Copy your documents (e.g., <code>fin.txt</code>) into the <code>applications/lightrag/data/input</code> folder. Ensure that the JSON files in the <code>applications/lightrag/data</code> folder are removed before rerunning the Jupyter Notebook.</p>
 <hr/>
 <h3 id="indexing">Indexing<a class="anchor-link" href="#indexing">¶</a></h3><p>The following code sets up a working directory and demonstrates how to index a given document using LightRAG.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3cd5da89-f256-40dd-ba5f-52a3bfbb59e0">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=3cd5da89-f256-40dd-ba5f-52a3bfbb59e0">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
 <clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-4">
@@ -3818,6 +3818,31 @@ custom_rag = CustomLightRAG(
 
 with open(working_dir + "/input/book.txt") as f:
     custom_rag.insert(f.read())</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>2025-01-09 17:01:20,891 - lightrag - INFO - Logger initialized for working directory: ../../applications/lightrag/data
+2025-01-09 17:01:20,893 - lightrag - INFO - Load KV llm_response_cache with 2 data
+2025-01-09 17:01:20,896 - lightrag - INFO - Load KV full_docs with 1 data
+2025-01-09 17:01:20,900 - lightrag - INFO - Load KV text_chunks with 42 data
+2025-01-09 17:01:21,017 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph LightRAG...
+2025-01-09 17:01:21,052 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
+2025-01-09 17:01:21,054 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph Vector_entities...
+2025-01-09 17:01:21,064 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
+2025-01-09 17:01:21,066 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph Vector_relationships...
+2025-01-09 17:01:21,076 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
+2025-01-09 17:01:21,078 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph Vector_chunks...
+2025-01-09 17:01:21,105 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
+2025-01-09 17:01:21,108 - lightrag - WARNING - All docs are already in the storage
+</pre>
 </div>
 </div>
 </div>
@@ -3893,39 +3918,43 @@ print(result)</div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>2025-01-03 20:14:18,951 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
-2025-01-03 20:14:18,956 - lightrag - INFO - kw_prompt result:
+<pre>2025-01-09 17:01:24,700 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-01-09 17:01:24,709 - lightrag - INFO - kw_prompt result:
 {
   "high_level_keywords": ["Themes", "Story analysis"],
-  "low_level_keywords": ["Character development", "Plot structure", "Motifs", "Symbolism", "Conflict"]
+  "low_level_keywords": ["Character development", "Conflict", "Symbolism", "Plot", "Setting"]
 }
-2025-01-03 20:14:20,047 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
-2025-01-03 20:17:04,801 - lightrag - INFO - Local query uses 60 entites, 104 relations, 3 text units
-2025-01-03 20:17:05,260 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
-2025-01-03 20:18:15,647 - lightrag - INFO - Global query uses 49 entites, 60 relations, 3 text units
-2025-01-03 20:18:33,660 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-01-09 17:01:25,732 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-01-09 17:03:32,444 - lightrag - INFO - Local query uses 60 entites, 80 relations, 3 text units
+2025-01-09 17:03:33,135 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-01-09 17:04:46,561 - lightrag - INFO - Global query uses 47 entites, 60 relations, 3 text units
+2025-01-09 17:05:01,598 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
 ------------------- Query Result:  -------------------
-**Themes in "A Christmas Carol"**
+In Charles Dickens' "A Christmas Carol," several prominent themes intertwine within the narrative, reflecting the transformative journey of the central character, Ebenezer Scrooge. These themes serve as moral lessons that resonate deeply with readers and highlight the societal issues of Dickens' time.
 
-"A Christmas Carol" by Charles Dickens is a rich narrative that explores several powerful themes, ultimately leading to a story about redemption and human connection. Below are the top themes that weave throughout the tale:
+### Redemption and Transformation
 
-### 1. **Redemption and Transformation**
-One of the most prominent themes in "A Christmas Carol" is the possibility of redemption. Ebenezer Scrooge, the story’s central character, undergoes a profound transformation from a cold-hearted miser to a generous and caring individual. This journey is ignited by the visits from three spirits—Marley's Ghost, the Ghost of Christmas Past, the Ghost of Christmas Present, and the Ghost of Christmas Yet to Come—who guide him to reflect on his life choices and their ramifications. The notion that anyone can change, regardless of their past actions, stands as an optimistic commentary on the human experience.
+The theme of redemption stands out as one of the most significant aspects of Scrooge's character arc. Initially portrayed as a miserly and cold-hearted individual, Scrooge’s encounters with various spirits—most notably the Spirit of Christmas Past, the Spirit of Christmas Present, and the Spirit of Christmas Yet to Come—underscore his potential for change. Through these supernatural visitations, Scrooge comes to realize the consequences of his actions and attitudes toward others, particularly his neglect of the less fortunate. This realization serves as a catalyst for his transformation from a figure of disdain to one of generosity and kindness, ultimately embodying the spirit of Christmas.
 
-### 2. **The Spirit of Christmas**
-Christmas serves as a backdrop for themes of joy, generosity, and community. Initially, Scrooge dismisses Christmas as nonsense and a burden; however, through various encounters, he learns the true essence of the holiday: caring for others, celebrating family, and spreading goodwill. The contrast between Scrooge’s grim perspective and the joyous spirit of Christmas embodied by characters like his nephew Fred and the Cratchit family illustrates the importance of community and connection during the festive season.
+### The Spirit of Christmas
 
-### 3. **Social Critique and Wealth**
-Dickens employs Scrooge’s character to critique social issues such as greed, poverty, and the divide between the wealthy and the impoverished. Scrooge's initial indifference towards the needy reflects systemic societal neglect. Through his transformation, Dickens advocates for social responsibility and the need for individuals to act compassionately towards the less fortunate, symbolized in characters like Tiny Tim, whose fragility highlights the impact of societal indifference on vulnerable lives.
+Another essential theme revolves around the essence of Christmas itself, characterized by joy, goodwill, and communal spirit. Christmas is portrayed as a time of reflection, compassion, and generosity, contrasting sharply with Scrooge’s initial cynicism. Dickens emphasizes that the holiday season is an opportunity for individuals to reconnect with their humanity, fostering relationships and nurturing feelings of empathy. Instances within the story, such as the Cratchit family's humble Christmas dinner, reveal how love and celebration can thrive even amidst hardship, highlighting the importance of community and kind-heartedness.
 
-### 4. **Familial Bonds and Love**
-The narrative emphasizes the significance of family relationships and the warmth of loving connections. Scrooge’s reflections on his past, particularly his memories of family gatherings, convey a longing for connection and belonging, which he initially shuns. The Cratchit family, despite their financial struggles, exemplifies love and togetherness, contrasting Scrooge’s isolation. By the story's end, Scrooge learns to appreciate and actively engage with his family, indicating a renewal of these essential bonds.
+### Compassion and Social Responsibility
 
-### 5. **Time and Memory**
-The theme of time is central to Scrooge's transformation, as he confronts moments from his past, experiences the joys and struggles of the present, and considers the potential bleak future his choices could lead to. Dickens underscores the importance of memory in shaping one's identity and moral fabric. Scrooge's retrospective journey highlights the necessity of reflecting on past actions to foster personal growth and responsibility.
+Compassion emerges as a vital theme, urging recognition of the struggles faced by the less fortunate. Scrooge’s initial apathy towards the needy epitomizes societal indifference, reflected in his dismissive responses to the pleas for charitable contributions. In stark contrast, the Cratchit family, particularly through the character of Tiny Tim, embodies the spirit of resilience and hope despite their economic hardships. Dickens employs Tiny Tim's situation to showcase the impact of poverty, advocating for social responsibility and awareness of those less fortunate. Scrooge's eventual embracing of compassion signifies a shift from self-interest to a broader understanding that one’s moral obligations extend to the community at large.
+
+### The Consequences of Isolation
+
+The narrative also explores the repercussions of isolation and disconnection. Scrooge, who initially chooses solitude over companionship, experiences profound loneliness, which blinds him to the joys of life and the importance of human connections. His relationships with characters such as his nephew Fred, who embodies the spirit of family and celebration, illustrate the positive impact of social ties. The evolution of Scrooge's character highlights the essential human need for connection, revealing that true wealth lies not in material possessions but in shared experiences and relationships.
+
+### Time and Reflection
+
+Lastly, the theme of time plays a critical role in Scrooge's transformation. His encounters with the spirits allow him to reflect on his past choices, current realities, and potential futures. The narrative demonstrates how reflecting on one's life can prompt significant personal growth and ultimately shape one's destiny. This exploration of time serves as a reminder that it is never too late to change one's path, advocating for mindfulness in one's actions and their implications.
 
 ### Conclusion
-In "A Christmas Carol," Dickens masterfully intertwines themes of redemption, compassion, and social awareness, creating a narrative that resonates with the importance of kindness and community spirit. Through Scrooge’s transformation, readers are reminded of the power of empathy, the significance of familial connections, and the universal potential for redemption. Ultimately, the story serves as a poignant reminder of the enduring values associated with the holiday season.
+
+In summary, "A Christmas Carol" is rich with themes of redemption, the spirit of Christmas, compassion, the effects of isolation, and the significance of time. Together, these themes contribute to a timeless narrative that not only entertains but also imparts profound moral lessons about the nature of humanity and the transformative power of kindness and generosity. Through Scrooge’s journey, Dickens encourages readers to embrace the festive spirit and recognize their roles as members of a compassionate community.
 </pre>
 </div>
 </div>
