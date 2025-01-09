@@ -4,10 +4,6 @@
     options:
       members: true
 
-::: tigergraphx.config.settings.vector_db_settings.LanceDBConfig
-    options:
-      members: true
-
 ::: tigergraphx.config.settings.vector_db_settings.NanoVectorDBConfig
     options:
       members: true

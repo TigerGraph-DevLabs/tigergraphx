@@ -164,83 +164,19 @@ class VectorManager(BaseManager):
                     for candidate_id in candidate_ids
                 ]
             params = {"k": limit, "query_vector": data, "set_candidate": set_candidate}
-            result = self._connection.runInstalledQuery(
-                query_name, params, usePost=True
-            )
 
-            # Error check to ensure the result has the expected structure
-            if not result:
-                logger.error("Query result is empty or None.")
+            result = self._execute_search_query(query_name, params)
+            if result is None:
                 return []
 
-            if "map_node_distance" not in result[0]:
-                logger.error("'map_node_distance' key is missing in the query result.")
-                return []
-
-            if "Nodes" not in result[1]:
-                logger.error("'Nodes' key is missing in the query result.")
-                return []
-
-            # Extract map_node_distance and Nodes
-            node_distances = result[0]["map_node_distance"]
-            nodes = result[1]["Nodes"]
-
-            # Error check: Ensure map_node_distance and Nodes are in the expected formats
-            if not isinstance(node_distances, dict):
-                logger.error("'map_node_distance' should be a dictionary.")
-                return []
-
-            if not isinstance(nodes, list):
-                logger.error("'Nodes' should be a list.")
-                return []
-
-            # Combine Nodes and map_node_distance
-            combined_result = []
-            for node in nodes:
-                node_id = node.get("v_id")  # Safely get node ID
-                if not node_id:
-                    logger.error("Node ID is missing in one of the nodes.")
-                    continue
-
-                # Get the distance for this node from the map_node_distance
-                distance = node_distances.get(node_id, None)
-
-                # Check if the distance was found for the node
-                if distance is None:
-                    logger.warning(f"No distance found for node {node_id}.")
-
-                # Handle the return_attributes logic:
-                if return_attributes is not None:
-                    if isinstance(return_attributes, str):
-                        return_attributes = [return_attributes]
-                    if len(return_attributes) == 0:
-                        # If empty string or list, return no attributes
-                        node_data = {}
-                    else:  # Otherwise, filter by the specified attributes
-                        node_data = {
-                            key: value
-                            for key, value in node.get("attributes", {}).items()
-                            if key in return_attributes
-                        }
-                else:  # Return all attributes if None is passed
-                    node_data = node.get("attributes", {})
-
-                # Create a combined dict with node attributes and distance
-                combined_node = {
-                    "id": node_id,
-                    "distance": distance,
-                    **node_data,  # Add the filtered node attributes
-                }
-                combined_result.append(combined_node)
-
-            # Now combined_result will contain the combined data
+            combined_result = self._process_search_results(result, return_attributes)
             return combined_result
         except Exception as e:
             logger.error(
                 f"Error performing vector search for vector attribute "
                 f"{vector_attribute_name} of node type {node_type}: {e}"
             )
-        return []
+            return []
 
     def search_multi_vector_attributes(
         self,
@@ -250,7 +186,6 @@ class VectorManager(BaseManager):
         limit: int = 10,
         return_attributes_list: Optional[List[List[str]]] = None,
     ) -> List[Dict]:
-        # Ensure vector_attribute_names and node_types have the same length
         if len(vector_attribute_names) != len(node_types):
             logger.error(
                 "The number of vector_attribute_names must be equal to the number of node_types."
@@ -259,7 +194,6 @@ class VectorManager(BaseManager):
 
         combined_results = []
 
-        # If return_attributes_list is not None, ensure its length matches the number of vector_attribute_names
         if return_attributes_list and len(return_attributes_list) != len(
             vector_attribute_names
         ):
@@ -268,7 +202,6 @@ class VectorManager(BaseManager):
             )
             return []
 
-        # Perform search for each vector_attribute_name and node_type pair
         for idx, (vector_attribute_name, node_type) in enumerate(
             zip(vector_attribute_names, node_types)
         ):
@@ -284,10 +217,7 @@ class VectorManager(BaseManager):
             )
             combined_results.extend(result)
 
-        # Sort the results by distance in ascending order
         combined_results.sort(key=lambda x: x["distance"])
-
-        # Return only the top 'limit' results
         return combined_results[:limit]
 
     def search_top_k_similar_nodes(
@@ -301,7 +231,6 @@ class VectorManager(BaseManager):
         """
         Retrieve the top-k similar nodes based on a source node's specified embedding.
         """
-        # Fetch the embeddings of the source node
         embeddings = self.fetch(node_id, node_type)
         if not embeddings:
             logger.error(
@@ -309,7 +238,6 @@ class VectorManager(BaseManager):
             )
             return []
 
-        # Retrieve the specified embedding vector
         query_vector = embeddings.get(vector_attribute_name)
         if not query_vector:
             logger.error(
@@ -318,7 +246,6 @@ class VectorManager(BaseManager):
             )
             return []
 
-        # Perform the vector search using the retrieved embedding
         results = self.search(
             data=query_vector,
             vector_attribute_name=vector_attribute_name,
@@ -327,8 +254,91 @@ class VectorManager(BaseManager):
             return_attributes=return_attributes,
         )
 
-        # Exclude the source node from the results
         filtered_results = [result for result in results if result.get("id") != node_id]
-
-        # Return only the top 'limit' nodes
         return filtered_results[:limit]
+
+    def _execute_search_query(
+        self,
+        query_name: str,
+        params: Dict,
+    ) -> Optional[List[Dict]]:
+        """
+        Executes the search query and performs initial error checks.
+        """
+        try:
+            result = self._connection.runInstalledQuery(
+                query_name, params, usePost=True
+            )
+        except Exception as e:
+            logger.error(f"Error executing query {query_name}: {e}")
+            return None
+
+        # Perform basic error checks
+        if not result:
+            logger.error("Query result is empty or None.")
+            return None
+
+        if "map_node_distance" not in result[0]:
+            logger.error("'map_node_distance' key is missing in the query result.")
+            return None
+
+        if "Nodes" not in result[1]:
+            logger.error("'Nodes' key is missing in the query result.")
+            return None
+
+        return result
+
+    def _process_search_results(
+        self,
+        result: List[Dict],
+        return_attributes: Optional[str | List[str]] = None,
+    ) -> List[Dict]:
+        """
+        Processes the raw search results into a combined and formatted list.
+        """
+        node_distances = result[0]["map_node_distance"]
+        nodes = result[1]["Nodes"]
+
+        # Validate result formats
+        if not isinstance(node_distances, dict):
+            logger.error("'map_node_distance' should be a dictionary.")
+            return []
+
+        if not isinstance(nodes, list):
+            logger.error("'Nodes' should be a list.")
+            return []
+
+        combined_result = []
+        for node in nodes:
+            node_id = node.get("v_id")
+            if not node_id:
+                logger.error("Node ID is missing in one of the nodes.")
+                continue
+
+            distance = node_distances.get(node_id)
+            if distance is None:
+                logger.warning(f"No distance found for node {node_id}.")
+
+            # Handle return_attributes logic
+            if return_attributes is not None:
+                if isinstance(return_attributes, str):
+                    return_attributes = [return_attributes]
+                if not return_attributes:
+                    node_data = {}
+                else:
+                    node_data = {
+                        key: value
+                        for key, value in node.get("attributes", {}).items()
+                        if key in return_attributes
+                    }
+            else:
+                node_data = node.get("attributes", {})
+
+            combined_node = {
+                "id": node_id,
+                "distance": distance,
+                **node_data,
+            }
+            combined_result.append(combined_node)
+
+        return combined_result

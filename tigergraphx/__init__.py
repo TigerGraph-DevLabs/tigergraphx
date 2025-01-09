@@ -40,7 +40,6 @@ from .config import (
     OpenAIEmbeddingConfig,
     BaseVectorDBConfig,
     TigerVectorConfig,
-    LanceDBConfig,
     NanoVectorDBConfig,
 )
 from .graphrag import (
@@ -57,11 +56,9 @@ from .vector_search import (
     OpenAIEmbedding,
     BaseVectorDB,
     TigerVectorManager,
-    LanceDBManager,
     NanoVectorDBManager,
     BaseSearchEngine,
     TigerVectorSearchEngine,
-    LanceDBSearchEngine,
     NanoVectorDBSearchEngine,
 )
 from .pipelines import ParquetProcessor
@@ -113,7 +110,6 @@ __all__ = [
     "OpenAIEmbeddingConfig",
     "BaseVectorDBConfig",
     "TigerVectorConfig",
-    "LanceDBConfig",
     "NanoVectorDBConfig",
     # GraphRAG
     "BaseContextBuilder",
@@ -125,11 +121,9 @@ __all__ = [
     "OpenAIEmbedding",
     "BaseVectorDB",
     "TigerVectorManager",
-    "LanceDBManager",
     "NanoVectorDBManager",
     "BaseSearchEngine",
     "TigerVectorSearchEngine",
-    "LanceDBSearchEngine",
     "NanoVectorDBSearchEngine",
     # Pipelines
     "ParquetProcessor",

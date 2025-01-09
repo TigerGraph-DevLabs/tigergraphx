@@ -2,7 +2,7 @@ from typing import Dict, Any
 from pydantic import Field, field_validator
 
 from ..base_config import BaseConfig
-from .vector_db_settings import BaseVectorDBConfig, TigerVectorConfig, LanceDBConfig
+from .vector_db_settings import BaseVectorDBConfig, TigerVectorConfig
 from .llm_settings import BaseLLMConfig, OpenAIConfig
 from .embedding_settings import BaseEmbeddingConfig, OpenAIEmbeddingConfig
 from .chat_settings import BaseChatConfig, OpenAIChatConfig
@@ -14,7 +14,7 @@ class Settings(BaseConfig):
     embeddings, and chat models.
     """
 
-    vector_db: TigerVectorConfig | LanceDBConfig | BaseVectorDBConfig = Field(
+    vector_db: TigerVectorConfig | BaseVectorDBConfig = Field(
         description="Configuration for the vector database."
     )
     llm: OpenAIConfig | BaseLLMConfig = Field(
@@ -42,7 +42,7 @@ class Settings(BaseConfig):
         Raises:
             ValueError: If the type of vector database is unknown.
         """
-        type_map = {"LanceDB": LanceDBConfig, "TigerVector": TigerVectorConfig}
+        type_map = {"TigerVector": TigerVectorConfig}
         db_type = value.get("type")
         if db_type not in type_map:
             raise ValueError(f"Unknown vector_db type: {db_type}")
