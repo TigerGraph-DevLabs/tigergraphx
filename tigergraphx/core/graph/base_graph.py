@@ -254,8 +254,19 @@ class BaseGraph:
     ):
         return self._vector_manager.upsert(data, node_type)
 
-    def _fetch(self, node_id: str, node_type: str) -> Optional[Dict[str, List[float]]]:
-        return self._vector_manager.fetch(node_id, node_type)
+    def _fetch_node(
+        self, node_id: str, vector_attribute_name: str, node_type: str
+    ) -> Optional[List[float]]:
+        return self._vector_manager.fetch_node(
+            node_id, vector_attribute_name, node_type
+        )
+
+    def _fetch_nodes(
+        self, node_ids: List[str], vector_attribute_name: str, node_type: str
+    ) -> Dict[str, List[float]]:
+        return self._vector_manager.fetch_nodes(
+            node_ids, vector_attribute_name, node_type
+        )
 
     def _search(
         self,

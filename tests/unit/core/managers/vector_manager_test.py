@@ -154,383 +154,197 @@ class TestVectorManager:
         assert result is None
 
     # -------------------------
-    # Test Cases for fetch Method
+    # Test Cases for fetch_node and fetch_nodes Methods
     # -------------------------
 
-    def test_fetch_successful(self):
+    def test_fetch_node_successful(self):
         """
-        Test case where the fetch method successfully retrieves embeddings.
+        Test case where fetch_node successfully retrieves embeddings for a single node.
         """
         node_id = "Ed"
         node_type = "Account"
+        vector_attribute_name = "emb1"
         mock_result = [
             {
                 "Nodes": [
                     {
-                        "Embeddings": {
-                            "emb1": [-0.003692443, 0.01049439, -0.004631793]
-                        },
-                        "attributes": {"isBlocked": False, "name": "Ed"},
                         "v_id": "Ed",
-                        "v_type": "Account",
+                        "Embeddings": {"emb1": [-0.003692443, 0.01049439, -0.004631793]},
                     }
                 ]
             }
         ]
         self.mock_connection.runInstalledQuery.return_value = mock_result
 
-        expected_embeddings = {"emb1": [-0.003692443, 0.01049439, -0.004631793]}
+        expected_embedding = [-0.003692443, 0.01049439, -0.004631793]
+        result = self.vector_manager.fetch_node(node_id, vector_attribute_name, node_type)
+        assert result == expected_embedding
 
-        result = self.vector_manager.fetch(node_id, node_type)
-        assert result == expected_embeddings
 
-    def test_fetch_no_result(self):
+    def test_fetch_node_not_found(self):
         """
-        Test case where the query returns no results.
+        Test case where fetch_node does not find the requested node.
         """
         node_id = "Ed"
         node_type = "Account"
-        self.mock_connection.runInstalledQuery.return_value = []
+        vector_attribute_name = "emb1"
+        self.mock_connection.runInstalledQuery.return_value = [{"Nodes": []}]
 
-        result = self.vector_manager.fetch(node_id, node_type)
+        result = self.vector_manager.fetch_node(node_id, vector_attribute_name, node_type)
         assert result is None
 
-    def test_fetch_missing_nodes_key(self):
+
+    def test_fetch_node_embedding_not_found(self):
         """
-        Test case where the 'Nodes' key is missing in the query result.
+        Test case where the requested embedding is not found for the node.
         """
         node_id = "Ed"
         node_type = "Account"
-        mock_result = [{}]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
-
-        result = self.vector_manager.fetch(node_id, node_type)
-        assert result is None
-
-    def test_fetch_empty_nodes_list(self):
-        """
-        Test case where the 'Nodes' list is empty.
-        """
-        node_id = "Ed"
-        node_type = "Account"
-        mock_result = [{"Nodes": []}]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
-
-        result = self.vector_manager.fetch(node_id, node_type)
-        assert result is None
-
-    def test_fetch_missing_embeddings_key(self):
-        """
-        Test case where the 'Embeddings' key is missing in the node.
-        """
-        node_id = "Ed"
-        node_type = "Account"
+        vector_attribute_name = "emb2"  # Not present in the mock data
         mock_result = [
             {
                 "Nodes": [
                     {
-                        "attributes": {"isBlocked": False, "name": "Ed"},
                         "v_id": "Ed",
-                        "v_type": "Account",
+                        "Embeddings": {"emb1": [-0.003692443, 0.01049439, -0.004631793]},
                     }
                 ]
             }
         ]
         self.mock_connection.runInstalledQuery.return_value = mock_result
 
-        result = self.vector_manager.fetch(node_id, node_type)
+        result = self.vector_manager.fetch_node(node_id, vector_attribute_name, node_type)
         assert result is None
 
-    def test_fetch_embeddings_not_dict(self):
+
+    def test_fetch_nodes_successful(self):
         """
-        Test case where 'Embeddings' is not a dictionary.
+        Test case where fetch_nodes successfully retrieves embeddings for multiple nodes.
         """
-        node_id = "Ed"
+        node_ids = ["Ed", "Scott"]
         node_type = "Account"
+        vector_attribute_name = "emb1"
         mock_result = [
             {
                 "Nodes": [
                     {
-                        "Embeddings": ["invalid_embedding_format"],
-                        "attributes": {"isBlocked": False, "name": "Ed"},
                         "v_id": "Ed",
-                        "v_type": "Account",
-                    }
-                ]
-            }
-        ]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
-
-        result = self.vector_manager.fetch(node_id, node_type)
-        assert result is None
-
-    def test_fetch_embedding_name_not_string(self):
-        """
-        Test case where an embedding name is not a string.
-        """
-        node_id = "Ed"
-        node_type = "Account"
-        mock_result = [
-            {
-                "Nodes": [
+                        "Embeddings": {"emb1": [-0.003692443, 0.01049439, -0.004631793]},
+                    },
                     {
-                        "Embeddings": {123: [-0.003692443, 0.01049439, -0.004631793]},
-                        "attributes": {"isBlocked": False, "name": "Ed"},
-                        "v_id": "Ed",
-                        "v_type": "Account",
-                    }
-                ]
-            }
-        ]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
-
-        result = self.vector_manager.fetch(node_id, node_type)
-        assert result is None
-
-    def test_fetch_embedding_vector_not_list_of_floats(self):
-        """
-        Test case where an embedding vector is not a list of floats.
-        """
-        node_id = "Ed"
-        node_type = "Account"
-        mock_result = [
-            {
-                "Nodes": [
-                    {
-                        "Embeddings": {"emb1": "invalid_vector_format"},
-                        "attributes": {"isBlocked": False, "name": "Ed"},
-                        "v_id": "Ed",
-                        "v_type": "Account",
-                    }
-                ]
-            }
-        ]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
-
-        result = self.vector_manager.fetch(node_id, node_type)
-        assert result is None
-
-    def test_fetch_multiple_embeddings(self):
-        """
-        Test case where multiple embeddings are present and correctly returned.
-        """
-        node_id = "Ed"
-        node_type = "Account"
-        mock_result = [
-            {
-                "Nodes": [
-                    {
-                        "Embeddings": {
-                            "emb1": [-0.003692443, 0.01049439, -0.004631793],
-                            "emb2": [0.002345678, -0.00987654, 0.0054321],
-                        },
-                        "attributes": {"isBlocked": False, "name": "Ed"},
-                        "v_id": "Ed",
-                        "v_type": "Account",
-                    }
+                        "v_id": "Scott",
+                        "Embeddings": {"emb1": [-0.015055144, -0.016819345, -0.022187002]},
+                    },
                 ]
             }
         ]
         self.mock_connection.runInstalledQuery.return_value = mock_result
 
         expected_embeddings = {
-            "emb1": [-0.003692443, 0.01049439, -0.004631793],
-            "emb2": [0.002345678, -0.00987654, 0.0054321],
+            "Ed": [-0.003692443, 0.01049439, -0.004631793],
+            "Scott": [-0.015055144, -0.016819345, -0.022187002],
         }
-
-        result = self.vector_manager.fetch(node_id, node_type)
+        result = self.vector_manager.fetch_nodes(node_ids, vector_attribute_name, node_type)
         assert result == expected_embeddings
 
-    def test_fetch_no_embeddings_found(self):
+
+    def test_fetch_nodes_partial_success(self):
         """
-        Test case where no embeddings are found for the node.
+        Test case where some nodes are missing embeddings or not found.
         """
-        node_id = "Ed"
+        node_ids = ["Ed", "Scott", "Jenny"]
         node_type = "Account"
+        vector_attribute_name = "emb1"
         mock_result = [
             {
                 "Nodes": [
                     {
-                        "Embeddings": {},
-                        "attributes": {"isBlocked": False, "name": "Ed"},
                         "v_id": "Ed",
-                        "v_type": "Account",
-                    }
+                        "Embeddings": {"emb1": [-0.003692443, 0.01049439, -0.004631793]},
+                    },
+                    {"v_id": "Scott", "Embeddings": {}},  # No embedding for Scott
                 ]
             }
         ]
         self.mock_connection.runInstalledQuery.return_value = mock_result
 
-        result = self.vector_manager.fetch(node_id, node_type)
-        # Since 'Embeddings' exists but is empty, it should return the empty dict
+        expected_embeddings = {
+            "Ed": [-0.003692443, 0.01049439, -0.004631793],
+        }
+        result = self.vector_manager.fetch_nodes(node_ids, vector_attribute_name, node_type)
+        assert result == expected_embeddings
+
+
+    def test_fetch_nodes_invalid_result_format(self):
+        """
+        Test case where fetch_nodes returns an invalid result format.
+        """
+        node_ids = ["Ed", "Scott"]
+        node_type = "Account"
+        vector_attribute_name = "emb1"
+        self.mock_connection.runInstalledQuery.return_value = None  # Invalid result
+
+        result = self.vector_manager.fetch_nodes(node_ids, vector_attribute_name, node_type)
         assert result == {}
 
-    def test_fetch_exception_handling(self):
-        """
-        Test case where an exception occurs during the fetch operation.
-        """
-        node_id = "Ed"
-        node_type = "Account"
-        self.mock_connection.runInstalledQuery.side_effect = Exception("Database error")
 
-        result = self.vector_manager.fetch(node_id, node_type)
-        assert result is None
-
-    def test_fetch_non_float_embedding_vector_elements(self):
+    def test_fetch_nodes_empty_result(self):
         """
-        Test case where embedding vectors contain non-float elements.
+        Test case where fetch_nodes returns no nodes.
         """
-        node_id = "Ed"
+        node_ids = ["Ed", "Scott"]
         node_type = "Account"
+        vector_attribute_name = "emb1"
+        self.mock_connection.runInstalledQuery.return_value = [{"Nodes": []}]
+
+        result = self.vector_manager.fetch_nodes(node_ids, vector_attribute_name, node_type)
+        assert result == {}
+
+
+    def test_fetch_nodes_missing_embeddings_key(self):
+        """
+        Test case where 'Embeddings' key is missing in the node data.
+        """
+        node_ids = ["Ed"]
+        node_type = "Account"
+        vector_attribute_name = "emb1"
         mock_result = [
             {
                 "Nodes": [
                     {
-                        "Embeddings": {
-                            "emb1": [-0.003692443, "invalid_float", -0.004631793]
-                        },
-                        "attributes": {"isBlocked": False, "name": "Ed"},
                         "v_id": "Ed",
-                        "v_type": "Account",
+                        "attributes": {"name": "Ed"},
                     }
                 ]
             }
         ]
         self.mock_connection.runInstalledQuery.return_value = mock_result
 
-        result = self.vector_manager.fetch(node_id, node_type)
-        assert result is None
+        result = self.vector_manager.fetch_nodes(node_ids, vector_attribute_name, node_type)
+        assert result == {}
 
-    def test_fetch_additional_unexpected_keys(self):
+
+    def test_fetch_nodes_invalid_embedding_format(self):
         """
-        Test case where the node contains additional unexpected keys.
+        Test case where an embedding vector is not a list of floats.
         """
-        node_id = "Ed"
+        node_ids = ["Ed"]
         node_type = "Account"
+        vector_attribute_name = "emb1"
         mock_result = [
             {
                 "Nodes": [
                     {
-                        "Embeddings": {
-                            "emb1": [-0.003692443, 0.01049439, -0.004631793]
-                        },
-                        "attributes": {
-                            "isBlocked": False,
-                            "name": "Ed",
-                            "extra_attribute": "extra_value",
-                        },
                         "v_id": "Ed",
-                        "v_type": "Account",
-                        "unexpected_key": "unexpected_value",
+                        "Embeddings": {"emb1": "invalid_embedding_format"},
                     }
                 ]
             }
         ]
         self.mock_connection.runInstalledQuery.return_value = mock_result
 
-        expected_embeddings = {"emb1": [-0.003692443, 0.01049439, -0.004631793]}
-
-        result = self.vector_manager.fetch(node_id, node_type)
-        assert result == expected_embeddings
-
-    def test_fetch_multiple_nodes_returned(self):
-        """
-        Test case where multiple nodes are returned for a single node_id.
-        Assumes that only the first node is processed.
-        """
-        node_id = "Ed"
-        node_type = "Account"
-        mock_result = [
-            {
-                "Nodes": [
-                    {
-                        "Embeddings": {
-                            "emb1": [-0.003692443, 0.01049439, -0.004631793]
-                        },
-                        "attributes": {"isBlocked": False, "name": "Ed"},
-                        "v_id": "Ed",
-                        "v_type": "Account",
-                    },
-                    {
-                        "Embeddings": {
-                            "emb1": [-0.002345678, 0.00987654, -0.003210987]
-                        },
-                        "attributes": {"isBlocked": True, "name": "EdDuplicate"},
-                        "v_id": "EdDuplicate",
-                        "v_type": "Account",
-                    },
-                ]
-            }
-        ]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
-
-        expected_embeddings = {"emb1": [-0.003692443, 0.01049439, -0.004631793]}
-
-        result = self.vector_manager.fetch(node_id, node_type)
-        # Only the first node's embeddings should be returned
-        assert result == expected_embeddings
-
-    def test_fetch_embeddings_with_different_dimensions(self):
-        """
-        Test case where embeddings have different dimensions.
-        Assumes that the method does not enforce consistent dimensions.
-        """
-        node_id = "Ed"
-        node_type = "Account"
-        mock_result = [
-            {
-                "Nodes": [
-                    {
-                        "Embeddings": {
-                            "emb1": [
-                                -0.003692443,
-                                0.01049439,
-                            ]  # Only 2 dimensions instead of expected 3
-                        },
-                        "attributes": {"isBlocked": False, "name": "Ed"},
-                        "v_id": "Ed",
-                        "v_type": "Account",
-                    }
-                ]
-            }
-        ]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
-
-        # The method does not check for specific dimension sizes, only that elements are floats
-        expected_embeddings = {"emb1": [-0.003692443, 0.01049439]}
-
-        result = self.vector_manager.fetch(node_id, node_type)
-        assert result == expected_embeddings
-
-    def test_fetch_embeddings_with_nested_embeddings(self):
-        """
-        Test case where embeddings contain nested structures (invalid format).
-        """
-        node_id = "Ed"
-        node_type = "Account"
-        mock_result = [
-            {
-                "Nodes": [
-                    {
-                        "Embeddings": {
-                            "emb1": [
-                                -0.003692443,
-                                [0.01049439],  # Nested list instead of float
-                                -0.004631793,
-                            ]
-                        },
-                        "attributes": {"isBlocked": False, "name": "Ed"},
-                        "v_id": "Ed",
-                        "v_type": "Account",
-                    }
-                ]
-            }
-        ]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
-
-        result = self.vector_manager.fetch(node_id, node_type)
-        # Should return None due to invalid embedding vector format
-        assert result is None
+        result = self.vector_manager.fetch_nodes(node_ids, vector_attribute_name, node_type)
+        assert result == {}
 
     # -------------------------
     # Tests for search_multi_vector_attributes

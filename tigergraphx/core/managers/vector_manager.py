@@ -75,76 +75,60 @@ class VectorManager(BaseManager):
             logger.error(f"Error adding nodes: {e}")
             return None
 
-    def fetch(self, node_id: str, node_type: str) -> Optional[Dict[str, List[float]]]:
+    def fetch_node(
+        self, node_id: str, vector_attribute_name: str, node_type: str
+    ) -> Optional[List[float]]:
         """
-        Retrieve the embeddings of a node by its ID and type.
+        Retrieve the embedding vector of a single node by its ID and type.
+        """
+        result = self.fetch_nodes([node_id], vector_attribute_name, node_type)
+        return result.get(node_id)
+
+    def fetch_nodes(
+        self, node_ids: List[str], vector_attribute_name: str, node_type: str
+    ) -> Dict[str, List[float]]:
+        """
+        Retrieve the embedding vectors of multiple nodes by their IDs and type.
         """
         try:
-            query_name = "api_fetch"
-            params = {"input": (node_id, node_type)}
-            result = self._connection.runInstalledQuery(query_name, params)
+            params = {"input": [(node_id, node_type) for node_id in node_ids]}
+            result = self._connection.runInstalledQuery("api_fetch", params)
 
-            if not result:
-                logger.error(
-                    f"Query result is empty or None for node_id: '{node_id}', node_type: '{node_type}'."
-                )
-                return None
+            if not result or not isinstance(result, list):
+                logger.error("Query result is empty or invalid.")
+                return {}
 
-            first_result = result[0]
-            nodes = first_result.get("Nodes")
+            # Process result
+            nodes = result[0].get("Nodes", [])
             if not nodes:
-                if "Nodes" not in first_result:
-                    logger.error(
-                        f"'Nodes' key is missing in the query result for node_id: '{node_id}', "
-                        f"node_type: '{node_type}'."
-                    )
-                else:
+                logger.warning("No nodes found in the query result.")
+                return {}
+
+            embeddings = {}
+            for node in nodes:
+                node_id = node.get("v_id")
+                node_embeddings = node.get("Embeddings", {})
+                if vector_attribute_name not in node_embeddings:
                     logger.warning(
-                        f"No nodes found for node_id: '{node_id}', node_type: '{node_type}'."
+                        f"'{vector_attribute_name}' not found for node_id: '{node_id}'."
                     )
-                return None
+                    continue
 
-            node = nodes[0]  # Assuming node_id is unique and only one node is returned.
-
-            embeddings = node.get("Embeddings")
-            if embeddings is None:
-                logger.warning(
-                    f"No embeddings found for node_id: '{node_id}', node_type: '{node_type}'."
-                )
-                return None
-
-            if not isinstance(embeddings, dict):
-                logger.error(
-                    f"'Embeddings' should be a dictionary for node_id: '{node_id}', "
-                    f"node_type: '{node_type}'."
-                )
-                return None
-
-            # Validate each embedding
-            for emb_name, emb_vector in embeddings.items():
-                if not isinstance(emb_name, str):
-                    logger.error(
-                        f"Embedding name '{emb_name}' is not a string in node_id: '{node_id}', "
-                        f"node_type: '{node_type}'."
-                    )
-                    return None
-                if not isinstance(emb_vector, list) or not all(
+                emb_vector = node_embeddings[vector_attribute_name]
+                if isinstance(emb_vector, list) and all(
                     isinstance(x, float) for x in emb_vector
                 ):
-                    logger.error(
-                        f"Embedding vector for '{emb_name}' is not a list of floats in node_id: '{node_id}', "
-                        f"node_type: '{node_type}'."
+                    embeddings[node_id] = emb_vector
+                else:
+                    logger.warning(
+                        f"Invalid embedding format for node_id: '{node_id}'. Expected a list of floats."
                     )
-                    return None
 
             return embeddings
 
         except Exception as e:
-            logger.error(
-                f"Error occurred while fetching embeddings for node_id: '{node_id}', "
-                f"node_type: '{node_type}'. Error: {str(e)}"
-            )
-            return None
+            logger.error(f"Error during fetch_nodes operation: {str(e)}")
+            return {}
 
     def search(
         self,
@@ -231,14 +215,7 @@ class VectorManager(BaseManager):
         """
         Retrieve the top-k similar nodes based on a source node's specified embedding.
         """
-        embeddings = self.fetch(node_id, node_type)
-        if not embeddings:
-            logger.error(
-                f"Could not retrieve embeddings for node_id: '{node_id}', node_type: '{node_type}'."
-            )
-            return []
-
-        query_vector = embeddings.get(vector_attribute_name)
+        query_vector = self.fetch_node(node_id, vector_attribute_name, node_type)
         if not query_vector:
             logger.error(
                 f"Embedding '{vector_attribute_name}' not found for node_id: '{node_id}', "
