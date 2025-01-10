@@ -18,9 +18,7 @@ class StatisticsManager(BaseManager):
             node_type, edge_types, self._graph_schema.graph_name
         )
         try:
-            params = {
-                "input": node_id
-            }
+            params = {"input": node_id}
             result = self._connection.runInterpretedQuery(gsql_script, params)
             if not result or not isinstance(result, list):
                 return 0
@@ -31,13 +29,27 @@ class StatisticsManager(BaseManager):
 
     def number_of_nodes(self, node_type: Optional[str | list] = None) -> int:
         """Return the number of nodes for the given node type(s)."""
+        gsql_script = self._create_gsql_number_of_nodes(
+            node_type, self._graph_schema.graph_name
+        )
         try:
-            if node_type is None or node_type == "":
-                node_type = "*"
-            result = self._connection.getVertexCount(node_type)
-            if isinstance(result, dict):
-                return sum(result.values())
-            return result
+            result = self._connection.runInterpretedQuery(gsql_script)
+            # Perform checks
+            if not isinstance(result, list):
+                raise ValueError(
+                    f"Expected result to be a list, but got {type(result)}"
+                )
+            if len(result) == 0:
+                raise ValueError("Result is an empty list")
+            if not isinstance(result[0], dict):
+                raise ValueError(
+                    f"Expected the first item in the result to be a dictionary, but got {type(result[0])}"
+                )
+            if "number_of_nodes" not in result[0]:
+                raise KeyError(
+                    "The key 'number_of_nodes' is missing in the result dictionary"
+                )
+            return result[0]["number_of_nodes"]
         except Exception as e:
             logger.error(
                 f"Error retrieving number of nodes for node type {node_type}: {e}"
@@ -46,18 +58,47 @@ class StatisticsManager(BaseManager):
 
     def number_of_edges(self, edge_type: Optional[str] = None) -> int:
         """Return the number of edges for the given edge type(s)."""
+        gsql_script = self._create_gsql_number_of_edges(
+            edge_type, self._graph_schema.graph_name
+        )
         try:
-            if edge_type is None or edge_type == "":
-                edge_type = "*"
-            result = self._connection.getEdgeCount(edge_type)
-            if isinstance(result, dict):
-                return sum(result.values())
-            return result
+            result = self._connection.runInterpretedQuery(gsql_script)
+            # Perform checks
+            if not isinstance(result, list):
+                raise ValueError(
+                    f"Expected result to be a list, but got {type(result)}"
+                )
+            if len(result) == 0:
+                raise ValueError("Result is an empty list")
+            if not isinstance(result[0], dict):
+                raise ValueError(
+                    f"Expected the first item in the result to be a dictionary, but got {type(result[0])}"
+                )
+            if "number_of_edges" not in result[0]:
+                raise KeyError(
+                    "The key 'number_of_edges' is missing in the result dictionary"
+                )
+            return result[0]["number_of_edges"]
         except Exception as e:
             logger.error(
                 f"Error retrieving number of edges for edge type {edge_type}: {e}"
             )
             return 0
+
+    # def number_of_edges(self, edge_type: Optional[str] = None) -> int:
+    #     """Return the number of edges for the given edge type(s)."""
+    #     try:
+    #         if edge_type is None or edge_type == "":
+    #             edge_type = "*"
+    #         result = self._connection.getEdgeCount(edge_type)
+    #         if isinstance(result, dict):
+    #             return sum(result.values())
+    #         return result
+    #     except Exception as e:
+    #         logger.error(
+    #             f"Error retrieving number of edges for edge type {edge_type}: {e}"
+    #         )
+    #         return 0
 
     @staticmethod
     def _create_gsql_degree(
@@ -89,5 +130,55 @@ INTERPRET QUERY(VERTEX<{node_type}> input) FOR GRAPH {graph_name} {{
     ACCUM  @@sum_degree += 1
   ;
   PRINT @@sum_degree AS degree;
+}}"""
+        return query.strip()
+
+    @staticmethod
+    def _create_gsql_number_of_nodes(
+        node_type: Optional[str | list], graph_name: str
+    ) -> str:
+        # Generate the query
+        if node_type is None or node_type == "":
+            query = f"""
+INTERPRET QUERY() FOR GRAPH {graph_name} {{
+  Nodes = {{ANY}};
+  PRINT Nodes.size() AS number_of_nodes;
+}}"""
+        else:
+            query = f"""
+INTERPRET QUERY() FOR GRAPH {graph_name} {{
+  Nodes = {{{node_type}.*}};
+  PRINT Nodes.size() AS number_of_nodes;
+}}"""
+        return query.strip()
+
+    @staticmethod
+    def _create_gsql_number_of_edges(
+        edge_type: Optional[str | list], graph_name: str
+    ) -> str:
+        # Generate the query
+        if edge_type is None or edge_type == "":
+            query = f"""
+INTERPRET QUERY() FOR GRAPH {graph_name} {{
+  SumAccum<INT> @@sum;
+  Nodes = {{ANY}};
+  Nodes =
+    SELECT s
+    FROM Nodes:s -()- :t
+    ACCUM @@sum += 1
+  ;
+  PRINT @@sum AS number_of_edges;
+}}"""
+        else:
+            query = f"""
+INTERPRET QUERY() FOR GRAPH {graph_name} {{
+  SumAccum<INT> @@sum;
+  Nodes = {{ANY}};
+  Nodes =
+    SELECT s
+    FROM Nodes:s -({edge_type})- :t
+    ACCUM @@sum += 1
+  ;
+  PRINT @@sum AS number_of_edges;
 }}"""
         return query.strip()
