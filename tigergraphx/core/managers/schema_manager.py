@@ -313,7 +313,7 @@ CREATE OR REPLACE QUERY api_search_{node_type}_{vector_attribute_name} (
             query_statements.append(
                 """
 CREATE OR REPLACE QUERY api_fetch(
-  VERTEX input
+  SET<VERTEX> input
 ) SYNTAX v3 {
   gds.vector.distance([0], [0], "L2"); // TODO: Remove this line
   Nodes = {input};

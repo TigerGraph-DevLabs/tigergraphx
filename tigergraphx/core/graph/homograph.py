@@ -320,18 +320,35 @@ class HomoGraph(BaseGraph):
         """
         return self._upsert(data, self.node_type)
 
-    def fetch(self, node_id: str, node_type: str) -> Optional[Dict[str, List[float]]]:
+    def fetch_node(
+        self, node_id: str, vector_attribute_name: str
+    ) -> Optional[List[float]]:
         """
-        Retrieve the node with vector attributes by ID and type.
+        Fetch the embedding for a single node by its ID.
 
         Args:
             node_id (str): The ID of the node to fetch.
+            vector_attribute_name (str): Name of the vector attribute to retrieve.
 
         Returns:
-            Optional[Dict[str, List[float]]]: A dictionary containing the node embeddings,
-                or None if not found.
+            Optional[List[float]]: The embedding vector for the node, or None if not found.
         """
-        return self._fetch(node_id, node_type)
+        return self._fetch_node(node_id, vector_attribute_name, self.node_type)
+
+    def fetch_nodes(
+        self, node_ids: List[str], vector_attribute_name: str
+    ) -> Dict[str, List[float]]:
+        """
+        Fetch embeddings for multiple nodes by their IDs.
+
+        Args:
+            node_ids (List[str]): List of node IDs to fetch.
+            vector_attribute_name (str): Name of the vector attribute to retrieve.
+
+        Returns:
+            Dict[str, List[float]]: A dictionary where keys are node IDs and values are embedding vectors.
+        """
+        return self._fetch_nodes(node_ids, vector_attribute_name, self.node_type)
 
     def search(
         self,

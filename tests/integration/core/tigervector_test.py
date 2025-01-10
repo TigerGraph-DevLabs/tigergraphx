@@ -93,6 +93,37 @@ class TestTigerVector(TestBaseGraph):
         self.setup_graph()
         self.G.drop_graph()
 
+    def test_fetch_single_node_embedding(self):
+        """
+        Test fetching the embedding vector for a single node.
+        """
+        vector_attribute_name = "emb_description"
+        result = self.G.fetch_node(
+            "Entity_1", vector_attribute_name, node_type="Entity"
+        )
+
+        expected_embedding = [-0.01773, -0.01019, -0.01657]
+        assert (
+            result == expected_embedding
+        ), f"Expected {expected_embedding}, got {result}"
+
+    def test_fetch_multiple_nodes_embeddings(self):
+        """
+        Test fetching the embedding vectors for multiple nodes.
+        """
+        vector_attribute_name = "emb_description"
+        result = self.G.fetch_nodes(
+            ["Entity_1", "Entity_2"], vector_attribute_name, node_type="Entity"
+        )
+
+        expected_embeddings = {
+            "Entity_1": [-0.01773, -0.01019, -0.01657],
+            "Entity_2": [-0.01926, 0.000496, 0.00671],
+        }
+        assert (
+            result == expected_embeddings
+        ), f"Expected {expected_embeddings}, got {result}"
+
     def test_vector_search(self):
         assert self.G.has_node("Entity_1")
         assert self.G.has_node("Entity_2")

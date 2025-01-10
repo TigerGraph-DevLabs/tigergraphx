@@ -401,22 +401,39 @@ class Graph(BaseGraph):
         node_type = self._validate_node_type(node_type)
         return self._upsert(data, node_type)
 
-    def fetch(
-        self, node_id: str, node_type: str = ""
-    ) -> Optional[Dict[str, List[float]]]:
+    def fetch_node(
+        self, node_id: str, vector_attribute_name: str, node_type: str = ""
+    ) -> Optional[List[float]]:
         """
-        Retrieve the node with vector attributes by ID and type.
+        Fetch the embedding for a single node by its ID and type.
 
         Args:
             node_id (str): The ID of the node to fetch.
-            node_type (str, optional): The type of the node. Defaults to an empty string.
+            vector_attribute_name (str): Name of the vector attribute to retrieve.
+            node_type (str, optional): The type of the node. Defaults to "".
 
         Returns:
-            Optional[Dict[str, List[float]]]: A dictionary containing the node embeddings,
-                or None if not found.
+            Optional[List[float]]: The embedding vector for the node, or None if not found.
         """
         node_type = self._validate_node_type(node_type)
-        return self._fetch(node_id, node_type)
+        return self._fetch_node(node_id, vector_attribute_name, node_type)
+
+    def fetch_nodes(
+        self, node_ids: List[str], vector_attribute_name: str, node_type: str = ""
+    ) -> Dict[str, List[float]]:
+        """
+        Fetch embeddings for multiple nodes by their IDs and type.
+
+        Args:
+            node_ids (List[str]): List of node IDs to fetch.
+            vector_attribute_name (str): Name of the vector attribute to retrieve.
+            node_type (str, optional): Type of the nodes. Defaults to "".
+
+        Returns:
+            Dict[str, List[float]]: A dictionary where keys are node IDs and values are embedding vectors.
+        """
+        node_type = self._validate_node_type(node_type)
+        return self._fetch_nodes(node_ids, vector_attribute_name, node_type)
 
     def search(
         self,
