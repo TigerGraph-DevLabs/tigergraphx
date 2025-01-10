@@ -40,10 +40,12 @@ class DataManager(BaseManager):
     ) -> str:
         # Define file paths for each file in config with numbered file names
         files = loading_job_config.files
-        define_files = [
-            f'DEFINE FILENAME {file.file_alias}{" = " + f"\"{file.file_path}\"" if file.file_path else ""};'
-            for file in files
-        ]
+        define_files = []
+        for file in files:
+            if file.file_path:
+                define_files.append(f'DEFINE FILENAME {file.file_alias} = "{file.file_path}";')
+            else:
+                define_files.append(f'DEFINE FILENAME {file.file_alias};')
 
         # Build LOAD statements for each file
         load_statements = []

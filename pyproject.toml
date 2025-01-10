@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tigergraphx"
-version = "0.1.9"
+version = "0.1.10"
 description = "TigerGraphX is a high-level Python library offering a unified, Python-native interface for graph databases, advanced analytics, and GraphRAG workflows. Combining the simplicity of NetworkX with the advanced capabilities of TigerGraph, including tgCloud, it empowers Python developers to harness the power of graphs without the need to learn query languages like Cypher or GSQL."
 authors = ["Xuanlei Lin <xuanlei.lin@tigergraph.com>"]
 license = "MIT"
@@ -12,7 +12,7 @@ keywords = ["tigergraph", "graph database", "graphrag", "machine learning", "gra
 
 [tool.poetry.dependencies]
 # Core Python Version
-python = "3.12.*"
+python = "<3.13,>=3.10"
 
 # Data Processing
 pandas = "^2.2.3"

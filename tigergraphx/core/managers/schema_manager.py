@@ -209,6 +209,8 @@ DROP GRAPH {graph_name}
 CREATE GRAPH {graph_name} ()
 """
         else:
+            node_definitions_str = '\n  '.join(node_definitions)
+            edge_definitions_str = '\n  '.join(edge_definitions)
             gsql_script = f"""
 # 1. Create graph
 CREATE GRAPH {graph_name} ()
@@ -216,10 +218,10 @@ CREATE GRAPH {graph_name} ()
 # 2. Create schema_change job
 CREATE SCHEMA_CHANGE JOB schema_change_job_for_graph_{graph_name} FOR GRAPH {graph_name} {{
   # 2.1 Create vertices
-  {'\n  '.join(node_definitions)}
+  {node_definitions_str}
 
   # 2.2 Create edges
-  {'\n  '.join(edge_definitions)}
+  {edge_definitions_str}
 }}
 
 # 3. Run schema_change job
@@ -319,7 +321,8 @@ CREATE OR REPLACE QUERY api_fetch(
 }
 """.strip()
             )
-
+            vector_attribute_statements_str = '\n  '.join(vector_attribute_statements)
+            query_statements_str = '\n'.join(query_statements)
             gsql_script = f"""
 # 1. Use graph
 USE GRAPH {graph_schema.graph_name}
@@ -327,7 +330,7 @@ USE GRAPH {graph_schema.graph_name}
 # 2. Create schema_change job
 CREATE SCHEMA_CHANGE JOB change_schema_of_{graph_schema.graph_name} FOR GRAPH {graph_schema.graph_name} {{
   # 2.1 Add vector attributes
-  {'\n  '.join(vector_attribute_statements)}
+  {vector_attribute_statements_str}
 }}
 
 # 3. Run schema_change job
@@ -339,7 +342,7 @@ DROP JOB change_schema_of_{graph_schema.graph_name}
             if len(query_statements) > 0:
                 gsql_script = f"""
 {gsql_script}
-{'\n'.join(query_statements)}
+{query_statements_str}
 INSTALL QUERY *
 """
         logger.debug("GSQL script for adding vector attributes: %s", gsql_script)
