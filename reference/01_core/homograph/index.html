@@ -1196,9 +1196,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tigergraphx.core.graph.HomoGraph.fetch" class="md-nav__link">
+  <a href="#tigergraphx.core.graph.HomoGraph.fetch_node" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch_node
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.graph.HomoGraph.fetch_nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch_nodes
     </span>
   </a>
   
@@ -2615,9 +2624,18 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tigergraphx.core.graph.HomoGraph.fetch" class="md-nav__link">
+  <a href="#tigergraphx.core.graph.HomoGraph.fetch_node" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch_node
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.graph.HomoGraph.fetch_nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;fetch_nodes
     </span>
   </a>
   
@@ -3551,15 +3569,15 @@ or multiple records (List[Dict]).</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="tigergraphx.core.graph.HomoGraph.fetch" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">fetch</span><span class="p">(</span><span class="n">node_id</span><span class="p">,</span> <span class="n">node_type</span><span class="p">)</span></code>
+<h3 id="tigergraphx.core.graph.HomoGraph.fetch_node" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">fetch_node</span><span class="p">(</span><span class="n">node_id</span><span class="p">,</span> <span class="n">vector_attribute_name</span><span class="p">)</span></code>
 
 </h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Retrieve the node with vector attributes by ID and type.</p>
+        <p>Fetch the embedding for a single node by its ID.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3572,17 +3590,74 @@ or multiple records (List[Dict]).</p>
             <p>The ID of the node to fetch.</p>
           </div>
         </li>
+        <li class="doc-section-item field-body">
+            <b><code>vector_attribute_name</code></b>
+              (<code>str</code>)
+          –
+          <div class="doc-md-description">
+            <p>Name of the vector attribute to retrieve.</p>
+          </div>
+        </li>
     </ul>
 
 
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><span title="typing.Optional">Optional</span>[<span title="typing.Dict">Dict</span>[str, <span title="typing.List">List</span>[float]]]</code>
+              <code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[float]]</code>
           –
           <div class="doc-md-description">
-            <p>Optional[Dict[str, List[float]]]: A dictionary containing the node embeddings,
-or None if not found.</p>
+            <p>Optional[List[float]]: The embedding vector for the node, or None if not found.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="tigergraphx.core.graph.HomoGraph.fetch_nodes" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">fetch_nodes</span><span class="p">(</span><span class="n">node_ids</span><span class="p">,</span> <span class="n">vector_attribute_name</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Fetch embeddings for multiple nodes by their IDs.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>node_ids</code></b>
+              (<code><span title="typing.List">List</span>[str]</code>)
+          –
+          <div class="doc-md-description">
+            <p>List of node IDs to fetch.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>vector_attribute_name</code></b>
+              (<code>str</code>)
+          –
+          <div class="doc-md-description">
+            <p>Name of the vector attribute to retrieve.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="typing.Dict">Dict</span>[str, <span title="typing.List">List</span>[float]]</code>
+          –
+          <div class="doc-md-description">
+            <p>Dict[str, List[float]]: A dictionary where keys are node IDs and values are embedding vectors.</p>
           </div>
         </li>
     </ul>
