@@ -527,9 +527,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-python-312" class="md-nav__link">
+  <a href="#1-python" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Python 3.12
+      1. Python
     </span>
   </a>
   
@@ -2379,9 +2379,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-python-312" class="md-nav__link">
+  <a href="#1-python" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Python 3.12
+      1. Python
     </span>
   </a>
   
@@ -2510,10 +2510,10 @@
 <p>Follow this guide to install and set up <strong>TigerGraphX</strong> in your environment.</p>
 <hr />
 <h2 id="requirements">Requirements</h2>
-<p>This project requires <strong>Python 3.12</strong> and <strong>TigerGraph</strong>. Ensure you meet the following prerequisites before proceeding:</p>
-<h3 id="1-python-312"><strong>1. Python 3.12</strong></h3>
+<p>This project requires <strong>Python 3.10, 3.11 or 3.12</strong> and <strong>TigerGraph</strong>. Ensure you meet the following prerequisites before proceeding:</p>
+<h3 id="1-python"><strong>1. Python</strong></h3>
 <ul>
-<li>Please ensure Python 3.12 is installed on your system.</li>
+<li>Please ensure Python 3.10, 3.11 or 3.12 is installed on your system.</li>
 <li>You can download and install it from the <a href="https://www.python.org/downloads/">official Python website</a>.</li>
 </ul>
 <h3 id="2-tigergraph"><strong>2. TigerGraph</strong></h3>
@@ -2521,6 +2521,7 @@
 <ul>
 <li><strong>TigerGraph DB</strong>: Install and configure a local instance of TigerGraph.</li>
 <li><strong>TigerGraph Cloud</strong>: Use a cloud-hosted instance of TigerGraph.</li>
+<li><strong>TigerGraph Docker</strong>: Use a Docker container to run TigerGraph.</li>
 </ul>
 <p>It is recommended to use <strong>TigerGraph LTS (Long-Term Support) Versions</strong>, which can be downloaded from the <a href="https://dl.tigergraph.com/">TigerGraph Downloads page</a>. To enable support for <strong>TigerVector</strong> and leverage advanced features like hybrid retrieval, ensure you are using <strong>TigerGraph 4.2 or above</strong>.</p>
 <p>Refer to the official <a href="https://docs.tigergraph.com/home/">TigerGraph Documentation</a> for detailed installation and configuration instructions.</p>
@@ -2534,7 +2535,7 @@
 <p>This allows you to quickly start using the library without needing the source code.</p>
 <h4 id="verify-installation"><strong>Verify Installation</strong></h4>
 <p>After installing, verify that TigerGraphX is installed correctly by running:
-<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import tigergraphx; print(&#39;TigerGraphX installed successfully!&#39;)&quot;</span>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;import tigergraphx; print(&quot;TigerGraphX installed successfully!&quot;)&#39;</span>
 </code></pre></div></p>
 <p>If the installation was successful, you will see:
 <div class="highlight"><pre><span></span><code>TigerGraphX installed successfully!
