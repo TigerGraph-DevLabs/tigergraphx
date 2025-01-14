@@ -943,69 +943,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../01_core/digraph/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    DiGraph
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../01_core/undigraph/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    UndiGraph
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../01_core/homograph/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    HomoGraph
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../../../01_core/nodeview/" class="md-nav__link">
         
   
@@ -1838,6 +1775,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tigergraphx.config.query.NodeSpec.all_node_types" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;all_node_types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tigergraphx.config.query.NodeSpec.filter_expression" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;filter_expression
@@ -2320,6 +2266,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tigergraphx.config.query.NodeSpec.all_node_types" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;all_node_types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tigergraphx.config.query.NodeSpec.filter_expression" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;filter_expression
@@ -2408,7 +2363,27 @@
 
 
 <h3 id="tigergraphx.config.query.NodeSpec.node_type" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <code class="highlight language-python"><span class="n">node_type</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The type of nodes to select.&#39;</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <code class="highlight language-python"><span class="n">node_type</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;The type of nodes to select.&#39;</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="tigergraphx.config.query.NodeSpec.all_node_types" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <code class="highlight language-python"><span class="n">all_node_types</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s1">&#39;If True, nodes of all types will be returned, and the value of `node_type` will be ignored.&#39;</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
