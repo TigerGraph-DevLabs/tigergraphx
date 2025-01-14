@@ -23,9 +23,6 @@ nav:
       - Features Overview: reference/features_overview.md
       - Core:
           - Graph: reference/01_core/graph.md
-          - DiGraph: reference/01_core/digraph.md
-          - UndiGraph: reference/01_core/undigraph.md
-          - HomoGraph: reference/01_core/homograph.md
           - NodeView: reference/01_core/nodeview.md
       - Vector Search:
           - Vector DB:

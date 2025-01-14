@@ -9,7 +9,12 @@ class NodeSpec(BaseConfig):
     Specification for selecting nodes in a graph query.
     """
 
-    node_type: Optional[str] = Field(..., description="The type of nodes to select.")
+    node_type: Optional[str] = Field(None, description="The type of nodes to select.")
+    all_node_types: bool = Field(
+        False,
+        description="If True, nodes of all types will be returned, "
+        "and the value of `node_type` will be ignored.",
+    )
     filter_expression: Optional[str] = Field(
         None, description="A string defining filtering logic for the node selection."
     )

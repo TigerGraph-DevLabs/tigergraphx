@@ -27,7 +27,7 @@ class StatisticsManager(BaseManager):
             logger.error(f"Error retrieving degree of node {node_id}: {e}")
         return 0
 
-    def number_of_nodes(self, node_type: Optional[str | list] = None) -> int:
+    def number_of_nodes(self, node_type: Optional[str] = None) -> int:
         """Return the number of nodes for the given node type(s)."""
         gsql_script = self._create_gsql_number_of_nodes(
             node_type, self._graph_schema.graph_name
@@ -135,7 +135,7 @@ INTERPRET QUERY(VERTEX<{node_type}> input) FOR GRAPH {graph_name} {{
 
     @staticmethod
     def _create_gsql_number_of_nodes(
-        node_type: Optional[str | list], graph_name: str
+        node_type: Optional[str], graph_name: str
     ) -> str:
         # Generate the query
         if node_type is None or node_type == "":
