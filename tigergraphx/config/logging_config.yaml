@@ -28,7 +28,12 @@ loggers:
     handlers: []    # Inherit handlers from the root logger
     propagate: yes
 
-  tigergraphx.core.graph:
+  tigergraphx.core.managers.schema_manager:
+    level: INFO
+    handlers: []    # Inherit handlers from the root logger
+    propagate: yes
+
+  tigergraphx.core.managers.data_manager:
     level: INFO
     handlers: []    # Inherit handlers from the root logger
     propagate: yes

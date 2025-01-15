@@ -21,18 +21,15 @@ class SchemaManager(BaseManager):
         return self._graph_schema.model_dump()
 
     def create_schema(self, drop_existing_graph=False) -> bool:
-        logger.info(
-            "Starting schema creation for graph: %s", self._graph_schema.graph_name
-        )
-
-        # Drop graph if drop_existing_graph is True
-        logger.info("Checking if graph exists: %s", self._graph_schema.graph_name)
+        # Check whether the graph exists
         is_graph_existing = self._check_graph_exists()
+
+        graph_name = self._graph_schema.graph_name
         if drop_existing_graph and is_graph_existing:
             self.drop_graph()
 
-        # Create the schema
         if not is_graph_existing or drop_existing_graph:
+            logger.info(f"Creating schema for graph: {graph_name}...")
             gsql_script = self._create_gsql_graph_schema(
                 self._graph_schema
             ) + self._create_gsql_add_vector_attr(self._graph_schema)
@@ -43,12 +40,18 @@ class SchemaManager(BaseManager):
                 )
                 logger.error(error_msg)
                 raise RuntimeError(error_msg)
+            logger.info("Graph schema created successfully.")
             return True
+
+        logger.info(f"Graph '{graph_name}' already exists. Skipping graph creation.")
         return False
 
     def drop_graph(self) -> None:
-        gsql_script = self._create_gsql_drop_graph(self._graph_schema.graph_name)
+        graph_name = self._graph_schema.graph_name
+        logger.info(f"Dropping graph: {graph_name}...")
+        gsql_script = self._create_gsql_drop_graph(graph_name)
         self._connection.gsql(gsql_script)
+        logger.info("Graph dropped successfully.")
 
     @staticmethod
     def get_schema_from_db(
@@ -209,8 +212,8 @@ DROP GRAPH {graph_name}
 CREATE GRAPH {graph_name} ()
 """
         else:
-            node_definitions_str = '\n  '.join(node_definitions)
-            edge_definitions_str = '\n  '.join(edge_definitions)
+            node_definitions_str = "\n  ".join(node_definitions)
+            edge_definitions_str = "\n  ".join(edge_definitions)
             gsql_script = f"""
 # 1. Create graph
 CREATE GRAPH {graph_name} ()
@@ -321,8 +324,8 @@ CREATE OR REPLACE QUERY api_fetch(
 }
 """.strip()
             )
-            vector_attribute_statements_str = '\n  '.join(vector_attribute_statements)
-            query_statements_str = '\n'.join(query_statements)
+            vector_attribute_statements_str = "\n  ".join(vector_attribute_statements)
+            query_statements_str = "\n".join(query_statements)
             gsql_script = f"""
 # 1. Use graph
 USE GRAPH {graph_schema.graph_name}
