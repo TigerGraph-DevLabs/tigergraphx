@@ -20,7 +20,8 @@ class VectorAttributeSchema(BaseConfig):
     )
     data_type: Literal["FLOAT"] = Field(
         default="FLOAT",
-        description='The data type of the attribute. Currently only "FLOAT" is supported. Future types may include "DOUBLE", "HALF", or "BYTE".',
+        description='The data type of the attribute. Currently only "FLOAT" is supported. '
+        'Future types may include "DOUBLE", "HALF", or "BYTE".',
     )
     metric: Literal["COSINE", "IP", "L2"] = Field(
         default="COSINE",
@@ -34,13 +35,13 @@ VectorAttributesType = Dict[str, VectorAttributeType]
 
 def create_vector_attribute_schema(attr: VectorAttributeType) -> VectorAttributeSchema:
     """
-    Create an VectorAttributeSchema from various input formats.
+    Create a VectorAttributeSchema from various input formats.
 
     Args:
-        attr (VectorAttributeType): Input vector attribute definition.
+        attr: Input vector attribute definition.
 
     Returns:
-        VectorAttributeSchema: The created schema.
+        The created VectorAttributeSchema.
 
     Raises:
         ValueError: If the input format is invalid.

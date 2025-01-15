@@ -28,8 +28,8 @@ class OpenAIChat(BaseChat, RetryMixin):
         Initialize the OpenAIChat with the provided LLM manager and configuration.
 
         Args:
-            llm_manager (OpenAIManager): Manager for OpenAI LLM interactions.
-            config (OpenAIChatConfig | Dict | str | Path): Configuration for OpenAI chat.
+            llm_manager: Manager for OpenAI LLM interactions.
+            config: Configuration for OpenAI chat.
         """
         config = OpenAIChatConfig.ensure_config(config)
         super().__init__(config)
@@ -41,10 +41,10 @@ class OpenAIChat(BaseChat, RetryMixin):
         Asynchronously process the messages and return the generated response.
 
         Args:
-            messages (List[ChatCompletionMessageParam]): List of messages for chat completion.
+            messages: List of messages for chat completion.
 
         Returns:
-            str: The generated response.
+            The generated response.
 
         Raises:
             RetryError: If retry attempts are exhausted.
@@ -59,9 +59,7 @@ class OpenAIChat(BaseChat, RetryMixin):
                     )
                     return response.choices[0].message.content or ""
         except RetryError as e:
-            logger.error(f"RetryError in chat for message: {messages}... | {e}")
-        except Exception as e:
-            logger.error(f"Unhandled exception in chat: {e}")
+            logger.error(f"RetryError in chat for messages: {messages} | {e}")
             raise
 
         return ""

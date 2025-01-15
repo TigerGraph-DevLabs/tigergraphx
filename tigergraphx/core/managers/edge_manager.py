@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from .base_manager import BaseManager
 
@@ -37,7 +37,7 @@ class EdgeManager(BaseManager):
         edge_type: str,
         tgt_node_type: str,
         **attr,
-    ):
+    ) -> Optional[int]:
         edges_to_upsert = []
 
         # Process each edge
@@ -105,8 +105,8 @@ class EdgeManager(BaseManager):
             result = self._connection.getEdges(
                 src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id
             )
-            if isinstance(result, List) and result:
-                return result[0].get("attributes", None)
+            if isinstance(result, List) and result: # pyright: ignore
+                return result[0].get("attributes", None) # pyright: ignore
             else:
                 raise TypeError(f"Unsupported type for result: {type(result)}")
         except Exception:

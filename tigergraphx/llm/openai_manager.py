@@ -21,7 +21,7 @@ class OpenAIManager(BaseLLMManager):
         Initialize OpenAIManager with OpenAI settings.
 
         Args:
-            config (OpenAIConfig | Dict | str | Path): Configuration for OpenAI settings.
+            config: Configuration for OpenAI settings.
 
         Raises:
             ValueError: If the API key is not provided in the configuration.
@@ -45,6 +45,6 @@ class OpenAIManager(BaseLLMManager):
         Retrieve the initialized async OpenAI instance.
 
         Returns:
-            AsyncOpenAI: The initialized OpenAI instance.
+            The initialized OpenAI instance.
         """
         return self._llm

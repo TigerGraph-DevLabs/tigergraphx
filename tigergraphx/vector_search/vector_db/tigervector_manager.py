@@ -18,12 +18,12 @@ class TigerVectorManager(BaseVectorDB):
 
     def __init__(self, config: TigerVectorConfig | Dict | str | Path, graph: Graph):
         """
-        Initialize the TigerVectorManager.
+        Initialize TigerVectorManager.
 
         Args:
-            config (TigerVectorConfig | Dict | str | Path): Configuration for the vector
-                database connection, either as a config object, dictionary, string, or path
-                to configuration file.
+            config: Config for the vector database connection, given as a config 
+                object, dictionary, string, or path to a configuration file.
+            graph: Graph instance for managing nodes.
         """
         config = TigerVectorConfig.ensure_config(config)
         super().__init__(config)
@@ -31,10 +31,10 @@ class TigerVectorManager(BaseVectorDB):
 
     def insert_data(self, data: pd.DataFrame) -> None:
         """
-        Insert data into TigerGraph
+        Insert data into TigerGraph.
 
         Args:
-            data (pd.DataFrame): Data to be inserted.
+            data: DataFrame containing data to be inserted.
         """
         nodes_for_adding = []
         for _, row in data.iterrows():
@@ -57,11 +57,11 @@ class TigerVectorManager(BaseVectorDB):
         Perform k-NN search on the vector database.
 
         Args:
-            query_embedding (List[float]): The query embedding vector.
-            k (int): The number of nearest neighbors to return.
+            query_embedding: The query embedding vector.
+            k: The number of nearest neighbors to return.
 
         Returns:
-            List[str]: List of identifiers for the nearest neighbors.
+            List of identifiers from the search results.
         """
         # Perform the vector search using the vector_search method
         search_results = self._graph.search(

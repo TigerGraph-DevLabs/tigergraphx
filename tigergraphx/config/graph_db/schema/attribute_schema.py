@@ -27,9 +27,15 @@ class AttributeSchema(BaseConfig):
     }
 
     @model_validator(mode="after")
-    def validate_default_value(self):
+    def validate_default_value(self) -> "AttributeSchema":
         """
         Validate that the default value matches the expected data type.
+
+        Returns:
+            The validated AttributeSchema.
+
+        Raises:
+            TypeError: If the default value does not match the expected data type.
         """
         if self.default_value is not None:
             expected_types = self.PYTHON_TYPES[self.data_type]
@@ -57,10 +63,10 @@ def string_to_data_type(data_type_str: str) -> DataType:
     Convert a string to a DataType.
 
     Args:
-        data_type_str (str): String representation of the data type.
+        data_type_str: String representation of the data type.
 
     Returns:
-        DataType: The corresponding DataType.
+        The corresponding DataType.
 
     Raises:
         ValueError: If the string is not a valid DataType.
@@ -78,10 +84,10 @@ def create_attribute_schema(attr: AttributeType) -> AttributeSchema:
     Create an AttributeSchema from various input formats.
 
     Args:
-        attr (AttributeType): Input attribute definition.
+        attr: Input attribute definition.
 
     Returns:
-        AttributeSchema: The created schema.
+        The created AttributeSchema.
 
     Raises:
         ValueError: If the input format is invalid.

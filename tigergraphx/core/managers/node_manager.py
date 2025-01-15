@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from .base_manager import BaseManager
 
@@ -25,7 +25,7 @@ class NodeManager(BaseManager):
         nodes_for_adding: List[str] | List[Tuple[str, Dict[str, Any]]],
         node_type: str,
         **attr,
-    ):
+    ) -> Optional[int]:
         nodes_to_upsert = []
 
         # Process each node

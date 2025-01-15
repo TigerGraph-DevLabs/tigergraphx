@@ -29,8 +29,8 @@ class OpenAIEmbedding(BaseEmbedding, RetryMixin):
         Initialize the OpenAI Embedding wrapper.
 
         Args:
-            llm_manager (OpenAIManager): Manager for OpenAI LLM interactions.
-            config (OpenAIEmbeddingConfig | Dict | str | Path): Configuration for the embedding model.
+            llm_manager: Manager for OpenAI LLM interactions.
+            config: Configuration for the embedding model.
         """
         config = OpenAIEmbeddingConfig.ensure_config(config)
         super().__init__(config)
@@ -43,10 +43,10 @@ class OpenAIEmbedding(BaseEmbedding, RetryMixin):
         Generate embedding asynchronously with retry for robustness.
 
         Args:
-            text (str): The input text to generate embeddings for.
+            text: The input text to generate embeddings for.
 
         Returns:
-            List[float]: The normalized embedding vector.
+            The normalized embedding vector.
         """
         token_chunks = list(self._tokenize(text))
         embedding_results = await asyncio.gather(
@@ -71,10 +71,10 @@ class OpenAIEmbedding(BaseEmbedding, RetryMixin):
         Fetch embedding for a chunk with retry, returning empty list on failure.
 
         Args:
-            text (str): Text chunk to generate embeddings for.
+            text: Text chunk to generate embeddings for.
 
         Returns:
-            Tuple[List[float], int]: The embedding vector and the length of the chunk.
+            The embedding vector and the length of the chunk.
         """
         try:
             async for attempt in self.retryer:
@@ -98,10 +98,10 @@ class OpenAIEmbedding(BaseEmbedding, RetryMixin):
         Tokenize text into chunks based on token length.
 
         Args:
-            text (str): The input text to tokenize.
+            text: The input text to tokenize.
 
         Returns:
-            List[str]: List of tokenized text chunks.
+            List of tokenized text chunks.
         """
         tokens = self.token_encoder.encode(text)
         return [
@@ -113,10 +113,10 @@ class OpenAIEmbedding(BaseEmbedding, RetryMixin):
         Yield successive batches of tokens up to max_tokens.
 
         Args:
-            tokens (List[int]): List of token IDs.
+            tokens: List of token IDs.
 
         Yields:
-            Generator[List[int], None, None]: Batches of token IDs.
+            Batches of token IDs.
         """
         for i in range(0, len(tokens), self.config.max_tokens):
             yield tokens[i : i + self.config.max_tokens]

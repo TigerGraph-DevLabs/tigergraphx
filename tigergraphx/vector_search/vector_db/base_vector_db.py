@@ -10,10 +10,10 @@ class BaseVectorDB(ABC):
 
     def __init__(self, config: BaseVectorDBConfig):
         """
-        Initialize the base vector DB manager.
+        Initialize the vector database connection.
 
         Args:
-            config (BaseVectorDBConfig): Configuration for the vector database connection.
+            config: Configuration for the vector DB connection.
         """
         self.config = config
 
@@ -23,7 +23,7 @@ class BaseVectorDB(ABC):
         Insert data into the vector database.
 
         Args:
-            data (pd.DataFrame): The data to be inserted.
+            data: The data to insert.
         """
         pass
 
@@ -34,13 +34,13 @@ class BaseVectorDB(ABC):
         k: int = 10,
     ) -> List[str]:
         """
-        Perform a similarity search by vector and return results in the desired format.
+        Perform a similarity search and return matching IDs.
 
         Args:
-            query_embedding (List[float]): The embedding vector to query.
-            k (int, optional): Number of nearest neighbors to return. Defaults to 10.
+            query_embedding: The vector to search with.
+            k: Number of nearest neighbors to return.
 
         Returns:
-            List[str]: List of result identifiers.
+            List of result IDs.
         """
         pass
