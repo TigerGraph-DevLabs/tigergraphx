@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Dict, Optional
 from pydantic import HttpUrl, Field, model_validator
 
 from tigergraphx.config import BaseConfig
@@ -9,6 +9,7 @@ class TigerGraphConnectionConfig(BaseConfig):
     Configuration for connecting to a TigerGraph instance.
 
     This class supports:
+
     1. User/password authentication
     2. Secret-based authentication
     3. Token-based authentication
@@ -21,9 +22,7 @@ class TigerGraphConnectionConfig(BaseConfig):
     restpp_port: int | str = Field(
         default="14240", description="The port for REST++ API."
     )
-    gsql_port: int | str = Field(
-        default="14240", description="The port for GSQL."
-    )
+    gsql_port: int | str = Field(default="14240", description="The port for GSQL.")
 
     # User/password authentication
     username: Optional[str] = Field(
@@ -48,13 +47,23 @@ class TigerGraphConnectionConfig(BaseConfig):
     )
 
     @model_validator(mode="before")
-    def check_exclusive_authentication(cls, values):
+    def check_exclusive_authentication(cls, values: Dict[str, Any]) -> Dict[str, Any]:
         """
         Ensure that exactly one authentication method is provided:
+
         - username/password together, or
         - secret, or
         - token.
         If all fields are empty, username/password will default.
+
+        Args:
+            values: The input values for validation.
+
+        Returns:
+            The validated values.
+
+        Raises:
+            ValueError: If more than one authentication method is provided.
         """
         # Extract the values of the fields
         username = values.get("username")

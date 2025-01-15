@@ -22,11 +22,11 @@ class BaseConfig(BaseSettings):
         it is loaded and converted into an instance of the class.
 
         Args:
-            config (T | Path | str | Dict): The input configuration, which can be an instance
-                of the config class, a dictionary, a file path, or a string.
+            config: The input configuration, which can be an instance of the config class,
+                a dictionary, a file path, or a string.
 
         Returns:
-            T: An instance of the current configuration class.
+            An instance of the current configuration class.
 
         Raises:
             FileNotFoundError: If the provided file path does not exist.
@@ -52,5 +52,5 @@ class BaseConfig(BaseSettings):
             return cls(**config_data)
         else:
             raise TypeError(
-                f"Expected a {cls.__name__} instance, dict, str, or Path, but got {type(config)}."
+                f"Expected a {cls.__name__} instance, dict, str, or Path, got {type(config).__name__}."
             )

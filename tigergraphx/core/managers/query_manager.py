@@ -30,7 +30,8 @@ class QueryManager(BaseManager):
 
     def get_nodes(
         self,
-        node_type: str = "",
+        node_type: str,
+        all_node_types: bool = False,
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
@@ -41,6 +42,7 @@ class QueryManager(BaseManager):
         """
         spec = NodeSpec(
             node_type=node_type,
+            all_node_types=all_node_types,
             filter_expression=filter_expression,
             return_attributes=return_attributes,
             limit=limit,
@@ -171,7 +173,7 @@ class QueryManager(BaseManager):
         """
         Core function to generate a GSQL query based on a NodeSpec object.
         """
-        node_type_str = f"{spec.node_type}.*" if spec.node_type else "ANY"
+        node_type_str = f"{spec.node_type}.*" if not spec.all_node_types else "ANY"
         filter_expression_str = (
             f"WHERE {spec.filter_expression}" if spec.filter_expression else ""
         )

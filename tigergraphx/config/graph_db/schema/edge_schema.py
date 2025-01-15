@@ -12,18 +12,18 @@ class EdgeSchema(BaseConfig):
     """
 
     is_directed_edge: bool = Field(
-        default=False,
-        description="Whether the edge is directed.")
+        default=False, description="Whether the edge is directed."
+    )
     from_node_type: str = Field(description="The type of the source node.")
     to_node_type: str = Field(description="The type of the target node.")
     discriminator: Set[str] | str = Field(
         default_factory=set,
-        description="An attribute or set of attributes that uniquely identifies an edge in a graph,"
+        description="An attribute or set of attributes that uniquely identifies an edge in a graph, "
         "distinguishing it from other edges with the same source and target.",
     )
     attributes: Dict[str, AttributeSchema] = Field(
         default_factory=dict,
-        description="A dictionary of attribute names to their schemas."
+        description="A dictionary of attribute names to their schemas.",
     )
 
     @model_validator(mode="before")
@@ -32,12 +32,11 @@ class EdgeSchema(BaseConfig):
         Parse shorthand attributes into full AttributeSchema.
 
         Args:
-            values (Dict[str, Any]): Input values.
+            values: Input values.
 
         Returns:
-            Dict[str, Any]: Parsed values with attributes as AttributeSchema.
+            Parsed values with attributes as AttributeSchema.
         """
-        # Convert discriminator to a set if it's a string
         if isinstance(values.get("discriminator"), str):
             values["discriminator"] = {values["discriminator"]}
 
@@ -49,22 +48,28 @@ class EdgeSchema(BaseConfig):
         return values
 
     @model_validator(mode="after")
-    def validate_discriminator_and_attributes(cls, values):
+    def validate_discriminator_and_attributes(self) -> "EdgeSchema":
         """
-        Validate that the every discriminator is present in attributes.
+        Validate that every discriminator is present in attributes.
+
+        Returns:
+            The validated edge schema.
+
+        Raises:
+            ValueError: If any discriminator is not defined in attributes.
         """
-        if isinstance(values.discriminator, str):
-            if values.discriminator not in values.attributes:
+        if isinstance(self.discriminator, str):
+            if self.discriminator not in self.attributes:
                 raise ValueError(
-                    f"Edge identifier '{values.discriminator}' is not defined in attributes."
+                    f"Edge identifier '{self.discriminator}' is not defined in attributes."
                 )
         else:
-            for attribute in values.discriminator:
-                if attribute not in values.attributes:
+            for attribute in self.discriminator:
+                if attribute not in self.attributes:
                     raise ValueError(
                         f"Edge identifier '{attribute}' is not defined in attributes."
                     )
-        return values
+        return self
 
 
 def create_edge_schema(
@@ -77,13 +82,13 @@ def create_edge_schema(
     Create an EdgeSchema with simplified syntax.
 
     Args:
-        is_directed_edge (bool): Whether the edge is directed.
-        from_node_type (str): The source node type.
-        to_node_type (str): The target node type.
-        attributes (AttributesType, optional): Attributes for the edge. Defaults to {}.
+        is_directed_edge: Whether the edge is directed.
+        from_node_type: The source node type.
+        to_node_type: The target node type.
+        attributes: Attributes for the edge.
 
     Returns:
-        EdgeSchema: The created edge schema.
+        The created EdgeSchema.
     """
     attribute_schemas = {
         name: create_attribute_schema(attr) for name, attr in attributes.items()

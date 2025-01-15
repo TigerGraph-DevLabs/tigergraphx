@@ -18,10 +18,10 @@ class NanoVectorDBManager(BaseVectorDB):
         config: NanoVectorDBConfig,
     ):
         """
-        Initialize the NanoVectorDBWrapper.
+        Initialize the NanoVectorDBManager.
 
         Args:
-            config (NanoVectorDBConfig): Configuration for NanoVectorDB.
+            config: Configuration for NanoVectorDB.
         """
         super().__init__(config)
         self._db = NanoVectorDB(
@@ -33,7 +33,7 @@ class NanoVectorDBManager(BaseVectorDB):
         Insert data into NanoVectorDB.
 
         Args:
-            data (pd.DataFrame): DataFrame containing the data to insert.
+            data: DataFrame with data to insert.
         """
         records = []
         for _, row in data.iterrows():
@@ -51,14 +51,14 @@ class NanoVectorDBManager(BaseVectorDB):
         k: int = 10,
     ) -> List[str]:
         """
-        Perform a similarity search and return results.
+        Perform a similarity search and return the result IDs.
 
         Args:
-            query_embedding (List[float]): Query embedding vector for similarity search.
-            k (int, optional): Number of top results to retrieve. Defaults to 10.
+            query_embedding: Embedding vector for search.
+            k: Number of top results to retrieve.
 
         Returns:
-            List[str]: List of IDs from the search results.
+            List of IDs from the search results.
         """
         results = self._db.query(query=np.array(query_embedding), top_k=k)
         return [result["__id__"] for result in results]

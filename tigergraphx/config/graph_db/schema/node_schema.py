@@ -32,10 +32,10 @@ class NodeSchema(BaseConfig):
         Parse shorthand attributes into full AttributeSchema.
 
         Args:
-            values (Dict[str, Any]): Input values.
+            values: Input values.
 
         Returns:
-            Dict[str, Any]: Parsed values with attributes as AttributeSchema.
+            Parsed values with attributes as AttributeSchema.
         """
         attributes = values.get("attributes", {})
         if attributes:
@@ -51,15 +51,21 @@ class NodeSchema(BaseConfig):
         return values
 
     @model_validator(mode="after")
-    def validate_primary_key_and_attributes(cls, values):
+    def validate_primary_key_and_attributes(self) -> "NodeSchema":
         """
         Validate that the primary key is present in attributes.
+
+        Returns:
+            The validated node schema.
+
+        Raises:
+            ValueError: If the primary key is not defined in attributes.
         """
-        if values.primary_key not in values.attributes:
+        if self.primary_key not in self.attributes:
             raise ValueError(
-                f"Primary key '{values.primary_key}' is not defined in attributes."
+                f"Primary key '{self.primary_key}' is not defined in attributes."
             )
-        return values
+        return self
 
 
 def create_node_schema(
@@ -71,12 +77,12 @@ def create_node_schema(
     Create a NodeSchema with simplified syntax.
 
     Args:
-        primary_key (str): The primary key for the node type.
-        attributes (AttributesType): Attributes for the node.
-        vector_attributes (VectorAttributesType): Vector attributes for the node.
+        primary_key: The primary key for the node type.
+        attributes: Attributes for the node.
+        vector_attributes: Vector attributes for the node.
 
     Returns:
-        NodeSchema: The created node schema.
+        The created node schema.
     """
     attribute_schemas = {
         name: create_attribute_schema(attr) for name, attr in attributes.items()

@@ -23,28 +23,14 @@ nav:
       - Features Overview: reference/features_overview.md
       - Core:
           - Graph: reference/01_core/graph.md
-          - DiGraph: reference/01_core/digraph.md
-          - UndiGraph: reference/01_core/undigraph.md
-          - HomoGraph: reference/01_core/homograph.md
           - NodeView: reference/01_core/nodeview.md
       - Vector Search:
-          - Vector DB:
-              - BaseVectorDB: reference/02_vector_search/01_vector_db/base_vector_db.md
-              - TigerVectorManager: reference/02_vector_search/01_vector_db/tigervector_manager.md
-              - NanoVectorDBManager: reference/02_vector_search/01_vector_db/nano_vectordb_manager.md
-          - Embedding:
-              - BaseEmbedding: reference/02_vector_search/02_embedding/base_embedding.md
-              - OpenAIEmbedding: reference/02_vector_search/02_embedding/openai_embedding.md
-          - Search:
-              - BaseSearchEngine: reference/02_vector_search/03_search/base_search_engine.md
-              - TigerVectorSearchEngine: reference/02_vector_search/03_search/tigervector_search_engine.md
-              - NanoVectorDBSearchEngine: reference/02_vector_search/03_search/nano_vectordb_search_engine.md
+          - Vector DB: reference/02_vector_search/vector_db.md
+          - Embedding: reference/02_vector_search/embedding.md
+          - Search Engine: reference/02_vector_search/search_engine.md
       - LLM:
-          - BaseLLMManager: reference/03_llm/base_llm_manager.md
-          - OpenAIManager: reference/03_llm/openai_manager.md
-          - Chat:
-              - BaseChat: reference/03_llm/01_chat/base_chat.md
-              - OpenAIChat: reference/03_llm/01_chat/openai_chat.md
+          - LMM Manager: reference/03_llm/llm_manager.md
+          - Chat: reference/03_llm/chat.md
       - Config:
           - BaseConfig: reference/04_config/base_config.md
           - Graph DB:
@@ -71,6 +57,7 @@ theme:
   name: material
   features:
     - navigation.tabs
+    - navigation.expand
     - navigation.footer
     - content.code.copy
     - content.code.select
@@ -109,7 +96,7 @@ plugins:
             # General
             show_source: false
             # Headings
-            heading_level: 2
+            heading_level: 3
             show_root_heading: true
             show_root_full_path: false
             show_symbol_type_heading: true

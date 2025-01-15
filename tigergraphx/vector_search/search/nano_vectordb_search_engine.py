@@ -21,7 +21,7 @@ class NanoVectorDBSearchEngine(BaseSearchEngine):
         Initialize the NanoVectorDBSearchEngine.
 
         Args:
-            embedding_model (OpenAIEmbedding): The embedding model used for text-to-vector conversion.
-            vector_db (NanoVectorDBManager): The vector database for similarity search.
+            embedding_model: The embedding model used for text-to-vector conversion.
+            vector_db: The vector database for similarity search.
         """
         super().__init__(embedding_model, vector_db)

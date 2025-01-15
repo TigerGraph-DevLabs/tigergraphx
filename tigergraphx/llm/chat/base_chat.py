@@ -12,7 +12,7 @@ class BaseChat(ABC):
         Initialize the chat model with the given configuration.
 
         Args:
-            config (BaseChatConfig): Configuration for the chat model.
+            config: Configuration for the chat model.
         """
         self.config = config
 
@@ -22,9 +22,9 @@ class BaseChat(ABC):
         Asynchronously process the messages and return the generated response.
 
         Args:
-            messages (List[Any]): A list of messages to process.
+            messages: A list of messages to process.
 
         Returns:
-            str: The generated response.
+            The generated response.
         """
         pass

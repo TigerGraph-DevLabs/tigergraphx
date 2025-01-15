@@ -12,7 +12,7 @@ class BaseLLMManager(ABC):
         Initialize the base LLM manager.
 
         Args:
-            config (BaseLLMConfig): Configuration for the LLM.
+            config: Configuration for the LLM.
         """
         self.config = config
 
@@ -22,6 +22,6 @@ class BaseLLMManager(ABC):
         Retrieve the initialized LLM instance.
 
         Returns:
-            Any: The initialized LLM instance.
+            The initialized LLM instance.
         """
         pass
