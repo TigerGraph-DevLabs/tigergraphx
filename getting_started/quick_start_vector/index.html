@@ -641,16 +641,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#add-nodes-and-vectors" class="md-nav__link">
-    <span class="md-ellipsis">
-      Add Nodes and Vectors
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Add Nodes and Vectors">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#add-nodes" class="md-nav__link">
     <span class="md-ellipsis">
       Add Nodes
@@ -658,27 +648,13 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#insert-embeddings-into-nodes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Insert Embeddings into Nodes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#display-the-number-of-nodes" class="md-nav__link">
     <span class="md-ellipsis">
       Display the Number of Nodes
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2362,16 +2338,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#add-nodes-and-vectors" class="md-nav__link">
-    <span class="md-ellipsis">
-      Add Nodes and Vectors
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Add Nodes and Vectors">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#add-nodes" class="md-nav__link">
     <span class="md-ellipsis">
       Add Nodes
@@ -2379,27 +2345,13 @@
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#insert-embeddings-into-nodes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Insert Embeddings into Nodes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#display-the-number-of-nodes" class="md-nav__link">
     <span class="md-ellipsis">
       Display the Number of Nodes
     </span>
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -3065,8 +3017,9 @@ G = Graph(graph_schema, connection)</div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>2025-01-06 21:25:38,721 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph FinancialGraph...
-2025-01-06 21:25:38,792 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
+<pre>2025-01-15 10:36:43,412 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for FinancialGraph: does not exist
+2025-01-15 10:36:43,412 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: FinancialGraph...
+2025-01-15 10:37:32,449 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
 </pre>
 </div>
 </div>
@@ -3080,7 +3033,11 @@ G = Graph(graph_schema, connection)</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="add-nodes-and-vectors">Add Nodes and Vectors<a class="anchor-link" href="#add-nodes-and-vectors">¶</a></h2><h3 id="add-nodes">Add Nodes<a class="anchor-link" href="#add-nodes">¶</a></h3><p>In this section, we will add multiple nodes to the graph. Each node represents an account, identified by a unique name. For each account, we will specify an attribute isBlocked, which indicates whether the account is blocked.</p>
+<h2 id="add-nodes">Add Nodes<a class="anchor-link" href="#add-nodes">¶</a></h2><p>In this example, we add multiple nodes representing accounts to the graph. Each node is uniquely identified by a name and comes with two attributes:</p>
+<ul>
+<li><strong>isBlocked:</strong> A Boolean indicating whether the account is blocked.</li>
+<li><strong>emb1:</strong> A three-dimensional embedding vector.</li>
+</ul>
 </div>
 </div>
 </div>
@@ -3104,22 +3061,22 @@ G = Graph(graph_schema, connection)</div>
 </clipboard-copy>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">"Scott"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"isBlocked"</span><span class="p">:</span> <span class="kc">False</span><span class="p">}),</span>
-    <span class="p">(</span><span class="s2">"Jenny"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"isBlocked"</span><span class="p">:</span> <span class="kc">False</span><span class="p">}),</span>
-    <span class="p">(</span><span class="s2">"Steven"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"isBlocked"</span><span class="p">:</span> <span class="kc">True</span><span class="p">}),</span>
-    <span class="p">(</span><span class="s2">"Paul"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"isBlocked"</span><span class="p">:</span> <span class="kc">False</span><span class="p">}),</span>
-    <span class="p">(</span><span class="s2">"Ed"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"isBlocked"</span><span class="p">:</span> <span class="kc">False</span><span class="p">}),</span>
+    <span class="p">(</span><span class="s2">"Scott"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"isBlocked"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"emb1"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.017733968794345856</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01019224338233471</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016571875661611557</span><span class="p">]}),</span>
+    <span class="p">(</span><span class="s2">"Jenny"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"isBlocked"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"emb1"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.019265105947852135</span><span class="p">,</span> <span class="mf">0.0004929182468913496</span><span class="p">,</span> <span class="mf">0.006711316294968128</span><span class="p">]}),</span>
+    <span class="p">(</span><span class="s2">"Steven"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"isBlocked"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">"emb1"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.01505514420568943</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016819344833493233</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0221870020031929</span><span class="p">]}),</span>
+    <span class="p">(</span><span class="s2">"Paul"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"isBlocked"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"emb1"</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0011193430982530117</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.001038988004438579</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.017158523201942444</span><span class="p">]}),</span>
+    <span class="p">(</span><span class="s2">"Ed"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"isBlocked"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">"emb1"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.003692442551255226</span><span class="p">,</span> <span class="mf">0.010494389571249485</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.004631792660802603</span><span class="p">]}),</span>
 <span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">nodes_for_adding</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="s2">"Account"</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Number of Account Nodes Inserted:"</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">nodes_for_adding</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="s2">"Account"</span><span class="p">))</span>
 </pre></div>
 <div class="clipboard-copy-txt" id="cell-4">nodes_for_adding = [
-    ("Scott", {"isBlocked": False}),
-    ("Jenny", {"isBlocked": False}),
-    ("Steven", {"isBlocked": True}),
-    ("Paul", {"isBlocked": False}),
-    ("Ed", {"isBlocked": False}),
+    ("Scott", {"isBlocked": False, "emb1": [-0.017733968794345856, -0.01019224338233471, -0.016571875661611557]}),
+    ("Jenny", {"isBlocked": False, "emb1": [-0.019265105947852135, 0.0004929182468913496, 0.006711316294968128]}),
+    ("Steven", {"isBlocked": True, "emb1": [-0.01505514420568943, -0.016819344833493233, -0.0221870020031929]}),
+    ("Paul", {"isBlocked": False, "emb1": [0.0011193430982530117, -0.001038988004438579, -0.017158523201942444]}),
+    ("Ed", {"isBlocked": False, "emb1": [-0.003692442551255226, 0.010494389571249485, -0.004631792660802603]}),
 ]
-print(G.add_nodes_from(nodes_for_adding, node_type="Account"))</div>
+print("Number of Account Nodes Inserted:", G.add_nodes_from(nodes_for_adding, node_type="Account"))</div>
 </div>
 </div>
 </div>
@@ -3131,7 +3088,7 @@ print(G.add_nodes_from(nodes_for_adding, node_type="Account"))</div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>5
+<pre>Number of Account Nodes Inserted: 5
 </pre>
 </div>
 </div>
@@ -3139,18 +3096,18 @@ print(G.add_nodes_from(nodes_for_adding, node_type="Account"))</div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=88bf30e3-962d-41e0-bc45-1bf256c7ca24">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e1a17452-d352-4ad2-b359-6ca13fc9dc3b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="insert-embeddings-into-nodes">Insert Embeddings into Nodes<a class="anchor-link" href="#insert-embeddings-into-nodes">¶</a></h3><p>To insert embeddings into the nodes, you can use the following data format:</p>
+<h2 id="display-the-number-of-nodes">Display the Number of Nodes<a class="anchor-link" href="#display-the-number-of-nodes">¶</a></h2><p>Next, let's verify that the data has been inserted into the graph by using the following command. As expected, the number of nodes is 5.</p>
 </div>
 </div>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a9878313-994c-42f9-89af-b7d1bedd503d">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ea8fe5cc-4f43-4359-81f1-a492243c2984">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3168,115 +3125,9 @@ print(G.add_nodes_from(nodes_for_adding, node_type="Account"))</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span>
-        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Scott"</span><span class="p">,</span>
-        <span class="s2">"emb1"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.017733968794345856</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01019224338233471</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016571875661611557</span><span class="p">],</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Jenny"</span><span class="p">,</span>
-        <span class="s2">"emb1"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.019265105947852135</span><span class="p">,</span> <span class="mf">0.0004929182468913496</span><span class="p">,</span> <span class="mf">0.006711316294968128</span><span class="p">],</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Steven"</span><span class="p">,</span>
-        <span class="s2">"emb1"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.01505514420568943</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016819344833493233</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0221870020031929</span><span class="p">],</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Paul"</span><span class="p">,</span>
-        <span class="s2">"emb1"</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0011193430982530117</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.001038988004438579</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.017158523201942444</span><span class="p">],</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Ed"</span><span class="p">,</span>
-        <span class="s2">"emb1"</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.003692442551255226</span><span class="p">,</span> <span class="mf">0.010494389571249485</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.004631792660802603</span><span class="p">],</span>
-    <span class="p">},</span>
-<span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">"Account"</span><span class="p">))</span>
-</pre></div>
-<div class="clipboard-copy-txt" id="cell-5">data = [
-    {
-        "name": "Scott",
-        "emb1": [-0.017733968794345856, -0.01019224338233471, -0.016571875661611557],
-    },
-    {
-        "name": "Jenny",
-        "emb1": [-0.019265105947852135, 0.0004929182468913496, 0.006711316294968128],
-    },
-    {
-        "name": "Steven",
-        "emb1": [-0.01505514420568943, -0.016819344833493233, -0.0221870020031929],
-    },
-    {
-        "name": "Paul",
-        "emb1": [0.0011193430982530117, -0.001038988004438579, -0.017158523201942444],
-    },
-    {
-        "name": "Ed",
-        "emb1": [-0.003692442551255226, 0.010494389571249485, -0.004631792660802603],
-    },
-]
-print(G.upsert(data, "Account"))</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell-outputWrapper">
-<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
-</div>
-<div class="jp-OutputArea jp-Cell-outputArea">
-<div class="jp-OutputArea-child">
-<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>0
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d9a5e564-df5f-4f3f-9235-2a16556ede8f">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p>Note: A result of 0 simply indicates that no new nodes were added, as the nodes were already inserted into TigerGraph. This does not mean the update failed.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e1a17452-d352-4ad2-b359-6ca13fc9dc3b">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="display-the-number-of-nodes">Display the Number of Nodes<a class="anchor-link" href="#display-the-number-of-nodes">¶</a></h3><p>Next, let's verify that the data has been inserted into the graph by using the following command. As expected, the number of nodes is 5.</p>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ea8fe5cc-4f43-4359-81f1-a492243c2984">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="CodeMirror cm-s-jupyter">
-<div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-6">
-<div>
-<span class="notice" hidden="">Copied!</span>
-<svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
-<path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-<path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z" fill="currentColor" fill-rule="evenodd"></path>
-</svg>
-</div>
-</clipboard-copy>
-</div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">())</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-6">print(G.number_of_nodes())</div>
+<div class="clipboard-copy-txt" id="cell-5">print(G.number_of_nodes())</div>
 </div>
 </div>
 </div>
@@ -3315,7 +3166,7 @@ print(G.upsert(data, "Account"))</div>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-7">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-6">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3325,11 +3176,23 @@ print(G.upsert(data, "Account"))</div>
 </div>
 </clipboard-copy>
 </div>
-<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.017733968794345856</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01019224338233471</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016571875661611557</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">"emb1"</span><span class="p">,</span> <span class="s2">"Account"</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<div class="highlight-ipynb hl-python"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.017733968794345856</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01019224338233471</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016571875661611557</span><span class="p">],</span>
+    <span class="n">vector_attribute_name</span><span class="o">=</span><span class="s2">"emb1"</span><span class="p">,</span>
+    <span class="n">node_type</span><span class="o">=</span><span class="s2">"Account"</span><span class="p">,</span>
+    <span class="n">limit</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-7">data = [-0.017733968794345856, -0.01019224338233471, -0.016571875661611557]
-print(G.search(data, "emb1", "Account", 2))</div>
+<div class="clipboard-copy-txt" id="cell-6">results = G.search(
+    data=[-0.017733968794345856, -0.01019224338233471, -0.016571875661611557],
+    vector_attribute_name="emb1",
+    node_type="Account",
+    limit=2
+)
+for result in results:
+    print(result)</div>
 </div>
 </div>
 </div>
@@ -3341,7 +3204,8 @@ print(G.search(data, "emb1", "Account", 2))</div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>[{'id': 'Steven', 'distance': 0.0325563, 'name': 'Steven', 'isBlocked': True}, {'id': 'Scott', 'distance': 0, 'name': 'Scott', 'isBlocked': False}]
+<pre>{'id': 'Scott', 'distance': 0, 'name': 'Scott', 'isBlocked': False}
+{'id': 'Steven', 'distance': 0.0325563, 'name': 'Steven', 'isBlocked': True}
 </pre>
 </div>
 </div>
@@ -3368,7 +3232,7 @@ print(G.search(data, "emb1", "Account", 2))</div>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [8]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-8">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-7">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3380,7 +3244,7 @@ print(G.search(data, "emb1", "Account", 2))</div>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">())</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-8">print(G.clear())</div>
+<div class="clipboard-copy-txt" id="cell-7">print(G.clear())</div>
 </div>
 </div>
 </div>
@@ -3419,7 +3283,7 @@ print(G.search(data, "emb1", "Account", 2))</div>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-9">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-8">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3431,7 +3295,7 @@ print(G.search(data, "emb1", "Account", 2))</div>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">())</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-9">print(G.number_of_nodes())</div>
+<div class="clipboard-copy-txt" id="cell-8">print(G.number_of_nodes())</div>
 </div>
 </div>
 </div>
@@ -3461,8 +3325,8 @@ print(G.search(data, "emb1", "Account", 2))</div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=36504b02-1b86-4782-a4cc-f9a4789d5750">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell">
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=36504b02-1b86-4782-a4cc-f9a4789d5750">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -3470,7 +3334,7 @@ print(G.search(data, "emb1", "Account", 2))</div>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div><div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="CodeMirror cm-s-jupyter">
 <div class="zeroclipboard-container">
-<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-10">
+<clipboard-copy ,="" aria-label="Copy to Clipboard" for="cell-9">
 <div>
 <span class="notice" hidden="">Copied!</span>
 <svg aria-hidden="true" class="clipboard-copy-icon" data-view-component="true" height="20" version="1.1" viewbox="0 0 16 16" width="20">
@@ -3482,7 +3346,21 @@ print(G.search(data, "emb1", "Account", 2))</div>
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">G</span><span class="o">.</span><span class="n">drop_graph</span><span class="p">()</span>
 </pre></div>
-<div class="clipboard-copy-txt" id="cell-10">G.drop_graph()</div>
+<div class="clipboard-copy-txt" id="cell-9">G.drop_graph()</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>2025-01-15 10:38:27,708 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: FinancialGraph...
+2025-01-15 10:38:30,869 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
+</pre>
 </div>
 </div>
 </div>
