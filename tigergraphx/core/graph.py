@@ -110,6 +110,7 @@ class Graph:
         )
 
     from tigergraphx.core.view.node_view import NodeView
+
     @property
     def nodes(self) -> NodeView:
         """
@@ -120,6 +121,7 @@ class Graph:
         """
 
         from tigergraphx.core.view.node_view import NodeView
+
         return NodeView(self)
 
     # ------------------------------ Schema Operations ------------------------------
@@ -164,7 +166,7 @@ class Graph:
         return self._data_manager.load_data(loading_job_config)
 
     # ------------------------------ Node Operations ------------------------------
-    def add_node(self, node_id: str, node_type: str = "", **attr):
+    def add_node(self, node_id: str | int, node_type: str = "", **attr):
         """
         Add a node to the graph.
 
@@ -173,12 +175,13 @@ class Graph:
             node_type: The type of the node.
             **attr: Additional attributes for the node.
         """
+        node_id = self._to_str_node_id(node_id)
         node_type = self._validate_node_type(node_type)
         return self._node_manager.add_node(node_id, node_type, **attr)
 
     def add_nodes_from(
         self,
-        nodes_for_adding: List[str] | List[Tuple[str, Dict[str, Any]]],
+        nodes_for_adding: List[str | int] | List[Tuple[str | int, Dict[str, Any]]],
         node_type: str = "",
         **attr,
     ) -> Optional[int]:
@@ -193,10 +196,13 @@ class Graph:
         Returns:
             The number of nodes inserted (nodes that were updated are not counted).
         """
+        normalized_nodes = self._normalize_nodes_for_adding(nodes_for_adding, **attr)
+        if normalized_nodes is None:
+            return None
         node_type = self._validate_node_type(node_type)
-        return self._node_manager.add_nodes_from(nodes_for_adding, node_type, **attr)
+        return self._node_manager.add_nodes_from(normalized_nodes, node_type)
 
-    def remove_node(self, node_id: str, node_type: str = "") -> bool:
+    def remove_node(self, node_id: str | int, node_type: str = "") -> bool:
         """
         Remove a node from the graph.
 
@@ -207,10 +213,11 @@ class Graph:
         Returns:
             True if the node was removed, False otherwise.
         """
+        node_id = self._to_str_node_id(node_id)
         node_type = self._validate_node_type(node_type)
         return self._node_manager.remove_node(node_id, node_type)
 
-    def has_node(self, node_id: str, node_type: str = "") -> bool:
+    def has_node(self, node_id: str | int, node_type: str = "") -> bool:
         """
         Check if a node exists in the graph.
 
@@ -221,10 +228,11 @@ class Graph:
         Returns:
             True if the node exists, False otherwise.
         """
+        node_id = self._to_str_node_id(node_id)
         node_type = self._validate_node_type(node_type)
         return self._node_manager.has_node(node_id, node_type)
 
-    def get_node_data(self, node_id: str, node_type: str = "") -> Dict | None:
+    def get_node_data(self, node_id: str | int, node_type: str = "") -> Dict | None:
         """
         Get data for a specific node.
 
@@ -235,12 +243,13 @@ class Graph:
         Returns:
             The node data or None if not found.
         """
+        node_id = self._to_str_node_id(node_id)
         node_type = self._validate_node_type(node_type)
         return self._node_manager.get_node_data(node_id, node_type)
 
     def get_node_edges(
         self,
-        node_id: str,
+        node_id: str | int,
         node_type: str = "",
         edge_types: List | str = [],
     ) -> List[Tuple]:
@@ -255,6 +264,7 @@ class Graph:
         Returns:
             A list of edges represented as (from_id, to_id).
         """
+        node_id = self._to_str_node_id(node_id)
         node_type = self._validate_node_type(node_type)
         edges = self._node_manager.get_node_edges(node_id, node_type, edge_types)
         result = [(edge["from_id"], edge["to_id"]) for edge in edges]
@@ -272,8 +282,8 @@ class Graph:
     # ------------------------------ Edge Operations ------------------------------
     def add_edge(
         self,
-        src_node_id: str,
-        tgt_node_id: str,
+        src_node_id: str | int,
+        tgt_node_id: str | int,
         src_node_type: str = "",
         edge_type: str = "",
         tgt_node_type: str = "",
@@ -290,6 +300,7 @@ class Graph:
             tgt_node_type: Target node type.
             **attr: Additional edge attributes.
         """
+        src_node_id, tgt_node_id = self._to_str_edge_ids(src_node_id, tgt_node_id)
         src_node_type, edge_type, tgt_node_type = self._validate_edge_type(
             src_node_type, edge_type, tgt_node_type
         )
@@ -299,11 +310,12 @@ class Graph:
 
     def add_edges_from(
         self,
-        ebunch_to_add: List[Tuple[str, str]] | List[Tuple[str, str, Dict[str, Any]]],
+        ebunch_to_add: List[Tuple[str | int, str | int]]
+        | List[Tuple[str | int, str | int, Dict[str, Any]]],
         src_node_type: str,
         edge_type: str,
         tgt_node_type: str,
-        **attr,
+        **attr: Any,
     ) -> Optional[int]:
         """
         Add edges from a list of edge tuples.
@@ -318,11 +330,14 @@ class Graph:
         Returns:
             The number of edges inserted (edges that were updated are not counted).
         """
+        normalized_edges = self._normalize_edges_for_adding(ebunch_to_add, **attr)
+        if normalized_edges is None:
+            return None
         src_node_type, edge_type, tgt_node_type = self._validate_edge_type(
             src_node_type, edge_type, tgt_node_type
         )
         return self._edge_manager.add_edges_from(
-            ebunch_to_add, src_node_type, edge_type, tgt_node_type, **attr
+            normalized_edges, src_node_type, edge_type, tgt_node_type
         )
 
     def has_edge(
@@ -346,6 +361,7 @@ class Graph:
         Returns:
             True if the edge exists, False otherwise.
         """
+        src_node_id, tgt_node_id = self._to_str_edge_ids(src_node_id, tgt_node_id)
         src_node_type, edge_type, tgt_node_type = self._validate_edge_type(
             src_node_type, edge_type, tgt_node_type
         )
@@ -355,8 +371,8 @@ class Graph:
 
     def get_edge_data(
         self,
-        src_node_id: str,
-        tgt_node_id: str,
+        src_node_id: str | int,
+        tgt_node_id: str | int,
         src_node_type: str = "",
         edge_type: str = "",
         tgt_node_type: str = "",
@@ -374,6 +390,7 @@ class Graph:
         Returns:
             The edge data or None if not found.
         """
+        src_node_id, tgt_node_id = self._to_str_edge_ids(src_node_id, tgt_node_id)
         src_node_type, edge_type, tgt_node_type = self._validate_edge_type(
             src_node_type, edge_type, tgt_node_type
         )
@@ -382,7 +399,9 @@ class Graph:
         )
 
     # ------------------------------ Statistics Operations ------------------------------
-    def degree(self, node_id: str, node_type: str = "", edge_types: List = []) -> int:
+    def degree(
+        self, node_id: str | int, node_type: str = "", edge_types: List = []
+    ) -> int:
         """
         Get the degree of a node.
 
@@ -394,6 +413,7 @@ class Graph:
         Returns:
             The degree of the node.
         """
+        node_id = self._to_str_node_id(node_id)
         node_type = self._validate_node_type(node_type)
         return self._statistics_manager.degree(node_id, node_type, edge_types)
 
@@ -478,7 +498,7 @@ class Graph:
 
     def get_neighbors(
         self,
-        start_nodes: str | List[str],
+        start_nodes: str | int | List[str | int],
         start_node_type: str = "",
         edge_types: Optional[str | List[str]] = None,
         target_node_types: Optional[str | List[str]] = None,
@@ -501,9 +521,13 @@ class Graph:
         Returns:
             A DataFrame of neighbors or None.
         """
+        if isinstance(start_nodes, str | int):
+            new_start_nodes = self._to_str_node_id(start_nodes)
+        else:
+            new_start_nodes = self._to_str_node_ids(start_nodes)
         start_node_type = self._validate_node_type(start_node_type)
         return self._query_manager.get_neighbors(
-            start_nodes=start_nodes,
+            start_nodes=new_start_nodes,
             start_node_type=start_node_type,
             edge_types=edge_types,
             target_node_types=target_node_types,
@@ -544,7 +568,7 @@ class Graph:
         return self._vector_manager.upsert(data, node_type)
 
     def fetch_node(
-        self, node_id: str, vector_attribute_name: str, node_type: str = ""
+        self, node_id: str | int, vector_attribute_name: str, node_type: str = ""
     ) -> Optional[List[float]]:
         """
         Fetch the embedding vector for a single node.
@@ -557,13 +581,14 @@ class Graph:
         Returns:
             The embedding vector or None if not found.
         """
+        node_id = self._to_str_node_id(node_id)
         node_type = self._validate_node_type(node_type)
         return self._vector_manager.fetch_node(
             node_id, vector_attribute_name, node_type
         )
 
     def fetch_nodes(
-        self, node_ids: List[str], vector_attribute_name: str, node_type: str = ""
+        self, node_ids: List[str | int], vector_attribute_name: str, node_type: str = ""
     ) -> Dict[str, List[float]]:
         """
         Fetch embedding vectors for multiple nodes.
@@ -576,9 +601,10 @@ class Graph:
         Returns:
             Mapping of node IDs to embedding vectors.
         """
+        new_node_ids = self._to_str_node_ids(node_ids)
         node_type = self._validate_node_type(node_type)
         return self._vector_manager.fetch_nodes(
-            node_ids, vector_attribute_name, node_type
+            new_node_ids, vector_attribute_name, node_type
         )
 
     def search(
@@ -654,7 +680,7 @@ class Graph:
 
     def search_top_k_similar_nodes(
         self,
-        node_id: str,
+        node_id: str | int,
         vector_attribute_name: str,
         node_type: str = "",
         limit: int = 5,
@@ -673,6 +699,7 @@ class Graph:
         Returns:
             List of similar nodes.
         """
+        node_id = self._to_str_node_id(node_id)
         node_type = self._validate_node_type(node_type)
         return self._vector_manager.search_top_k_similar_nodes(
             node_id=node_id,
@@ -746,3 +773,137 @@ class Graph:
                 )
             edge_type = next(iter(self.edge_types))
         return src_node_type, edge_type, tgt_node_type
+
+    @staticmethod
+    def _to_str_node_id(node_id: str | int) -> str:
+        """Converts the node identifier to a string.
+
+        Args:
+            node_id: The node identifier.
+
+        Returns:
+            The node identifier as a string.
+        """
+        return str(node_id)
+
+    @staticmethod
+    def _to_str_edge_ids(
+        src_node_id: str | int, tgt_node_id: str | int
+    ) -> Tuple[str, str]:
+        """Converts source and target node IDs to strings.
+
+        Args:
+            src_node_id: The source node identifier.
+            tgt_node_id: The target node identifier.
+
+        Returns:
+            A tuple containing both node IDs as strings.
+        """
+        return str(src_node_id), str(tgt_node_id)
+
+    @staticmethod
+    def _to_str_node_ids(
+        node_ids: List[str | int],
+    ) -> List[str]:
+        """Converts node_ids to a list of strings.
+
+        Args:
+            node_ids: A list of node identifiers.
+
+        Returns:
+            A list of strings.
+        """
+        return [str(node) for node in node_ids]
+
+    @staticmethod
+    def _normalize_nodes_for_adding(
+        nodes_for_adding: List[str | int] | List[Tuple[str | int, Dict[str, Any]]],
+        **common_attr: Any,
+    ) -> Optional[List[Tuple[str, Dict[str, Any]]]]:
+        """
+        Normalizes node definitions by converting all node IDs to str and merging common attributes.
+
+        Parameters:
+            nodes_for_adding: A list of node definitions, which can be either:
+                - A list of node IDs (str or int), or
+                - A list of tuples (node_id, attributes dictionary)
+            common_attr: Common attributes to merge with each node's attributes.
+
+        Returns:
+            A normalized list of node definitions as tuples (str, Dict[str, Any]),
+            or None if there is an error in the input format.
+        """
+        normalized_nodes: List[Tuple[str, Dict[str, Any]]] = []
+
+        for node in nodes_for_adding:
+            # Case: node is just a node ID (str or int)
+            if isinstance(node, (str, int)):
+                node_id = str(node)
+                attributes = {}
+            # Case: node is a tuple (node_id, attributes)
+            elif isinstance(node, tuple) and len(node) == 2:
+                node_id_raw, attributes = node
+                if not isinstance(attributes, dict):
+                    print(
+                        f"Error: Attributes for node {node_id_raw} should be a dictionary."
+                    )
+                    return None
+                node_id = str(node_id_raw)
+            else:
+                print(
+                    f"Error: Invalid node format: {node}. Expected str, int, or Tuple[str | int, dict]."
+                )
+                return None
+
+            # Combine node-specific attributes with common attributes
+            node_data = {**attributes, **common_attr}
+            normalized_nodes.append((node_id, node_data))
+
+        return normalized_nodes
+
+    @staticmethod
+    def _normalize_edges_for_adding(
+        ebunch_to_add: List[Tuple[str | int, str | int]]
+        | List[Tuple[str | int, str | int, Dict[str, Any]]],
+        **common_attr: Any,
+    ) -> Optional[List[Tuple[str, str, Dict[str, Any]]]]:
+        """
+        Normalize edges by converting node IDs to strings and merging attributes.
+
+        Args:
+            ebunch_to_add: List of edges to normalize.
+            **common_attr: Common attributes to merge with edge-specific attributes.
+
+        Returns:
+            A normalized list of edges as tuples (src_node_id, tgt_node_id, attributes).
+            Returns None if there is an error in the input format.
+        """
+        normalized_edges = []
+
+        for edge in ebunch_to_add:
+            if isinstance(edge, tuple) and len(edge) == 2:
+                src_node_id, tgt_node_id = edge
+                attributes = {}
+            elif isinstance(edge, tuple) and len(edge) == 3:
+                src_node_id, tgt_node_id, attributes = edge
+                if not isinstance(attributes, dict):
+                    logger.error(
+                        f"Attributes for edge {src_node_id} -> {tgt_node_id} should be a dictionary."
+                    )
+                    return None
+            else:
+                logger.error(
+                    f"Invalid edge format: {edge}. Expected Tuple[str|int, str|int] or "
+                    f"Tuple[str|int, str|int, Dict[str, Any]]."
+                )
+                return None
+
+            # Convert node IDs to strings and merge attributes
+            src_node_id = str(src_node_id)
+            tgt_node_id = str(tgt_node_id)
+            edge_data = {**attributes, **common_attr}
+
+            # Append the normalized edge
+            normalized_edges.append((src_node_id, tgt_node_id, edge_data))
+
+        return normalized_edges

@@ -22,41 +22,13 @@ class NodeManager(BaseManager):
 
     def add_nodes_from(
         self,
-        nodes_for_adding: List[str] | List[Tuple[str, Dict[str, Any]]],
+        normalized_nodes: List[Tuple[str, Dict[str, Any]]],
         node_type: str,
-        **attr,
     ) -> Optional[int]:
-        nodes_to_upsert = []
-
-        # Process each node
-        for node in nodes_for_adding:
-            if isinstance(node, str):
-                # If node is just a node ID, create an empty attribute dictionary
-                node_id = node
-                attributes = {}
-            elif isinstance(node, tuple) and len(node) == 2:
-                node_id, attributes = node
-                if not isinstance(attributes, dict):
-                    logger.error(
-                        f"Attributes for node {node_id} should be a dictionary."
-                    )
-                    return None
-            else:
-                logger.error(
-                    f"Invalid node format: {node}. Expected str or Tuple[str, Dict[str, Any]]."
-                )
-                return None
-
-            # Combine node-specific attributes with the common attributes
-            node_data = {**attributes, **attr}
-
-            # Append to vertices list
-            nodes_to_upsert.append((node_id, node_data))
-
         # Call upsertVertices with the list of nodes and attributes
         try:
             result = self._connection.upsertVertices(
-                vertexType=node_type, vertices=nodes_to_upsert
+                vertexType=node_type, vertices=normalized_nodes
             )
             return result
         except Exception as e:

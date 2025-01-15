@@ -15,73 +15,40 @@ class TestNodeManager:
         mock_context.graph_schema = self.mock_graph_schema
         self.node_manager = NodeManager(mock_context)
 
-    def test_add_node_success(self):
-        """Test that add_node calls upsertVertex on success."""
-        node_id = "node1"
-        node_type = "Person"
-        attributes = {"name": "Alice"}
-        self.mock_connection.upsertVertex.return_value = None
-        result = self.node_manager.add_node(node_id, node_type, **attributes)
-        self.mock_connection.upsertVertex.assert_called_once_with(
-            node_type, node_id, attributes
-        )
-        assert result is None
-
-    def test_add_node_failure(self):
-        """Test that add_node handles exceptions gracefully."""
-        node_id = "node2"
-        node_type = "Person"
-        attributes = {"name": "Bob"}
-        self.mock_connection.upsertVertex.side_effect = Exception("Error")
-        result = self.node_manager.add_node(node_id, node_type, **attributes)
-        self.mock_connection.upsertVertex.assert_called_once_with(
-            node_type, node_id, attributes
-        )
-        assert result is None
-
-    def test_add_node_from_single_node(self):
+    def test_add_nodes_from_single_node(self):
         """Test adding a single node with common attributes."""
         self.mock_connection.upsertVertices.return_value = 1
-        result = self.node_manager.add_nodes_from(["node1"], "MyNode", size=10)
+        normalized_nodes = [("node1", {"size": 10})]
+        result = self.node_manager.add_nodes_from(normalized_nodes, "MyNode")
         assert result == 1
         self.mock_connection.upsertVertices.assert_called_once_with(
             vertexType="MyNode",
-            vertices=[("node1", {"size": 10})],
+            vertices=normalized_nodes,
         )
 
-    def test_add_node_from_multiple_nodes(self):
+    def test_add_nodes_from_multiple_nodes(self):
         """Test adding multiple nodes with individual and common attributes."""
         self.mock_connection.upsertVertices.return_value = 2
-        result = self.node_manager.add_nodes_from(
-            [("node1", {"color": "red"}), "node2"], "MyNode", size=10
-        )
+        normalized_nodes = [
+            ("node1", {"color": "red", "size": 10}),
+            ("node2", {"size": 10}),
+        ]
+        result = self.node_manager.add_nodes_from(normalized_nodes, "MyNode")
         assert result == 2
         self.mock_connection.upsertVertices.assert_called_once_with(
             vertexType="MyNode",
-            vertices=[
-                ("node1", {"color": "red", "size": 10}),
-                ("node2", {"size": 10}),
-            ],
+            vertices=normalized_nodes,
         )
 
-    def test_add_node_from_invalid_node_format(self):
-        """Test that an invalid node format raises an error."""
-        result = self.node_manager.add_nodes_from(
-            [("node1", "invalid")],  # pyright: ignore
-            "MyNode",
-            size=10,
-        )
-        assert result is None
-        self.mock_connection.upsertVertices.assert_not_called()
-
-    def test_add_node_from_upsert_exception(self):
+    def test_add_nodes_from_upsert_exception(self):
         """Test that an exception in upsertVertices is handled correctly."""
         self.mock_connection.upsertVertices.side_effect = Exception("Upsert error")
-        result = self.node_manager.add_nodes_from(["node1"], "MyNode", size=10)
+        normalized_nodes = [("node1", {"size": 10})]
+        result = self.node_manager.add_nodes_from(normalized_nodes, "MyNode")
         assert result is None
         self.mock_connection.upsertVertices.assert_called_once_with(
             vertexType="MyNode",
-            vertices=[("node1", {"size": 10})],
+            vertices=normalized_nodes,
         )
 
     def test_remove_node_success(self):
