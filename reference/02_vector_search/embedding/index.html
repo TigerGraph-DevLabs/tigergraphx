@@ -9,25 +9,25 @@
       
       
       
-        <link rel="prev" href="../base_chat/">
+        <link rel="prev" href="../vector_db/">
       
       
-        <link rel="next" href="../../../04_config/base_config/">
+        <link rel="next" href="../search_engine/">
       
       
-      <link rel="icon" href="../../../../images/logo.png">
+      <link rel="icon" href="../../../images/logo.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
     
     
       
-        <title>OpenAIChat - TigerGraphX</title>
+        <title>Embedding - TigerGraphX</title>
       
     
     
-      <link rel="stylesheet" href="../../../../assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
       
         
-        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,9 +46,9 @@
       
     
     
-      <link rel="stylesheet" href="../../../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#openaichat" class="md-skip">
+        <a href="#embedding" class="md-skip">
           Skip to content
         </a>
       
@@ -88,9 +88,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../.." title="TigerGraphX" class="md-header__button md-logo" aria-label="TigerGraphX" data-md-component="logo">
+    <a href="../../.." title="TigerGraphX" class="md-header__button md-logo" aria-label="TigerGraphX" data-md-component="logo">
       
-  <img src="../../../../images/logo.png" alt="logo">
+  <img src="../../../images/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              OpenAIChat
+              Embedding
             
           </span>
         </div>
@@ -214,7 +214,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../.." class="md-tabs__link">
+        <a href="../../.." class="md-tabs__link">
           
   
   Home
@@ -232,7 +232,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../getting_started/installation/" class="md-tabs__link">
+        <a href="../../../getting_started/installation/" class="md-tabs__link">
           
   
   Getting Started
@@ -250,7 +250,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../../../graphrag/graphrag_overview/" class="md-tabs__link">
+        <a href="../../../graphrag/graphrag_overview/" class="md-tabs__link">
           
   
   GraphRAG
@@ -270,7 +270,7 @@
     
     
       <li class="md-tabs__item md-tabs__item--active">
-        <a href="../../../features_overview/" class="md-tabs__link">
+        <a href="../../features_overview/" class="md-tabs__link">
           
   
   API Reference
@@ -303,9 +303,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="TigerGraphX" class="md-nav__button md-logo" aria-label="TigerGraphX" data-md-component="logo">
+    <a href="../../.." title="TigerGraphX" class="md-nav__button md-logo" aria-label="TigerGraphX" data-md-component="logo">
       
-  <img src="../../../../images/logo.png" alt="logo">
+  <img src="../../../images/logo.png" alt="logo">
 
     </a>
     TigerGraphX
@@ -330,7 +330,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
         
           
           <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
@@ -358,7 +360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -379,7 +381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../introduction/" class="md-nav__link">
+      <a href="../../../introduction/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -400,7 +402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../graphrag/graphrag_overview/" class="md-nav__link">
+      <a href="../../../graphrag/graphrag_overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -438,7 +440,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -466,7 +470,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting_started/installation/" class="md-nav__link">
+      <a href="../../../getting_started/installation/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -497,7 +501,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
         
           
           <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
@@ -525,7 +531,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting_started/quick_start_graph/" class="md-nav__link">
+      <a href="../../../getting_started/quick_start_graph/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -546,7 +552,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting_started/quick_start_vector/" class="md-nav__link">
+      <a href="../../../getting_started/quick_start_vector/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -567,7 +573,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../getting_started/quick_start_both/" class="md-nav__link">
+      <a href="../../../getting_started/quick_start_both/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -613,7 +619,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -641,7 +649,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../graphrag/graphrag_overview/" class="md-nav__link">
+      <a href="../../../graphrag/graphrag_overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -662,7 +670,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../graphrag/lightrag/" class="md-nav__link">
+      <a href="../../../graphrag/lightrag/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -693,7 +701,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
         
           
           <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
@@ -721,7 +731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../graphrag/msft_graphrag_1/" class="md-nav__link">
+      <a href="../../../graphrag/msft_graphrag_1/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -742,7 +752,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../graphrag/msft_graphrag_2/" class="md-nav__link">
+      <a href="../../../graphrag/msft_graphrag_2/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -763,7 +773,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../graphrag/msft_graphrag_3/" class="md-nav__link">
+      <a href="../../../graphrag/msft_graphrag_3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -784,7 +794,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../../graphrag/msft_graphrag_4/" class="md-nav__link">
+      <a href="../../../graphrag/msft_graphrag_4/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -863,7 +873,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../features_overview/" class="md-nav__link">
+      <a href="../../features_overview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -894,7 +904,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
         
           
           <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
@@ -922,7 +934,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../01_core/graph/" class="md-nav__link">
+      <a href="../../01_core/graph/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -943,7 +955,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../01_core/nodeview/" class="md-nav__link">
+      <a href="../../01_core/nodeview/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -969,6 +981,8 @@
                 
   
   
+    
+  
   
   
     
@@ -978,11 +992,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
         
           
           <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
@@ -996,7 +1010,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_3">
             <span class="md-nav__icon md-icon"></span>
             Vector Search
@@ -1009,448 +1023,12 @@
   
   
   
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
+    <li class="md-nav__item">
+      <a href="../vector_db/" class="md-nav__link">
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3_1" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_3_1" id="__nav_4_3_1_label" tabindex="0">
-            
   
   <span class="md-ellipsis">
     Vector DB
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_3_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3_1">
-            <span class="md-nav__icon md-icon"></span>
-            Vector DB
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../02_vector_search/01_vector_db/base_vector_db/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    BaseVectorDB
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../02_vector_search/01_vector_db/tigervector_manager/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TigerVectorManager
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../02_vector_search/01_vector_db/nano_vectordb_manager/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    NanoVectorDBManager
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_3_2" id="__nav_4_3_2_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Embedding
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_3_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3_2">
-            <span class="md-nav__icon md-icon"></span>
-            Embedding
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../02_vector_search/02_embedding/base_embedding/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    BaseEmbedding
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../02_vector_search/02_embedding/openai_embedding/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    OpenAIEmbedding
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_4_3_3" id="__nav_4_3_3_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Search
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_3_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3_3">
-            <span class="md-nav__icon md-icon"></span>
-            Search
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../02_vector_search/03_search/base_search_engine/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    BaseSearchEngine
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../02_vector_search/03_search/tigervector_search_engine/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    TigerVectorSearchEngine
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../02_vector_search/03_search/nano_vectordb_search_engine/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    NanoVectorDBSearchEngine
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    LLM
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_4">
-            <span class="md-nav__icon md-icon"></span>
-            LLM
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../base_llm_manager/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    BaseLLMManager
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../openai_manager/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    OpenAIManager
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_3" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_4_4_3" id="__nav_4_4_3_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Chat
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_4_3">
-            <span class="md-nav__icon md-icon"></span>
-            Chat
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../base_chat/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    BaseChat
   </span>
   
 
@@ -1480,7 +1058,7 @@
           
   
   <span class="md-ellipsis">
-    OpenAIChat
+    Embedding
   </span>
   
 
@@ -1491,7 +1069,7 @@
         
   
   <span class="md-ellipsis">
-    OpenAIChat
+    Embedding
   </span>
   
 
@@ -1513,17 +1091,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#tigergraphx.llm.chat.OpenAIChat" class="md-nav__link">
+  <a href="#tigergraphx.vector_search.embedding.BaseEmbedding" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;OpenAIChat
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;BaseEmbedding
     </span>
   </a>
   
-    <nav class="md-nav" aria-label=" OpenAIChat">
+    <nav class="md-nav" aria-label=" BaseEmbedding">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tigergraphx.llm.chat.OpenAIChat.__init__" class="md-nav__link">
+  <a href="#tigergraphx.vector_search.embedding.BaseEmbedding.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;__init__
     </span>
@@ -1532,9 +1110,42 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tigergraphx.llm.chat.OpenAIChat.chat" class="md-nav__link">
+  <a href="#tigergraphx.vector_search.embedding.BaseEmbedding.generate_embedding" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;chat
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;generate_embedding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tigergraphx.vector_search.embedding.OpenAIEmbedding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;OpenAIEmbedding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" OpenAIEmbedding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.vector_search.embedding.OpenAIEmbedding.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;__init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.vector_search.embedding.OpenAIEmbedding.generate_embedding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;generate_embedding
     </span>
   </a>
   
@@ -1554,9 +1165,22 @@
 
               
             
-          </ul>
-        </nav>
-      
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../search_engine/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Search Engine
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1587,7 +1211,99 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    LLM
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            LLM
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03_llm/llm_manager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LMM Manager
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03_llm/chat/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
         
           
           <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
@@ -1615,7 +1331,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../04_config/base_config/" class="md-nav__link">
+      <a href="../../04_config/base_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1646,7 +1362,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5_2" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5_2" >
         
           
           <label class="md-nav__link" for="__nav_4_5_2" id="__nav_4_5_2_label" tabindex="0">
@@ -1674,7 +1392,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../04_config/01_graph_db/tigergraph_connection_config/" class="md-nav__link">
+      <a href="../../04_config/01_graph_db/tigergraph_connection_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1695,7 +1413,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../04_config/01_graph_db/schema_config/" class="md-nav__link">
+      <a href="../../04_config/01_graph_db/schema_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1716,7 +1434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../04_config/01_graph_db/loading_job_config/" class="md-nav__link">
+      <a href="../../04_config/01_graph_db/loading_job_config/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1755,7 +1473,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5_3" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5_3" >
         
           
           <label class="md-nav__link" for="__nav_4_5_3" id="__nav_4_5_3_label" tabindex="0">
@@ -1783,7 +1503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../04_config/02_query/node_spec/" class="md-nav__link">
+      <a href="../../04_config/02_query/node_spec/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1804,7 +1524,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../04_config/02_query/neighbor_spec/" class="md-nav__link">
+      <a href="../../04_config/02_query/neighbor_spec/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1843,7 +1563,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5_4" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5_4" >
         
           
           <label class="md-nav__link" for="__nav_4_5_4" id="__nav_4_5_4_label" tabindex="0">
@@ -1871,7 +1593,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../04_config/03_settings/vector_db_settings/" class="md-nav__link">
+      <a href="../../04_config/03_settings/vector_db_settings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1892,7 +1614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../04_config/03_settings/llm_settings/" class="md-nav__link">
+      <a href="../../04_config/03_settings/llm_settings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1913,7 +1635,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../04_config/03_settings/embedding_settings/" class="md-nav__link">
+      <a href="../../04_config/03_settings/embedding_settings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1934,7 +1656,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../04_config/03_settings/chat_settings/" class="md-nav__link">
+      <a href="../../04_config/03_settings/chat_settings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1955,7 +1677,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../04_config/03_settings/settings/" class="md-nav__link">
+      <a href="../../04_config/03_settings/settings/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2002,7 +1724,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
         
           
           <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
@@ -2030,7 +1754,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../05_graphrag/base_context_builder/" class="md-nav__link">
+      <a href="../../05_graphrag/base_context_builder/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2069,7 +1793,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
         
           
           <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
@@ -2097,7 +1823,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../06_pipelines/parquet_processor/" class="md-nav__link">
+      <a href="../../06_pipelines/parquet_processor/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2136,7 +1862,9 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_8" >
         
           
           <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
@@ -2164,7 +1892,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../07_utils/retry_mixin/" class="md-nav__link">
+      <a href="../../07_utils/retry_mixin/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -2220,17 +1948,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#tigergraphx.llm.chat.OpenAIChat" class="md-nav__link">
+  <a href="#tigergraphx.vector_search.embedding.BaseEmbedding" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;OpenAIChat
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;BaseEmbedding
     </span>
   </a>
   
-    <nav class="md-nav" aria-label=" OpenAIChat">
+    <nav class="md-nav" aria-label=" BaseEmbedding">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tigergraphx.llm.chat.OpenAIChat.__init__" class="md-nav__link">
+  <a href="#tigergraphx.vector_search.embedding.BaseEmbedding.__init__" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;__init__
     </span>
@@ -2239,9 +1967,42 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tigergraphx.llm.chat.OpenAIChat.chat" class="md-nav__link">
+  <a href="#tigergraphx.vector_search.embedding.BaseEmbedding.generate_embedding" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;chat
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;generate_embedding
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tigergraphx.vector_search.embedding.OpenAIEmbedding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;OpenAIEmbedding
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" OpenAIEmbedding">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.vector_search.embedding.OpenAIEmbedding.__init__" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;__init__
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.vector_search.embedding.OpenAIEmbedding.generate_embedding" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;generate_embedding
     </span>
   </a>
   
@@ -2267,26 +2028,26 @@
                   
 
 
-<h1 id="openaichat">OpenAIChat</h1>
+<h1 id="embedding">Embedding</h1>
 
 
 <div class="doc doc-object doc-class">
 
 
 
-<h2 id="tigergraphx.llm.chat.OpenAIChat" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>OpenAIChat</code>
+<h3 id="tigergraphx.vector_search.embedding.BaseEmbedding" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>BaseEmbedding</code>
 
 
-</h2>
+</h3>
 
 
     <div class="doc doc-contents first">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="tigergraphx.llm.chat.base_chat.BaseChat" href="../base_chat/#tigergraphx.llm.chat.BaseChat">BaseChat</a></code>, <code><a class="autorefs autorefs-internal" title="tigergraphx.utils.RetryMixin" href="../../../07_utils/retry_mixin/#tigergraphx.utils.RetryMixin">RetryMixin</a></code></p>
+              Bases: <code><span title="abc.ABC">ABC</span></code></p>
 
 
-        <p>Implementation of BaseChat for OpenAI models.</p>
+        <p>Base class for text embedding models.</p>
 
 
 
@@ -2309,33 +2070,25 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="tigergraphx.llm.chat.OpenAIChat.__init__" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">llm_manager</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span></code>
+<h4 id="tigergraphx.vector_search.embedding.BaseEmbedding.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span></code>
 
-</h3>
+</h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Initialize the OpenAIChat with the provided LLM manager and configuration.</p>
+        <p>Initialize the base embedding model.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-            <b><code>llm_manager</code></b>
-              (<code><a class="autorefs autorefs-internal" title="tigergraphx.llm.OpenAIManager" href="../../openai_manager/#tigergraphx.llm.OpenAIManager">OpenAIManager</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>Manager for OpenAI LLM interactions.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
             <b><code>config</code></b>
-              (<code><a class="autorefs autorefs-internal" title="tigergraphx.config.OpenAIChatConfig" href="../../../04_config/03_settings/chat_settings/#tigergraphx.config.settings.chat_settings.OpenAIChatConfig">OpenAIChatConfig</a> | <span title="typing.Dict">Dict</span> | str | <span title="pathlib.Path">Path</span></code>)
+              (<code><a class="autorefs autorefs-internal" title="tigergraphx.config.BaseEmbeddingConfig" href="../../04_config/03_settings/embedding_settings/#tigergraphx.config.settings.embedding_settings.BaseEmbeddingConfig">BaseEmbeddingConfig</a></code>)
           –
           <div class="doc-md-description">
-            <p>Configuration for OpenAI chat.</p>
+            <p>Configuration for the embedding model.</p>
           </div>
         </li>
     </ul>
@@ -2347,29 +2100,30 @@
 <div class="doc doc-object doc-function">
 
 
-<h3 id="tigergraphx.llm.chat.OpenAIChat.chat" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">chat</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span></code>
+<h4 id="tigergraphx.vector_search.embedding.BaseEmbedding.generate_embedding" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">generate_embedding</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
       <small class="doc doc-label doc-label-async"><code>async</code></small>
   </span>
 
-</h3>
+</h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Asynchronously process the messages and return the generated response.</p>
+        <p>Asynchronously generate an embedding for the given text.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-            <b><code>messages</code></b>
-              (<code><span title="typing.List">List</span>[<span title="openai.types.chat.ChatCompletionMessageParam">ChatCompletionMessageParam</span>]</code>)
+            <b><code>text</code></b>
+              (<code>str</code>)
           –
           <div class="doc-md-description">
-            <p>List of messages for chat completion.</p>
+            <p>Input text to generate an embedding.</p>
           </div>
         </li>
     </ul>
@@ -2378,29 +2132,138 @@
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-<b><code>str</code></b> (              <code>str</code>
-)          –
+              <code><span title="typing.List">List</span>[float]</code>
+          –
           <div class="doc-md-description">
-            <p>The generated response.</p>
+            <p>A list of floats representing the text embedding.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="tigergraphx.vector_search.embedding.OpenAIEmbedding" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <code>OpenAIEmbedding</code>
+
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="tigergraphx.vector_search.embedding.base_embedding.BaseEmbedding" href="#tigergraphx.vector_search.embedding.BaseEmbedding">BaseEmbedding</a></code>, <code><a class="autorefs autorefs-internal" title="tigergraphx.utils.RetryMixin" href="../../07_utils/retry_mixin/#tigergraphx.utils.RetryMixin">RetryMixin</a></code></p>
+
+
+        <p>OpenAI Embedding model wrapper with async embedding generation and robust retries.</p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="tigergraphx.vector_search.embedding.OpenAIEmbedding.__init__" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">llm_manager</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span></code>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Initialize the OpenAI Embedding wrapper.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>llm_manager</code></b>
+              (<code><a class="autorefs autorefs-internal" title="tigergraphx.llm.OpenAIManager" href="../../03_llm/llm_manager/#tigergraphx.llm.OpenAIManager">OpenAIManager</a></code>)
+          –
+          <div class="doc-md-description">
+            <p>Manager for OpenAI LLM interactions.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>config</code></b>
+              (<code><a class="autorefs autorefs-internal" title="tigergraphx.config.OpenAIEmbeddingConfig" href="../../04_config/03_settings/embedding_settings/#tigergraphx.config.settings.embedding_settings.OpenAIEmbeddingConfig">OpenAIEmbeddingConfig</a> | <span title="typing.Dict">Dict</span> | str | <span title="pathlib.Path">Path</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Configuration for the embedding model.</p>
+          </div>
+        </li>
+    </ul>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="tigergraphx.vector_search.embedding.OpenAIEmbedding.generate_embedding" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">generate_embedding</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Generate embedding asynchronously with retry for robustness.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>text</code></b>
+              (<code>str</code>)
+          –
+          <div class="doc-md-description">
+            <p>The input text to generate embeddings for.</p>
           </div>
         </li>
     </ul>
 
 
-<p><span class="doc-section-title">Raises:</span></p>
+<p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><span title="tenacity.RetryError">RetryError</span></code>
-            –
+              <code><span title="typing.List">List</span>[float]</code>
+          –
           <div class="doc-md-description">
-            <p>If retry attempts are exhausted.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-              <code>Exception</code>
-            –
-          <div class="doc-md-description">
-            <p>For any unexpected errors during processing.</p>
+            <p>The normalized embedding vector.</p>
           </div>
         </li>
     </ul>
@@ -2445,7 +2308,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../base_chat/" class="md-footer__link md-footer__link--prev" aria-label="Previous: BaseChat">
+          <a href="../vector_db/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Vector DB">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2455,20 +2318,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                BaseChat
+                Vector DB
               </div>
             </div>
           </a>
         
         
           
-          <a href="../../../04_config/base_config/" class="md-footer__link md-footer__link--next" aria-label="Next: BaseConfig">
+          <a href="../search_engine/" class="md-footer__link md-footer__link--next" aria-label="Next: Search Engine">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                BaseConfig
+                Search Engine
               </div>
             </div>
             <div class="md-footer__button md-icon">
@@ -2502,10 +2365,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.tabs", "navigation.footer", "content.code.copy", "content.code.select"], "search": "../../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.expand", "navigation.footer", "content.code.copy", "content.code.select"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
       
     
   </body>
