@@ -29,18 +29,69 @@ class SchemaManager(BaseManager):
             self.drop_graph()
 
         if not is_graph_existing or drop_existing_graph:
+            # Create schema
+            gsql_graph_schema = self._create_gsql_graph_schema(self._graph_schema)
+            logger.debug(f"Generated GSQL graph schema: {gsql_graph_schema}")
             logger.info(f"Creating schema for graph: {graph_name}...")
-            gsql_script = self._create_gsql_graph_schema(
-                self._graph_schema
-            ) + self._create_gsql_add_vector_attr(self._graph_schema)
-            result = self._connection.gsql(gsql_script)
-            if "Failed to create schema change jobs" in result:
+            result = self._connection.gsql(gsql_graph_schema)
+            logger.debug(f"GSQL response: {result}")
+            if f"The graph {graph_name} is created" not in result:
+                error_msg = f"Graph creation failed. GSQL response: {result}"
+                logger.error(error_msg)
+                raise RuntimeError(error_msg)
+            if "Successfully created schema change jobs" not in result:
                 error_msg = (
                     f"Schema change job creation failed. GSQL response: {result}"
                 )
                 logger.error(error_msg)
                 raise RuntimeError(error_msg)
+            if "Local schema change succeeded" not in result:
+                error_msg = f"Schema change failed. GSQL response: {result}"
+                logger.error(error_msg)
+                raise RuntimeError(error_msg)
+            if "Successfully dropped jobs" not in result:
+                error_msg = f"Schema change job cleanup failed. GSQL response: {result}"
+                logger.error(error_msg)
+                raise RuntimeError(error_msg)
             logger.info("Graph schema created successfully.")
+
+            # Add vector attributes
+            gsql_add_vector_attr = self._create_gsql_add_vector_attr(self._graph_schema)
+            if gsql_add_vector_attr:
+                logger.debug(
+                    f"Generated GSQL for vector attributes: {gsql_add_vector_attr}"
+                )
+                logger.info(f"Adding vector attribute(s) for graph: {graph_name}...")
+                result = self._connection.gsql(gsql_add_vector_attr)
+                logger.debug(f"GSQL response: {result}")
+                if f"Using graph '{graph_name}'" not in result:
+                    error_msg = (
+                        f"Failed to use graph '{graph_name}'. GSQL response: {result}"
+                    )
+                    logger.error(error_msg)
+                    raise RuntimeError(error_msg)
+                if "Successfully created schema change jobs" not in result:
+                    error_msg = (
+                        f"Schema change job creation failed. GSQL response: {result}"
+                    )
+                    logger.error(error_msg)
+                    raise RuntimeError(error_msg)
+                if "Local schema change succeeded" not in result:
+                    error_msg = f"Schema change failed. GSQL response: {result}"
+                    logger.error(error_msg)
+                    raise RuntimeError(error_msg)
+                if "Successfully dropped jobs" not in result:
+                    error_msg = (
+                        f"Schema change job cleanup failed. GSQL response: {result}"
+                    )
+                    logger.error(error_msg)
+                    raise RuntimeError(error_msg)
+                if "Query installation finished" not in result:
+                    error_msg = f"Query installation failed. GSQL response: {result}"
+                    logger.error(error_msg)
+                    raise RuntimeError(error_msg)
+                logger.info("Vector attribute(s) added successfully.")
+
             return True
 
         logger.info(f"Graph '{graph_name}' already exists. Skipping graph creation.")
@@ -50,7 +101,12 @@ class SchemaManager(BaseManager):
         graph_name = self._graph_schema.graph_name
         logger.info(f"Dropping graph: {graph_name}...")
         gsql_script = self._create_gsql_drop_graph(graph_name)
-        self._connection.gsql(gsql_script)
+        result = self._connection.gsql(gsql_script)
+        logger.debug(result)
+        if f"The graph {graph_name} is dropped" not in result:
+            error_msg = f"Failed to drop the graph. GSQL response: {result}"
+            logger.error(error_msg)
+            raise RuntimeError(error_msg)
         logger.info("Graph dropped successfully.")
 
     @staticmethod
@@ -331,16 +387,16 @@ CREATE OR REPLACE QUERY api_fetch(
 USE GRAPH {graph_schema.graph_name}
 
 # 2. Create schema_change job
-CREATE SCHEMA_CHANGE JOB change_schema_of_{graph_schema.graph_name} FOR GRAPH {graph_schema.graph_name} {{
+CREATE SCHEMA_CHANGE JOB add_vector_attr_for_graph_{graph_schema.graph_name} FOR GRAPH {graph_schema.graph_name} {{
   # 2.1 Add vector attributes
   {vector_attribute_statements_str}
 }}
 
 # 3. Run schema_change job
-RUN SCHEMA_CHANGE JOB change_schema_of_{graph_schema.graph_name}
+RUN SCHEMA_CHANGE JOB add_vector_attr_for_graph_{graph_schema.graph_name}
 
 # 4. Drop schema_change job
-DROP JOB change_schema_of_{graph_schema.graph_name}
+DROP JOB add_vector_attr_for_graph_{graph_schema.graph_name}
 """
             if len(query_statements) > 0:
                 gsql_script = f"""

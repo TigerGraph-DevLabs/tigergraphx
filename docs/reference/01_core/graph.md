@@ -2,6 +2,10 @@
 
 ## Graph Class Overview
 
+::: tigergraphx.core.graph.Graph
+    options:
+        members: false
+
 ::: tigergraphx.core.graph.Graph.__init__
 ::: tigergraphx.core.graph.Graph.from_db
 ::: tigergraphx.core.graph.Graph.nodes
