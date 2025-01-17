@@ -32,6 +32,7 @@ class QueryManager(BaseManager):
         self,
         node_type: str,
         all_node_types: bool = False,
+        node_alias: str = "s",
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
@@ -43,6 +44,7 @@ class QueryManager(BaseManager):
         spec = NodeSpec(
             node_type=node_type,
             all_node_types=all_node_types,
+            node_alias=node_alias,
             filter_expression=filter_expression,
             return_attributes=return_attributes,
             limit=limit,
@@ -100,8 +102,11 @@ class QueryManager(BaseManager):
         self,
         start_nodes: str | List[str],
         start_node_type: str,
+        start_node_alias: str = "s",
         edge_types: Optional[str | List[str]] = None,
+        edge_alias: str = "e",
         target_node_types: Optional[str | List[str]] = None,
+        target_node_alias: str = "t",
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
@@ -113,8 +118,11 @@ class QueryManager(BaseManager):
         spec = NeighborSpec(
             start_nodes=start_nodes,
             start_node_type=start_node_type,
+            start_node_alias=start_node_alias,
             edge_types=edge_types,
+            edge_alias=edge_alias,
             target_node_types=target_node_types,
+            target_node_alias=target_node_alias,
             filter_expression=filter_expression,
             return_attributes=return_attributes,
             limit=limit,
@@ -187,9 +195,9 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
 """
         # Add SELECT block only if filter or limit is specified
         if filter_expression_str or limit_clause:
-            query += """  Nodes =
-    SELECT s
-    FROM Nodes:s
+            query += f"""  Nodes =
+    SELECT {spec.node_alias}
+    FROM Nodes:{spec.node_alias}
 """
             if filter_expression_str:
                 query += f"    {filter_expression_str}\n"
@@ -250,16 +258,16 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
         # Prepare components
         start_node_type = spec.start_node_type
         edge_types_str = (
-            f"(({ '|'.join(edge_types or []) }):e)"
+            f"(({'|'.join(edge_types or [])}):{spec.edge_alias})"
             if edge_types and len(edge_types) > 1
-            else f"({ '|'.join(edge_types or []) }:e)"
+            else f"({'|'.join(edge_types or [])}:{spec.edge_alias})"
             if edge_types
-            else "(:e)"
+            else f"(:{spec.edge_alias})"
         )
         target_node_types_str = (
-            f"(({ '|'.join(target_node_types or []) }))"
+            f"(({'|'.join(target_node_types or [])}))"
             if target_node_types and len(target_node_types) > 1
-            else f"{ '|'.join(target_node_types or []) }"
+            else f"{'|'.join(target_node_types or [])}"
         )
 
         where_clause = (
@@ -268,14 +276,16 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
         limit_clause = f"    LIMIT {spec.limit}" if spec.limit else ""
 
         # Generate the query
+        s_alias = spec.start_node_alias
+        t_alias = spec.target_node_alias
         query = f"""
 INTERPRET QUERY(
   SET<VERTEX<{start_node_type}>> start_nodes
 ) FOR GRAPH {graph_name} {{
   Nodes = {{start_nodes}};
   Neighbors =
-    SELECT t
-    FROM Nodes:s -{edge_types_str}- {target_node_types_str}:t
+    SELECT {t_alias}
+    FROM Nodes:{s_alias} -{edge_types_str}- {target_node_types_str}:{t_alias}
 """
         if where_clause:
             query += f"{where_clause}\n"

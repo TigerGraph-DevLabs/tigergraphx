@@ -461,6 +461,7 @@ class Graph:
         self,
         node_type: str = "",
         all_node_types: bool = False,
+        node_alias: str = "s",
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
@@ -471,6 +472,7 @@ class Graph:
         Args:
             node_type: Node type to retrieve.
             all_node_types: If True, ignore filtering by node type.
+            node_alias: Alias for the node. Used in filter_expression.
             filter_expression: Filter expression.
             return_attributes: Attributes to return.
             limit: Maximum number of nodes to return.
@@ -481,7 +483,12 @@ class Graph:
         if not all_node_types:
             node_type = self._validate_node_type(node_type)
         return self._query_manager.get_nodes(
-            node_type, all_node_types, filter_expression, return_attributes, limit
+            node_type=node_type,
+            all_node_types=all_node_types,
+            node_alias=node_alias,
+            filter_expression=filter_expression,
+            return_attributes=return_attributes,
+            limit=limit,
         )
 
     def get_nodes_from_spec(self, spec: NodeSpec) -> pd.DataFrame | None:
@@ -500,8 +507,11 @@ class Graph:
         self,
         start_nodes: str | int | List[str | int],
         start_node_type: str = "",
+        start_node_alias: str = "s",
         edge_types: Optional[str | List[str]] = None,
+        edge_alias: str = "e",
         target_node_types: Optional[str | List[str]] = None,
+        target_node_alias: str = "t",
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
@@ -512,8 +522,11 @@ class Graph:
         Args:
             start_nodes: Starting node or nodes.
             start_node_type: Type of starting nodes.
+            start_node_alias: Alias for the starting node. Used in filter_expression.
             edge_types: Edge types to consider.
+            edge_alias: Alias for the edge. Used in filter_expression.
             target_node_types: Types of target nodes.
+            target_node_alias: Alias for the target node. Used in filter_expression.
             filter_expression: Filter expression.
             return_attributes: Attributes to return.
             limit: Maximum number of neighbors.
@@ -529,8 +542,11 @@ class Graph:
         return self._query_manager.get_neighbors(
             start_nodes=new_start_nodes,
             start_node_type=start_node_type,
+            start_node_alias=start_node_alias,
             edge_types=edge_types,
+            edge_alias=edge_alias,
             target_node_types=target_node_types,
+            target_node_alias=target_node_alias,
             filter_expression=filter_expression,
             return_attributes=return_attributes,
             limit=limit,
