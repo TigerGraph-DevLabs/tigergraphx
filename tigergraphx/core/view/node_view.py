@@ -41,8 +41,13 @@ class NodeView:
 
     def __iter__(self):
         """Iterate over all nodes.
-        For homogeneous: return node_id.
-        For heterogeneous: return (node_type, node_id).
+
+        WARNING: Iterating over all nodes will retrieve all data from the database. 
+        This method is intended for small datasets only. For large datasets, using this 
+        method may lead to significant performance issues or excessive memory usage.
+
+        - For homogeneous nodes: each iteration returns a node_id.
+        - For heterogeneous nodes: each iteration returns a tuple (node_type, node_id).
         """
         # Get all nodes
         nodes = self.graph.get_nodes(all_node_types=True)
