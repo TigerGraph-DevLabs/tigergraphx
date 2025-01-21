@@ -124,24 +124,34 @@ class SchemaManager(BaseManager):
         )
         # Retrieve the schema from TigerGraph DB
         raw_schema = context.connection.getSchema()
+        logger.debug(f"The raw schema: {raw_schema}")
         # Construct nodes dictionary
         nodes = {}
         for vertex in raw_schema["VertexTypes"]:
-            # Collect attributes
-            attributes = {
-                attr["AttributeName"]: {
-                    "data_type": attr["AttributeType"]["Name"],
-                    "default_value": attr.get("DefaultValue"),
-                }
-                for attr in vertex["Attributes"]
-            }
-            # Include primary key as an attribute if PrimaryIdAsAttribute is True
+            # Collect attributes, starting with primary key if PrimaryIdAsAttribute is True
             primary_id = vertex["PrimaryId"]
-            if primary_id["PrimaryIdAsAttribute"]:
-                attributes[primary_id["AttributeName"]] = {
+            # Raise an error if PrimaryIdAsAttribute is not True
+            if not primary_id["PrimaryIdAsAttribute"]:
+                raise ValueError(
+                    f"PrimaryIdAsAttribute must be set to True for node type {vertex['Name']}."
+                )
+            # Collect attributes, starting with primary key
+            attributes = {
+                primary_id["AttributeName"]: {
                     "data_type": primary_id["AttributeType"]["Name"],
                     "default_value": None,  # Primary keys typically do not have default values
                 }
+            }
+            # Add remaining attributes
+            attributes.update(
+                {
+                    attr["AttributeName"]: {
+                        "data_type": attr["AttributeType"]["Name"],
+                        "default_value": attr.get("DefaultValue"),
+                    }
+                    for attr in vertex["Attributes"]
+                }
+            )
             nodes[vertex["Name"]] = {
                 "primary_key": primary_id["AttributeName"],
                 "attributes": attributes,
@@ -168,6 +178,7 @@ class SchemaManager(BaseManager):
             "nodes": nodes,
             "edges": edges,
         }
+        logger.debug(f"The generated schema: {graph_schema}")
         return graph_schema
 
     def _check_graph_exists(self) -> bool:
