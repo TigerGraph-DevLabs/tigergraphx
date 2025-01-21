@@ -21,17 +21,38 @@ class DataManager(BaseManager):
     def load_data(self, loading_job_config: LoadingJobConfig | Dict | str | Path):
         loading_job_config = LoadingJobConfig.ensure_config(loading_job_config)
         logger.info(
-            "Starting data loading for job: %s", loading_job_config.loading_job_name
+            f"Initiating data load for job: {loading_job_config.loading_job_name}...",
         )
         gsql_script = self._create_gsql_load_data(
             loading_job_config, self._graph_schema
         )
 
         result = self._connection.gsql(gsql_script)
+        graph_name = self._graph_schema.graph_name
         if "LOAD SUCCESSFUL for loading jobid" not in result:
-            error_msg = f"Data loading failed. GSQL response: {result}"
+            error_msg = f"Data load process failed. GSQL response: {result}"
             logger.error(error_msg)
             raise RuntimeError(error_msg)
+
+        if f"Using graph '{graph_name}'" not in result:
+            error_msg = (
+                f"Failed to set graph context for '{graph_name}'. GSQL response: {result}"
+            )
+            logger.error(error_msg)
+            raise RuntimeError(error_msg)
+        if "Successfully created loading jobs:" not in result:
+            error_msg = (
+                f"Loading job creation failed. GSQL response: {result}"
+            )
+            logger.error(error_msg)
+            raise RuntimeError(error_msg)
+        if "Successfully dropped jobs" not in result:
+            error_msg = (
+                f"Loading job cleanup failed. GSQL response: {result}"
+            )
+            logger.error(error_msg)
+            raise RuntimeError(error_msg)
+        logger.info("Data load completed successfully.")
 
     def _create_gsql_load_data(
         self,
@@ -43,9 +64,11 @@ class DataManager(BaseManager):
         define_files = []
         for file in files:
             if file.file_path:
-                define_files.append(f'DEFINE FILENAME {file.file_alias} = "{file.file_path}";')
+                define_files.append(
+                    f'DEFINE FILENAME {file.file_alias} = "{file.file_path}";'
+                )
             else:
-                define_files.append(f'DEFINE FILENAME {file.file_alias};')
+                define_files.append(f"DEFINE FILENAME {file.file_alias};")
 
         # Build LOAD statements for each file
         load_statements = []

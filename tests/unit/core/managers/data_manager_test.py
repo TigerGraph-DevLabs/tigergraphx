@@ -20,9 +20,13 @@ class TestDataManager:
 
     def test_load_data_success(self):
         loading_job_config = LoadingJobConfig(loading_job_name="test_job", files=[])
-        # Mock the gsql return value
-        self.mock_connection.gsql.return_value = "LOAD SUCCESSFUL for loading jobid"
-
+        # Mock the gsql return value to simulate a successful load process
+        self.mock_connection.gsql.return_value = (
+            "Using graph 'MyGraph'...\n"
+            "Successfully created loading jobs:\n"
+            "LOAD SUCCESSFUL for loading jobid\n"
+            "Successfully dropped jobs"
+        )
         self.data_manager.load_data(loading_job_config)
 
         # Assert the gsql method was called once
