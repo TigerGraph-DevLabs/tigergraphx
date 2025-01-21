@@ -36,7 +36,7 @@ class QueryManager(BaseManager):
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
-    ) -> pd.DataFrame | None:
+    ) -> pd.DataFrame:
         """
         High-level function to retrieve nodes with multiple parameters.
         Converts parameters into a NodeSpec and delegates to `_get_nodes_from_spec`.
@@ -51,7 +51,7 @@ class QueryManager(BaseManager):
         )
         return self.get_nodes_from_spec(spec)
 
-    def get_nodes_from_spec(self, spec: NodeSpec) -> pd.DataFrame | None:
+    def get_nodes_from_spec(self, spec: NodeSpec) -> pd.DataFrame:
         """
         Core function to retrieve nodes based on a NodeSpec object.
         """
@@ -59,13 +59,13 @@ class QueryManager(BaseManager):
         try:
             result = self._connection.runInterpretedQuery(gsql_script)
             if not result or not isinstance(result, list):
-                return None
+                return pd.DataFrame()
             nodes = result[0].get("Nodes")
             if not nodes or not isinstance(nodes, list):
-                return None
+                return pd.DataFrame()
             df = pd.DataFrame(pd.json_normalize(nodes))
             if df.empty:
-                return None
+                return pd.DataFrame()
             attribute_columns = [
                 col for col in df.columns if col.startswith("attributes.")
             ]
@@ -96,7 +96,7 @@ class QueryManager(BaseManager):
             return pd.DataFrame(df[reordered_columns + remaining_columns])
         except Exception as e:
             logger.error(f"Error retrieving nodes for type {spec.node_type}: {e}")
-        return None
+        return pd.DataFrame()
 
     def get_neighbors(
         self,
@@ -110,7 +110,7 @@ class QueryManager(BaseManager):
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
-    ) -> pd.DataFrame | None:
+    ) -> pd.DataFrame:
         """
         High-level function to retrieve neighbors with multiple parameters.
         Converts parameters into a NeighborSpec and delegates to `_get_neighbors_from_spec`.
@@ -129,7 +129,7 @@ class QueryManager(BaseManager):
         )
         return self.get_neighbors_from_spec(spec)
 
-    def get_neighbors_from_spec(self, spec: NeighborSpec) -> pd.DataFrame | None:
+    def get_neighbors_from_spec(self, spec: NeighborSpec) -> pd.DataFrame:
         """
         Core function to retrieve neighbors based on a NeighborSpec object.
         """
@@ -139,13 +139,13 @@ class QueryManager(BaseManager):
         try:
             result = self._connection.runInterpretedQuery(gsql_script, params)
             if not result or not isinstance(result, list):
-                return None
+                return pd.DataFrame()
             neighbors = result[0].get("Neighbors")
             if not neighbors or not isinstance(neighbors, list):
-                return None
+                return pd.DataFrame()
             df = pd.DataFrame(pd.json_normalize(neighbors))
             if df.empty:
-                return None
+                return pd.DataFrame()
             attribute_columns = [
                 col for col in df.columns if col.startswith("attributes.")
             ]
@@ -174,7 +174,7 @@ class QueryManager(BaseManager):
             logger.error(
                 f"Error retrieving neighbors for node(s) {spec.start_nodes}: {e}"
             )
-        return None
+        return pd.DataFrame()
 
     @staticmethod
     def _create_gsql_get_nodes(graph_name: str, spec: NodeSpec) -> str:

@@ -106,7 +106,7 @@ class TestQueryManager:
         )
         self.mock_connection.runInterpretedQuery.side_effect = Exception("Error")
         df = self.query_manager.get_nodes_from_spec(spec)
-        assert df is None
+        assert df.empty, "Expected df to be an empty DataFrame"
 
     def test_get_neighbors_success(self):
         # Test the simpler get_neighbors() path, where only start_nodes and start_node_type are provided.
@@ -212,7 +212,7 @@ class TestQueryManager:
         self.mock_connection.runInterpretedQuery.side_effect = Exception("Error")
         # The method should catch the exception and return None (or handle it gracefully).
         df = self.query_manager.get_neighbors_from_spec(spec)
-        assert df is None
+        assert df.empty, "Expected df to be an empty DataFrame"
 
     # --- GSQL Query Creation Tests for get_nodes ---
     def create_gsql_get_nodes(
