@@ -20,7 +20,7 @@ nav:
           - "Part 3 - Graph Analysis": graphrag/msft_graphrag_3.ipynb
           - "Part 4 - Hybrid Retrieval and Integration with LLM": graphrag/msft_graphrag_4.ipynb
   - API Reference:
-      - Features Overview: reference/features_overview.md
+      - Introduction: reference/introduction.md
       - Core:
           - Graph: reference/01_core/graph.md
           - NodeView: reference/01_core/nodeview.md
@@ -57,6 +57,7 @@ theme:
   name: material
   features:
     - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.expand
     - navigation.footer
     - content.code.copy
@@ -86,8 +87,8 @@ theme:
         name: Switch to system preference
 
 plugins:
-  - mkdocs-jupyter:
-      ignore_h1_titles: True
+#   - mkdocs-jupyter:
+#       ignore_h1_titles: True
   - search
   - mkdocstrings:
       handlers:

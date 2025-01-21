@@ -127,23 +127,23 @@ class TestGraph1(TestBaseGraph):
     # ------------------------------ NodeView Property ------------------------------
     def test_nodes_property(self):
         # Access the nodes property
-        nodes_view = self.G.nodes
+        node_view = self.G.nodes
         # Verify that it returns a NodeView instance
-        assert isinstance(nodes_view, NodeView), "Expected a NodeView instance."
+        assert isinstance(node_view, NodeView), "Expected a NodeView instance."
         # Check __getitem__ method
-        user_c_data = nodes_view[("User", "User_C")]
+        user_c_data = node_view[("User", "User_C")]
         assert (
             user_c_data["name"] == "C"
         ), f"Expected name 'C', got {user_c_data['name']}"
         assert user_c_data["age"] == 30, f"Expected age 30, got {user_c_data['age']}"
         # Check __contains__ method
-        assert ("User", "User_A") in nodes_view, "Expected 'User_A' to be in nodes_view"
+        assert ("User", "User_A") in node_view, "Expected 'User_A' to be in nodes_view"
         assert (
             "User",
             "User_D",
-        ) not in nodes_view, "Expected 'User_D' to not be in nodes_view"
+        ) not in node_view, "Expected 'User_D' to not be in nodes_view"
         # Check __iter__ method
-        node_ids = {node for node in nodes_view}
+        node_ids = {node for node in node_view}
         expected_ids = {
             ("User", "User_A"),
             ("User", "User_B"),
@@ -156,7 +156,7 @@ class TestGraph1(TestBaseGraph):
             node_ids == expected_ids
         ), f"Expected node ids {expected_ids}, got {node_ids}"
         # Check __len__ method (already tested)
-        assert len(nodes_view) == 6, f"Expected 6 nodes, got {len(nodes_view)}"
+        assert len(node_view) == 6, f"Expected 6 nodes, got {len(node_view)}"
 
     # ------------------------------ Node Operations ------------------------------
     def test_add_node_without_type(self):
@@ -164,7 +164,7 @@ class TestGraph1(TestBaseGraph):
             ValueError,
             match="Multiple node types detected. Please specify a node type.",
         ):
-            self.G.add_node("D", "")
+            self.G.add_node("D")
 
     def test_has_nodes(self):
         # Test node existence
@@ -181,7 +181,7 @@ class TestGraph1(TestBaseGraph):
             ValueError,
             match="Multiple node types detected. Please specify a node type.",
         ):
-            self.G.has_node("D", "")
+            self.G.has_node("D")
 
     def test_get_node_data(self):
         # Test fetching node data
@@ -206,21 +206,21 @@ class TestGraph1(TestBaseGraph):
             ValueError,
             match="Multiple node types detected. Please specify a node type.",
         ):
-            self.G.add_edge("User_A", "Product_2", "User", "purchased", "")
+            self.G.add_edge("User_A", "Product_2", "User", "purchased")
 
     def test_add_edge_without_source_node_type(self):
         with pytest.raises(
             ValueError,
             match="Multiple node types detected. Please specify a node type.",
         ):
-            self.G.add_edge("User_A", "Product_2", "", "purchased", "Product")
+            self.G.add_edge("User_A", "Product_2", None, "purchased", "Product")
 
     def test_add_edge_without_edge_type(self):
         with pytest.raises(
             ValueError,
             match="Multiple edge types detected. Please specify an edge type.",
         ):
-            self.G.add_edge("User_A", "Product_2", "User", "", "Product")
+            self.G.add_edge("User_A", "Product_2", "User", None, "Product")
 
     def test_has_edges(self):
         # Test edge existence

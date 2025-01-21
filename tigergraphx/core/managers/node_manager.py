@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from .base_manager import BaseManager
 
@@ -70,11 +70,9 @@ class NodeManager(BaseManager):
         self,
         node_id: str,
         node_type: str,
-        edge_types: List | str,
+        edge_types: Optional[Set[str]] = None,
     ) -> List:
-        gsql_script = self._create_gsql_get_node_edges(
-            node_type, edge_types, self._graph_schema.graph_name
-        )
+        gsql_script = self._create_gsql_get_node_edges(node_type, edge_types)
         try:
             params = {
                 "input": node_id,
@@ -96,13 +94,13 @@ class NodeManager(BaseManager):
             logger.error(f"Error clearing graph: {e}")
             return False
 
-    @staticmethod
     def _create_gsql_get_node_edges(
-        node_type: str, edge_types: List | str, graph_name: str
+        self, node_type: str, edge_types: Optional[Set[str]] = None
     ) -> str:
         """
         Core function to generate a GSQL query to get the edges of a node
         """
+        graph_name = self._graph_schema.graph_name
         if not edge_types:
             from_clause = "FROM Nodes:s -(:e)- :t"
         else:

@@ -1,5 +1,5 @@
 import logging
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional, Set, Tuple
 import pandas as pd
 
 from tigergraphx.config import (
@@ -30,7 +30,7 @@ class QueryManager(BaseManager):
 
     def get_nodes(
         self,
-        node_type: str,
+        node_type: Optional[str] = None,
         all_node_types: bool = False,
         node_alias: str = "s",
         filter_expression: Optional[str] = None,
@@ -55,7 +55,7 @@ class QueryManager(BaseManager):
         """
         Core function to retrieve nodes based on a NodeSpec object.
         """
-        gsql_script = self._create_gsql_get_nodes(self._graph_schema.graph_name, spec)
+        gsql_script = self._create_gsql_get_nodes(spec)
         try:
             result = self._connection.runInterpretedQuery(gsql_script)
             if not result or not isinstance(result, list):
@@ -103,9 +103,9 @@ class QueryManager(BaseManager):
         start_nodes: str | List[str],
         start_node_type: str,
         start_node_alias: str = "s",
-        edge_types: Optional[str | List[str]] = None,
+        edge_type_set: Optional[Set[str]] = None,
         edge_alias: str = "e",
-        target_node_types: Optional[str | List[str]] = None,
+        target_node_type_set: Optional[Set[str]] = None,
         target_node_alias: str = "t",
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
@@ -119,9 +119,9 @@ class QueryManager(BaseManager):
             start_nodes=start_nodes,
             start_node_type=start_node_type,
             start_node_alias=start_node_alias,
-            edge_types=edge_types,
+            edge_type_set=edge_type_set,
             edge_alias=edge_alias,
-            target_node_types=target_node_types,
+            target_node_type_set=target_node_type_set,
             target_node_alias=target_node_alias,
             filter_expression=filter_expression,
             return_attributes=return_attributes,
@@ -133,9 +133,7 @@ class QueryManager(BaseManager):
         """
         Core function to retrieve neighbors based on a NeighborSpec object.
         """
-        gsql_script, params = self._create_gsql_get_neighbors(
-            self._graph_schema.graph_name, spec
-        )
+        gsql_script, params = self._create_gsql_get_neighbors(spec)
         try:
             result = self._connection.runInterpretedQuery(gsql_script, params)
             if not result or not isinstance(result, list):
@@ -176,11 +174,11 @@ class QueryManager(BaseManager):
             )
         return pd.DataFrame()
 
-    @staticmethod
-    def _create_gsql_get_nodes(graph_name: str, spec: NodeSpec) -> str:
+    def _create_gsql_get_nodes(self, spec: NodeSpec) -> str:
         """
         Core function to generate a GSQL query based on a NodeSpec object.
         """
+        graph_name = self._graph_schema.graph_name
         node_type_str = f"{spec.node_type}.*" if not spec.all_node_types else "ANY"
         filter_expression_str = (
             f"WHERE {spec.filter_expression}" if spec.filter_expression else ""
@@ -217,14 +215,12 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
         query += "\n}"
         return query.strip()
 
-    @staticmethod
-    def _create_gsql_get_neighbors(
-        graph_name: str, spec: NeighborSpec
-    ) -> Tuple[str, str]:
+    def _create_gsql_get_neighbors(self, spec: NeighborSpec) -> Tuple[str, str]:
         """
         Core function to generate a GSQL query based on a NeighborSpec object.
         """
         # Normalize fields to lists
+        graph_name = self._graph_schema.graph_name
         params = "&".join(
             [
                 f"start_nodes={node}"
@@ -234,14 +230,6 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
                     else spec.start_nodes
                 )
             ]
-        )
-        edge_types = (
-            [spec.edge_types] if isinstance(spec.edge_types, str) else spec.edge_types
-        )
-        target_node_types = (
-            [spec.target_node_types]
-            if isinstance(spec.target_node_types, str)
-            else spec.target_node_types
         )
         return_attributes = (
             [spec.return_attributes]
@@ -258,16 +246,18 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
         # Prepare components
         start_node_type = spec.start_node_type
         edge_types_str = (
-            f"(({'|'.join(edge_types or [])}):{spec.edge_alias})"
-            if edge_types and len(edge_types) > 1
-            else f"({'|'.join(edge_types or [])}:{spec.edge_alias})"
-            if edge_types
+            f"(({'|'.join(spec.edge_type_set)}):{spec.edge_alias})"
+            if spec.edge_type_set and len(spec.edge_type_set) > 1
+            else f"({'|'.join(spec.edge_type_set)}:{spec.edge_alias})"
+            if spec.edge_type_set is not None
             else f"(:{spec.edge_alias})"
         )
         target_node_types_str = (
-            f"(({'|'.join(target_node_types or [])}))"
-            if target_node_types and len(target_node_types) > 1
-            else f"{'|'.join(target_node_types or [])}"
+            f"(({'|'.join(spec.target_node_type_set)}))"
+            if spec.target_node_type_set and len(spec.target_node_type_set) > 1
+            else f"{'|'.join(spec.target_node_type_set)}"
+            if spec.target_node_type_set is not None
+            else ""
         )
 
         where_clause = (

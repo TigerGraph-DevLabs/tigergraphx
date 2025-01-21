@@ -1,5 +1,5 @@
 import pytest
-from typing import Optional, List
+from typing import Optional, List, Set
 from unittest.mock import MagicMock
 import pandas as pd
 
@@ -14,9 +14,13 @@ class TestQueryManager:
         self.mock_connection.runInstalledQuery = MagicMock()
         self.mock_connection.runInterpretedQuery = MagicMock()
 
+        self.mock_graph_schema = MagicMock()
+        self.mock_graph_schema.graph_name = "MyGraph"
+
         mock_context = MagicMock()
         # we assume that our QueryManager uses context.connection internally
         mock_context.connection = self.mock_connection
+        mock_context.graph_schema = self.mock_graph_schema
         self.query_manager = QueryManager(mock_context)
 
     def test_run_query_success(self):
@@ -130,9 +134,9 @@ class TestQueryManager:
             start_nodes="node1",
             start_node_type="type1",
             start_node_alias="s",
-            edge_types=["relationship", "reverse_relationship"],
+            edge_type_set={"relationship", "reverse_relationship"},
             edge_alias="e",
-            target_node_types="type2",
+            target_node_type_set={"type2"},
             target_node_alias="t",
             filter_expression=None,
             return_attributes=["id", "name"],
@@ -169,9 +173,9 @@ class TestQueryManager:
             start_nodes="node1",
             start_node_type="type1",
             start_node_alias="s",
-            edge_types=["relationship", "reverse_relationship"],
+            edge_type_set={"relationship", "reverse_relationship"},
             edge_alias="e",
-            target_node_types="type2",
+            target_node_type_set={"type2"},
             target_node_alias="t",
             filter_expression=None,
             return_attributes=None,
@@ -200,9 +204,9 @@ class TestQueryManager:
             start_nodes="node1",
             start_node_type="type1",
             start_node_alias="s",
-            edge_types=["relationship"],
+            edge_type_set={"relationship"},
             edge_alias="e",
-            target_node_types="type2",
+            target_node_type_set={"type2"},
             target_node_alias="t",
             filter_expression=None,
             return_attributes=None,
@@ -235,7 +239,7 @@ class TestQueryManager:
             return_attributes=return_attributes,
             limit=limit,
         )
-        return QueryManager._create_gsql_get_nodes("MyGraph", spec)
+        return self.query_manager._create_gsql_get_nodes(spec)
 
     def test_create_gsql_get_nodes_simple(self):
         actual_gsql_script = self.create_gsql_get_nodes(node_type="Community")
@@ -336,9 +340,9 @@ class TestQueryManager:
         start_nodes: str | List[str],
         start_node_type: str,
         start_node_alias: str = "s",
-        edge_types: Optional[str | List[str]] = None,
+        edge_type_set: Optional[Set[str]] = None,
         edge_alias: str = "e",
-        target_node_types: Optional[str | List[str]] = None,
+        target_node_type_set: Optional[Set[str]] = None,
         target_node_alias: str = "t",
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
@@ -351,15 +355,15 @@ class TestQueryManager:
             start_nodes=start_nodes,
             start_node_type=start_node_type,
             start_node_alias=start_node_alias,
-            edge_types=edge_types,
+            edge_type_set=edge_type_set,
             edge_alias=edge_alias,
-            target_node_types=target_node_types,
+            target_node_type_set=target_node_type_set,
             target_node_alias=target_node_alias,
             filter_expression=filter_expression,
             return_attributes=return_attributes,
             limit=limit,
         )
-        gsql_script, _ = QueryManager._create_gsql_get_neighbors("MyGraph", spec)
+        gsql_script, _ = self.query_manager._create_gsql_get_neighbors(spec)
         return gsql_script
 
     def test_create_gsql_get_neighbors_basic(self):
@@ -386,8 +390,8 @@ class TestQueryManager:
         actual_gsql_script = self.create_gsql_get_neighbors(
             start_nodes=["CYTOSORB"],
             start_node_type="Entity",
-            edge_types=["relationship", "reverse_relationship"],
-            target_node_types=["Entity"],
+            edge_type_set={"relationship"},
+            target_node_type_set={"Entity"},
             limit=10,
         )
         expected_gsql_script = (
@@ -397,7 +401,7 @@ class TestQueryManager:
             "  Nodes = {start_nodes};\n"
             "  Neighbors =\n"
             "    SELECT t\n"
-            "    FROM Nodes:s -((relationship|reverse_relationship):e)- Entity:t\n"
+            "    FROM Nodes:s -(relationship:e)- Entity:t\n"
             "    LIMIT 10\n"
             "  ;\n"
             "  PRINT Neighbors;\n"
@@ -409,8 +413,8 @@ class TestQueryManager:
         actual_gsql_script = self.create_gsql_get_neighbors(
             start_nodes="CYTOSORB",
             start_node_type="Entity",
-            edge_types=["relationship", "reverse_relationship"],
-            target_node_types="Entity",
+            edge_type_set={"relationship"},
+            target_node_type_set={"Entity"},
             return_attributes="id",
             limit=10,
         )
@@ -421,7 +425,7 @@ class TestQueryManager:
             "  Nodes = {start_nodes};\n"
             "  Neighbors =\n"
             "    SELECT t\n"
-            "    FROM Nodes:s -((relationship|reverse_relationship):e)- Entity:t\n"
+            "    FROM Nodes:s -(relationship:e)- Entity:t\n"
             "    LIMIT 10\n"
             "  ;\n"
             "  PRINT Neighbors[\n"
@@ -435,8 +439,8 @@ class TestQueryManager:
         actual_gsql_script = self.create_gsql_get_neighbors(
             start_nodes="CYTOSORB",
             start_node_type="Entity",
-            edge_types=["relationship", "reverse_relationship"],
-            target_node_types="Entity",
+            edge_type_set={"relationship"},
+            target_node_type_set={"Entity"},
             return_attributes=["id", "entity_type"],
             limit=10,
         )
@@ -447,7 +451,7 @@ class TestQueryManager:
             "  Nodes = {start_nodes};\n"
             "  Neighbors =\n"
             "    SELECT t\n"
-            "    FROM Nodes:s -((relationship|reverse_relationship):e)- Entity:t\n"
+            "    FROM Nodes:s -(relationship:e)- Entity:t\n"
             "    LIMIT 10\n"
             "  ;\n"
             "  PRINT Neighbors[\n"
@@ -462,8 +466,8 @@ class TestQueryManager:
         actual_gsql_script = self.create_gsql_get_neighbors(
             start_nodes=["CYTOSORB", "ITALY"],
             start_node_type="Entity",
-            edge_types=["relationship", "reverse_relationship"],
-            target_node_types="Entity",
+            edge_type_set={"relationship"},
+            target_node_type_set={"Entity"},
             filter_expression="s.id != t.id",
             return_attributes=["id", "entity_type"],
             limit=10,
@@ -475,7 +479,7 @@ class TestQueryManager:
             "  Nodes = {start_nodes};\n"
             "  Neighbors =\n"
             "    SELECT t\n"
-            "    FROM Nodes:s -((relationship|reverse_relationship):e)- Entity:t\n"
+            "    FROM Nodes:s -(relationship:e)- Entity:t\n"
             "    WHERE s.id != t.id\n"
             "    LIMIT 10\n"
             "  ;\n"
@@ -492,9 +496,9 @@ class TestQueryManager:
             start_nodes=["CYTOSORB", "ITALY"],
             start_node_type="Entity",
             start_node_alias="s1",
-            edge_types=["relationship", "reverse_relationship"],
+            edge_type_set={"relationship"},
             edge_alias="e1",
-            target_node_types="Entity",
+            target_node_type_set={"Entity"},
             target_node_alias="s2",
             filter_expression="s1.id != s2.id",
             return_attributes=["id", "entity_type"],
@@ -507,7 +511,7 @@ class TestQueryManager:
             "  Nodes = {start_nodes};\n"
             "  Neighbors =\n"
             "    SELECT s2\n"
-            "    FROM Nodes:s1 -((relationship|reverse_relationship):e1)- Entity:s2\n"
+            "    FROM Nodes:s1 -(relationship:e1)- Entity:s2\n"
             "    WHERE s1.id != s2.id\n"
             "    LIMIT 10\n"
             "  ;\n"
@@ -518,3 +522,22 @@ class TestQueryManager:
             "}"
         )
         assert actual_gsql_script == expected_gsql_script
+
+    def test_create_gsql_get_neighbors_with_multiple_edge_types(self):
+        actual_gsql_script = self.create_gsql_get_neighbors(
+            start_nodes=["CYTOSORB"],
+            start_node_type="Entity",
+            edge_type_set={"relationship", "reverse_relationship"},
+            target_node_type_set={"Entity"},
+            limit=10,
+        )
+        expected_gsql_script_1 = (
+            "FROM Nodes:s -((relationship|reverse_relationship):e)- Entity:t\n"
+        )
+        expected_gsql_script_2 = (
+            "FROM Nodes:s -((reverse_relationship|relationship):e)- Entity:t\n"
+        )
+        assert (
+            expected_gsql_script_1 in actual_gsql_script
+            or expected_gsql_script_2 in actual_gsql_script
+        )

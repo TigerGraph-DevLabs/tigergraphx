@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, List, Literal, Optional, Set, Tuple
+from typing import Any, Dict, List, Literal, Optional, Sequence, Set, Tuple
 from pathlib import Path
 import pandas as pd
 
@@ -49,6 +49,7 @@ class Graph:
             TigerGraphConnectionConfig | Dict | str | Path
         ] = None,
         drop_existing_graph: bool = False,
+        mode: Literal["normal", "lazy"] = "normal",
     ):
         """
         Initialize a Graph instance.
@@ -57,6 +58,8 @@ class Graph:
             graph_schema: The schema of the graph.
             tigergraph_connection_config: Connection configuration for TigerGraph.
             drop_existing_graph: If True, drop existing graph before schema creation.
+            mode: Defines the initialization behavior. "normal" ensures that the schema
+                is created if it doesn’t exist, while "lazy" skips schema creation.
         """
         # Initialize the graph context with the provided schema and connection config
         self._context = GraphContext(
@@ -64,10 +67,18 @@ class Graph:
             tigergraph_connection_config=tigergraph_connection_config,
         )
 
-        # Extract graph name, node types, and edge types from the graph schema
+        # Extract the graph name, node types, and edge types from the graph schema,
+        # including reverse edges for directed edges.
         self.name = self._context.graph_schema.graph_name
-        self.node_types = set(self._context.graph_schema.nodes.keys())
-        self.edge_types = set(self._context.graph_schema.edges.keys())
+        self.node_types: Set[str] = set(self._context.graph_schema.nodes.keys())
+        self.edge_types: Set[str] = set()
+        for edge_name, edge in self._context.graph_schema.edges.items():
+            self.edge_types.add(edge_name)
+            if edge.is_directed_edge:
+                self.edge_types.add(f"reverse_{edge_name}")
+        logger.debug(f"self.name: {self.name}")
+        logger.debug(f"self.node_types: {self.node_types}")
+        logger.debug(f"self.edge_types: {self.edge_types}")
 
         # Initialize managers for handling different aspects of the graph
         self._schema_manager = SchemaManager(self._context)
@@ -79,7 +90,8 @@ class Graph:
         self._vector_manager = VectorManager(self._context)
 
         # Create the schema, drop the graph first if drop_existing_graph is True
-        self._schema_manager.create_schema(drop_existing_graph=drop_existing_graph)
+        if mode == "normal":
+            self.create_schema(drop_existing_graph=drop_existing_graph)
 
     @classmethod
     def from_db(
@@ -107,6 +119,7 @@ class Graph:
         return cls(
             graph_schema=graph_schema,
             tigergraph_connection_config=tigergraph_connection_config,
+            mode="lazy",
         )
 
     from tigergraphx.core.view.node_view import NodeView
@@ -166,7 +179,7 @@ class Graph:
         return self._data_manager.load_data(loading_job_config)
 
     # ------------------------------ Node Operations ------------------------------
-    def add_node(self, node_id: str | int, node_type: str = "", **attr):
+    def add_node(self, node_id: str | int, node_type: Optional[str] = None, **attr):
         """
         Add a node to the graph.
 
@@ -182,7 +195,7 @@ class Graph:
     def add_nodes_from(
         self,
         nodes_for_adding: List[str | int] | List[Tuple[str | int, Dict[str, Any]]],
-        node_type: str = "",
+        node_type: Optional[str] = None,
         **attr,
     ) -> Optional[int]:
         """
@@ -194,7 +207,7 @@ class Graph:
             **attr: Common attributes for all nodes.
 
         Returns:
-            The number of nodes inserted (nodes that were updated are not counted).
+            The number of nodes added
         """
         normalized_nodes = self._normalize_nodes_for_adding(nodes_for_adding, **attr)
         if normalized_nodes is None:
@@ -202,7 +215,7 @@ class Graph:
         node_type = self._validate_node_type(node_type)
         return self._node_manager.add_nodes_from(normalized_nodes, node_type)
 
-    def remove_node(self, node_id: str | int, node_type: str = "") -> bool:
+    def remove_node(self, node_id: str | int, node_type: Optional[str] = None) -> bool:
         """
         Remove a node from the graph.
 
@@ -217,7 +230,7 @@ class Graph:
         node_type = self._validate_node_type(node_type)
         return self._node_manager.remove_node(node_id, node_type)
 
-    def has_node(self, node_id: str | int, node_type: str = "") -> bool:
+    def has_node(self, node_id: str | int, node_type: Optional[str] = None) -> bool:
         """
         Check if a node exists in the graph.
 
@@ -232,7 +245,9 @@ class Graph:
         node_type = self._validate_node_type(node_type)
         return self._node_manager.has_node(node_id, node_type)
 
-    def get_node_data(self, node_id: str | int, node_type: str = "") -> Dict | None:
+    def get_node_data(
+        self, node_id: str | int, node_type: Optional[str] = None
+    ) -> Dict | None:
         """
         Get data for a specific node.
 
@@ -250,8 +265,8 @@ class Graph:
     def get_node_edges(
         self,
         node_id: str | int,
-        node_type: str = "",
-        edge_types: List | str = [],
+        node_type: Optional[str] = None,
+        edge_types: Optional[List[str] | str] = None,
     ) -> List[Tuple]:
         """
         Get edges connected to a specific node.
@@ -259,14 +274,15 @@ class Graph:
         Args:
             node_id: The identifier of the node.
             node_type: The type of the node.
-            edge_types: Types of edges to include.
+            edge_types: A list of edge types. If None, consider all edge types.
 
         Returns:
             A list of edges represented as (from_id, to_id).
         """
         node_id = self._to_str_node_id(node_id)
         node_type = self._validate_node_type(node_type)
-        edges = self._node_manager.get_node_edges(node_id, node_type, edge_types)
+        edge_type_set = self._validate_edge_types_as_set(edge_types)
+        edges = self._node_manager.get_node_edges(node_id, node_type, edge_type_set)
         result = [(edge["from_id"], edge["to_id"]) for edge in edges]
         return result
 
@@ -284,9 +300,9 @@ class Graph:
         self,
         src_node_id: str | int,
         tgt_node_id: str | int,
-        src_node_type: str = "",
-        edge_type: str = "",
-        tgt_node_type: str = "",
+        src_node_type: Optional[str] = None,
+        edge_type: Optional[str] = None,
+        tgt_node_type: Optional[str] = None,
         **attr,
     ):
         """
@@ -310,11 +326,11 @@ class Graph:
 
     def add_edges_from(
         self,
-        ebunch_to_add: List[Tuple[str | int, str | int]]
-        | List[Tuple[str | int, str | int, Dict[str, Any]]],
-        src_node_type: str,
-        edge_type: str,
-        tgt_node_type: str,
+        ebunch_to_add: Sequence[Tuple[str | int, str | int]]
+        | Sequence[Tuple[str | int, str | int, Dict[str, Any]]],
+        src_node_type: Optional[str] = None,
+        edge_type: Optional[str] = None,
+        tgt_node_type: Optional[str] = None,
         **attr: Any,
     ) -> Optional[int]:
         """
@@ -328,7 +344,7 @@ class Graph:
             **attr: Common attributes for all edges.
 
         Returns:
-            The number of edges inserted (edges that were updated are not counted).
+            The number of edges added
         """
         normalized_edges = self._normalize_edges_for_adding(ebunch_to_add, **attr)
         if normalized_edges is None:
@@ -344,9 +360,9 @@ class Graph:
         self,
         src_node_id: str | int,
         tgt_node_id: str | int,
-        src_node_type: str = "",
-        edge_type: str = "",
-        tgt_node_type: str = "",
+        src_node_type: Optional[str] = None,
+        edge_type: Optional[str] = None,
+        tgt_node_type: Optional[str] = None,
     ) -> bool:
         """
         Check if an edge exists in the graph.
@@ -373,9 +389,9 @@ class Graph:
         self,
         src_node_id: str | int,
         tgt_node_id: str | int,
-        src_node_type: str = "",
-        edge_type: str = "",
-        tgt_node_type: str = "",
+        src_node_type: Optional[str] = None,
+        edge_type: Optional[str] = None,
+        tgt_node_type: Optional[str] = None,
     ) -> Dict | None:
         """
         Get data for a specific edge.
@@ -400,7 +416,10 @@ class Graph:
 
     # ------------------------------ Statistics Operations ------------------------------
     def degree(
-        self, node_id: str | int, node_type: str = "", edge_types: List = []
+        self,
+        node_id: str | int,
+        node_type: Optional[str] = None,
+        edge_types: Optional[List[str] | str] = None,
     ) -> int:
         """
         Get the degree of a node.
@@ -408,14 +427,15 @@ class Graph:
         Args:
             node_id: Node identifier.
             node_type: Node type.
-            edge_types: Edge types to consider.
+            edge_types: A list of edge types. If None, consider all edge types.
 
         Returns:
             The degree of the node.
         """
         node_id = self._to_str_node_id(node_id)
         node_type = self._validate_node_type(node_type)
-        return self._statistics_manager.degree(node_id, node_type, edge_types)
+        edge_type_set = self._validate_edge_types_as_set(edge_types)
+        return self._statistics_manager.degree(node_id, node_type, edge_type_set)
 
     def number_of_nodes(self, node_type: Optional[str] = None) -> int:
         """
@@ -459,13 +479,13 @@ class Graph:
 
     def get_nodes(
         self,
-        node_type: str = "",
+        node_type: Optional[str] = None,
         all_node_types: bool = False,
         node_alias: str = "s",
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
-    ) -> pd.DataFrame | None:
+    ) -> pd.DataFrame:
         """
         Retrieve nodes from the graph.
 
@@ -478,7 +498,7 @@ class Graph:
             limit: Maximum number of nodes to return.
 
         Returns:
-            A DataFrame of nodes or None.
+            A DataFrame of nodes.
         """
         if not all_node_types:
             node_type = self._validate_node_type(node_type)
@@ -491,7 +511,7 @@ class Graph:
             limit=limit,
         )
 
-    def get_nodes_from_spec(self, spec: NodeSpec) -> pd.DataFrame | None:
+    def get_nodes_from_spec(self, spec: NodeSpec) -> pd.DataFrame:
         """
         Retrieve nodes using a NodeSpec object.
 
@@ -499,14 +519,14 @@ class Graph:
             spec: Specification for node retrieval.
 
         Returns:
-            A DataFrame of nodes or None.
+            A DataFrame of nodes.
         """
         return self._query_manager.get_nodes_from_spec(spec)
 
     def get_neighbors(
         self,
         start_nodes: str | int | List[str | int],
-        start_node_type: str = "",
+        start_node_type: Optional[str] = None,
         start_node_alias: str = "s",
         edge_types: Optional[str | List[str]] = None,
         edge_alias: str = "e",
@@ -515,7 +535,7 @@ class Graph:
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
-    ) -> pd.DataFrame | None:
+    ) -> pd.DataFrame:
         """
         Get neighbors of specified nodes.
 
@@ -539,20 +559,22 @@ class Graph:
         else:
             new_start_nodes = self._to_str_node_ids(start_nodes)
         start_node_type = self._validate_node_type(start_node_type)
+        edge_type_set = self._validate_edge_types_as_set(edge_types)
+        target_node_type_set = self._validate_node_types_as_set(target_node_types)
         return self._query_manager.get_neighbors(
             start_nodes=new_start_nodes,
             start_node_type=start_node_type,
             start_node_alias=start_node_alias,
-            edge_types=edge_types,
+            edge_type_set=edge_type_set,
             edge_alias=edge_alias,
-            target_node_types=target_node_types,
+            target_node_type_set=target_node_type_set,
             target_node_alias=target_node_alias,
             filter_expression=filter_expression,
             return_attributes=return_attributes,
             limit=limit,
         )
 
-    def get_neighbors_from_spec(self, spec: NeighborSpec) -> pd.DataFrame | None:
+    def get_neighbors_from_spec(self, spec: NeighborSpec) -> pd.DataFrame:
         """
         Retrieve neighbors using a NeighborSpec object.
 
@@ -560,7 +582,7 @@ class Graph:
             spec: Specification for neighbor retrieval.
 
         Returns:
-            A DataFrame of neighbors or None.
+            A DataFrame of neighbors.
         """
         return self._query_manager.get_neighbors_from_spec(spec)
 
@@ -568,7 +590,7 @@ class Graph:
     def upsert(
         self,
         data: Dict | List[Dict],
-        node_type: str = "",
+        node_type: Optional[str] = None,
     ):
         """
         Upsert nodes with vector data into the graph.
@@ -584,7 +606,10 @@ class Graph:
         return self._vector_manager.upsert(data, node_type)
 
     def fetch_node(
-        self, node_id: str | int, vector_attribute_name: str, node_type: str = ""
+        self,
+        node_id: str | int,
+        vector_attribute_name: str,
+        node_type: Optional[str] = None,
     ) -> Optional[List[float]]:
         """
         Fetch the embedding vector for a single node.
@@ -604,7 +629,10 @@ class Graph:
         )
 
     def fetch_nodes(
-        self, node_ids: List[str | int], vector_attribute_name: str, node_type: str = ""
+        self,
+        node_ids: List[str | int],
+        vector_attribute_name: str,
+        node_type: Optional[str] = None,
     ) -> Dict[str, List[float]]:
         """
         Fetch embedding vectors for multiple nodes.
@@ -627,7 +655,7 @@ class Graph:
         self,
         data: List[float],
         vector_attribute_name: str,
-        node_type: str = "",
+        node_type: Optional[str] = None,
         limit: int = 10,
         return_attributes: Optional[str | List[str]] = None,
         candidate_ids: Optional[Set[str]] = None,
@@ -698,7 +726,7 @@ class Graph:
         self,
         node_id: str | int,
         vector_attribute_name: str,
-        node_type: str = "",
+        node_type: Optional[str] = None,
         limit: int = 5,
         return_attributes: Optional[List[str]] = None,
     ) -> List[Dict]:
@@ -726,7 +754,7 @@ class Graph:
         )
 
     # ------------------------------ Utilities ------------------------------
-    def _validate_node_type(self, node_type: str = "") -> str:
+    def _validate_node_type(self, node_type: Optional[str] = None) -> str:
         """
         Validate and return the effective node type.
 
@@ -739,7 +767,7 @@ class Graph:
         Raises:
             ValueError: If the node type is invalid or ambiguous.
         """
-        if node_type:
+        if node_type is not None:
             if node_type not in self.node_types:
                 raise ValueError(
                     f"Invalid node type '{node_type}'. Must be one of {self.node_types}."
@@ -755,9 +783,9 @@ class Graph:
 
     def _validate_edge_type(
         self,
-        src_node_type: str = "",
-        edge_type: str = "",
-        tgt_node_type: str = "",
+        src_node_type: Optional[str] = None,
+        edge_type: Optional[str] = None,
+        tgt_node_type: Optional[str] = None,
     ) -> tuple[str, str, str]:
         """
         Validate node and edge types and return effective types.
@@ -775,7 +803,7 @@ class Graph:
         """
         src_node_type = self._validate_node_type(src_node_type)
         tgt_node_type = self._validate_node_type(tgt_node_type)
-        if edge_type:
+        if edge_type is not None:
             if edge_type not in self.edge_types:
                 raise ValueError(
                     f"Invalid edge type '{edge_type}'. Must be one of {self.edge_types}."
@@ -789,6 +817,66 @@ class Graph:
                 )
             edge_type = next(iter(self.edge_types))
         return src_node_type, edge_type, tgt_node_type
+
+    def _validate_edge_types_as_set(
+        self,
+        edge_types: Optional[List[str] | str] = None,
+    ) -> Optional[Set[str]]:
+        """
+        Validate edge types and return effective types.
+
+        Args:
+            edge_types: A list of edge types. If None, consider all edge types.
+
+        Returns:
+            Validated edge types as a set.
+
+        Raises:
+            ValueError: If any provided type is invalid or ambiguous.
+        """
+        if edge_types is None:
+            return None  # None indicates all edge types
+        # Ensure edge_types is a list for consistent processing
+        if isinstance(edge_types, str):
+            edge_types = [edge_types]
+        # Check that all edge types are valid
+        invalid_types = [etype for etype in edge_types if etype not in self.edge_types]
+        if invalid_types:
+            raise ValueError(
+                f"Invalid edge type(s): {', '.join(invalid_types)}. "
+                f"Valid edge types are: {', '.join(self.edge_types)}."
+            )
+        return set(edge_types)
+
+    def _validate_node_types_as_set(
+        self,
+        node_types: Optional[List[str] | str] = None,
+    ) -> Optional[Set[str]]:
+        """
+        Validate node types and return effective types.
+
+        Args:
+            node_types: A list of node types. If None, consider all node types.
+
+        Returns:
+            Validated node types as a set.
+
+        Raises:
+            ValueError: If any provided type is invalid or ambiguous.
+        """
+        if node_types is None:
+            return None  # None indicates all node types
+        # Ensure node_types is a list for consistent processing
+        if isinstance(node_types, str):
+            node_types = [node_types]
+        # Check that all node types are valid
+        invalid_types = [ntype for ntype in node_types if ntype not in self.node_types]
+        if invalid_types:
+            raise ValueError(
+                f"Invalid node type(s): {', '.join(invalid_types)}. "
+                f"Valid node types are: {', '.join(self.node_types)}."
+            )
+        return set(node_types)
 
     @staticmethod
     def _to_str_node_id(node_id: str | int) -> str:
@@ -879,8 +967,8 @@ class Graph:
 
     @staticmethod
     def _normalize_edges_for_adding(
-        ebunch_to_add: List[Tuple[str | int, str | int]]
-        | List[Tuple[str | int, str | int, Dict[str, Any]]],
+        ebunch_to_add: Sequence[Tuple[str | int, str | int]]
+        | Sequence[Tuple[str | int, str | int, Dict[str, Any]]],
         **common_attr: Any,
     ) -> Optional[List[Tuple[str, str, Dict[str, Any]]]]:
         """

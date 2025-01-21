@@ -23,9 +23,7 @@ class DataManager(BaseManager):
         logger.info(
             f"Initiating data load for job: {loading_job_config.loading_job_name}...",
         )
-        gsql_script = self._create_gsql_load_data(
-            loading_job_config, self._graph_schema
-        )
+        gsql_script = self._create_gsql_load_data(loading_job_config)
 
         result = self._connection.gsql(gsql_script)
         graph_name = self._graph_schema.graph_name
@@ -35,21 +33,15 @@ class DataManager(BaseManager):
             raise RuntimeError(error_msg)
 
         if f"Using graph '{graph_name}'" not in result:
-            error_msg = (
-                f"Failed to set graph context for '{graph_name}'. GSQL response: {result}"
-            )
+            error_msg = f"Failed to set graph context for '{graph_name}'. GSQL response: {result}"
             logger.error(error_msg)
             raise RuntimeError(error_msg)
         if "Successfully created loading jobs:" not in result:
-            error_msg = (
-                f"Loading job creation failed. GSQL response: {result}"
-            )
+            error_msg = f"Loading job creation failed. GSQL response: {result}"
             logger.error(error_msg)
             raise RuntimeError(error_msg)
         if "Successfully dropped jobs" not in result:
-            error_msg = (
-                f"Loading job cleanup failed. GSQL response: {result}"
-            )
+            error_msg = f"Loading job cleanup failed. GSQL response: {result}"
             logger.error(error_msg)
             raise RuntimeError(error_msg)
         logger.info("Data load completed successfully.")
@@ -57,8 +49,8 @@ class DataManager(BaseManager):
     def _create_gsql_load_data(
         self,
         loading_job_config: LoadingJobConfig,
-        graph_schema: GraphSchema,
     ) -> str:
+        graph_schema = self._graph_schema
         # Define file paths for each file in config with numbered file names
         files = loading_job_config.files
         define_files = []
