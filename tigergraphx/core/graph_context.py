@@ -1,11 +1,14 @@
 from typing import Dict, Optional
 from pathlib import Path
+import logging
 
 from pyTigerGraph import TigerGraphConnection
 from tigergraphx.config import (
     TigerGraphConnectionConfig,
     GraphSchema,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class GraphContext:
@@ -26,6 +29,7 @@ class GraphContext:
             tigergraph_connection_config = TigerGraphConnectionConfig.ensure_config(
                 tigergraph_connection_config
             )
+        logger.debug(f"tigergraph_connection_config: {tigergraph_connection_config}")
         self.connection = TigerGraphConnection(
             graphname=self.graph_schema.graph_name,
             host=str(tigergraph_connection_config.host),

@@ -1,5 +1,6 @@
 from typing import Any, Dict, Optional
 from pydantic import HttpUrl, Field, model_validator
+from pydantic_settings import SettingsConfigDict
 
 from tigergraphx.config import BaseConfig
 
@@ -15,34 +16,43 @@ class TigerGraphConnectionConfig(BaseConfig):
     3. Token-based authentication
     """
 
+    model_config = SettingsConfigDict(populate_by_name=True)
+
     host: HttpUrl = Field(
         default=HttpUrl("http://127.0.0.1"),
+        alias="TG_HOST",
         description="The host URL for the TigerGraph connection.",
     )
     restpp_port: int | str = Field(
-        default="14240", description="The port for REST++ API."
+        default="14240", alias="TG_RESTPP_PORT", description="The port for REST++ API."
     )
-    gsql_port: int | str = Field(default="14240", description="The port for GSQL.")
+    gsql_port: int | str = Field(
+        default="14240", alias="TG_GSQL_PORT", description="The port for GSQL."
+    )
 
     # User/password authentication
     username: Optional[str] = Field(
         default="tigergraph",
+        alias="TG_USERNAME",
         description="The username for TigerGraph authentication. Use only for user/password authentication.",
     )
     password: Optional[str] = Field(
         default="tigergraph",
+        alias="TG_PASSWORD",
         description="The password for TigerGraph authentication. Use only for user/password authentication.",
     )
 
     # Secret-based authentication
     secret: Optional[str] = Field(
         default=None,
+        alias="TG_SECRET",
         description="The secret for TigerGraph authentication. Use only for secret-based authentication.",
     )
 
     # Token-based authentication
     token: Optional[str] = Field(
         default=None,
+        alias="TG_TOKEN",
         description="The API token for TigerGraph authentication. Use only for token-based authentication.",
     )
 

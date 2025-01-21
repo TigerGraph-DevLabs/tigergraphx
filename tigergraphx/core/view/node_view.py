@@ -8,7 +8,7 @@ class NodeView:
 
         The interpretation of `key` depends on the graph's node type configuration:
 
-        - **Single Node Type**: Pass the node's identifier as `node_id`.
+        - **Single Node Type**: Pass the node’s identifier as `node_id`. In this scenario, since the graph contains only one node type, the type is automatically assigned based on the provided `node_id`. You don’t need to specify the node type explicitly.
         - **Multiple Node Types**: Pass a tuple in the form `(node_type, node_id)`.
         """
         if isinstance(key, str):
@@ -26,7 +26,14 @@ class NodeView:
             )
 
     def __contains__(self, key):
-        """Check if a node exists."""
+        """
+        Check if a node exists.
+
+        The interpretation of `key` depends on the graph's node type configuration:
+
+        - **Single Node Type**: Pass the node’s identifier as `node_id`. In this scenario, since the graph contains only one node type, the type is automatically assigned based on the provided `node_id`. You don’t need to specify the node type explicitly.
+        - **Multiple Node Types**: Pass a tuple in the form `(node_type, node_id)`.
+        """
         if isinstance(key, str):
             node_id = key
             return self.graph.has_node(node_id=node_id)
@@ -40,9 +47,13 @@ class NodeView:
             )
 
     def __iter__(self):
-        """Iterate over all nodes.
-        For homogeneous: return node_id.
-        For heterogeneous: return (node_type, node_id).
+        """
+        Iterate over all nodes.
+
+        The return value depends on the graph’s node type configuration:
+
+        - **Single Node Type**: Each iteration returns a `node_id`.
+        - **Multiple Node Types**: Each iteration returns a tuple `(node_type, node_id)`.
         """
         # Get all nodes
         nodes = self.graph.get_nodes(all_node_types=True)

@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from .base_manager import BaseManager
 
@@ -22,41 +22,13 @@ class NodeManager(BaseManager):
 
     def add_nodes_from(
         self,
-        nodes_for_adding: List[str] | List[Tuple[str, Dict[str, Any]]],
+        normalized_nodes: List[Tuple[str, Dict[str, Any]]],
         node_type: str,
-        **attr,
     ) -> Optional[int]:
-        nodes_to_upsert = []
-
-        # Process each node
-        for node in nodes_for_adding:
-            if isinstance(node, str):
-                # If node is just a node ID, create an empty attribute dictionary
-                node_id = node
-                attributes = {}
-            elif isinstance(node, tuple) and len(node) == 2:
-                node_id, attributes = node
-                if not isinstance(attributes, dict):
-                    logger.error(
-                        f"Attributes for node {node_id} should be a dictionary."
-                    )
-                    return None
-            else:
-                logger.error(
-                    f"Invalid node format: {node}. Expected str or Tuple[str, Dict[str, Any]]."
-                )
-                return None
-
-            # Combine node-specific attributes with the common attributes
-            node_data = {**attributes, **attr}
-
-            # Append to vertices list
-            nodes_to_upsert.append((node_id, node_data))
-
         # Call upsertVertices with the list of nodes and attributes
         try:
             result = self._connection.upsertVertices(
-                vertexType=node_type, vertices=nodes_to_upsert
+                vertexType=node_type, vertices=normalized_nodes
             )
             return result
         except Exception as e:
@@ -98,11 +70,9 @@ class NodeManager(BaseManager):
         self,
         node_id: str,
         node_type: str,
-        edge_types: List | str,
+        edge_types: Optional[Set[str]] = None,
     ) -> List:
-        gsql_script = self._create_gsql_get_node_edges(
-            node_type, edge_types, self._graph_schema.graph_name
-        )
+        gsql_script = self._create_gsql_get_node_edges(node_type, edge_types)
         try:
             params = {
                 "input": node_id,
@@ -124,13 +94,13 @@ class NodeManager(BaseManager):
             logger.error(f"Error clearing graph: {e}")
             return False
 
-    @staticmethod
     def _create_gsql_get_node_edges(
-        node_type: str, edge_types: List | str, graph_name: str
+        self, node_type: str, edge_types: Optional[Set[str]] = None
     ) -> str:
         """
         Core function to generate a GSQL query to get the edges of a node
         """
+        graph_name = self._graph_schema.graph_name
         if not edge_types:
             from_clause = "FROM Nodes:s -(:e)- :t"
         else:

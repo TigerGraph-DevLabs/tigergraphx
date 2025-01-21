@@ -19,7 +19,12 @@ class TestSchemaManager:
 
     def test_create_schema_success(self):
         # Mock the gsql method to simulate successful schema creation
-        self.mock_connection.gsql.return_value = "Schema created successfully"
+        self.mock_connection.gsql.return_value = """
+The graph TestGraph is created
+Successfully created schema change jobs
+Local schema change succeeded
+Successfully dropped jobs
+"""
         self.schema_manager.create_schema(drop_existing_graph=False)
         self.mock_connection.gsql.assert_called()
 
@@ -27,7 +32,12 @@ class TestSchemaManager:
         # Mock the gsql method to simulate dropping the graph
         self.mock_connection.gsql.side_effect = [
             "Graph dropped successfully",  # First call for dropping
-            "Schema created successfully",  # Second call for creating
+            """
+The graph TestGraph is created
+Successfully created schema change jobs
+Local schema change succeeded
+Successfully dropped jobs
+""",  # Second call for creating
         ]
         self.schema_manager.create_schema(drop_existing_graph=True)
         assert self.mock_connection.gsql.call_count == 2

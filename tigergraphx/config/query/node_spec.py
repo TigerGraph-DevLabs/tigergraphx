@@ -15,6 +15,7 @@ class NodeSpec(BaseConfig):
         description="If True, nodes of all types will be returned, "
         "and the value of `node_type` will be ignored.",
     )
+    node_alias: str = Field("e", description="Alias for the node.")
     filter_expression: Optional[str] = Field(
         None, description="A string defining filtering logic for the node selection."
     )

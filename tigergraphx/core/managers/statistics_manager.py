@@ -1,5 +1,5 @@
 import logging
-from typing import List, Optional
+from typing import List, Optional, Set
 
 from .base_manager import BaseManager
 
@@ -13,10 +13,13 @@ class StatisticsManager(BaseManager):
     def __init__(self, context: GraphContext):
         super().__init__(context)
 
-    def degree(self, node_id: str, node_type: str, edge_types: List | str) -> int:
-        gsql_script = self._create_gsql_degree(
-            node_type, edge_types, self._graph_schema.graph_name
-        )
+    def degree(
+        self,
+        node_id: str,
+        node_type: str,
+        edge_type_set: Optional[Set[str]] = None,
+    ) -> int:
+        gsql_script = self._create_gsql_degree(node_type, edge_type_set)
         try:
             params = {"input": node_id}
             result = self._connection.runInterpretedQuery(gsql_script, params)
@@ -29,9 +32,7 @@ class StatisticsManager(BaseManager):
 
     def number_of_nodes(self, node_type: Optional[str] = None) -> int:
         """Return the number of nodes for the given node type(s)."""
-        gsql_script = self._create_gsql_number_of_nodes(
-            node_type, self._graph_schema.graph_name
-        )
+        gsql_script = self._create_gsql_number_of_nodes(node_type)
         try:
             result = self._connection.runInterpretedQuery(gsql_script)
             # Perform checks
@@ -58,9 +59,7 @@ class StatisticsManager(BaseManager):
 
     def number_of_edges(self, edge_type: Optional[str] = None) -> int:
         """Return the number of edges for the given edge type(s)."""
-        gsql_script = self._create_gsql_number_of_edges(
-            edge_type, self._graph_schema.graph_name
-        )
+        gsql_script = self._create_gsql_number_of_edges(edge_type)
         try:
             result = self._connection.runInterpretedQuery(gsql_script)
             # Perform checks
@@ -100,23 +99,29 @@ class StatisticsManager(BaseManager):
     #         )
     #         return 0
 
-    @staticmethod
     def _create_gsql_degree(
-        node_type: str, edge_types: List | str, graph_name: str
+        self,
+        node_type: str,
+        edge_type_set: Optional[Set[str]] = None,
     ) -> str:
         """
         Core function to generate a GSQL query to get the degree of a node
         """
-        if not edge_types:
+        graph_name = self._graph_schema.graph_name
+        if not edge_type_set:
             from_clause = "FROM Nodes:s -()- :t"
         else:
-            if (isinstance(edge_types, list) and len(edge_types) == 1) or isinstance(
-                edge_types, str
-            ):
-                edge_type = edge_types if isinstance(edge_types, str) else edge_types[0]
+            if (
+                isinstance(edge_type_set, set) and len(edge_type_set) == 1
+            ) or isinstance(edge_type_set, str):
+                edge_type = (
+                    edge_type_set
+                    if isinstance(edge_type_set, str)
+                    else next(iter(edge_type_set))
+                )
                 from_clause = f"FROM Nodes:s -({edge_type})- :t"
             else:
-                edge_types_str = "|".join(edge_types)
+                edge_types_str = "|".join(edge_type_set)
                 from_clause = f"FROM Nodes:s -({edge_types_str})- :t"
 
         # Generate the query
@@ -133,10 +138,8 @@ INTERPRET QUERY(VERTEX<{node_type}> input) FOR GRAPH {graph_name} {{
 }}"""
         return query.strip()
 
-    @staticmethod
-    def _create_gsql_number_of_nodes(
-        node_type: Optional[str], graph_name: str
-    ) -> str:
+    def _create_gsql_number_of_nodes(self, node_type: Optional[str] = None) -> str:
+        graph_name = self._graph_schema.graph_name
         # Generate the query
         if node_type is None or node_type == "":
             query = f"""
@@ -152,10 +155,10 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
 }}"""
         return query.strip()
 
-    @staticmethod
     def _create_gsql_number_of_edges(
-        edge_type: Optional[str | list], graph_name: str
+        self, edge_type: Optional[str | List[str]] = None
     ) -> str:
+        graph_name = self._graph_schema.graph_name
         # Generate the query
         if edge_type is None or edge_type == "":
             query = f"""
@@ -167,7 +170,7 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
     FROM Nodes:s -()- :t
     ACCUM @@sum += 1
   ;
-  PRINT @@sum AS number_of_edges;
+  PRINT @@sum / 2 AS number_of_edges;
 }}"""
         else:
             query = f"""
@@ -179,6 +182,6 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
     FROM Nodes:s -({edge_type})- :t
     ACCUM @@sum += 1
   ;
-  PRINT @@sum AS number_of_edges;
+  PRINT @@sum / 2 AS number_of_edges;
 }}"""
         return query.strip()
