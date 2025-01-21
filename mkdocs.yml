@@ -87,8 +87,8 @@ theme:
         name: Switch to system preference
 
 plugins:
-#   - mkdocs-jupyter:
-#       ignore_h1_titles: True
+  - mkdocs-jupyter:
+      ignore_h1_titles: True
   - search
   - mkdocstrings:
       handlers:
