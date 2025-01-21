@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../images/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.50">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.a40c8224.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -86,7 +86,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href="../.." title="TigerGraphX" class="md-header__button md-logo" aria-label="TigerGraphX" data-md-component="logo">
       
@@ -195,14 +197,8 @@
     
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -270,7 +266,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../reference/features_overview/" class="md-tabs__link">
+        <a href="../../reference/introduction/" class="md-tabs__link">
           
   
   API Reference
@@ -284,7 +280,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -1099,11 +1101,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../../reference/features_overview/" class="md-nav__link">
+      <a href="../../reference/introduction/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Features Overview
+    Introduction
   </span>
   
 
@@ -2952,9 +2954,11 @@ G = Graph(graph_schema, connection)</div>
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>2025-01-15 10:46:38,762 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for FinancialGraph: does not exist
-2025-01-15 10:46:38,763 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: FinancialGraph...
-2025-01-15 10:47:36,104 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
+<pre>2025-01-17 19:36:15,282 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for FinancialGraph: does not exist
+2025-01-17 19:36:15,282 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: FinancialGraph...
+2025-01-17 19:36:18,610 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
+2025-01-17 19:36:18,611 - tigergraphx.core.managers.schema_manager - INFO - Adding vector attribute(s) for graph: FinancialGraph...
+2025-01-17 19:37:25,155 - tigergraphx.core.managers.schema_manager - INFO - Vector attribute(s) added successfully.
 </pre>
 </div>
 </div>
@@ -3300,8 +3304,8 @@ for result in results:
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>{'id': 'Scott', 'distance': 0, 'name': 'Scott', 'isBlocked': False}
-{'id': 'Paul', 'distance': 0.393388, 'name': 'Paul', 'isBlocked': False}
+<pre>{'id': 'Paul', 'distance': 0.393388, 'name': 'Paul', 'isBlocked': False}
+{'id': 'Scott', 'distance': 0, 'name': 'Scott', 'isBlocked': False}
 {'id': 'Steven', 'distance': 0.0325563, 'name': 'Steven', 'isBlocked': True}
 </pre>
 </div>
@@ -3359,8 +3363,8 @@ for node in nodes.items():
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>('Scott', [-0.01773397, -0.01019224, -0.01657188])
-('Paul', [0.001119343, -0.001038988, -0.01715852])
+<pre>('Paul', [0.001119343, -0.001038988, -0.01715852])
+('Scott', [-0.01773397, -0.01019224, -0.01657188])
 ('Steven', [-0.01505514, -0.01681934, -0.022187])
 </pre>
 </div>
@@ -3600,14 +3604,16 @@ for result in results:
 </div>
 <div class="highlight-ipynb hl-python"><pre><span></span><span class="n">nodes_df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
     <span class="n">node_type</span><span class="o">=</span><span class="s2">"Account"</span><span class="p">,</span>
-    <span class="n">filter_expression</span><span class="o">=</span><span class="s2">"s.isBlocked == False"</span><span class="p">,</span>
+    <span class="n">node_alias</span><span class="o">=</span><span class="s2">"s"</span><span class="p">,</span> <span class="c1"># The alias "s" is used in filter_expression. You can remove this line since the default node alias is "s"</span>
+    <span class="n">filter_expression</span><span class="o">=</span><span class="s1">'s.isBlocked == False AND s.name != "Ed"'</span><span class="p">,</span>
     <span class="n">return_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">nodes_df</span><span class="p">)</span>
 </pre></div>
 <div class="clipboard-copy-txt" id="cell-12">nodes_df = G.get_nodes(
     node_type="Account",
-    filter_expression="s.isBlocked == False",
+    node_alias="s", # The alias "s" is used in filter_expression. You can remove this line since the default node alias is "s"
+    filter_expression='s.isBlocked == False AND s.name != "Ed"',
     return_attributes=["name"],
 )
 print(nodes_df)</div>
@@ -3624,9 +3630,8 @@ print(nodes_df)</div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>    name
 0   Paul
-1     Ed
+1  Scott
 2  Jenny
-3  Scott
 </pre>
 </div>
 </div>
@@ -3849,8 +3854,8 @@ for result in results:
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
-<pre>2025-01-15 10:51:24,014 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: FinancialGraph...
-2025-01-15 10:51:27,134 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
+<pre>2025-01-17 20:54:25,574 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: FinancialGraph...
+2025-01-17 20:54:29,485 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
 </pre>
 </div>
 </div>
@@ -3969,10 +3974,10 @@ for result in results:
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.expand", "navigation.footer", "content.code.copy", "content.code.select"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.footer", "content.code.copy", "content.code.select"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.60a45f97.min.js"></script>
       
     
   </body>
