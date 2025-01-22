@@ -1,6 +1,6 @@
 import re
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 import pandas as pd
 
 
@@ -14,8 +14,8 @@ class ParquetProcessor:
         Initialize the ParquetProcessor with input and output directories.
 
         Args:
-            input_dir (str | Path): Directory containing the input Parquet files.
-            output_dir (str | Path): Directory to save the output CSV files.
+            input_dir: Directory containing the input Parquet files.
+            output_dir: Directory to save the output CSV files.
         """
         self.input_dir: Path = Path(input_dir).resolve()
         self.output_dir: Path = Path(output_dir).resolve()
@@ -26,8 +26,8 @@ class ParquetProcessor:
         Save a DataFrame or Series to a CSV file with specific formatting.
 
         Args:
-            df (pd.DataFrame | pd.Series): The DataFrame or Series to save.
-            csv_file_name (str): Name of the output CSV file.
+            df: The DataFrame or Series to save.
+            csv_file_name: Name of the output CSV file.
         """
         df = df.apply(
             lambda col: col.str.replace("\n", "\\n") if col.dtype == "object" else col
@@ -42,15 +42,18 @@ class ParquetProcessor:
             file.write(content)
 
     def convert_parquet_to_csv(
-        self, parquet_file_name: str, columns: List[str], csv_file_name: str
+        self,
+        parquet_file_name: str,
+        columns: List[str],
+        csv_file_name: str,
     ):
         """
         Convert a Parquet file to a CSV file with specific columns.
 
         Args:
-            parquet_file_name (str): Name of the input Parquet file.
-            columns (List[str]): List of columns to include in the output CSV.
-            csv_file_name (str): Name of the output CSV file.
+            parquet_file_name: Name of the input Parquet file.
+            columns: List of columns to include in the output CSV.
+            csv_file_name: Name of the output CSV file.
         """
         input_file_path = self.input_dir / parquet_file_name
         df = pd.read_parquet(input_file_path)[columns]
@@ -69,12 +72,12 @@ class ParquetProcessor:
         Generate a CSV file for relationship mapping based on input DataFrame.
 
         Args:
-            df (pd.DataFrame): Input DataFrame containing relationship data.
-            element_list_name (str): Name of the column containing element lists.
-            element_name (str): Name of the element to map.
-            collection_name (str): Name of the collection column.
-            collection_new_name (str): New name for the collection in the output.
-            output_name (str): Name of the output CSV file.
+            df: Input DataFrame containing relationship data.
+            element_list_name: Name of the column containing element lists.
+            element_name: Name of the element to map.
+            collection_name: Name of the collection column.
+            collection_new_name: New name for the collection in the output.
+            output_name: Name of the output CSV file.
         """
         relationships = [
             {element_name: element, collection_new_name: row[collection_name]}
@@ -89,7 +92,7 @@ class ParquetProcessor:
         Process a list of Parquet file configurations and convert them to CSV.
 
         Args:
-            configs (List[Dict[str, Any]]): List of configuration dictionaries for processing Parquet files.
+            configs: List of configuration dictionaries for processing Parquet files.
         """
         for config in configs:
             self.convert_parquet_to_csv(
@@ -101,7 +104,7 @@ class ParquetProcessor:
         Process a list of relationship file configurations and generate CSV files.
 
         Args:
-            configs (List[Dict[str, Any]]): List of configuration dictionaries for generating relationship files.
+            configs: List of configuration dictionaries for generating relationship files.
         """
         for config in configs:
             df = pd.read_parquet(self.input_dir / config["parquet_file"])

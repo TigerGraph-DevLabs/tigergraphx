@@ -1,4 +1,6 @@
-from pydantic import HttpUrl, Field, field_validator
+from typing import Any, Dict, Optional
+from pydantic import HttpUrl, Field, model_validator
+from pydantic_settings import SettingsConfigDict
 
 from tigergraphx.config import BaseConfig
 
@@ -6,39 +8,112 @@ from tigergraphx.config import BaseConfig
 class TigerGraphConnectionConfig(BaseConfig):
     """
     Configuration for connecting to a TigerGraph instance.
+
+    This class supports:
+
+    1. User/password authentication
+    2. Secret-based authentication
+    3. Token-based authentication
     """
+
+    model_config = SettingsConfigDict(populate_by_name=True)
 
     host: HttpUrl = Field(
         default=HttpUrl("http://127.0.0.1"),
+        alias="TG_HOST",
         description="The host URL for the TigerGraph connection.",
     )
-    username: str = Field(
-        default="tigergraph", description="The username for TigerGraph authentication."
-    )
-    password: str = Field(
-        default="tigergraph", description="The password for TigerGraph authentication."
-    )
     restpp_port: int | str = Field(
-        default="9000", description="The port for REST++ API."
+        default="14240", alias="TG_RESTPP_PORT", description="The port for REST++ API."
     )
-    graph_studio_port: int | str = Field(
-        default="14240", description="The port for Graph Studio."
+    gsql_port: int | str = Field(
+        default="14240", alias="TG_GSQL_PORT", description="The port for GSQL."
     )
 
-    @field_validator("host", mode="before")
-    def add_http_if_missing(cls, value: str | HttpUrl) -> str | HttpUrl:
+    # User/password authentication
+    username: Optional[str] = Field(
+        default="tigergraph",
+        alias="TG_USERNAME",
+        description="The username for TigerGraph authentication. Use only for user/password authentication.",
+    )
+    password: Optional[str] = Field(
+        default="tigergraph",
+        alias="TG_PASSWORD",
+        description="The password for TigerGraph authentication. Use only for user/password authentication.",
+    )
+
+    # Secret-based authentication
+    secret: Optional[str] = Field(
+        default=None,
+        alias="TG_SECRET",
+        description="The secret for TigerGraph authentication. Use only for secret-based authentication.",
+    )
+
+    # Token-based authentication
+    token: Optional[str] = Field(
+        default=None,
+        alias="TG_TOKEN",
+        description="The API token for TigerGraph authentication. Use only for token-based authentication.",
+    )
+
+    @model_validator(mode="before")
+    def check_exclusive_authentication(cls, values: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Ensure the host URL has an HTTP or HTTPS scheme.
+        Ensure that exactly one authentication method is provided:
+
+        - username/password together, or
+        - secret, or
+        - token.
+        If all fields are empty, username/password will default.
 
         Args:
-            value (str | HttpUrl): The input host value.
+            values: The input values for validation.
 
         Returns:
-            str | HttpUrl: The host value with an HTTP or HTTPS scheme.
+            The validated values.
 
         Raises:
-            ValueError: If the host is invalid.
+            ValueError: If more than one authentication method is provided.
         """
-        if isinstance(value, str) and not value.startswith(("http://", "https://")):
-            value = f"http://{value}"
-        return value
+        # Extract the values of the fields
+        username = values.get("username")
+        password = values.get("password")
+        secret = values.get("secret")
+        token = values.get("token")
+
+        # Case 1: If all fields are empty, set default values for username and password
+        if not username and not password and not secret and not token:
+            # If all fields are empty, username/password will default.
+            return values
+
+        # Case 2: Both username and password provided (valid)
+        if username and password:
+            # Case 2A: Ensure secret and token are not provided
+            if secret or token:
+                raise ValueError(
+                    "You can only use 'username/password' OR 'secret' OR 'token', not both."
+                )
+            return values
+
+        # Case 3: Secret is provided (valid)
+        if secret:
+            # Case 3A: Ensure username/password and token are not provided
+            if username or password or token:
+                raise ValueError(
+                    "You can only use 'username/password' OR 'secret' OR 'token', not both."
+                )
+            return values
+
+        # Case 4: API token is provided (valid)
+        if token:
+            # Case 4A: Ensure username/password and secret are not provided
+            if username or password or secret:
+                raise ValueError(
+                    "You can only use 'username/password' OR 'secret' OR 'token', not both."
+                )
+            return values
+
+        # Case 5: If none of the valid authentication methods are provided
+        raise ValueError(
+            "You must provide either 'username/password', 'secret', or 'token' for authentication."
+        )

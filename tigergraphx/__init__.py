@@ -1,8 +1,5 @@
 from .core import (
     Graph,
-    DiGraph,
-    UndiGraph,
-    HomoGraph,
 )
 from .config import (
     # base class for configurations
@@ -10,10 +7,12 @@ from .config import (
     # configurations for graph schema
     DataType,
     AttributeSchema,
+    AttributesType,
+    VectorAttributeSchema,
+    VectorAttributesType,
     NodeSchema,
     EdgeSchema,
     GraphSchema,
-    AttributesType,
     create_node_schema,
     create_edge_schema,
     # configurations for loading job
@@ -37,7 +36,7 @@ from .config import (
     BaseEmbeddingConfig,
     OpenAIEmbeddingConfig,
     BaseVectorDBConfig,
-    LanceDBConfig,
+    TigerVectorConfig,
     NanoVectorDBConfig,
 )
 from .graphrag import (
@@ -53,10 +52,10 @@ from .vector_search import (
     BaseEmbedding,
     OpenAIEmbedding,
     BaseVectorDB,
-    LanceDBManager,
+    TigerVectorManager,
     NanoVectorDBManager,
     BaseSearchEngine,
-    LanceDBSearchEngine,
+    TigerVectorSearchEngine,
     NanoVectorDBSearchEngine,
 )
 from .pipelines import ParquetProcessor
@@ -70,18 +69,17 @@ from .factories import create_openai_components
 __all__ = [
     # graph
     "Graph",
-    "DiGraph",
-    "UndiGraph",
-    "HomoGraph",
     # base class for configurations
     "BaseConfig",
     # configurations for graph schema
     "DataType",
     "AttributeSchema",
+    "AttributesType",
+    "VectorAttributeSchema",
+    "VectorAttributesType",
     "NodeSchema",
     "EdgeSchema",
     "GraphSchema",
-    "AttributesType",
     "create_node_schema",
     "create_edge_schema",
     # configurations for loading job
@@ -105,7 +103,7 @@ __all__ = [
     "BaseEmbeddingConfig",
     "OpenAIEmbeddingConfig",
     "BaseVectorDBConfig",
-    "LanceDBConfig",
+    "TigerVectorConfig",
     "NanoVectorDBConfig",
     # GraphRAG
     "BaseContextBuilder",
@@ -116,10 +114,10 @@ __all__ = [
     "BaseEmbedding",
     "OpenAIEmbedding",
     "BaseVectorDB",
-    "LanceDBManager",
+    "TigerVectorManager",
     "NanoVectorDBManager",
     "BaseSearchEngine",
-    "LanceDBSearchEngine",
+    "TigerVectorSearchEngine",
     "NanoVectorDBSearchEngine",
     # Pipelines
     "ParquetProcessor",

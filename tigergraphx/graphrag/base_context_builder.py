@@ -12,10 +12,10 @@ class BaseContextBuilder(ABC):
     Abstract base class for building context using graph data and a search engine.
 
     Attributes:
-        graph (Graph): The graph object.
-        single_batch (bool): Whether to process data in a single batch.
-        search_engine (Optional[BaseSearchEngine]): The search engine for retrieving top-k objects.
-        token_encoder (tiktoken.Encoding): Token encoder for text tokenization.
+        graph: The graph object.
+        single_batch: Whether to process data in a single batch.
+        search_engine: The search engine for retrieving top-k objects.
+        token_encoder: Token encoder for text tokenization.
     """
 
     def __init__(
@@ -29,10 +29,10 @@ class BaseContextBuilder(ABC):
         Initialize the BaseContextBuilder.
 
         Args:
-            graph (Graph): The graph object.
-            single_batch (bool): Whether to process data in a single batch.
-            search_engine (Optional[BaseSearchEngine]): The search engine for similarity searches.
-            token_encoder (Optional[tiktoken.Encoding]): Token encoder for text tokenization. Defaults to "cl100k_base".
+            graph: The graph object.
+            single_batch: Whether to process data in a single batch.
+            search_engine: The search engine for similarity searches.
+            token_encoder: Token encoder for text tokenization. Defaults to "cl100k_base".
         """
         self.graph = graph
         self.single_batch = single_batch
@@ -45,7 +45,7 @@ class BaseContextBuilder(ABC):
         Abstract method to build context.
 
         Returns:
-            str | List[str]: The generated context as a string or list of strings.
+            The generated context as a string or list of strings.
         """
         pass
 
@@ -60,13 +60,13 @@ class BaseContextBuilder(ABC):
         Convert graph data to a formatted string or list of strings in batches based on token count.
 
         Args:
-            graph_data (pd.DataFrame): The graph data to convert.
-            section_name (str): The section name for the header.
-            single_batch (bool, optional): Whether to process data in a single batch. Defaults to False.
-            max_tokens (int, optional): Maximum number of tokens per batch. Defaults to 12000.
+            graph_data: The graph data to convert.
+            section_name: The section name for the header.
+            single_batch: Whether to process data in a single batch. Defaults to False.
+            max_tokens: Maximum number of tokens per batch. Defaults to 12000.
 
         Returns:
-            str | List[str]: The formatted graph data as a string or list of strings.
+            The formatted graph data as a string or list of strings.
         """
         header = f"-----{section_name}-----\n" + "|".join(graph_data.columns) + "\n"
         content_rows = [
@@ -104,12 +104,12 @@ class BaseContextBuilder(ABC):
         Retrieve the top-k objects most similar to the query.
 
         Args:
-            query (str): The query string.
-            k (int, optional): The number of top results to retrieve. Defaults to 10.
-            **kwargs (Dict[str, Any]): Additional parameters for the search engine.
+            query: The query string.
+            k: The number of top results to retrieve. Defaults to 10.
+            **kwargs: Additional parameters for the search engine.
 
         Returns:
-            List[str]: A list of the top-k results.
+            A list of the top-k results.
 
         Raises:
             ValueError: If `k` is less than or equal to 0 or if the search engine is not initialized.
@@ -135,11 +135,11 @@ class BaseContextBuilder(ABC):
         Return the number of tokens in the given text.
 
         Args:
-            text (str): The text to tokenize.
-            token_encoder (Optional[tiktoken.Encoding]): The token encoder to use. Defaults to None.
+            text: The text to tokenize.
+            token_encoder: The token encoder to use. Defaults to None.
 
         Returns:
-            int: The number of tokens in the text.
+            The number of tokens in the text.
         """
         if token_encoder is None:
             token_encoder = tiktoken.get_encoding("cl100k_base")

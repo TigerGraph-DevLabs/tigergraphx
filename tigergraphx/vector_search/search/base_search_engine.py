@@ -12,8 +12,8 @@ class BaseSearchEngine(ABC):
         Initialize the search engine with an embedding model and a vector database.
 
         Args:
-            embedding_model (BaseEmbedding): The model used to generate text embeddings.
-            vector_db (BaseVectorDB): The vector database for storing and querying embeddings.
+            embedding_model: The model used to generate text embeddings.
+            vector_db: The vector database for storing and querying embeddings.
         """
         self.embedding_model = embedding_model
         self.vector_db = vector_db
@@ -23,12 +23,12 @@ class BaseSearchEngine(ABC):
         Convert text to embedding and search in the vector database.
 
         Args:
-            text (str): The input text to search.
-            k (int, optional): The number of top results to return. Defaults to 10.
-            **kwargs (Any): Additional arguments for the vector database query.
+            text: The input text to search.
+            k: The number of top results to return.
+            **kwargs: Additional arguments for the vector database query.
 
         Returns:
-            List[str]: A list of IDs corresponding to the search results.
+            A list of IDs corresponding to the search results.
         """
         embedding = await self.embedding_model.generate_embedding(text)
         results = self.vector_db.query(query_embedding=embedding, k=k, **kwargs)

@@ -1,6 +1,5 @@
 import logging
-from typing import Dict, List
-from urllib.parse import quote
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from .base_manager import BaseManager
 
@@ -19,6 +18,21 @@ class NodeManager(BaseManager):
             self._connection.upsertVertex(node_type, node_id, attr)
         except Exception as e:
             logger.error(f"Error adding node {node_id}: {e}")
+            return None
+
+    def add_nodes_from(
+        self,
+        normalized_nodes: List[Tuple[str, Dict[str, Any]]],
+        node_type: str,
+    ) -> Optional[int]:
+        # Call upsertVertices with the list of nodes and attributes
+        try:
+            result = self._connection.upsertVertices(
+                vertexType=node_type, vertices=normalized_nodes
+            )
+            return result
+        except Exception as e:
+            logger.error(f"Error adding nodes: {e}")
             return None
 
     def remove_node(self, node_id: str, node_type: str) -> bool:
@@ -56,19 +70,59 @@ class NodeManager(BaseManager):
         self,
         node_id: str,
         node_type: str,
-        edge_types: List | str,
-        num_edge_samples: int = 1000,
+        edge_types: Optional[Set[str]] = None,
     ) -> List:
+        gsql_script = self._create_gsql_get_node_edges(node_type, edge_types)
         try:
-            node_id = quote(node_id)
             params = {
-                "input": (node_id, node_type),
-                "edge_types": edge_types,
-                "num_edge_samples": num_edge_samples,
+                "input": node_id,
             }
-            result = self._connection.runInstalledQuery("api_get_node_edges", params)
-            if result:
+            result = self._connection.runInterpretedQuery(gsql_script, params)
+            if result and isinstance(result, list):
                 return result[0].get("edges")
         except Exception as e:
             logger.error(f"Error retrieving edges for node {node_id}: {e}")
         return []
+
+    def clear(self) -> bool:
+        try:
+            # Attempt to delete vertices for each node type
+            for node_type in self._graph_schema.nodes:
+                self._connection.delVertices(node_type)
+            return True
+        except Exception as e:
+            logger.error(f"Error clearing graph: {e}")
+            return False
+
+    def _create_gsql_get_node_edges(
+        self, node_type: str, edge_types: Optional[Set[str]] = None
+    ) -> str:
+        """
+        Core function to generate a GSQL query to get the edges of a node
+        """
+        graph_name = self._graph_schema.graph_name
+        if not edge_types:
+            from_clause = "FROM Nodes:s -(:e)- :t"
+        else:
+            if (isinstance(edge_types, list) and len(edge_types) == 1) or isinstance(
+                edge_types, str
+            ):
+                edge_type = edge_types if isinstance(edge_types, str) else edge_types[0]
+                from_clause = f"FROM Nodes:s -({edge_type}:e)- :t"
+            else:
+                edge_types_str = "|".join(edge_types)
+                from_clause = f"FROM Nodes:s -({edge_types_str}:e)- :t"
+
+        # Generate the query
+        query = f"""
+INTERPRET QUERY(VERTEX<{node_type}> input) FOR GRAPH {graph_name} {{
+  SetAccum<EDGE> @@set_edge;
+  Nodes = {{input}};
+  Nodes =
+    SELECT t
+    {from_clause}
+    ACCUM @@set_edge += e
+  ;
+  PRINT @@set_edge AS edges;
+}}"""
+        return query.strip()

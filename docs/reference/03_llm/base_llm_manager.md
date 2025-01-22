@@ -1,3 +1,0 @@
-# BaseLLMManager
-
-::: tigergraphx.llm.BaseLLMManager

@@ -4,53 +4,68 @@ class NodeView:
 
     def __getitem__(self, key):
         """
-        Retrieve specific node data.
-        - For homogeneous graphs: key is `node_id`.
-        - For heterogeneous graphs: key is `(node_type, node_id)`.
+        Retrieve data associated with a node.
+
+        The interpretation of `key` depends on the graph's node type configuration:
+
+        - **Single Node Type**: Pass the node’s identifier as `node_id`. In this scenario, since the graph contains only one node type, the type is automatically assigned based on the provided `node_id`. You don’t need to specify the node type explicitly.
+        - **Multiple Node Types**: Pass a tuple in the form `(node_type, node_id)`.
         """
-        if self.graph.node_type:
+        if isinstance(key, str):
             # Homogeneous: Use the default node_type
             node_id = key
-            node_type = self.graph.node_type
+            return self.graph.get_node_data(node_id=node_id)
         elif isinstance(key, tuple) and len(key) == 2:
             # Heterogeneous: Expect (node_type, node_id)
             node_type, node_id = key
+            return self.graph.get_node_data(node_type=node_type, node_id=node_id)
         else:
             raise ValueError(
-                "Key must be node_id for homogeneous graphs or (node_type, node_id) for heterogeneous graphs."
+                "Key must be node_id for the graphs with single node type"
+                "or (node_type, node_id) for the graphs with multiple node type."
             )
-        return self.graph._get_node_data(node_type=node_type, node_id=node_id)
 
     def __contains__(self, key):
-        """Check if a node exists."""
-        if self.graph.node_type:
+        """
+        Check if a node exists.
+
+        The interpretation of `key` depends on the graph's node type configuration:
+
+        - **Single Node Type**: Pass the node’s identifier as `node_id`. In this scenario, since the graph contains only one node type, the type is automatically assigned based on the provided `node_id`. You don’t need to specify the node type explicitly.
+        - **Multiple Node Types**: Pass a tuple in the form `(node_type, node_id)`.
+        """
+        if isinstance(key, str):
             node_id = key
-            node_type = self.graph.node_type
+            return self.graph.has_node(node_id=node_id)
         elif isinstance(key, tuple) and len(key) == 2:
             node_type, node_id = key
+            return self.graph.has_node(node_type=node_type, node_id=node_id)
         else:
             raise ValueError(
-                "Key must be node_id for homogeneous graphs or (node_type, node_id) for heterogeneous graphs."
+                "Key must be node_id for the graphs with single node type"
+                "or (node_type, node_id) for the graphs with multiple node type."
             )
-        return self.graph._has_node(node_type=node_type, node_id=node_id)
 
     def __iter__(self):
-        """Iterate over all nodes.
-        For homogeneous: return node_id.
-        For heterogeneous: return (node_type, node_id).
         """
-        nodes = self.graph._get_nodes()
-        if self.graph.node_type:
-            return iter(
-                node["v_id"] for _, node in nodes.iterrows()
-            )  # Homogeneous: Only return IDs
-        return iter(
-            (node["v_type"], node["v_id"]) for _, node in nodes.iterrows()
-        )  # Heterogeneous: Return (type, id)
+        Iterate over all nodes.
+
+        The return value depends on the graph’s node type configuration:
+
+        - **Single Node Type**: Each iteration returns a `node_id`.
+        - **Multiple Node Types**: Each iteration returns a tuple `(node_type, node_id)`.
+        """
+        # Get all nodes
+        nodes = self.graph.get_nodes(all_node_types=True)
+        # If the graph has only one node type, then only return IDs
+        if len(self.graph.node_types) == 1:
+            return iter(node["v_id"] for _, node in nodes.iterrows())
+        # If the graph has multiple one node type, then only return (type, id)
+        return iter((node["v_type"], node["v_id"]) for _, node in nodes.iterrows())
 
     def __len__(self):
         """Return the number of nodes."""
-        return self.graph._number_of_nodes()
+        return self.graph.number_of_nodes()
 
     # def __call__(self, node_type=None, data=False, default=None):
     #     """

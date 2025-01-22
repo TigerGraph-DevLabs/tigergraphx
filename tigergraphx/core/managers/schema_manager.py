@@ -1,5 +1,6 @@
 import logging
 from typing import Dict, Literal, Optional
+from pathlib import Path
 
 from .base_manager import BaseManager
 
@@ -20,103 +21,108 @@ class SchemaManager(BaseManager):
         return self._graph_schema.model_dump()
 
     def create_schema(self, drop_existing_graph=False) -> bool:
-        logger.info(
-            "Starting schema creation for graph: %s", self._graph_schema.graph_name
-        )
-
-        # Drop graph if drop_existing_graph is True
-        logger.info("Checking if graph exists: %s", self._graph_schema.graph_name)
+        # Check whether the graph exists
         is_graph_existing = self._check_graph_exists()
-        if drop_existing_graph and is_graph_existing:
-            gsql_script = self._create_gsql_drop_graph(self._graph_schema.graph_name)
-            result = self._connection.gsql(gsql_script)
 
-        # Create the schema
+        graph_name = self._graph_schema.graph_name
+        if drop_existing_graph and is_graph_existing:
+            self.drop_graph()
+
         if not is_graph_existing or drop_existing_graph:
-            gsql_script = self._create_gsql_graph_schema(self._graph_schema)
-            result = self._connection.gsql(gsql_script)
-            if "Failed to create schema change jobs" in result:
+            # Create schema
+            gsql_graph_schema = self._create_gsql_graph_schema()
+            logger.debug(f"Generated GSQL graph schema: {gsql_graph_schema}")
+            logger.info(f"Creating schema for graph: {graph_name}...")
+            result = self._connection.gsql(gsql_graph_schema)
+            logger.debug(f"GSQL response: {result}")
+            if f"The graph {graph_name} is created" not in result:
+                error_msg = f"Graph creation failed. GSQL response: {result}"
+                logger.error(error_msg)
+                raise RuntimeError(error_msg)
+            if "Successfully created schema change jobs" not in result:
                 error_msg = (
                     f"Schema change job creation failed. GSQL response: {result}"
                 )
                 logger.error(error_msg)
                 raise RuntimeError(error_msg)
+            if "Local schema change succeeded" not in result:
+                error_msg = f"Schema change failed. GSQL response: {result}"
+                logger.error(error_msg)
+                raise RuntimeError(error_msg)
+            if "Successfully dropped jobs" not in result:
+                error_msg = f"Schema change job cleanup failed. GSQL response: {result}"
+                logger.error(error_msg)
+                raise RuntimeError(error_msg)
+            logger.info("Graph schema created successfully.")
+
+            # Add vector attributes
+            gsql_add_vector_attr = self._create_gsql_add_vector_attr()
+            if gsql_add_vector_attr:
+                logger.debug(
+                    f"Generated GSQL for vector attributes: {gsql_add_vector_attr}"
+                )
+                logger.info(f"Adding vector attribute(s) for graph: {graph_name}...")
+                result = self._connection.gsql(gsql_add_vector_attr)
+                logger.debug(f"GSQL response: {result}")
+                if f"Using graph '{graph_name}'" not in result:
+                    error_msg = (
+                        f"Failed to use graph '{graph_name}'. GSQL response: {result}"
+                    )
+                    logger.error(error_msg)
+                    raise RuntimeError(error_msg)
+                if "Successfully created schema change jobs" not in result:
+                    error_msg = (
+                        f"Schema change job creation failed. GSQL response: {result}"
+                    )
+                    logger.error(error_msg)
+                    raise RuntimeError(error_msg)
+                if "Local schema change succeeded" not in result:
+                    error_msg = f"Schema change failed. GSQL response: {result}"
+                    logger.error(error_msg)
+                    raise RuntimeError(error_msg)
+                if "Successfully dropped jobs" not in result:
+                    error_msg = (
+                        f"Schema change job cleanup failed. GSQL response: {result}"
+                    )
+                    logger.error(error_msg)
+                    raise RuntimeError(error_msg)
+                if "Query installation finished" not in result:
+                    error_msg = f"Query installation failed. GSQL response: {result}"
+                    logger.error(error_msg)
+                    raise RuntimeError(error_msg)
+                logger.info("Vector attribute(s) added successfully.")
+
             return True
+
+        logger.info(f"Graph '{graph_name}' already exists. Skipping graph creation.")
         return False
 
-    @staticmethod
-    def get_schema_from_db(
-        graph_name: str,
-        tigergraph_connection_config: Optional[TigerGraphConnectionConfig] = None,
-    ) -> GraphSchema:
-        # Create a minimal GraphSchema to initialize the context
-        initial_graph_schema = GraphSchema(graph_name=graph_name, nodes={}, edges={})
-        context = GraphContext(
-            graph_schema=initial_graph_schema,
-            tigergraph_connection_config=tigergraph_connection_config,
-        )
-        # Retrieve the schema from TigerGraph DB
-        raw_schema = context.connection.getSchema()
-        # Construct nodes dictionary
-        nodes = {}
-        for vertex in raw_schema["VertexTypes"]:
-            # Collect attributes
-            attributes = {
-                attr["AttributeName"]: {
-                    "data_type": attr["AttributeType"]["Name"],
-                    "default_value": attr.get("DefaultValue"),
-                }
-                for attr in vertex["Attributes"]
-            }
-            # Include primary key as an attribute if PrimaryIdAsAttribute is True
-            primary_id = vertex["PrimaryId"]
-            if primary_id["PrimaryIdAsAttribute"]:
-                attributes[primary_id["AttributeName"]] = {
-                    "data_type": primary_id["AttributeType"]["Name"],
-                    "default_value": None,  # Primary keys typically do not have default values
-                }
-            nodes[vertex["Name"]] = {
-                "primary_key": primary_id["AttributeName"],
-                "attributes": attributes,
-            }
-        # Construct edges dictionary
-        edges = {
-            edge["Name"]: {
-                "is_directed_edge": edge["IsDirected"],
-                "from_node_type": edge["FromVertexTypeName"],
-                "to_node_type": edge["ToVertexTypeName"],
-                "attributes": {
-                    attr["AttributeName"]: {
-                        "data_type": attr["AttributeType"]["Name"],
-                        "default_value": attr.get("DefaultValue"),
-                    }
-                    for attr in edge["Attributes"]
-                },
-            }
-            for edge in raw_schema["EdgeTypes"]
-        }
-        # Combine into a dictionary format for GraphSchema.ensure_config
-        schema_config = {
-            "graph_name": graph_name,
-            "nodes": nodes,
-            "edges": edges,
-        }
-        # Use ensure_config to construct the final GraphSchema
-        return GraphSchema.ensure_config(schema_config)
+    def drop_graph(self) -> None:
+        graph_name = self._graph_schema.graph_name
+        logger.info(f"Dropping graph: {graph_name}...")
+        gsql_script = self._create_gsql_drop_graph()
+        result = self._connection.gsql(gsql_script)
+        logger.debug(result)
+        if f"The graph {graph_name} is dropped" not in result:
+            error_msg = f"Failed to drop the graph. GSQL response: {result}"
+            logger.error(error_msg)
+            raise RuntimeError(error_msg)
+        logger.info("Graph dropped successfully.")
 
     def _check_graph_exists(self) -> bool:
         """Check if the specified graph name exists in the gsql_script."""
-        result = self._connection.gsql(f"USE Graph {self._graph_schema.graph_name}")
+        graph_name = self._graph_schema.graph_name
+        result = self._connection.gsql(f"USE Graph {graph_name}")
         logger.info(
             "Graph existence check for %s: %s",
-            self._graph_schema.graph_name,
+            graph_name,
             "exists" if "Using graph" in result else "does not exist",
         )
         return "Using graph" in result
 
-    @staticmethod
-    def _create_gsql_drop_graph(graph_name: str) -> str:
+    def _create_gsql_drop_graph(self) -> str:
         # Generating the gsql script to drop graph
+        graph_name = self._graph_schema.graph_name
         gsql_script = f"""
 USE GRAPH {graph_name}
 DROP QUERY *
@@ -125,11 +131,11 @@ DROP GRAPH {graph_name}
 """
         return gsql_script.strip()
 
-    @staticmethod
-    def _create_gsql_graph_schema(schema_config: GraphSchema) -> str:
+    def _create_gsql_graph_schema(self) -> str:
         # Extracting node attributes
+        graph_schema = self._graph_schema
         node_definitions = []
-        for node_name, node_schema in schema_config.nodes.items():
+        for node_name, node_schema in graph_schema.nodes.items():
             primary_key_name = node_schema.primary_key
 
             # Extract the primary ID type
@@ -153,13 +159,32 @@ DROP GRAPH {graph_name}
 
         # Extracting edge attributes
         edge_definitions = []
-        for edge_name, edge_schema in schema_config.edges.items():
-            edge_attr_str = ", ".join(
-                [
-                    f"{attribute_name} {attribute_schema.data_type.value}"
-                    for attribute_name, attribute_schema in edge_schema.attributes.items()
-                ]
-            )
+        for edge_name, edge_schema in graph_schema.edges.items():
+            edge_attr_str = []
+
+            # Separate out the regular attributes and discriminator attributes
+            regular_attrs = []
+            discriminator_attrs = []
+            for attribute_name, attribute_schema in edge_schema.attributes.items():
+                if attribute_name in edge_schema.discriminator:
+                    # This attribute is part of the edge identifier
+                    discriminator_attrs.append(
+                        f"{attribute_name} {attribute_schema.data_type.value}"
+                    )
+                else:
+                    # This attribute is a regular edge attribute
+                    regular_attrs.append(
+                        f"{attribute_name} {attribute_schema.data_type.value}"
+                    )
+
+            # Combine regular and discriminator attributes
+            if discriminator_attrs:
+                discriminator_str = f"DISCRIMINATOR({', '.join(discriminator_attrs)})"
+                edge_attr_str.append(discriminator_str)
+
+            # Adding regular attributes to edge definition string
+            if regular_attrs:
+                edge_attr_str.append(", ".join(regular_attrs))
 
             # Construct the edge definition, with conditional attribute string and direction
             edge_type_str = "DIRECTED" if edge_schema.is_directed_edge else "UNDIRECTED"
@@ -171,23 +196,31 @@ DROP GRAPH {graph_name}
 
             edge_definitions.append(
                 f"ADD {edge_type_str} EDGE {edge_name}(FROM {edge_schema.from_node_type}, TO {edge_schema.to_node_type}"
-                + (f", {edge_attr_str}" if edge_attr_str else "")
+                + (f", {', '.join(edge_attr_str)}" if edge_attr_str else "")
                 + f"){reverse_edge_clause};"
             )
 
         # Generating the full schema string
-        graph_name = schema_config.graph_name
-        gsql_script = f"""
+        graph_name = graph_schema.graph_name
+        if len(node_definitions) + len(edge_definitions) == 0:
+            gsql_script = f"""
+# 1. Create graph
+CREATE GRAPH {graph_name} ()
+"""
+        else:
+            node_definitions_str = "\n  ".join(node_definitions)
+            edge_definitions_str = "\n  ".join(edge_definitions)
+            gsql_script = f"""
 # 1. Create graph
 CREATE GRAPH {graph_name} ()
 
 # 2. Create schema_change job
 CREATE SCHEMA_CHANGE JOB schema_change_job_for_graph_{graph_name} FOR GRAPH {graph_name} {{
   # 2.1 Create vertices
-  {'\n  '.join(node_definitions)}
+  {node_definitions_str}
 
   # 2.2 Create edges
-  {'\n  '.join(edge_definitions)}
+  {edge_definitions_str}
 }}
 
 # 3. Run schema_change job
@@ -195,6 +228,198 @@ RUN SCHEMA_CHANGE JOB schema_change_job_for_graph_{graph_name}
 
 # 4. Drop schema_change job
 DROP JOB schema_change_job_for_graph_{graph_name}
+
+# 5. Install functions in the package gds
+USE GLOBAL
+IMPORT PACKAGE GDS
+INSTALL FUNCTION GDS.**
 """
-        logger.debug("GSQL script for dropping graph: %s", gsql_script)
+        logger.debug("GSQL script for creating graph: %s", gsql_script)
         return gsql_script.strip()
+
+    def _create_gsql_add_vector_attr(self) -> str:
+        """
+        Generate the GSQL script to add vector attributes to vertices.
+
+        Args:
+            graph_schema (GraphSchema): The graph schema configuration.
+
+        Returns:
+            str: The generated GSQL script.
+        """
+        graph_schema = self._graph_schema
+        # List to hold GSQL commands for adding vector attributes
+        vector_attribute_statements = []
+
+        # List to hold GSQL commands for creating vector search query
+        query_statements = []
+
+        # Iterate over all nodes and their vector attributes
+        for node_type, node_schema in graph_schema.nodes.items():
+            if node_schema.vector_attributes:
+                for (
+                    vector_attribute_name,
+                    vector_attr,
+                ) in node_schema.vector_attributes.items():
+                    # Extract the fields from VectorAttributeSchema
+                    dimension = vector_attr.dimension
+                    index_type = vector_attr.index_type
+                    data_type = vector_attr.data_type
+                    metric = vector_attr.metric
+
+                    # Generate GSQL for each vector attribute in the node schema
+                    vector_attribute_statements.append(
+                        f"ALTER VERTEX {node_type} ADD VECTOR ATTRIBUTE {vector_attribute_name}"
+                        f'(DIMENSION={dimension}, INDEXTYPE="{index_type}", '
+                        f'DATATYPE="{data_type}", METRIC="{metric}");'
+                    )
+                    query_statements.append(
+                        f"""
+CREATE OR REPLACE QUERY api_search_{node_type}_{vector_attribute_name} (
+  UINT k=10,
+  LIST<float> query_vector,
+  SET<VERTEX> set_candidate
+) SYNTAX v3 {{
+  MapAccum<Vertex, Float> @@map_node_distance;
+
+  IF set_candidate.size() > 0 THEN
+    Candidates = {{set_candidate}};
+    Nodes = vectorSearch(
+      {{{node_type}.{vector_attribute_name}}},
+      query_vector,
+      k,
+      {{ distance_map: @@map_node_distance, candidate_set: Candidates}}
+    );
+  ELSE
+    Nodes = vectorSearch(
+      {{{node_type}.{vector_attribute_name}}},
+      query_vector,
+      k,
+      {{ distance_map: @@map_node_distance}}
+    );
+  END;
+
+  PRINT @@map_node_distance AS map_node_distance;
+  PRINT Nodes;
+}}
+""".strip()
+                    )
+
+        # Combine all statements and wrap them into the full GSQL script
+        if len(vector_attribute_statements) == 0:
+            gsql_script = ""
+        else:
+            query_statements.append(
+                """
+CREATE OR REPLACE QUERY api_fetch(
+  SET<VERTEX> input
+) SYNTAX v3 {
+  gds.vector.distance([0], [0], "L2"); // TODO: Remove this line
+  Nodes = {input};
+  PRINT Nodes WITH VECTOR;
+}
+""".strip()
+            )
+            vector_attribute_statements_str = "\n  ".join(vector_attribute_statements)
+            query_statements_str = "\n".join(query_statements)
+            gsql_script = f"""
+# 1. Use graph
+USE GRAPH {graph_schema.graph_name}
+
+# 2. Create schema_change job
+CREATE SCHEMA_CHANGE JOB add_vector_attr_for_graph_{graph_schema.graph_name} FOR GRAPH {graph_schema.graph_name} {{
+  # 2.1 Add vector attributes
+  {vector_attribute_statements_str}
+}}
+
+# 3. Run schema_change job
+RUN SCHEMA_CHANGE JOB add_vector_attr_for_graph_{graph_schema.graph_name}
+
+# 4. Drop schema_change job
+DROP JOB add_vector_attr_for_graph_{graph_schema.graph_name}
+"""
+            if len(query_statements) > 0:
+                gsql_script = f"""
+{gsql_script}
+{query_statements_str}
+INSTALL QUERY *
+"""
+        logger.debug("GSQL script for adding vector attributes: %s", gsql_script)
+        return gsql_script.rstrip()
+
+    @staticmethod
+    def get_schema_from_db(
+        graph_name: str,
+        tigergraph_connection_config: Optional[
+            TigerGraphConnectionConfig | Dict | str | Path
+        ] = None,
+    ) -> Dict:
+        # Create a minimal GraphSchema to initialize the context
+        initial_graph_schema = GraphSchema(graph_name=graph_name, nodes={}, edges={})
+        context = GraphContext(
+            graph_schema=initial_graph_schema,
+            tigergraph_connection_config=tigergraph_connection_config,
+        )
+        # Retrieve the schema from TigerGraph DB
+        raw_schema = context.connection.getSchema()
+        logger.debug(f"The raw schema: {raw_schema}")
+
+        # Construct nodes dictionary
+        nodes = {}
+        for vertex in raw_schema["VertexTypes"]:
+            primary_id = vertex["PrimaryId"]
+            if not primary_id["PrimaryIdAsAttribute"]:
+                raise ValueError(
+                    f"PrimaryIdAsAttribute must be set to True for node type {vertex['Name']}."
+                )
+            attributes = {
+                primary_id["AttributeName"]: {
+                    "data_type": primary_id["AttributeType"]["Name"],
+                    "default_value": None,
+                }
+            }
+            attributes.update(
+                {
+                    attr["AttributeName"]: {
+                        "data_type": attr["AttributeType"]["Name"],
+                        "default_value": attr.get("DefaultValue"),
+                    }
+                    for attr in vertex["Attributes"]
+                }
+            )
+            nodes[vertex["Name"]] = {
+                "primary_key": primary_id["AttributeName"],
+                "attributes": attributes,
+            }
+
+        # Construct edges dictionary
+        edges = {}
+        for edge in raw_schema["EdgeTypes"]:
+            attributes = {
+                attr["AttributeName"]: {
+                    "data_type": attr["AttributeType"]["Name"],
+                    "default_value": attr.get("DefaultValue"),
+                }
+                for attr in edge["Attributes"]
+            }
+            discriminator = {
+                attr["AttributeName"]
+                for attr in edge["Attributes"]
+                if attr.get("IsDiscriminator")
+            }
+            edges[edge["Name"]] = {
+                "is_directed_edge": edge["IsDirected"],
+                "from_node_type": edge["FromVertexTypeName"],
+                "to_node_type": edge["ToVertexTypeName"],
+                "discriminator": discriminator,
+                "attributes": attributes,
+            }
+
+        # Combine into a dictionary format
+        graph_schema = {
+            "graph_name": graph_name,
+            "nodes": nodes,
+            "edges": edges,
+        }
+        logger.debug(f"The generated schema: {graph_schema}")
+        return graph_schema

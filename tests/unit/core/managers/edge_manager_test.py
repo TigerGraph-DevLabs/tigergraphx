@@ -16,61 +16,49 @@ class TestEdgeManager:
         mock_context.connection = self.mock_connection
         self.edge_manager = EdgeManager(mock_context)
 
-    def test_add_edge_success(self):
-        src_node_id = "node1"
-        tgt_node_id = "node2"
-        src_node_type = "Person"
-        edge_type = "Friend"
-        tgt_node_type = "Person"
-        attributes = {"since": 2021}
+    def test_add_edges_from_valid_data(self):
+        """Test adding edges with valid data, including normalization."""
+        normalized_edges = [
+            ("1", "2", {}),  # Normalized edge with string IDs
+            ("NodeB", "NodeC", {"weight": 1.0}),  # Already normalized
+        ]
+        src_node_type = "Entity"
+        edge_type = "transfer"
+        tgt_node_type = "Entity"
 
-        self.mock_connection.upsertEdge.return_value = None
-
-        result = self.edge_manager.add_edge(
-            src_node_id,
-            tgt_node_id,
-            src_node_type,
-            edge_type,
-            tgt_node_type,
-            **attributes,
+        self.mock_connection.upsertEdges.return_value = len(normalized_edges)
+        result = self.edge_manager.add_edges_from(
+            normalized_edges, src_node_type, edge_type, tgt_node_type
         )
 
-        self.mock_connection.upsertEdge.assert_called_once_with(
-            src_node_type,
-            src_node_id,
-            edge_type,
-            tgt_node_type,
-            tgt_node_id,
-            attributes,
+        self.mock_connection.upsertEdges.assert_called_once_with(
+            sourceVertexType=src_node_type,
+            edgeType=edge_type,
+            targetVertexType=tgt_node_type,
+            edges=normalized_edges,
         )
-        assert result is None
+        assert result == len(normalized_edges)
 
-    def test_add_edge_failure(self):
-        src_node_id = "node1"
-        tgt_node_id = "node2"
-        src_node_type = "Person"
-        edge_type = "Friend"
-        tgt_node_type = "Person"
-        attributes = {"since": 2021}
+    def test_add_edges_from_upsert_exception(self):
+        """Test that an exception in upsertEdges is handled correctly."""
+        normalized_edges = [
+            ("1", "2", {"attr": "value"}),
+            ("NodeA", "NodeB", {}),
+        ]
+        src_node_type = "Entity"
+        edge_type = "transfer"
+        tgt_node_type = "Entity"
 
-        self.mock_connection.upsertEdge.side_effect = Exception("Error")
-
-        result = self.edge_manager.add_edge(
-            src_node_id,
-            tgt_node_id,
-            src_node_type,
-            edge_type,
-            tgt_node_type,
-            **attributes,
+        self.mock_connection.upsertEdges.side_effect = Exception("Upsert error")
+        result = self.edge_manager.add_edges_from(
+            normalized_edges, src_node_type, edge_type, tgt_node_type
         )
 
-        self.mock_connection.upsertEdge.assert_called_once_with(
-            src_node_type,
-            src_node_id,
-            edge_type,
-            tgt_node_type,
-            tgt_node_id,
-            attributes,
+        self.mock_connection.upsertEdges.assert_called_once_with(
+            sourceVertexType=src_node_type,
+            edgeType=edge_type,
+            targetVertexType=tgt_node_type,
+            edges=normalized_edges,
         )
         assert result is None
 

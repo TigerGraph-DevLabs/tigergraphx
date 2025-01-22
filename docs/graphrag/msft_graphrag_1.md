@@ -1,4 +1,4 @@
-# Supporting Microsoft’s GraphRAG: Part 1
+# Supporting Microsoft’s GraphRAG: Part 1 - Setup and Data Preparation
 
 [Microsoft's GraphRAG](https://microsoft.github.io/graphrag/) is a method for creating structured knowledge graphs from raw text, enhancing Retrieval Augmented Generation (RAG) tasks. By organizing information hierarchically, it enables more efficient data retrieval and summarization.
 
@@ -6,8 +6,6 @@
 
 - **Indexing**: Utilize **Microsoft's GraphRAG** to convert unstructured documents into Parquet files.
 - **Data Preprocessing**: Learn how to use utility methods provided by **TigerGraphX** to transform Parquet files into CSV files compatible with TigerGraph.
-- **Schema Design**: Understand how to design a graph schema for storing your data.
-- **Data Loading**: Map the CSV files to the graph schema and load them into **TigerGraph** seamlessly.
 
 <!-- ![Indexing](../images/graphrag/indexing.png){: style="height:300px; display: block; margin: 0 auto;"} -->
 
@@ -36,7 +34,13 @@ mkdir -p data/input
 ```
 
 #### Add Documents to the Input Folder
-Copy your documents (e.g., `fin.txt`) into the `data/input` folder.
+Copy your documents into the `data/input` folder.
+
+For this demo, we will use the dataset *A Christmas Carol* by Charles Dickens.
+
+```
+curl https://www.gutenberg.org/cache/epub/24022/pg24022.txt -o data/input/book.txt
+```
 
 ---
 
@@ -99,6 +103,16 @@ python3 data_import/convert_parquet_to_tg_csv.py \
 --output_dir data/tg_csv
 ```
 
+### Export Data from LanceDB to CSV
+
+Use the script below to export data from LanceDB into CSV files that are compatible with TigerGraph. You can access the Python script [here](https://github.com/xuanleilin/tigergraphx/blob/main/applications/msft_graphrag/data_import/export_lancedb_to_csv.py).
+
+```bash
+python3 data_import/export_lancedb_to_csv.py \
+--input_dir data/output/lancedb \
+--output_dir data/tg_csv
+```
+
 ### Transfer CSV Files to TigerGraph Server
 
 Transfer the generated CSV files to your TigerGraph server. Use the following command, replacing `username` and `tigergraph-server` with your server credentials:
@@ -109,60 +123,9 @@ scp data/tg_csv/* username@tigergraph-server:/home/tigergraph/data/graphrag
 
 ---
 
-## Create a Graph
-TigerGraph is a schema-based database, which requires defining a schema to structure your graph. This schema specifies the graph name, nodes (vertices), edges (relationships), and their respective attributes.
-
-Now, let's define the schema using Python. You can execute the following code in a Python shell or Jupyter Notebook. To access the original `.ipynb` file, download it from [msft_graphrag_1_1.ipynb](https://github.com/xuanleilin/tigergraphx/tree/main/docs/graphrag/msft_graphrag_1_1.ipynb).
-
-### Define a Graph Schema
-
-In this example, we will initialize a graph using a schema defined in [a YAML file](https://github.com/xuanleilin/tigergraphx/blob/main/applications/msft_graphrag/query/resources/graph_schema.yaml). The schema structure is represented visually in the following image.
-
-![image](../images/graphrag/schema.png)
-
-First, convert the YAML file into a graph schema using the `GraphSchema.ensure_config` method.
-```py
-from tigergraphx import Graph, GraphSchema, LoadingJobConfig, TigerGraphConnectionConfig
-resource_dir = "../../applications/msft_graphrag/query/resources/"
-schema_path = resource_dir + "graph_schema.yaml"
-graph_schema=GraphSchema.ensure_config(schema_path)
-```
-
-### Define the TigerGraph Connection Configuration
-In addition to defining the schema, a connection configuration is necessary to establish communication with the TigerGraph server.
-
-```py
-connection = TigerGraphConnectionConfig.ensure_config({
-    "host": "http://127.0.0.1",
-    "username": "tigergraph",
-    "password": "tigergraph",
-})
-```
-
-### Create a Graph
-Running the following command will create a graph using the user-defined schema if it does not already exist. If the graph exists, the command will return the existing graph. To overwrite the existing graph, set the drop_existing_graph parameter to True. Note that creating the graph may take several seconds.
-
-```py
-graph = Graph(
-    graph_schema=graph_schema,
-    tigergraph_connection_config=connection,
-    drop_existing_graph=False,
-)
-```
-
-## Load Data to TigerGraph
-We will load data into the graph using a pre-defined loading job configuration. The configuration is stored in [a YAML file](https://github.com/xuanleilin/tigergraphx/blob/main/applications/msft_graphrag/query/resources/loading_job_config.yaml).
-
-```py
-loading_job_path = resource_dir + "loading_job_config.yaml"
-graph.load_data(loading_job_config=LoadingJobConfig.ensure_config(loading_job_path))
-```
-
----
-
 ## Next Steps
 
-- [Supporting Microsoft’s GraphRAG: Part 2](msft_graphrag_2.ipynb): Use Jupyter Notebook to explore graph data and perform Graph Analysis.
+- [Supporting Microsoft’s GraphRAG: Part 2](msft_graphrag_2.ipynb): Use Jupyter Notebook to create the schema and load data into TigerGraph.
 
 ---
 

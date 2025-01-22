@@ -1,4 +1,6 @@
 import logging
+from typing import Dict
+from pathlib import Path
 
 from .base_manager import BaseManager
 
@@ -16,31 +18,49 @@ class DataManager(BaseManager):
     def __init__(self, context: GraphContext):
         super().__init__(context)
 
-    def load_data(self, loading_job_config: LoadingJobConfig):
+    def load_data(self, loading_job_config: LoadingJobConfig | Dict | str | Path):
+        loading_job_config = LoadingJobConfig.ensure_config(loading_job_config)
         logger.info(
-            "Starting data loading for job: %s", loading_job_config.loading_job_name
+            f"Initiating data load for job: {loading_job_config.loading_job_name}...",
         )
-        gsql_script = self._create_gsql_load_data(
-            loading_job_config, self._graph_schema
-        )
+        gsql_script = self._create_gsql_load_data(loading_job_config)
 
         result = self._connection.gsql(gsql_script)
+        graph_name = self._graph_schema.graph_name
         if "LOAD SUCCESSFUL for loading jobid" not in result:
-            error_msg = f"Data loading failed. GSQL response: {result}"
+            error_msg = f"Data load process failed. GSQL response: {result}"
             logger.error(error_msg)
             raise RuntimeError(error_msg)
+
+        if f"Using graph '{graph_name}'" not in result:
+            error_msg = f"Failed to set graph context for '{graph_name}'. GSQL response: {result}"
+            logger.error(error_msg)
+            raise RuntimeError(error_msg)
+        if "Successfully created loading jobs:" not in result:
+            error_msg = f"Loading job creation failed. GSQL response: {result}"
+            logger.error(error_msg)
+            raise RuntimeError(error_msg)
+        if "Successfully dropped jobs" not in result:
+            error_msg = f"Loading job cleanup failed. GSQL response: {result}"
+            logger.error(error_msg)
+            raise RuntimeError(error_msg)
+        logger.info("Data load completed successfully.")
 
     def _create_gsql_load_data(
         self,
         loading_job_config: LoadingJobConfig,
-        graph_schema: GraphSchema,
     ) -> str:
+        graph_schema = self._graph_schema
         # Define file paths for each file in config with numbered file names
         files = loading_job_config.files
-        define_files = [
-            f'DEFINE FILENAME {file.file_alias}{" = " + f"\"{file.file_path}\"" if file.file_path else ""};'
-            for file in files
-        ]
+        define_files = []
+        for file in files:
+            if file.file_path:
+                define_files.append(
+                    f'DEFINE FILENAME {file.file_alias} = "{file.file_path}";'
+                )
+            else:
+                define_files.append(f"DEFINE FILENAME {file.file_alias};")
 
         # Build LOAD statements for each file
         load_statements = []
@@ -58,7 +78,7 @@ class DataManager(BaseManager):
 
             mapping_statements = []
             # Generate LOAD statements for each node mapping
-            for mapping in file.node_mappings or []:
+            for mapping in file.node_mappings:
                 # Find the corresponding NodeSchema by matching the target name with node_type keys
                 node_type = mapping.target_name
                 node_schema = graph_schema.nodes.get(node_type)
@@ -66,6 +86,27 @@ class DataManager(BaseManager):
                 if not node_schema:
                     raise ValueError(
                         f"Node type '{node_type}' does not exist in the graph."
+                    )
+
+                # Ensure that primary key is in the mapping
+                if node_schema.primary_key not in mapping.attribute_column_mappings:
+                    raise ValueError(
+                        f"The primary key '{node_schema.primary_key}' is not in the attribute mapping "
+                        f"for the node type '{node_type}' in file alias '{file.file_alias}'."
+                    )
+
+                # Ensure that every attribute in mapping exists in node_schema.attributes
+                missing_keys = [
+                    key
+                    for key in mapping.attribute_column_mappings.keys()
+                    if key not in node_schema.attributes
+                    and key not in node_schema.vector_attributes
+                ]
+                if missing_keys:
+                    missing_keys_str = ", ".join(missing_keys)
+                    raise ValueError(
+                        f"The following keys in the attribute mapping for the node type {node_type}"
+                        f" are missing in file alias '{file.file_alias}': {missing_keys_str}"
                     )
 
                 # Construct attribute mappings in the order defined in NodeSchema
@@ -88,14 +129,40 @@ class DataManager(BaseManager):
                     f"TO VERTEX {node_type} VALUES({attr_mappings})"
                 )
 
+                # Construct vector attribute mappings in the order defined in NodeSchema
+                primary_key_column = mapping.attribute_column_mappings.get(
+                    node_schema.primary_key
+                )
+                primary_key_column = self._format_column_name(primary_key_column)
+                for attr_name in node_schema.vector_attributes:
+                    if attr_name in mapping.attribute_column_mappings:
+                        column_name = mapping.attribute_column_mappings.get(attr_name)
+                        column_name = self._format_column_name(column_name)
+                        mapping_statements.append(
+                            f"TO VECTOR ATTRIBUTE {attr_name} ON VERTEX {node_type}"
+                            f" VALUES({primary_key_column}, {column_name})"
+                        )
+
             # Generate LOAD statements for each edge mapping
             for mapping in file.edge_mappings or []:
-                # Find the corresponding NodeSchema by matching the target name with node_type keys
+                # Find the corresponding EdgeSchema by matching the target name with edge_type keys
                 edge_type = mapping.target_name
                 edge_schema = graph_schema.edges.get(edge_type)
                 if not edge_schema:
                     raise ValueError(
                         f"Edge type '{edge_type}' does not exist in the graph."
+                    )
+
+                # Ensure that every attribute in mapping exists in edge_schema.attributes
+                missing_keys = [
+                    key
+                    for key in mapping.attribute_column_mappings.keys()
+                    if key not in edge_schema.attributes
+                ]
+                if missing_keys:
+                    raise ValueError(
+                        f"The following keys in the attribute mapping are missing in "
+                        f"node_schema.attributes: {', '.join(missing_keys)}"
                     )
 
                 # Format source and target node columns

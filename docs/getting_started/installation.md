@@ -6,10 +6,10 @@ Follow this guide to install and set up **TigerGraphX** in your environment.
 
 ## Requirements
 
-This project requires **Python 3.12** and **TigerGraph**. Ensure you meet the following prerequisites before proceeding:
+This project requires **Python 3.10, 3.11 or 3.12** and **TigerGraph**. Ensure you meet the following prerequisites before proceeding:
 
-### **1. Python 3.12**
-- Please ensure Python 3.12 is installed on your system.
+### **1. Python**
+- Please ensure Python 3.10, 3.11 or 3.12 is installed on your system.
 - You can download and install it from the [official Python website](https://www.python.org/downloads/).
 
 ### **2. TigerGraph**
@@ -18,6 +18,7 @@ TigerGraph is required for this project and can be set up in one of the followin
 
 - **TigerGraph DB**: Install and configure a local instance of TigerGraph.
 - **TigerGraph Cloud**: Use a cloud-hosted instance of TigerGraph.
+- **TigerGraph Docker**: Use a Docker container to run TigerGraph.
 
 It is recommended to use **TigerGraph LTS (Long-Term Support) Versions**, which can be downloaded from the [TigerGraph Downloads page](https://dl.tigergraph.com/). To enable support for **TigerVector** and leverage advanced features like hybrid retrieval, ensure you are using **TigerGraph 4.2 or above**.
 
@@ -43,7 +44,7 @@ This allows you to quickly start using the library without needing the source co
 
 After installing, verify that TigerGraphX is installed correctly by running:
 ```bash
-python -c "import tigergraphx; print('TigerGraphX installed successfully!')"
+python -c 'import tigergraphx; print("TigerGraphX installed successfully!")'
 ```
 
 If the installation was successful, you will see:
@@ -96,7 +97,7 @@ This ensures all required dependencies (including optional ones) are successfull
 
 ## Next Steps
 
-- [Quick Start](quick_start.ipynb): Learn how to build your first graph with TigerGraphX.
+- [TigerGraphX Quick Start](quick_start_graph.ipynb): Learn how to build your first graph with TigerGraphX.
 
 ---
 

@@ -1,3 +1,0 @@
-# OpenAIManager
-
-::: tigergraphx.llm.OpenAIManager

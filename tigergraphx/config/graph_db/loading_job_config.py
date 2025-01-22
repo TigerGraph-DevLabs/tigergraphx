@@ -38,9 +38,9 @@ class NodeMappingConfig(BaseConfig):
     Configuration for mapping node attributes from a file to the target schema.
     """
 
-    target_name: str = Field(description="The target node type name.")
+    target_name: str = Field(description="The name of the target node type.")
     attribute_column_mappings: Dict[str, str | int] = Field(
-        default={}, description="Mappings between file columns and node attributes."
+        default={}, description="Mapping file columns to node attributes."
     )
 
 
@@ -74,26 +74,32 @@ class FileConfig(BaseConfig):
         default_factory=CsvParsingOptions,
         description="Options for parsing the CSV file.",
     )
-    node_mappings: Optional[List[NodeMappingConfig]] = Field(
-        default=None, description="Node mappings defined for this file."
+    node_mappings: List[NodeMappingConfig] = Field(
+        default=[], description="Node mappings defined for this file."
     )
-    edge_mappings: Optional[List[EdgeMappingConfig]] = Field(
-        default=None, description="Edge mappings defined for this file."
+    edge_mappings: List[EdgeMappingConfig] = Field(
+        default=[], description="Edge mappings defined for this file."
     )
 
     @model_validator(mode="after")
-    def validate_mappings(cls, values):
+    def validate_mappings(self) -> "FileConfig":
         """
         Ensure that at least one mapping (node or edge) exists.
+
+        Returns:
+            The validated file configuration.
+
+        Raises:
+            ValueError: If no node or edge mappings are provided.
         """
-        n_node_mappings = len(values.node_mappings) if values.node_mappings else 0
-        n_edge_mappings = len(values.edge_mappings) if values.edge_mappings else 0
+        n_node_mappings = len(self.node_mappings) if self.node_mappings else 0
+        n_edge_mappings = len(self.edge_mappings) if self.edge_mappings else 0
         if n_node_mappings + n_edge_mappings == 0:
             raise ValueError(
                 "FileConfig must contain at least one node or edge mapping in 'node_mappings' "
                 "or 'edge_mappings'."
             )
-        return values
+        return self
 
 
 class LoadingJobConfig(BaseConfig):
@@ -107,14 +113,20 @@ class LoadingJobConfig(BaseConfig):
     )
 
     @model_validator(mode="after")
-    def validate_file_aliases(cls, values):
+    def validate_file_aliases(self) -> "LoadingJobConfig":
         """
         Ensure that all file_alias values are unique.
+
+        Returns:
+            The validated loading job configuration.
+
+        Raises:
+            ValueError: If duplicate file_alias values are found.
         """
-        file_aliases = [file.file_alias for file in values.files]
+        file_aliases = [file.file_alias for file in self.files]
         duplicates = {alias for alias in file_aliases if file_aliases.count(alias) > 1}
         if duplicates:
             raise ValueError(
                 f"Duplicate file_alias values found in files: {', '.join(duplicates)}"
             )
-        return values
+        return self

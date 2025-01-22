@@ -12,7 +12,7 @@ keywords = ["tigergraph", "graph database", "graphrag", "machine learning", "gra
 
 [tool.poetry.dependencies]
 # Core Python Version
-python = "3.12.*"
+python = "<3.13,>=3.10"
 
 # Data Processing
 pandas = "^2.2.3"
@@ -24,7 +24,6 @@ pyyaml = "^6.0.2"
 
 # Database and Storage
 pytigergraph = "^1.8.1"
-lancedb = "^0.13.0"
 nano-vectordb = "^0.0.4.3"
 
 # Large Language Model (LLM) Utilities
@@ -68,14 +67,10 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
 # Unit Test
-test_unit = {cmd = "pytest ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_unit_class = {cmd = "pytest -vs -k 'TestParquetProcessor'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_unit_folder = {cmd = "pytest -vs tests/unit/core/managers", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_unit = {cmd = "pytest -vs ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Integration Test
-test_integration = {cmd = "pytest ./tests/integration", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_integration_class = {cmd = "pytest -vs -k 'TestGraph'", env = {PYTHONDONTWRITEBYTECODE = "1"}}
-test_integration_folder = {cmd = "pytest -vs tests/integration/core", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+test_integration = {cmd = "pytest -vs ./tests/integration", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Applications
 graphrag_query = "python -m applications.msft_graphrag.query.main"

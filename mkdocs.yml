@@ -7,39 +7,30 @@ nav:
       - "GraphRAG Overview": graphrag/graphrag_overview.md
   - Getting Started:
       - Installation: getting_started/installation.md
-      - "Quick Start Guide": getting_started/quick_start.ipynb
+      - "TigerGraphX Quick Start":
+        - "Using TigerGraph as Graph Database": getting_started/quick_start_graph.ipynb
+        - "Using TigerGraph as Vector Database": getting_started/quick_start_vector.ipynb
+        - "Using TigerGraph for Graph and Vector Database": getting_started/quick_start_both.ipynb
   - GraphRAG:
       - "GraphRAG Overview": graphrag/graphrag_overview.md
       - "Supporting LightRAG": graphrag/lightrag.ipynb
-      - "Supporting Microsoft's GraphRAG: Part 1": graphrag/msft_graphrag_1.md
-      - "Supporting Microsoft's GraphRAG: Part 2": graphrag/msft_graphrag_2.ipynb
-      - "Supporting Microsoft's GraphRAG: Part 3": graphrag/msft_graphrag_3.ipynb
+      - "Supporting Microsoft's GraphRAG":
+          - "Part 1 - Setup and Data Preparation": graphrag/msft_graphrag_1.md
+          - "Part 2 - Graph Creation and Data Loading": graphrag/msft_graphrag_2.ipynb
+          - "Part 3 - Graph Analysis": graphrag/msft_graphrag_3.ipynb
+          - "Part 4 - Hybrid Retrieval and Integration with LLM": graphrag/msft_graphrag_4.ipynb
   - API Reference:
-      - Features Overview: reference/features_overview.md
+      - Introduction: reference/introduction.md
       - Core:
           - Graph: reference/01_core/graph.md
-          - DiGraph: reference/01_core/digraph.md
-          - UndiGraph: reference/01_core/undigraph.md
-          - HomoGraph: reference/01_core/homograph.md
           - NodeView: reference/01_core/nodeview.md
       - Vector Search:
-          - Vector DB:
-              - BaseVectorDB: reference/02_vector_search/01_vector_db/base_vector_db.md
-              - LanceDBManager: reference/02_vector_search/01_vector_db/lancedb_manager.md
-              - NanoVectorDBManager: reference/02_vector_search/01_vector_db/nano_vectordb_manager.md
-          - Embedding:
-              - BaseEmbedding: reference/02_vector_search/02_embedding/base_embedding.md
-              - OpenAIEmbedding: reference/02_vector_search/02_embedding/openai_embedding.md
-          - Search:
-              - BaseSearchEngine: reference/02_vector_search/03_search/base_search_engine.md
-              - LanceDBSearchEngine: reference/02_vector_search/03_search/lancedb_search_engine.md
-              - NanoVectorDBSearchEngine: reference/02_vector_search/03_search/nano_vectordb_search_engine.md
+          - Vector DB: reference/02_vector_search/vector_db.md
+          - Embedding: reference/02_vector_search/embedding.md
+          - Search Engine: reference/02_vector_search/search_engine.md
       - LLM:
-          - BaseLLMManager: reference/03_llm/base_llm_manager.md
-          - OpenAIManager: reference/03_llm/openai_manager.md
-          - Chat:
-              - BaseChat: reference/03_llm/01_chat/base_chat.md
-              - OpenAIChat: reference/03_llm/01_chat/openai_chat.md
+          - LMM Manager: reference/03_llm/llm_manager.md
+          - Chat: reference/03_llm/chat.md
       - Config:
           - BaseConfig: reference/04_config/base_config.md
           - Graph DB:
@@ -66,6 +57,8 @@ theme:
   name: material
   features:
     - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.expand
     - navigation.footer
     - content.code.copy
     - content.code.select
@@ -104,7 +97,7 @@ plugins:
             # General
             show_source: false
             # Headings
-            heading_level: 2
+            heading_level: 3
             show_root_heading: true
             show_root_full_path: false
             show_symbol_type_heading: true
