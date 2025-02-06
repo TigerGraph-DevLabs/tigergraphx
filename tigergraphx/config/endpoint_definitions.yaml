@@ -1,0 +1,26 @@
+endpoints:
+
+  # ------------------------------ Admin ------------------------------
+  ping:
+    path: "/api/ping"
+
+
+  # ------------------------------ GSQL ------------------------------
+  gsql:
+    path:
+      # 3.x: "/gsqlserver/gsql/file"
+      4.x: "/gsql/v1/statements"
+    method: "POST"
+    content_type: "text/plain"
+
+
+  # ------------------------------ Schema ------------------------------
+  get_schema:
+    path:
+      # 3.x: "/gsqlserver/gsql/schema"
+      4.x: "/gsql/v1/schema/graphs/{graph}"
+
+defaults:
+  method: "GET"
+  port: "gsql_port"
+  content_type: "application/json"

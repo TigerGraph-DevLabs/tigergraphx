@@ -24,7 +24,10 @@ class GraphContext:
 
         # Create a TigerGraph connection
         if tigergraph_connection_config is None:  # Set default options
-            tigergraph_connection_config = TigerGraphConnectionConfig()
+            tigergraph_connection_config = TigerGraphConnectionConfig(
+                username="tigergraph",
+                password="tigergraph",
+            )
         else:
             tigergraph_connection_config = TigerGraphConnectionConfig.ensure_config(
                 tigergraph_connection_config
