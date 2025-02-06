@@ -1,4 +1,4 @@
-from typing import Dict, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 from requests.sessions import Session
 from requests.exceptions import (
     RequestException,
@@ -44,7 +44,7 @@ class BaseAPI:
         data: Optional[Dict | str] = None,
         json: Optional[Dict] = None,
         **path_kwargs,
-    ) -> Dict:
+    ) -> Dict | List | str:
         """
         Sends an HTTP request using resolved endpoint details.
         Raises exceptions on failure.
@@ -92,29 +92,31 @@ class BaseAPI:
 
                 # Check if TigerGraph API returned an error
                 if response_json.get("error", False):
-                    raise ValueError(
-                        f"TigerGraph API Error: {response_json.get('message', 'Unknown error')}"
+                    raise TigerGraphAPIError(
+                        response_json.get("message", "Unknown error"),
+                        status_code=response.status_code,
+                        response=response,
                     )
 
                 self._raise_for_status(response)
 
                 # Extract results; if empty, return message
                 results = response_json.get("results")
-                return (
-                    results
-                    if results
-                    else {"message": response_json.get("message", None)}
-                )
+                return results if results else response_json.get("message", None)
 
             # Handle text/plain responses
             elif "text/plain" in content_type or content_type == "":
                 self._raise_for_status(response)
-                return {"text": response.text.strip()}
+                return response.text.strip()
 
             # Handle unknown Content-Type
             else:
                 self._raise_for_status(response)
-                raise ValueError(f"Unsupported content type: {content_type}")
+                raise TigerGraphAPIError(
+                    f"Unsupported content type: {content_type}",
+                    status_code=response.status_code,
+                    response=response,
+                )
 
         except HTTPError as e:
             raise RuntimeError(f"HTTP request failed: {str(e)}") from e
@@ -130,7 +132,7 @@ class BaseAPI:
             raise RuntimeError(f"Failed to decode response: {str(e)}") from e
         except RequestException as e:
             raise RuntimeError(f"Request error: {str(e)}") from e
-        except ValueError:
+        except TigerGraphAPIError:
             raise
         except Exception as e:
             raise RuntimeError(
@@ -174,3 +176,39 @@ class BaseAPI:
 
         if 400 <= status_code < 600:
             raise HTTPError(full_error_msg, response=response)
+
+
+class TigerGraphAPIError(Exception):
+    """
+    Exception raised for errors returned by the TigerGraph API.
+    """
+
+    def __init__(
+        self,
+        message: str,
+        status_code: Optional[int] = None,
+        response: Optional[Any] = None,
+    ):
+        """
+        Initializes the TigerGraphAPIError with the provided details.
+        """
+        self.message = message
+        self.status_code = status_code
+        self.response = response
+        super().__init__(self.__str__())
+
+    def __str__(self) -> str:
+        """
+        Returns a formatted string representation of the error.
+        """
+        return (
+            f"[HTTP {self.status_code}] {self.message}"
+            if self.status_code
+            else self.message
+        )
+
+    def get_response_text(self) -> Optional[str]:
+        """
+        Returns the response text if available.
+        """
+        return self.response.text if self.response else None

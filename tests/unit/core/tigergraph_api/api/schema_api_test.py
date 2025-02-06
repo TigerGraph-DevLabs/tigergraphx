@@ -58,5 +58,5 @@ class TestSchemaAPI:
 
         assert result == {"GraphName": "MyGraph", "VertexTypes": [], "EdgeTypes": []}
         mock_registry.get_endpoint.assert_called_once_with(
-            "get_schema", "4.x", graph="MyGraph"
+            "get_schema", "4.x", graph_name="MyGraph"
         )

@@ -13,7 +13,7 @@ from requests.exceptions import (
     ContentDecodingError,
     RequestException,
 )
-from tigergraphx.core.tigergraph_api.api.base_api import BaseAPI
+from tigergraphx.core.tigergraph_api.api.base_api import BaseAPI, TigerGraphAPIError
 from tigergraphx.config import TigerGraphConnectionConfig
 
 
@@ -81,7 +81,7 @@ class TestBaseAPI:
 
         result = base_api._request("get_schema", "4.x", graph="MyGraph")
 
-        assert result == {"message": "Schema retrieved successfully."}
+        assert result == "Schema retrieved successfully."
 
     def test_request_success_text(self, base_api, mock_session):
         """Test a successful plain text response."""
@@ -93,7 +93,7 @@ class TestBaseAPI:
 
         result = base_api._request("get_schema", "4.x", graph="MyGraph")
 
-        assert result == {"text": "Some text response"}
+        assert result == "Some text response"
 
     def test_request_text_plain_error(self, base_api, mock_session):
         """Test a failed plain text response that should raise an HTTPError with details."""
@@ -124,7 +124,7 @@ class TestBaseAPI:
 
         expected_error = "Unsupported content type: application/xml"
 
-        with pytest.raises(ValueError, match=expected_error):
+        with pytest.raises(TigerGraphAPIError, match=expected_error):
             base_api._request("get_schema", "4.x", graph="MyGraph")
 
     @pytest.mark.parametrize(
@@ -183,6 +183,6 @@ class TestBaseAPI:
         mock_session.request.return_value = mock_response
 
         with pytest.raises(
-            ValueError, match="TigerGraph API Error: Graph does not exist."
+            TigerGraphAPIError, match="Graph does not exist."
         ):
             base_api._request("get_schema", "4.x", graph="InvalidGraph")

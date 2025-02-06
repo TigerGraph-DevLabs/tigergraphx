@@ -50,7 +50,6 @@ class TestSchemaAPI:
 
         result = schema_api.ping()
 
-        assert isinstance(result, dict), "Response should be a dictionary."
-        assert "message" in result, "Response should contain a 'message' key."
-        assert result["message"] == "pong", "Response should contain 'pong'."
+        assert isinstance(result, str), "Response should be a string."
+        assert result == "pong", "Response should contain 'pong'."
         mock_registry.get_endpoint.assert_called_once_with("ping", "4.x")

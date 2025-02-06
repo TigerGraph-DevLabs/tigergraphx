@@ -4,7 +4,6 @@ endpoints:
   ping:
     path: "/api/ping"
 
-
   # ------------------------------ GSQL ------------------------------
   gsql:
     path:
@@ -13,12 +12,22 @@ endpoints:
     method: "POST"
     content_type: "text/plain"
 
-
   # ------------------------------ Schema ------------------------------
   get_schema:
     path:
       # 3.x: "/gsqlserver/gsql/schema"
-      4.x: "/gsql/v1/schema/graphs/{graph}"
+      4.x: "/gsql/v1/schema/graphs/{graph_name}"
+
+  # ------------------------------ Query ------------------------------
+  run_interpreted_query:
+    path:
+      # 3.x: "/gsqlserver/interpreted_query"
+      4.x: "/gsql/v1/queries/interpret"
+    method: "POST"
+    content_type: "text/plain"
+
+  run_installed_query:
+    path: "/query/{graph_name}/{query_name}"
 
 defaults:
   method: "GET"
