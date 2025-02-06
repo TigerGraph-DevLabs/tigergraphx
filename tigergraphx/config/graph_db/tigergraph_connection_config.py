@@ -20,39 +20,39 @@ class TigerGraphConnectionConfig(BaseConfig):
 
     host: HttpUrl = Field(
         default=HttpUrl("http://127.0.0.1"),
-        alias="TG_HOST",
+        validation_alias="TG_HOST",
         description="The host URL for the TigerGraph connection.",
     )
     restpp_port: int | str = Field(
-        default="14240", alias="TG_RESTPP_PORT", description="The port for REST++ API."
+        default="14240", validation_alias="TG_RESTPP_PORT", description="The port for REST++ API."
     )
     gsql_port: int | str = Field(
-        default="14240", alias="TG_GSQL_PORT", description="The port for GSQL."
+        default="14240", validation_alias="TG_GSQL_PORT", description="The port for GSQL."
     )
 
     # User/password authentication
     username: Optional[str] = Field(
-        default="tigergraph",
-        alias="TG_USERNAME",
+        default=None,
+        validation_alias="TG_USERNAME",
         description="The username for TigerGraph authentication. Use only for user/password authentication.",
     )
     password: Optional[str] = Field(
-        default="tigergraph",
-        alias="TG_PASSWORD",
+        default=None,
+        validation_alias="TG_PASSWORD",
         description="The password for TigerGraph authentication. Use only for user/password authentication.",
     )
 
     # Secret-based authentication
     secret: Optional[str] = Field(
         default=None,
-        alias="TG_SECRET",
+        validation_alias="TG_SECRET",
         description="The secret for TigerGraph authentication. Use only for secret-based authentication.",
     )
 
     # Token-based authentication
     token: Optional[str] = Field(
         default=None,
-        alias="TG_TOKEN",
+        validation_alias="TG_TOKEN",
         description="The API token for TigerGraph authentication. Use only for token-based authentication.",
     )
 
@@ -76,10 +76,10 @@ class TigerGraphConnectionConfig(BaseConfig):
             ValueError: If more than one authentication method is provided.
         """
         # Extract the values of the fields
-        username = values.get("username")
-        password = values.get("password")
-        secret = values.get("secret")
-        token = values.get("token")
+        username = values.get("TG_USERNAME", values.get("username"))
+        password = values.get("TG_PASSWORD", values.get("password"))
+        secret = values.get("TG_SECRET", values.get("secret"))
+        token = values.get("TG_TOKEN", values.get("token"))
 
         # Case 1: If all fields are empty, set default values for username and password
         if not username and not password and not secret and not token:
@@ -117,3 +117,10 @@ class TigerGraphConnectionConfig(BaseConfig):
         raise ValueError(
             "You must provide either 'username/password', 'secret', or 'token' for authentication."
         )
+
+    @classmethod
+    def create(cls, **kwargs):
+        """
+        Allows initialization using both field names and aliases.
+        """
+        return cls.model_construct(**{**kwargs}, _by_alias=True)
