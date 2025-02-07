@@ -53,7 +53,15 @@ class TestGraph1(TestBaseGraph):
                 },
             },
         }
-        self.G = Graph(graph_schema=graph_schema)
+        self.tigergraph_connection_config = {
+            "host": "http://localhost",
+            "username": "tigergraph",
+            "password": "tigergraph",
+        }
+        self.G = Graph(
+            graph_schema=graph_schema,
+            tigergraph_connection_config=self.tigergraph_connection_config,
+        )
 
     @pytest.fixture(autouse=True)
     def add_nodes_and_edges(self):
@@ -132,9 +140,9 @@ class TestGraph1(TestBaseGraph):
         assert isinstance(node_view, NodeView), "Expected a NodeView instance."
         # Check __getitem__ method
         user_c_data = node_view[("User", "User_C")]
-        assert (
-            user_c_data["name"] == "C"
-        ), f"Expected name 'C', got {user_c_data['name']}"
+        assert user_c_data["name"] == "C", (
+            f"Expected name 'C', got {user_c_data['name']}"
+        )
         assert user_c_data["age"] == 30, f"Expected age 30, got {user_c_data['age']}"
         # Check __contains__ method
         assert ("User", "User_A") in node_view, "Expected 'User_A' to be in nodes_view"
@@ -152,9 +160,9 @@ class TestGraph1(TestBaseGraph):
             ("Product", "Product_2"),
             ("Product", "Product_3"),
         }
-        assert (
-            node_ids == expected_ids
-        ), f"Expected node ids {expected_ids}, got {node_ids}"
+        assert node_ids == expected_ids, (
+            f"Expected node ids {expected_ids}, got {node_ids}"
+        )
         # Check __len__ method (already tested)
         assert len(node_view) == 6, f"Expected 6 nodes, got {len(node_view)}"
 
@@ -278,9 +286,9 @@ class TestGraph1(TestBaseGraph):
         assert num_user_nodes == 3, f"Expected 3 User nodes, got {num_user_nodes}"
 
         num_product_nodes = self.G.number_of_nodes(node_type="Product")
-        assert (
-            num_product_nodes == 3
-        ), f"Expected 3 Product nodes, got {num_product_nodes}"
+        assert num_product_nodes == 3, (
+            f"Expected 3 Product nodes, got {num_product_nodes}"
+        )
 
         # Test total number of nodes (without specifying node type)
         total_nodes = self.G.number_of_nodes()
@@ -307,9 +315,9 @@ class TestGraph1(TestBaseGraph):
         # Assertions to verify the test output
         assert nodes is not None, "No nodes returned."
         assert len(nodes) <= 10, "Expected at most 10 nodes, but got more."
-        assert set(nodes.columns) == set(
-            return_attributes
-        ), f"Expected columns {return_attributes}, but got {list(nodes.columns)}."
+        assert set(nodes.columns) == set(return_attributes), (
+            f"Expected columns {return_attributes}, but got {list(nodes.columns)}."
+        )
 
     def test_get_neighbors(self):
         # Define return attributes and test parameters
@@ -330,9 +338,9 @@ class TestGraph1(TestBaseGraph):
         # Assertions to verify the test output
         assert neighbors is not None, "No neighbors returned."
         assert len(neighbors) <= 5, "Expected at most 5 neighbors, but got more."
-        assert set(neighbors.columns) == set(
-            return_attributes
-        ), f"Expected columns {return_attributes}, but got {list(neighbors.columns)}."
+        assert set(neighbors.columns) == set(return_attributes), (
+            f"Expected columns {return_attributes}, but got {list(neighbors.columns)}."
+        )
 
 
 class TestGraph2(TestBaseGraph):
@@ -365,7 +373,15 @@ class TestGraph2(TestBaseGraph):
                 },
             },
         }
-        self.G = Graph(graph_schema=graph_schema)
+        self.tigergraph_connection_config = {
+            "host": "http://localhost",
+            "username": "tigergraph",
+            "password": "tigergraph",
+        }
+        self.G = Graph(
+            graph_schema=graph_schema,
+            tigergraph_connection_config=self.tigergraph_connection_config,
+        )
 
     @pytest.fixture(autouse=True)
     def add_nodes_and_edges(self):
@@ -466,7 +482,10 @@ class TestGraph2(TestBaseGraph):
         assert schema["edges"]["relationship"]["is_directed_edge"] is True
 
     def test_from_db(self):
-        G = Graph.from_db(graph_name=self.G.name)
+        G = Graph.from_db(
+            graph_name=self.G.name,
+            tigergraph_connection_config=self.tigergraph_connection_config,
+        )
         # Get the graph schema in Dict format
         schema = G.get_schema(format="dict")
         assert isinstance(schema, dict)
