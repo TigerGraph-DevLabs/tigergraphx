@@ -31,6 +31,9 @@ tiktoken = "^0.7.0"
 openai = "^1.55.0"
 tenacity = "^9.0.0"
 
+# RAG Evaluation
+ragas = "^0.2.13"
+
 [tool.poetry.group.dev.dependencies]
 # Task Runner
 poethepoet = "^0.31.0"
@@ -49,11 +52,14 @@ ipywidgets = "^8.1.5"
 ## For Microsoft's GraphRAG
 graphrag = "^0.4.0"
 ## For LightRAG
-lightrag-hku = "^1.0.6"
+lightrag-hku = "^1.1.5"
 aioboto3 = "^13.2.0"
 ollama = "^0.4.4"
 torch = "^2.5.1"
 transformers = "^4.47.0"
+pipmaster = "^0.4.0"
+## For Dataset
+datasets = "^3.2.0"
 
 # Documentation Generation
 mkdocs = "^1.6.1"
@@ -67,12 +73,14 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
 # Unit Test
-test_unit = {cmd = "pytest -vs ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+unit_test = {cmd = "pytest -vs ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Integration Test
-test_integration = {cmd = "pytest -vs ./tests/integration", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+integration_test = {cmd = "pytest -vs ./tests/integration", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Applications
 graphrag_query = "python -m applications.msft_graphrag.query.main"
 lightrag_index = "python -m applications.lightrag.index"
 lightrag_query = "python -m applications.lightrag.query"
+lightrag_evaluation = "python -m applications.lightrag.evaluation"
+lightrag_reset = "python -m applications.lightrag.reset"
