@@ -1,4 +1,3 @@
-import os
 from dataclasses import dataclass
 import numpy as np
 from tqdm.asyncio import tqdm as tqdm_async
@@ -32,22 +31,8 @@ class TigerVectorStorage(BaseVectorStorage):
                 "edges": {},
             }
 
-            # Retrieve connection configuration from environment variables
-            connection_config = {
-                "host": os.environ.get("TG_HOST", "http://127.0.0.1"),
-                "restpp_port": os.environ.get("TG_RESTPP_PORT", "14240"),
-                "gsql_port": os.environ.get("TG_GSQL_PORT", "14240"),
-                # Option 1: User/password authentication
-                "username": os.environ.get("TG_USERNAME"),
-                "password": os.environ.get("TG_PASSWORD"),
-                # Option 2: Secret-based authentication
-                "secret": os.environ.get("TG_SECRET"),
-                # Option 3: Token-based authentication
-                "token": os.environ.get("TG_TOKEN"),
-            }
-
             # Initialize the graph
-            self._graph = Graph(graph_schema, connection_config)
+            self._graph = Graph(graph_schema)
             self._max_batch_size = self.global_config["embedding_batch_num"]
         except Exception as e:
             logger.error(f"An error occurred during initialization: {e}")

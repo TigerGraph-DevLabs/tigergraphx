@@ -2,48 +2,44 @@ import os
 import argparse
 from typing import Literal
 from lightrag import QueryParam
+from lightrag.llm.openai import gpt_4o_mini_complete, openai_embed
 
 from .custom_ligtrag import CustomLightRAG
 
 
-def main(mode: Literal["naive", "hybrid"], query: str):
-    """Run a LightRAG query with the specified parameters."""
-    working_dir = "applications/lightrag/data"
-
-    if not os.path.exists(working_dir):
-        os.mkdir(working_dir)
-
-    custom_rag = CustomLightRAG(
+def setup_lightrag(working_dir: str) -> CustomLightRAG:
+    """Initialize and return a CustomLightRAG instance."""
+    return CustomLightRAG(
         working_dir=working_dir,
+        embedding_func=openai_embed,
+        llm_model_func=gpt_4o_mini_complete,
         graph_storage="TigerGraphStorage",
-        vector_storage="TigerVectorStorage",  # Use TigerGraph for storing vectors
-        # vector_storage="NanoVectorDBStorage",
+        vector_storage="TigerVectorStorage",
         kv_storage="JsonKVStorage",
     )
 
-    param = QueryParam(mode=mode)
 
-    result = custom_rag.query(query=query, param=param)
+def run_query(custom_rag: CustomLightRAG, mode: Literal["naive", "hybrid"], query: str):
+    """Run a query on LightRAG with the specified mode."""
+    result = custom_rag.query(query=query, param=QueryParam(mode=mode))
+    print(f"\n----- Query Result ({mode} mode) -----\n{result}")
 
-    print("------------------- Query Result:  -------------------")
-    print(result)
+
+def main(mode: Literal["naive", "hybrid"], query: str):
+    """Set up and execute a LightRAG query."""
+    working_dir = "applications/lightrag/data"
+    os.makedirs(working_dir, exist_ok=True)  # Ensure directory exists
+
+    custom_rag = setup_lightrag(working_dir)
+    run_query(custom_rag, mode, query)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run LightRAG Query.")
     parser.add_argument(
-        "--mode",
-        type=str,
-        required=True,
-        choices=["naive", "hybrid"],
-        help="Query mode (naive or hybrid)",
+        "--mode", choices=["naive", "hybrid"], required=True, help="Query mode"
     )
-    parser.add_argument(
-        "--query", type=str, required=True, help="The query string to execute"
-    )
+    parser.add_argument("--query", required=True, help="The query string to execute")
 
     args = parser.parse_args()
-
-    # Explicit cast to Literal to satisfy the type checker
-    mode: Literal["naive", "hybrid"] = args.mode  # Safe because of `choices`
-    main(mode=mode, query=args.query)
+    main(args.mode, args.query)

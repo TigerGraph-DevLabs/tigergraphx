@@ -161,7 +161,10 @@ class GraphRAG:
                     ]
                 )
                 # Parse JSON response
-                return json.loads(response).get("points", [])
+                if isinstance(response, dict):
+                    return json.loads(response).get("points", {})
+                else:
+                    return {}
             except Exception as e:
                 logger.error(f"Error during map stage: {e}")
                 return {}  # Fallback to an empty dict on failure
