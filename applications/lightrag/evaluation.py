@@ -90,12 +90,12 @@ def evaluate_light_rag(
 def main(mode: Literal["naive", "hybrid"]):
     """Main function to index, query, and evaluate LightRAG."""
     # Load datasets
-    dataset = cast(Dataset, load_dataset("PrimeQA/clapnq", split="validation"))
-
-    # Uncomment the following three lines to evaluate the entire dataset.
-    dataset = dataset.filter(
-        lambda x: any("Daniel Johnston" in p["title"] for p in x["passages"])
+    dataset = load_dataset(
+        "json",
+        data_files="applications/resources/clapnq_dev_answerable.jsonl.50",
+        split="train",
     )
+    dataset = cast(Dataset, dataset)
 
     # Setup LightRAG
     custom_rag = setup_lightrag()

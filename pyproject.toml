@@ -80,6 +80,7 @@ integration_test = {cmd = "pytest -vs ./tests/integration", env = {PYTHONDONTWRI
 
 # Applications
 graphrag_query = "python -m applications.msft_graphrag.query.main"
+graphrag_evaluation = "python -m applications.msft_graphrag.query.evaluation"
 lightrag_index = "python -m applications.lightrag.index"
 lightrag_query = "python -m applications.lightrag.query"
 lightrag_evaluation = "python -m applications.lightrag.evaluation"
