@@ -1333,15 +1333,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tigergraphx.core.Graph.run_query" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;run_query
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#tigergraphx.core.Graph.get_nodes" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_nodes
@@ -1351,27 +1342,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tigergraphx.core.Graph.get_nodes_from_spec" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_nodes_from_spec
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#tigergraphx.core.Graph.get_neighbors" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_neighbors
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tigergraphx.core.Graph.get_neighbors_from_spec" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_neighbors_from_spec
     </span>
   </a>
   
@@ -2711,15 +2684,6 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#tigergraphx.core.Graph.run_query" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;run_query
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#tigergraphx.core.Graph.get_nodes" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_nodes
@@ -2729,27 +2693,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tigergraphx.core.Graph.get_nodes_from_spec" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_nodes_from_spec
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#tigergraphx.core.Graph.get_neighbors" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_neighbors
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tigergraphx.core.Graph.get_neighbors_from_spec" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_neighbors_from_spec
     </span>
   </a>
   
@@ -3089,7 +3035,8 @@ The contents of the file "/path/to/your/schema.json" is as follows:
 </div>
 <p>This schema defines a simple social graph where each person is represented as a node with attributes like <code>name</code>, <code>age</code>, and <code>gender</code>. Relationships between people are modeled as undirected "Friendship" edges, which include an attribute <code>closeness</code> to represent the strength of the connection. We will use this schema for the examples in most of the following methods.</p>
 <p>Once the connection configuration and schema are set up, you can create a graph using the following code.</p>
-<div class="highlight"><pre><span></span><code><span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 </code></pre></div>
 <p>Running the command will create a graph using the user-defined schema if it does not already exist. If the graph exists, the command will return the existing graph. To overwrite an existing graph, set the <code>drop_existing_graph</code> parameter to <code>True</code>.</p>
 <div class="admonition note">
@@ -3126,7 +3073,8 @@ The contents of the file "/path/to/your/schema.json" is as follows:
 </div>
 </div>
 <p>Once the connection configuration and schema are set up, you can create a graph using the following code.</p>
-<div class="highlight"><pre><span></span><code><span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -3191,7 +3139,8 @@ The contents of the file "/path/to/your/schema.json" is as follows:
 </div><p><strong>Examples:</strong></p>
 <p>If a graph is already created in TigerGraph, you can easily retrieve it using the <code>from_db</code> class method. By simply providing the <code>graph_name</code>, the schema is automatically fetched, making this the most straightforward way to obtain an existing graph instance.</p>
 <p>Retrieve a graph named "Social" from the database:
-<div class="highlight"><pre><span></span><code><span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
 </code></pre></div></p>
 <p>For details on setting the TigerGraph connection configuration, please refer to <a href="#tigergraphx.core.graph.Graph.__init__">__init__</a>.</p>
 <h2 id="nodeview">NodeView</h2>
@@ -3248,6 +3197,8 @@ The contents of the file "/path/to/your/schema.json" is as follows:
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[(</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">)]</span>
 <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">}</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Alice&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 <span class="kc">True</span>
 </code></pre></div></p>
 <h2 id="schema-operations">Schema Operations</h2>
@@ -3584,6 +3535,12 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">loading_job_config</span><span class="p">)</span>
 <span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">16</span><span class="p">:</span><span class="mi">31</span><span class="p">:</span><span class="mi">41</span><span class="p">,</span><span class="mi">444</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">data_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Initiating</span> <span class="n">data</span> <span class="n">load</span> <span class="k">for</span> <span class="n">job</span><span class="p">:</span> <span class="n">loading_job_Social</span><span class="o">...</span>
 <span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">16</span><span class="p">:</span><span class="mi">31</span><span class="p">:</span><span class="mi">49</span><span class="p">,</span><span class="mi">010</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">data_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Data</span> <span class="n">load</span> <span class="n">completed</span> <span class="n">successfully</span><span class="o">.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">())</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">())</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 <h2 id="node-operations">Node Operations</h2>
 <p>The following methods manage nodes:</p>
@@ -3634,7 +3591,11 @@ This section is optional if the user’s configuration matches these defaults.</
 
     </div>
 
-</div><div class="admonition warning">
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method follows a similar interface to NetworkX's <code>add_node()</code>.</p>
+</div>
+<div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This method is intended for adding individual nodes, and is best suited for tiny datasets.</p>
 <p>For larger datasets, consider using <code>add_nodes_from</code> for small batches or <code>load_data</code> for handling large amounts of data efficiently.</p>
@@ -3646,6 +3607,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">29</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
 <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
@@ -3653,6 +3616,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">29</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
 <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 
 
@@ -3713,7 +3678,11 @@ This section is optional if the user’s configuration matches these defaults.</
 
     </div>
 
-</div><div class="admonition warning">
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method follows a similar interface to NetworkX's <code>add_node()</code>.</p>
+</div>
+<div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This method is best suited for adding small batches of nodes. For larger datasets, consider using <code>load_data</code> to improve efficiency.</p>
 </div>
@@ -3733,6 +3702,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Add nodes with shared attributes applied to all listed node IDs</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">],</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
@@ -3742,6 +3713,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">...</span> <span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">nodes_for_adding</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
 <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 
 
@@ -3795,7 +3768,11 @@ This section is optional if the user’s configuration matches these defaults.</
 
     </div>
 
-</div><p><strong>Examples:</strong></p>
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method follows a similar interface to NetworkX's <code>remove_node()</code>.</p>
+</div>
+<p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
@@ -3868,17 +3845,25 @@ This section is optional if the user’s configuration matches these defaults.</
 
     </div>
 
-</div><p><strong>Examples:</strong></p>
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method follows a similar interface to NetworkX's <code>has_node()</code>.</p>
+</div>
+<p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 <span class="kc">True</span>
 </code></pre></div></p>
 
@@ -3943,12 +3928,16 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">get_node_data</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">)</span>
 <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">get_node_data</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
 <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 
 
@@ -4025,6 +4014,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">get_node_edges</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">)</span>
 <span class="p">[(</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Mike&#39;</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
@@ -4043,9 +4034,10 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">get_node_edges</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">)</span>
 <span class="p">[(</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Mike&#39;</span><span class="p">)]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve edges of multiple specified types.</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Assumes that both &quot;Friendship&quot; and &quot;Follows&quot; are edge types in the Social graph.</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">get_node_edges</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Follows&quot;</span><span class="p">])</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">get_node_edges</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">])</span> 
 <span class="p">[(</span><span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;Mike&#39;</span><span class="p">)]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 
 
@@ -4076,7 +4068,11 @@ This section is optional if the user’s configuration matches these defaults.</
 
     </div>
 
-</div><p><strong>Examples:</strong></p>
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method follows a similar interface to NetworkX's <code>clear()</code>.</p>
+</div>
+<p><strong>Examples:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
@@ -4168,7 +4164,11 @@ This section is optional if the user’s configuration matches these defaults.</
 
     </div>
 
-</div><div class="admonition warning">
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method follows a similar interface to NetworkX's <code>add_nodes_from()</code>.</p>
+</div>
+<div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This method is intended for adding individual edges, and is best suited for tiny datasets.</p>
 <p>For larger datasets, consider using <code>add_edges_from</code> for small batches or <code>load_data</code> for handling large amounts of data efficiently.</p>
@@ -4185,6 +4185,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="n">closeness</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">)</span>
 <span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
@@ -4196,6 +4198,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="mi">2</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">closeness</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 <span class="kc">True</span>
 </code></pre></div></p>
 
@@ -4280,7 +4284,11 @@ This section is optional if the user’s configuration matches these defaults.</
 
     </div>
 
-</div><div class="admonition warning">
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method follows a similar interface to NetworkX's <code>add_edges_from()</code>.</p>
+</div>
+<div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This method is best suited for adding small batches of edges. For larger datasets, consider using <code>load_data</code> to improve efficiency.</p>
 </div>
@@ -4306,6 +4314,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Add edges with shared attributes applied to all listed edges</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">)],</span> <span class="n">closeness</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
 <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
@@ -4317,6 +4327,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="mi">2</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">)],</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
 <span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 
 
@@ -4398,7 +4410,11 @@ This section is optional if the user’s configuration matches these defaults.</
 
     </div>
 
-</div><p><strong>Examples:</strong></p>
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method follows a similar interface to NetworkX's <code>has_edge()</code>.</p>
+</div>
+<p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
@@ -4409,6 +4425,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="mi">2</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
@@ -4421,6 +4439,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="mi">2</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">has_edge</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 <span class="kc">True</span>
 </code></pre></div></p>
 
@@ -4503,7 +4523,11 @@ This section is optional if the user’s configuration matches these defaults.</
 
     </div>
 
-</div><p><strong>Examples:</strong></p>
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method follows a similar interface to NetworkX's <code>get_edge_data()</code>.</p>
+</div>
+<p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
@@ -4515,6 +4539,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="n">closeness</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">)</span>
 <span class="p">{</span><span class="s1">&#39;closeness&#39;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
@@ -4524,9 +4550,11 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">...</span> <span class="p">]</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">nodes_for_adding</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
 <span class="mi">2</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">closeness</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">get_edge_data</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
 <span class="p">{</span><span class="s1">&#39;closeness&#39;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 <h2 id="statistics-operations">Statistics Operations</h2>
 <p>The following methods handle statistics operations:</p>
@@ -4605,6 +4633,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">)</span>
 <span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
@@ -4617,9 +4647,10 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">)</span>
 <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get the degree of node Alice for multiple specified edge types.</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Assumes that both &quot;Friendship&quot; and &quot;Follows&quot; are edge types in the Social graph.</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Follows&quot;</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">])</span>
 <span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div></p>
 
 
@@ -4665,7 +4696,11 @@ This section is optional if the user’s configuration matches these defaults.</
 
     </div>
 
-</div><p><strong>Examples:</strong></p>
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method follows a similar interface to NetworkX's <code>number_of_nodes()</code>.</p>
+</div>
+<p><strong>Examples:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
@@ -4679,6 +4714,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get the number of edges of type &quot;Friendship&quot;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(</span><span class="s2">&quot;Person&quot;</span><span class="p">)</span>
 <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div>
 
 
@@ -4724,7 +4761,11 @@ This section is optional if the user’s configuration matches these defaults.</
 
     </div>
 
-</div><p><strong>Examples:</strong></p>
+</div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This method follows a similar interface to NetworkX's <code>number_of_edges()</code>.</p>
+</div>
+<p><strong>Examples:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">ebunch_to_add</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">),</span>
@@ -4738,64 +4779,11 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get the number of edges of type &quot;Friendship&quot;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(</span><span class="s2">&quot;Friendship&quot;</span><span class="p">)</span>
 <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div>
 <h2 id="query-operations">Query Operations</h2>
 <p>The following methods perform query operations:</p>
-
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="tigergraphx.core.Graph.run_query" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">run_query</span><span class="p">(</span><span class="n">query_name</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{})</span></code>
-
-</h3>
-
-
-    <div class="doc doc-contents first">
-
-        <p>Run a pre-installed query on the graph.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-            <b><code>query_name</code></b>
-              (<code>str</code>)
-          –
-          <div class="doc-md-description">
-            <p>Name of the query.</p>
-          </div>
-        </li>
-        <li class="doc-section-item field-body">
-            <b><code>params</code></b>
-              (<code><span title="typing.Dict">Dict</span></code>, default:
-                  <code>{}</code>
-)
-          –
-          <div class="doc-md-description">
-            <p>Parameters for the query.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-          –
-          <div class="doc-md-description">
-            <p>The query result or None if an error occurred.</p>
-          </div>
-        </li>
-    </ul>
-
-    </div>
-
-</div><p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> 
-</code></pre></div>
 
 
 <div class="doc doc-object doc-function">
@@ -4892,53 +4880,75 @@ This section is optional if the user’s configuration matches these defaults.</
 
 </div><p><strong>Examples:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> 
-</code></pre></div>
-
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="tigergraphx.core.Graph.get_nodes_from_spec" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">get_nodes_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span></code>
-
-</h3>
-
-
-    <div class="doc doc-contents first">
-
-        <p>Retrieve nodes using a NodeSpec object.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-            <b><code>spec</code></b>
-              (<code><a class="autorefs autorefs-internal" title="tigergraphx.config.NodeSpec" href="../../04_config/02_query/node_spec/#tigergraphx.config.query.NodeSpec">NodeSpec</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>Specification for node retrieval.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-              <code><span title="pandas.DataFrame">DataFrame</span></code>
-          –
-          <div class="doc-md-description">
-            <p>A DataFrame of nodes.</p>
-          </div>
-        </li>
-    </ul>
-
-    </div>
-
-</div><p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Emily&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
+<span class="o">...</span> <span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">nodes_for_adding</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get all nodes of type &quot;Person&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">v_id</span>  <span class="n">v_type</span>  <span class="n">gender</span>   <span class="n">name</span>  <span class="n">age</span>
+<span class="mi">0</span>   <span class="n">Mike</span>  <span class="n">Person</span>    <span class="n">Male</span>   <span class="n">Mike</span>   <span class="mi">29</span>
+<span class="mi">1</span>  <span class="n">Emily</span>  <span class="n">Person</span>  <span class="n">Female</span>  <span class="n">Emily</span>   <span class="mi">28</span>
+<span class="mi">2</span>  <span class="n">Alice</span>  <span class="n">Person</span>  <span class="n">Female</span>  <span class="n">Alice</span>   <span class="mi">30</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get all nodes of all types</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="n">all_node_types</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">v_id</span>  <span class="n">v_type</span>  <span class="n">gender</span>   <span class="n">name</span>  <span class="n">age</span>
+<span class="mi">0</span>   <span class="n">Mike</span>  <span class="n">Person</span>    <span class="n">Male</span>   <span class="n">Mike</span>   <span class="mi">29</span>
+<span class="mi">1</span>  <span class="n">Alice</span>  <span class="n">Person</span>  <span class="n">Female</span>  <span class="n">Alice</span>   <span class="mi">30</span>
+<span class="mi">2</span>  <span class="n">Emily</span>  <span class="n">Person</span>  <span class="n">Female</span>  <span class="n">Emily</span>   <span class="mi">28</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve nodes with a filter expression</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">node_alias</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="c1"># &quot;s&quot; is the default value, so you can remove this line</span>
+<span class="o">...</span>     <span class="n">filter_expression</span><span class="o">=</span><span class="s2">&quot;s.age &gt;= 29&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve women aged 29 or older</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">filter_expression</span><span class="o">=</span><span class="s1">&#39;s.age &gt;= 29 and s.gender == &quot;Female&quot;&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">v_id</span>  <span class="n">v_type</span>  <span class="n">gender</span>   <span class="n">name</span>  <span class="n">age</span>
+<span class="mi">0</span>   <span class="n">Mike</span>  <span class="n">Person</span>    <span class="n">Male</span>   <span class="n">Mike</span>   <span class="mi">29</span>
+<span class="mi">1</span>  <span class="n">Alice</span>  <span class="n">Person</span>  <span class="n">Female</span>  <span class="n">Alice</span>   <span class="mi">30</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve women aged 29 or older</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">filter_expression</span><span class="o">=</span><span class="s1">&#39;s.age &gt;= 29 and s.gender == &quot;Female&quot;&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">v_id</span>  <span class="n">v_type</span>  <span class="n">gender</span>   <span class="n">name</span>  <span class="n">age</span>
+<span class="mi">0</span>  <span class="n">Alice</span>  <span class="n">Person</span>  <span class="n">Female</span>  <span class="n">Alice</span>   <span class="mi">30</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve only specific attributes</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">return_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">],</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">name</span>  <span class="n">gender</span>
+<span class="mi">0</span>   <span class="n">Mike</span>    <span class="n">Male</span>
+<span class="mi">1</span>  <span class="n">Emily</span>  <span class="n">Female</span>
+<span class="mi">2</span>  <span class="n">Alice</span>  <span class="n">Female</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Limit the number of nodes returned</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">v_id</span>  <span class="n">v_type</span>  <span class="n">gender</span>   <span class="n">name</span>  <span class="n">age</span>
+<span class="mi">0</span>  <span class="n">Emily</span>  <span class="n">Person</span>  <span class="n">Female</span>  <span class="n">Emily</span>   <span class="mi">28</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve &quot;Person&quot; nodes with a specific filter expression,</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># use a custom alias, request only selected attributes, and limit the results.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">filter_expression</span><span class="o">=</span><span class="s2">&quot;s.age &gt;= 29&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">return_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">],</span>
+<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">1</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+   <span class="n">name</span>  <span class="n">age</span>
+<span class="mi">0</span>  <span class="n">Mike</span>   <span class="mi">29</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div>
 
 
@@ -5074,56 +5084,211 @@ This section is optional if the user’s configuration matches these defaults.</
 
 </div><p><strong>Examples:</strong></p>
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> 
-</code></pre></div>
-
-
-<div class="doc doc-object doc-function">
-
-
-<h3 id="tigergraphx.core.Graph.get_neighbors_from_spec" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">get_neighbors_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span></code>
-
-</h3>
-
-
-    <div class="doc doc-contents first">
-
-        <p>Retrieve neighbors using a NeighborSpec object.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-            <b><code>spec</code></b>
-              (<code><a class="autorefs autorefs-internal" title="tigergraphx.config.NeighborSpec" href="../../04_config/02_query/neighbor_spec/#tigergraphx.config.query.NeighborSpec">NeighborSpec</a></code>)
-          –
-          <div class="doc-md-description">
-            <p>Specification for neighbor retrieval.</p>
-          </div>
-        </li>
-    </ul>
-
-
-<p><span class="doc-section-title">Returns:</span></p>
-    <ul>
-        <li class="doc-section-item field-body">
-              <code><span title="pandas.DataFrame">DataFrame</span></code>
-          –
-          <div class="doc-md-description">
-            <p>A DataFrame of neighbors.</p>
-          </div>
-        </li>
-    </ul>
-
-    </div>
-
-</div><p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Emily&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mary&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
+<span class="o">...</span> <span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">nodes_for_adding</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="mi">5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ebunch_to_add</span> <span class="o">=</span> <span class="p">[</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Emily&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Emily&quot;</span><span class="p">,</span> <span class="s2">&quot;Mary&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">}),</span>
+<span class="o">...</span> <span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">ebunch_to_add</span><span class="p">)</span>
+<span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get neighbors of Alice</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_neighbors</span><span class="p">(</span><span class="n">start_nodes</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">start_node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+  <span class="n">gender</span>  <span class="n">name</span>  <span class="n">age</span>
+<span class="mi">0</span>   <span class="n">Male</span>  <span class="n">Mike</span>   <span class="mi">29</span>
+<span class="mi">1</span>   <span class="n">Male</span>  <span class="n">John</span>   <span class="mi">27</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get neighbors of Alice with a specific edge type</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_neighbors</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">start_nodes</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">start_node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">edge_types</span><span class="o">=</span><span class="s2">&quot;Friendship&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+  <span class="n">gender</span>  <span class="n">name</span>  <span class="n">age</span>
+<span class="mi">0</span>   <span class="n">Male</span>  <span class="n">Mike</span>   <span class="mi">29</span>
+<span class="mi">1</span>   <span class="n">Male</span>  <span class="n">John</span>   <span class="mi">27</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get neighbors of Alice with a filter expression</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_neighbors</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">start_nodes</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">start_node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">start_node_alias</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span> <span class="c1"># &quot;s&quot; is the default value, so you can remove this line</span>
+<span class="o">...</span>     <span class="n">edge_alias</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span> <span class="c1"># &quot;e&quot; is the default value, so you can remove this line</span>
+<span class="o">...</span>     <span class="n">target_node_alias</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="c1"># &quot;t&quot; is the default value, so you can remove this line</span>
+<span class="o">...</span>     <span class="n">filter_expression</span><span class="o">=</span><span class="s2">&quot;e.closeness &gt; 1.5&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+  <span class="n">gender</span>  <span class="n">name</span>  <span class="n">age</span>
+<span class="mi">0</span>   <span class="n">Male</span>  <span class="n">John</span>   <span class="mi">27</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve only specific attributes for neighbors</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_neighbors</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">start_nodes</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">start_node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">return_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">],</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+   <span class="n">name</span> <span class="n">gender</span>
+<span class="mi">0</span>  <span class="n">Mike</span>   <span class="n">Male</span>
+<span class="mi">1</span>  <span class="n">John</span>   <span class="n">Male</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Limit the number of neighbors returned</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_neighbors</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">start_nodes</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">start_node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+  <span class="n">gender</span>  <span class="n">name</span>  <span class="n">age</span>
+<span class="mi">0</span>   <span class="n">Male</span>  <span class="n">Mike</span>   <span class="mi">29</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve the first target node of type &quot;Person&quot; that is a friend of Alice (a &quot;Person&quot;),</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># filtering edges by &quot;closeness &gt; 1&quot; and returning the target node&#39;s &quot;name&quot; and &quot;gender&quot;.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_neighbors</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">start_nodes</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">start_node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">edge_types</span><span class="o">=</span><span class="s2">&quot;Friendship&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">target_node_types</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">filter_expression</span><span class="o">=</span><span class="s2">&quot;e.closeness &gt; 1&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">return_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">],</span>
+<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+   <span class="n">name</span> <span class="n">gender</span>
+<span class="mi">0</span>  <span class="n">Mike</span>   <span class="n">Male</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
 </code></pre></div>
 <h2 id="vector-operations">Vector Operations</h2>
 <p>The following methods handle vector operations:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Vector operations are supported only on TigerGraph 4.2 and later versions, which include the TigerVector feature.</p>
+</div>
+<p>The previous <code>Social</code> graph did not include vector attributes, which are essential for vector operations. Here, we define a new graph, <code>SocialWithVector</code>, that incorporates vector attributes, enabling tasks such as machine learning, similarity searches, and more.</p>
+<p>Vector attributes go beyond standard node properties by storing numerical embeddings directly in the graph schema. In most cases, specifying the attribute dimension is sufficient—such as <code>"emb_1": 3</code> to define a 3-dimensional vector attribute. If additional customization is required, you can define properties like <code>index_type</code>, <code>data_type</code>, and <code>metric</code> using a dictionary format. For example, <code>"emb_2"</code> specifies these details explicitly, allowing you to tailor the vector attribute’s behavior.</p>
+<p>Below are examples of how you can define the same graph schema—with one node type, one edge type, and vector attributes—using three different formats: a Python dictionary, YAML, and JSON.</p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">Python Dictionary</label><label for="__tabbed_5_2">YAML</label><label for="__tabbed_5_3">JSON</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><span class="n">graph_schema</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;graph_name&quot;</span><span class="p">:</span> <span class="s2">&quot;SocialWithVector&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;Person&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="s2">&quot;UINT&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;vector_attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                <span class="s2">&quot;emb_2&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;dimension&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                    <span class="s2">&quot;index_type&quot;</span><span class="p">:</span> <span class="s2">&quot;HNSW&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;data_type&quot;</span><span class="p">:</span> <span class="s2">&quot;FLOAT&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;metric&quot;</span><span class="p">:</span> <span class="s2">&quot;COSINE&quot;</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;Friendship&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;is_directed_edge&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;from_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;to_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="s2">&quot;DOUBLE&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p><div class="highlight"><pre><span></span><code><span class="n">graph_schema</span> <span class="o">=</span> <span class="s2">&quot;/path/to/your/schema_with_vector.yaml&quot;</span>
+</code></pre></div>
+The contents of the file "/path/to/your/schema_with_vector.yaml" are as follows:
+<div class="highlight"><pre><span></span><code><span class="nt">graph_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SocialWithVector</span>
+<span class="nt">nodes</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Person</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">primary_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
+<span class="w">    </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STRING</span>
+<span class="w">      </span><span class="nt">age</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UINT</span>
+<span class="w">      </span><span class="nt">gender</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">STRING</span>
+<span class="w">    </span><span class="nt">vector_attributes</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">emb_1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">      </span><span class="nt">emb_2</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">dimension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">        </span><span class="nt">index_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HNSW</span>
+<span class="w">        </span><span class="nt">data_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FLOAT</span>
+<span class="w">        </span><span class="nt">metric</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">COSINE</span>
+<span class="nt">edges</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Friendship</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">is_directed_edge</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">from_node_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Person</span>
+<span class="w">    </span><span class="nt">to_node_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Person</span>
+<span class="w">    </span><span class="nt">attributes</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">closeness</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DOUBLE</span>
+</code></pre></div></p>
+</div>
+<div class="tabbed-block">
+<p><div class="highlight"><pre><span></span><code><span class="n">graph_schema</span> <span class="o">=</span> <span class="s2">&quot;/path/to/your/schema_with_vector.json&quot;</span>
+</code></pre></div>
+The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;graph_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;nodes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Person&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;primary_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;STRING&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;UINT&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;gender&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;STRING&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;vector_attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;emb_1&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;emb_2&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;dimension&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;index_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;HNSW&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;data_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FLOAT&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;metric&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;COSINE&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;edges&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;Friendship&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;is_directed_edge&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;from_node_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;to_node_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;attributes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;closeness&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DOUBLE&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></p>
+</div>
+</div>
+</div>
+<p>This schema represents a social graph where each person is a node with attributes like <code>name</code>, <code>age</code>, and <code>gender</code>. The addition of vector attributes—<code>emb_1</code> and <code>emb_2</code>—enables complex operations such as similarity-based queries. Relationships between people are defined as undirected "Friendship" edges, each with an attribute <code>closeness</code> that measures the strength of the connection.</p>
+<p>You can create a graph using this schema by running:</p>
+<div class="highlight"><pre><span></span><code><span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
+</code></pre></div>
+<p>This command will create a new graph using the schema if it doesn’t already exist. If the graph exists, it will simply return the existing graph instance. To overwrite an existing graph, set the <code>drop_existing_graph</code> parameter to <code>True</code>.</p>
+<p>For details on setting the TigerGraph connection configuration, please refer to <a href="#tigergraphx.core.graph.Graph.__init__">__init__</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Creating the graph may take several seconds.</p>
+</div>
 
 
 <div class="doc doc-object doc-function">
@@ -5176,9 +5341,50 @@ This section is optional if the user’s configuration matches these defaults.</
     </div>
 
 </div><p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> 
-</code></pre></div>
+<p>Single Node Type Example:
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert a single node with vector data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with vector data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Emily&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]},</span>
+<span class="o">...</span>     <span class="p">],</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get the total number of nodes in the graph</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
+</code></pre></div></p>
+<p>Multiple Node Types Example:
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert a single node with vector data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with vector data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Emily&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]},</span>
+<span class="o">...</span>     <span class="p">],</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get the total number of nodes in the graph</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
+</code></pre></div></p>
 
 
 <div class="doc doc-object doc-function">
@@ -5240,9 +5446,42 @@ This section is optional if the user’s configuration matches these defaults.</
     </div>
 
 </div><p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> 
-</code></pre></div>
+<p>Single Node Type Example:
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert a single node with vector data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Fetch vector data for a single node</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vector</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">fetch_node</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">node_id</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">vector_attribute_name</span><span class="o">=</span><span class="s2">&quot;emb_1&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+<span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
+</code></pre></div></p>
+<p>Multiple Node Types Example:
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert a single node with vector data, specifying node type</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Fetch vector data for a single node, specifying node type</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vector</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">fetch_node</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">node_id</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">vector_attribute_name</span><span class="o">=</span><span class="s2">&quot;emb_1&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+<span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
+</code></pre></div></p>
 
 
 <div class="doc doc-object doc-function">
@@ -5304,9 +5543,48 @@ This section is optional if the user’s configuration matches these defaults.</
     </div>
 
 </div><p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> 
-</code></pre></div>
+<p>Single Node Type Example:
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with vector data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]},</span>
+<span class="o">...</span>     <span class="p">]</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Fetch vector data for multiple nodes</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">fetch_nodes</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">node_ids</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">],</span>
+<span class="o">...</span>     <span class="n">vector_attribute_name</span><span class="o">=</span><span class="s2">&quot;emb_1&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+<span class="p">{</span><span class="s1">&#39;Alice&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="s1">&#39;Bob&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
+</code></pre></div></p>
+<p>Multiple Node Types Example:
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with vector data, specifying node type</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]},</span>
+<span class="o">...</span>     <span class="p">],</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Fetch vector data for multiple nodes, specifying node type</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vectors</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">fetch_nodes</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">node_ids</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">],</span>
+<span class="o">...</span>     <span class="n">vector_attribute_name</span><span class="o">=</span><span class="s2">&quot;emb_1&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">vectors</span><span class="p">)</span>
+<span class="p">{</span><span class="s1">&#39;Alice&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="s1">&#39;Bob&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
+</code></pre></div></p>
 
 
 <div class="doc doc-object doc-function">
@@ -5398,9 +5676,54 @@ This section is optional if the user’s configuration matches these defaults.</
     </div>
 
 </div><p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> 
-</code></pre></div>
+<p>Single Node Type Example:
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with vector data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Eve&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]},</span>
+<span class="o">...</span>     <span class="p">]</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Search for nodes most similar to a query vector</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+<span class="o">...</span>     <span class="n">vector_attribute_name</span><span class="o">=</span><span class="s2">&quot;emb_1&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">return_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">],</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.01307237</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Male&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Eve&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.07417983</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Eve&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">}</span>
+</code></pre></div></p>
+<p>Multiple Node Types Example:
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with vector data, specifying node type</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Eve&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]},</span>
+<span class="o">...</span>     <span class="p">],</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Search for nodes most similar to a query vector, specifying node type</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+<span class="o">...</span>     <span class="n">vector_attribute_name</span><span class="o">=</span><span class="s2">&quot;emb_1&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">return_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">],</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.01307237</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Male&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Eve&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.07417983</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Eve&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">}</span>
+</code></pre></div></p>
 
 
 <div class="doc doc-object doc-function">
@@ -5481,10 +5804,56 @@ This section is optional if the user’s configuration matches these defaults.</
 
     </div>
 
-</div><p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> 
-</code></pre></div>
+</div><p>Single Node Type Example:
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with different vector attributes</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="s2">&quot;emb_2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span> <span class="s2">&quot;emb_2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Eve&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="s2">&quot;emb_2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
+<span class="o">...</span>     <span class="p">]</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Search for nodes most similar to a query vector using multiple vector attributes</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">search_multi_vector_attributes</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
+<span class="o">...</span>     <span class="n">vector_attribute_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;emb_1&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_2&quot;</span><span class="p">],</span>
+<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">return_attributes_list</span><span class="o">=</span><span class="p">[[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]],</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">1.192093e-07</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Eve&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">1.192093e-07</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Eve&#39;</span><span class="p">}</span>
+</code></pre></div></p>
+<p>Multiple Node Types Example:
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with vector attributes</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="s2">&quot;emb_2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],</span> <span class="s2">&quot;emb_2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Eve&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="s2">&quot;emb_2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
+<span class="o">...</span>     <span class="p">],</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Search for nodes most similar to a query vector using multiple vector attributes</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">results</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">search_multi_vector_attributes</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span>
+<span class="o">...</span>     <span class="n">vector_attribute_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;emb_1&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_2&quot;</span><span class="p">],</span>
+<span class="o">...</span>     <span class="n">node_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">],</span>
+<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">return_attributes_list</span><span class="o">=</span><span class="p">[[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]],</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">1.192093e-07</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.02536821</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Male&#39;</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
+</code></pre></div></p>
 
 
 <div class="doc doc-object doc-function">
@@ -5566,9 +5935,57 @@ This section is optional if the user’s configuration matches these defaults.</
     </div>
 
 </div><p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> 
-</code></pre></div>
+<p>Single Node Type Example:
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert a node with vector data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Eve&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]},</span>
+<span class="o">...</span>     <span class="p">]</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve the top-5 nodes similar to &quot;Alice&quot; based on the emb_1 vector</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">similar_nodes</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">search_top_k_similar_nodes</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">node_id</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">vector_attribute_name</span><span class="o">=</span><span class="s2">&quot;emb_1&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">return_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">]</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">similar_nodes</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.008539915</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Male&#39;</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
+</code></pre></div></p>
+<p>Multiple Node Types Example:
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert nodes with vector data</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]},</span>
+<span class="o">...</span>         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Eve&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]},</span>
+<span class="o">...</span>     <span class="p">],</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve the top-5 nodes similar to &quot;Alice&quot; based on the emb_1 vector</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">similar_nodes</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">search_top_k_similar_nodes</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">node_id</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">vector_attribute_name</span><span class="o">=</span><span class="s2">&quot;emb_1&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">return_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">]</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">similar_nodes</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.008539915</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Male&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Eve&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.03167039</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Eve&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
+</code></pre></div></p>
 
 
 
