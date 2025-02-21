@@ -7,8 +7,6 @@ from tigergraphx.config import (
     TigerGraphConnectionConfig,
     GraphSchema,
     LoadingJobConfig,
-    NodeSpec,
-    NeighborSpec,
 )
 
 from tigergraphx.core.graph_context import GraphContext
@@ -511,18 +509,6 @@ class Graph:
             limit=limit,
         )
 
-    def get_nodes_from_spec(self, spec: NodeSpec) -> pd.DataFrame:
-        """
-        Retrieve nodes using a NodeSpec object.
-
-        Args:
-            spec: Specification for node retrieval.
-
-        Returns:
-            A DataFrame of nodes.
-        """
-        return self._query_manager.get_nodes_from_spec(spec)
-
     def get_neighbors(
         self,
         start_nodes: str | int | List[str | int],
@@ -573,18 +559,6 @@ class Graph:
             return_attributes=return_attributes,
             limit=limit,
         )
-
-    def get_neighbors_from_spec(self, spec: NeighborSpec) -> pd.DataFrame:
-        """
-        Retrieve neighbors using a NeighborSpec object.
-
-        Args:
-            spec: Specification for neighbor retrieval.
-
-        Returns:
-            A DataFrame of neighbors.
-        """
-        return self._query_manager.get_neighbors_from_spec(spec)
 
     # ------------------------------ Vector Operations ------------------------------
     def upsert(

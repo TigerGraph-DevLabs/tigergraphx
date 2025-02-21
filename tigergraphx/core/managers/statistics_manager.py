@@ -167,8 +167,12 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
   Nodes = {{ANY}};
   Nodes =
     SELECT s
-    FROM Nodes:s -()- :t
-    ACCUM @@sum += 1
+    FROM Nodes:s -(:e)- :t
+    ACCUM IF s == t AND NOT e.isDirected() THEN
+            @@sum += 2
+          ELSE
+            @@sum += 1
+          END
   ;
   PRINT @@sum / 2 AS number_of_edges;
 }}"""
@@ -179,8 +183,12 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
   Nodes = {{ANY}};
   Nodes =
     SELECT s
-    FROM Nodes:s -({edge_type})- :t
-    ACCUM @@sum += 1
+    FROM Nodes:s -({edge_type}:e)- :t
+    ACCUM IF s == t AND NOT e.isDirected() THEN
+            @@sum += 2
+          ELSE
+            @@sum += 1
+          END
   ;
   PRINT @@sum / 2 AS number_of_edges;
 }}"""

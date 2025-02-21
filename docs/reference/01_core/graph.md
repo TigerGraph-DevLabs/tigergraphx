@@ -146,10 +146,12 @@ This schema defines a simple social graph where each person is represented as a 
 Once the connection configuration and schema are set up, you can create a graph using the following code.
 
    ```python
+   from tigergraphx import Graph
    G = Graph(graph_schema)
    ```
 
 Running the command will create a graph using the user-defined schema if it does not already exist. If the graph exists, the command will return the existing graph. To overwrite an existing graph, set the `drop_existing_graph` parameter to `True`.
+
 !!! Note
     Creating the graph may take several seconds.
 
@@ -187,6 +189,7 @@ An alternative way to set up the connection is by directly assigning the `tigerg
 Once the connection configuration and schema are set up, you can create a graph using the following code.
 
    ```python
+   from tigergraphx import Graph
    G = Graph(graph_schema)
    ```
 
@@ -201,6 +204,7 @@ If a graph is already created in TigerGraph, you can easily retrieve it using th
 
 Retrieve a graph named "Social" from the database:
 ```python
+from tigergraphx import Graph
 G = Graph.from_db("Social")
 ```
 
@@ -234,6 +238,8 @@ For graphs with multiple node types, you must include the node type when accessi
 >>> G.nodes[("Person", "Alice")]
 {'name': 'Alice', 'age': 0, 'gender': ''}
 >>> ("Person", "Alice") in G.nodes
+True
+>>> G.clear()
 True
 ```
 
@@ -464,6 +470,12 @@ After the loading job is defined, we can load data by running the command below:
 >>> G.load_data(loading_job_config)
 2025-01-21 16:31:41,444 - tigergraphx.core.managers.data_manager - INFO - Initiating data load for job: loading_job_Social...
 2025-01-21 16:31:49,010 - tigergraphx.core.managers.data_manager - INFO - Data load completed successfully.
+>>> print(G.number_of_nodes())
+1
+>>> print(G.number_of_edges())
+1
+>>> G.clear()
+True
 ```
 
 ## Node Operations
@@ -471,6 +483,9 @@ After the loading job is defined, we can load data by running the command below:
 The following methods manage nodes:
 
 ::: tigergraphx.core.Graph.add_node
+
+!!! note
+    This method follows a similar interface to NetworkX's `add_node()`.
 
 !!! warning
     This method is intended for adding individual nodes, and is best suited for tiny datasets.
@@ -486,6 +501,8 @@ Single Node Type Example:
 >>> G.add_node("Mike", age=29)
 >>> len(G.nodes)
 2
+>>> G.clear()
+True
 ```
 
 Multiple Node Types Example:
@@ -495,9 +512,14 @@ Multiple Node Types Example:
 >>> G.add_node("Mike", "Person", age=29)
 >>> len(G.nodes)
 2
+>>> G.clear()
+True
 ```
 
 ::: tigergraphx.core.Graph.add_nodes_from
+
+!!! note
+    This method follows a similar interface to NetworkX's `add_node()`.
 
 !!! warning
     This method is best suited for adding small batches of nodes. For larger datasets, consider using `load_data` to improve efficiency.
@@ -520,6 +542,8 @@ Single Node Type Example:
 >>> # Add nodes with shared attributes applied to all listed node IDs
 >>> G.add_nodes_from(["Alice", "Mike"], age=30)
 2
+>>> G.clear()
+True
 ```
 
 Multiple Node Types Example:
@@ -531,9 +555,15 @@ Multiple Node Types Example:
 ... ]
 >>> G.add_nodes_from(nodes_for_adding, "Person")
 2
+>>> G.clear()
+True
+
 ```
 
 ::: tigergraphx.core.Graph.remove_node
+
+!!! note
+    This method follows a similar interface to NetworkX's `remove_node()`.
 
 **Examples:**
 
@@ -563,6 +593,9 @@ True
 
 ::: tigergraphx.core.Graph.has_node
 
+!!! note
+    This method follows a similar interface to NetworkX's `has_node()`.
+
 **Examples:**
 
 Single Node Type Example:
@@ -571,6 +604,8 @@ Single Node Type Example:
 >>> G.add_node("Alice", age=30, gender="Female")
 >>> G.has_node("Alice")
 True
+>>> G.clear()
+True
 ```
 
 Multiple Node Types Example:
@@ -578,6 +613,8 @@ Multiple Node Types Example:
 >>> G = Graph.from_db("Social")
 >>> G.add_node("Alice", "Person", age=30, gender="Female")
 >>> G.has_node("Alice", "Person")
+True
+>>> G.clear()
 True
 ```
 
@@ -595,6 +632,8 @@ Single Node Type Example:
 >>> G.add_node("Alice", age=30, gender="Female")
 >>> G.get_node_data("Alice")
 {'name': 'Alice', 'age': 30, 'gender': 'Female'}
+>>> G.clear()
+True
 ```
 
 Multiple Node Types Example:
@@ -603,8 +642,9 @@ Multiple Node Types Example:
 >>> G.add_node("Alice", "Person", age=30, gender="Female")
 >>> G.get_node_data("Alice", "Person")
 {'name': 'Alice', 'age': 30, 'gender': 'Female'}
+>>> G.clear()
+True
 ```
-
 
 ::: tigergraphx.core.Graph.get_node_edges
 
@@ -623,6 +663,8 @@ Single Node Type Example:
 1
 >>> G.get_node_edges("Alice")
 [('Alice', 'Mike')]
+>>> G.clear()
+True
 ```
 
 Multiple Node Types Example:
@@ -643,12 +685,16 @@ Multiple Node Types Example:
 >>> G.get_node_edges("Alice", "Person", "Friendship")
 [('Alice', 'Mike')]
 >>> # Retrieve edges of multiple specified types.
->>> # Assumes that both "Friendship" and "Follows" are edge types in the Social graph.
->>> G.get_node_edges("Alice", "Person", ["Friendship", "Follows"]) 
+>>> G.get_node_edges("Alice", "Person", ["Friendship", "Friendship"]) 
 [('Alice', 'Mike')]
+>>> G.clear()
+True
 ```
 
 ::: tigergraphx.core.Graph.clear
+
+!!! note
+    This method follows a similar interface to NetworkX's `clear()`.
 
 **Examples:**
 
@@ -674,6 +720,9 @@ The following methods manage edges:
 
 ::: tigergraphx.core.Graph.add_edge
 
+!!! note
+    This method follows a similar interface to NetworkX's `add_nodes_from()`.
+
 !!! warning
     This method is intended for adding individual edges, and is best suited for tiny datasets.
 
@@ -693,6 +742,8 @@ Single Node Type Example:
 >>> G.add_edge("Alice", "Mike", closeness=2.5)
 >>> G.has_edge("Alice", "Mike")
 True
+>>> G.clear()
+True
 ```
 
 Multiple Node Types Example:
@@ -707,9 +758,14 @@ Multiple Node Types Example:
 >>> G.add_edge("Alice", "Mike", "Person", "Friendship", "Person", closeness=2.5)
 >>> G.has_edge("Alice", "Mike", "Person", "Friendship", "Person")
 True
+>>> G.clear()
+True
 ```
 
 ::: tigergraphx.core.Graph.add_edges_from
+
+!!! note
+    This method follows a similar interface to NetworkX's `add_edges_from()`.
 
 !!! warning
     This method is best suited for adding small batches of edges. For larger datasets, consider using `load_data` to improve efficiency.
@@ -738,6 +794,8 @@ Single Node Type Example:
 >>> # Add edges with shared attributes applied to all listed edges
 >>> G.add_edges_from([("Alice", "Mike"), ("Alice", "John")], closeness=2.5)
 2
+>>> G.clear()
+True
 ```
 
 Multiple Node Types Example:
@@ -751,9 +809,14 @@ Multiple Node Types Example:
 2
 >>> G.add_edges_from([("Alice", "Mike")], "Person", "Friendship", "Person")
 1
+>>> G.clear()
+True
 ```
 
 ::: tigergraphx.core.Graph.has_edge
+
+!!! note
+    This method follows a similar interface to NetworkX's `has_edge()`.
 
 **Examples:**
 
@@ -769,6 +832,8 @@ Single Node Type Example:
 >>> G.add_edge("Alice", "Mike")
 >>> G.has_edge("Alice", "Mike")
 True
+>>> G.clear()
+True
 ```
 
 Multiple Node Types Example:
@@ -783,9 +848,14 @@ Multiple Node Types Example:
 >>> G.add_edge("Alice", "Mike", "Person", "Friendship", "Person")
 >>> G.has_edge("Alice", "Mike", "Person", "Friendship", "Person")
 True
+>>> G.clear()
+True
 ```
 
 ::: tigergraphx.core.Graph.get_edge_data
+
+!!! note
+    This method follows a similar interface to NetworkX's `get_edge_data()`.
 
 **Examples:**
 
@@ -801,6 +871,8 @@ Single Node Type Example:
 >>> G.add_edge("Alice", "Mike", closeness=2.5)
 >>> G.get_edge_data("Alice", "Mike")
 {'closeness': 2.5}
+>>> G.clear()
+True
 ```
 
 Multiple Node Types Example:
@@ -812,9 +884,11 @@ Multiple Node Types Example:
 ... ]
 >>> G.add_nodes_from(nodes_for_adding, "Person")
 2
->>> G.add_edge("Alice", "Mike", "Person", "Friendship", "Person")
+>>> G.add_edge("Alice", "Mike", "Person", "Friendship", "Person", closeness=2.5)
 >>> G.get_edge_data("Alice", "Mike", "Person", "Friendship", "Person")
 {'closeness': 2.5}
+>>> G.clear()
+True
 ```
 
 ## Statistics Operations
@@ -838,6 +912,8 @@ Single Node Type Example:
 1
 >>> G.degree("Alice")
 1
+>>> G.clear()
+True
 ```
 
 Multiple Node Types Example:
@@ -852,12 +928,16 @@ Multiple Node Types Example:
 >>> G.degree("Alice", "Person", "Friendship")
 1
 >>> # Get the degree of node Alice for multiple specified edge types.
->>> # Assumes that both "Friendship" and "Follows" are edge types in the Social graph.
->>> G.degree("Alice", "Person", ["Friendship", "Follows"])
+>>> G.degree("Alice", "Person", ["Friendship", "Friendship"])
 1
+>>> G.clear()
+True
 ```
 
 ::: tigergraphx.core.Graph.number_of_nodes
+
+!!! note
+    This method follows a similar interface to NetworkX's `number_of_nodes()`.
 
 **Examples:**
 
@@ -875,9 +955,14 @@ Multiple Node Types Example:
 >>> # Get the number of edges of type "Friendship"
 >>> G.number_of_nodes("Person")
 2
+>>> G.clear()
+True
 ```
 
 ::: tigergraphx.core.Graph.number_of_edges
+
+!!! note
+    This method follows a similar interface to NetworkX's `number_of_edges()`.
 
 **Examples:**
 
@@ -895,20 +980,13 @@ Multiple Node Types Example:
 >>> # Get the number of edges of type "Friendship"
 >>> G.number_of_edges("Friendship")
 2
+>>> G.clear()
+True
 ```
 
 ## Query Operations
 
 The following methods perform query operations:
-
-::: tigergraphx.core.Graph.run_query
-
-**Examples:**
-
-```python
->>> G = Graph.from_db("Social")
->>> 
-```
 
 ::: tigergraphx.core.Graph.get_nodes
 
@@ -916,16 +994,75 @@ The following methods perform query operations:
 
 ```python
 >>> G = Graph.from_db("Social")
->>> 
-```
-
-::: tigergraphx.core.Graph.get_nodes_from_spec
-
-**Examples:**
-
-```python
->>> G = Graph.from_db("Social")
->>> 
+>>> nodes_for_adding = [
+...    ("Alice", {"age": 30, "gender": "Female"}),
+...    ("Mike", {"age": 29, "gender": "Male"}),
+...    ("Emily", {"age": 28, "gender": "Female"}),
+... ]
+>>> G.add_nodes_from(nodes_for_adding, "Person")
+3
+>>> # Get all nodes of type "Person"
+>>> df = G.get_nodes("Person")
+>>> print(df)
+    v_id  v_type  gender   name  age
+0   Mike  Person    Male   Mike   29
+1  Emily  Person  Female  Emily   28
+2  Alice  Person  Female  Alice   30
+>>> # Get all nodes of all types
+>>> df = G.get_nodes(all_node_types=True)
+>>> print(df)
+    v_id  v_type  gender   name  age
+0   Mike  Person    Male   Mike   29
+1  Alice  Person  Female  Alice   30
+2  Emily  Person  Female  Emily   28
+>>> # Retrieve nodes with a filter expression
+>>> df = G.get_nodes(
+...     node_type="Person",
+...     node_alias="s", # "s" is the default value, so you can remove this line
+...     filter_expression="s.age >= 29",
+... )
+>>> # Retrieve women aged 29 or older
+>>> df = G.get_nodes(node_type="Person", filter_expression='s.age >= 29 and s.gender == "Female"')
+>>> print(df)
+    v_id  v_type  gender   name  age
+0   Mike  Person    Male   Mike   29
+1  Alice  Person  Female  Alice   30
+>>> # Retrieve women aged 29 or older
+>>> df = G.get_nodes(node_type="Person", filter_expression='s.age >= 29 and s.gender == "Female"')
+>>> print(df)
+    v_id  v_type  gender   name  age
+0  Alice  Person  Female  Alice   30
+>>> # Retrieve only specific attributes
+>>> df = G.get_nodes(
+...     node_type="Person",
+...     return_attributes=["name", "gender"],
+... )
+>>> print(df)
+    name  gender
+0   Mike    Male
+1  Emily  Female
+2  Alice  Female
+>>> # Limit the number of nodes returned
+>>> df = G.get_nodes(
+...     node_type="Person",
+...     limit=1,
+... )
+>>> print(df)
+    v_id  v_type  gender   name  age
+0  Emily  Person  Female  Emily   28
+>>> # Retrieve "Person" nodes with a specific filter expression,
+>>> # use a custom alias, request only selected attributes, and limit the results.
+>>> df = G.get_nodes(
+...     node_type="Person",
+...     filter_expression="s.age >= 29",
+...     return_attributes=["name", "age"],
+...     limit=1
+... )
+>>> print(df)
+   name  age
+0  Mike   29
+>>> G.clear()
+True
 ```
 
 ::: tigergraphx.core.Graph.get_neighbors
@@ -934,74 +1071,535 @@ The following methods perform query operations:
 
 ```python
 >>> G = Graph.from_db("Social")
->>> 
+>>> nodes_for_adding = [
+...    ("Alice", {"age": 30, "gender": "Female"}),
+...    ("Mike", {"age": 29, "gender": "Male"}),
+...    ("Emily", {"age": 28, "gender": "Female"}),
+...    ("John", {"age": 27, "gender": "Male"}),
+...    ("Mary", {"age": 28, "gender": "Female"}),
+... ]
+>>> G.add_nodes_from(nodes_for_adding, "Person")
+5
+>>> ebunch_to_add = [
+...    ("Alice", "Mike", {"closeness": 1.5}),
+...    ("Alice", "John", {"closeness": 2.5}),
+...    ("John", "Emily", {"closeness": 3.5}),
+...    ("Emily", "Mary", {"closeness": 3.5}),
+... ]
+>>> G.add_edges_from(ebunch_to_add)
+4
+>>> # Get neighbors of Alice
+>>> df = G.get_neighbors(start_nodes="Alice", start_node_type="Person")
+>>> print(df)
+  gender  name  age
+0   Male  Mike   29
+1   Male  John   27
+>>> # Get neighbors of Alice with a specific edge type
+>>> df = G.get_neighbors(
+...     start_nodes="Alice",
+...     start_node_type="Person",
+...     edge_types="Friendship",
+... )
+>>> print(df)
+  gender  name  age
+0   Male  Mike   29
+1   Male  John   27
+>>> # Get neighbors of Alice with a filter expression
+>>> df = G.get_neighbors(
+...     start_nodes="Alice",
+...     start_node_type="Person",
+...     start_node_alias="s", # "s" is the default value, so you can remove this line
+...     edge_alias="e", # "e" is the default value, so you can remove this line
+...     target_node_alias="t", # "t" is the default value, so you can remove this line
+...     filter_expression="e.closeness > 1.5",
+... )
+>>> print(df)
+  gender  name  age
+0   Male  John   27
+>>> # Retrieve only specific attributes for neighbors
+>>> df = G.get_neighbors(
+...     start_nodes="Alice",
+...     start_node_type="Person",
+...     return_attributes=["name", "gender"],
+... )
+>>> print(df)
+   name gender
+0  Mike   Male
+1  John   Male
+>>> # Limit the number of neighbors returned
+>>> df = G.get_neighbors(
+...     start_nodes="Alice",
+...     start_node_type="Person",
+...     limit=1,
+... )
+>>> print(df)
+  gender  name  age
+0   Male  Mike   29
+>>> # Retrieve the first target node of type "Person" that is a friend of Alice (a "Person"),
+>>> # filtering edges by "closeness > 1" and returning the target node's "name" and "gender".
+>>> df = G.get_neighbors(
+...     start_nodes="Alice",
+...     start_node_type="Person",
+...     edge_types="Friendship",
+...     target_node_types="Person",
+...     filter_expression="e.closeness > 1",
+...     return_attributes=["name", "gender"],
+...     limit=1,
+... )
+>>> print(df)
+   name gender
+0  Mike   Male
+>>> G.clear()
+True
 ```
-
-::: tigergraphx.core.Graph.get_neighbors_from_spec
-
-**Examples:**
-
-```python
->>> G = Graph.from_db("Social")
->>> 
-```
-
 
 ## Vector Operations
 
 The following methods handle vector operations:
 
+!!! note
+    Vector operations are supported only on TigerGraph 4.2 and later versions, which include the TigerVector feature.
+
+The previous `Social` graph did not include vector attributes, which are essential for vector operations. Here, we define a new graph, `SocialWithVector`, that incorporates vector attributes, enabling tasks such as machine learning, similarity searches, and more.
+
+Vector attributes go beyond standard node properties by storing numerical embeddings directly in the graph schema. In most cases, specifying the attribute dimension is sufficient—such as `"emb_1": 3` to define a 3-dimensional vector attribute. If additional customization is required, you can define properties like `index_type`, `data_type`, and `metric` using a dictionary format. For example, `"emb_2"` specifies these details explicitly, allowing you to tailor the vector attribute’s behavior.
+
+Below are examples of how you can define the same graph schema—with one node type, one edge type, and vector attributes—using three different formats: a Python dictionary, YAML, and JSON.
+
+=== "Python Dictionary"
+    ```python
+    graph_schema = {
+        "graph_name": "SocialWithVector",
+        "nodes": {
+            "Person": {
+                "primary_key": "name",
+                "attributes": {
+                    "name": "STRING",
+                    "age": "UINT",
+                    "gender": "STRING",
+                },
+                "vector_attributes": {
+                    "emb_1": 3,
+                    "emb_2": {
+                        "dimension": 3,
+                        "index_type": "HNSW",
+                        "data_type": "FLOAT",
+                        "metric": "COSINE",
+                    },
+                },
+            },
+        },
+        "edges": {
+            "Friendship": {
+                "is_directed_edge": False,
+                "from_node_type": "Person",
+                "to_node_type": "Person",
+                "attributes": {
+                    "closeness": "DOUBLE",
+                },
+            },
+        },
+    }
+    ```
+
+=== "YAML"
+    ```python
+    graph_schema = "/path/to/your/schema_with_vector.yaml"
+    ```
+    The contents of the file "/path/to/your/schema_with_vector.yaml" are as follows:
+    ```yaml
+    graph_name: SocialWithVector
+    nodes:
+      Person:
+        primary_key: name
+        attributes:
+          name: STRING
+          age: UINT
+          gender: STRING
+        vector_attributes:
+          emb_1: 3
+          emb_2:
+            dimension: 3
+            index_type: HNSW
+            data_type: FLOAT
+            metric: COSINE
+    edges:
+      Friendship:
+        is_directed_edge: false
+        from_node_type: Person
+        to_node_type: Person
+        attributes:
+          closeness: DOUBLE
+    ```
+
+=== "JSON"
+    ```python
+    graph_schema = "/path/to/your/schema_with_vector.json"
+    ```
+    The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
+    ```json
+    {
+      "graph_name": "SocialWithVector",
+      "nodes": {
+        "Person": {
+          "primary_key": "name",
+          "attributes": {
+            "name": "STRING",
+            "age": "UINT",
+            "gender": "STRING"
+          },
+          "vector_attributes": {
+            "emb_1": 3,
+            "emb_2": {
+              "dimension": 3,
+              "index_type": "HNSW",
+              "data_type": "FLOAT",
+              "metric": "COSINE"
+            }
+          }
+        }
+      },
+      "edges": {
+        "Friendship": {
+          "is_directed_edge": false,
+          "from_node_type": "Person",
+          "to_node_type": "Person",
+          "attributes": {
+            "closeness": "DOUBLE"
+          }
+        }
+      }
+    }
+    ```
+
+This schema represents a social graph where each person is a node with attributes like `name`, `age`, and `gender`. The addition of vector attributes—`emb_1` and `emb_2`—enables complex operations such as similarity-based queries. Relationships between people are defined as undirected "Friendship" edges, each with an attribute `closeness` that measures the strength of the connection.
+
+You can create a graph using this schema by running:
+
+```python
+G = Graph(graph_schema)
+```
+
+This command will create a new graph using the schema if it doesn’t already exist. If the graph exists, it will simply return the existing graph instance. To overwrite an existing graph, set the `drop_existing_graph` parameter to `True`.
+
+For details on setting the TigerGraph connection configuration, please refer to [\_\_init\_\_](#tigergraphx.core.graph.Graph.__init__).
+
+!!! Note
+    Creating the graph may take several seconds.
+
 ::: tigergraphx.core.Graph.upsert
 
 **Examples:**
 
+Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
->>> 
+>>> G = Graph.from_db("SocialWithVector")
+>>> # Upsert a single node with vector data
+>>> G.upsert(
+...     data={"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
+... )
+1
+>>> # Upsert multiple nodes with vector data
+>>> G.upsert(
+...     data=[
+...         {"name": "Mike", "age": 29, "gender": "Male", "emb_1": [0.4, 0.5, 0.6]},
+...         {"name": "Emily", "age": 28, "gender": "Female", "emb_1": [0.7, 0.8, 0.9]},
+...     ],
+... )
+2
+>>> # Get the total number of nodes in the graph
+>>> G.number_of_nodes()
+3
+>>> G.clear()
+True
+```
+
+Multiple Node Types Example:
+```python
+>>> G = Graph.from_db("SocialWithVector")
+>>> # Upsert a single node with vector data
+>>> G.upsert(
+...     data={"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
+...     node_type="Person",
+... )
+1
+>>> # Upsert multiple nodes with vector data
+>>> G.upsert(
+...     data=[
+...         {"name": "Mike", "age": 29, "gender": "Male", "emb_1": [0.4, 0.5, 0.6]},
+...         {"name": "Emily", "age": 28, "gender": "Female", "emb_1": [0.7, 0.8, 0.9]},
+...     ],
+...     node_type="Person",
+... )
+2
+>>> # Get the total number of nodes in the graph
+>>> G.number_of_nodes()
+3
+>>> G.clear()
+True
 ```
 
 ::: tigergraphx.core.Graph.fetch_node
 
 **Examples:**
 
+Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
->>> 
+>>> G = Graph.from_db("SocialWithVector")
+>>> # Upsert a single node with vector data
+>>> G.upsert(
+...     data={"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
+... )
+1
+>>> # Fetch vector data for a single node
+>>> vector = G.fetch_node(
+...     node_id="Alice",
+...     vector_attribute_name="emb_1",
+... )
+>>> print(vector)
+[0.1, 0.2, 0.3]
+>>> G.clear()
+True
+```
+
+Multiple Node Types Example:
+```python
+>>> G = Graph.from_db("SocialWithVector")
+>>> # Upsert a single node with vector data, specifying node type
+>>> G.upsert(
+...     data={"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
+...     node_type="Person",
+... )
+1
+>>> # Fetch vector data for a single node, specifying node type
+>>> vector = G.fetch_node(
+...     node_id="Alice",
+...     vector_attribute_name="emb_1",
+...     node_type="Person",
+... )
+>>> print(vector)
+[0.1, 0.2, 0.3]
+>>> G.clear()
+True
 ```
 
 ::: tigergraphx.core.Graph.fetch_nodes
 
 **Examples:**
 
+Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
->>> 
+>>> G = Graph.from_db("SocialWithVector")
+>>> # Upsert multiple nodes with vector data
+>>> G.upsert(
+...     data=[
+...         {"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
+...         {"name": "Bob", "age": 32, "gender": "Male", "emb_1": [0.4, 0.5, 0.6]},
+...     ]
+... )
+2
+>>> # Fetch vector data for multiple nodes
+>>> vectors = G.fetch_nodes(
+...     node_ids=["Alice", "Bob"],
+...     vector_attribute_name="emb_1",
+... )
+>>> print(vectors)
+{'Alice': [0.1, 0.2, 0.3], 'Bob': [0.4, 0.5, 0.6]}
+>>> G.clear()
+True
+```
+
+Multiple Node Types Example:
+```python
+>>> G = Graph.from_db("SocialWithVector")
+>>> # Upsert multiple nodes with vector data, specifying node type
+>>> G.upsert(
+...     data=[
+...         {"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
+...         {"name": "Bob", "age": 32, "gender": "Male", "emb_1": [0.4, 0.5, 0.6]},
+...     ],
+...     node_type="Person",
+... )
+2
+>>> # Fetch vector data for multiple nodes, specifying node type
+>>> vectors = G.fetch_nodes(
+...     node_ids=["Alice", "Bob"],
+...     vector_attribute_name="emb_1",
+...     node_type="Person",
+... )
+>>> print(vectors)
+{'Alice': [0.1, 0.2, 0.3], 'Bob': [0.4, 0.5, 0.6]}
+>>> G.clear()
+True
 ```
 
 ::: tigergraphx.core.Graph.search
 
 **Examples:**
 
+Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
->>> 
+>>> G = Graph.from_db("SocialWithVector")
+>>> # Upsert multiple nodes with vector data
+>>> G.upsert(
+...     data=[
+...         {"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
+...         {"name": "Bob", "age": 32, "gender": "Male", "emb_1": [0.4, 0.5, 0.6]},
+...         {"name": "Eve", "age": 29, "gender": "Female", "emb_1": [0.3, 0.2, 0.1]},
+...     ]
+... )
+3
+>>> # Search for nodes most similar to a query vector
+>>> results = G.search(
+...     data=[0.2, 0.2, 0.2],
+...     vector_attribute_name="emb_1",
+...     limit=2,
+...     return_attributes=["name", "gender"],
+... )
+>>> for result in results:
+...     print(result)
+{'id': 'Bob', 'distance': 0.01307237, 'name': 'Bob', 'gender': 'Male'}
+{'id': 'Eve', 'distance': 0.07417983, 'name': 'Eve', 'gender': 'Female'}
+```
+
+Multiple Node Types Example:
+```python
+>>> G = Graph.from_db("SocialWithVector")
+>>> # Upsert multiple nodes with vector data, specifying node type
+>>> G.upsert(
+...     data=[
+...         {"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
+...         {"name": "Bob", "age": 32, "gender": "Male", "emb_1": [0.4, 0.5, 0.6]},
+...         {"name": "Eve", "age": 29, "gender": "Female", "emb_1": [0.3, 0.2, 0.1]},
+...     ],
+...     node_type="Person",
+... )
+3
+>>> # Search for nodes most similar to a query vector, specifying node type
+>>> results = G.search(
+...     data=[0.2, 0.2, 0.2],
+...     vector_attribute_name="emb_1",
+...     node_type="Person",
+...     limit=2,
+...     return_attributes=["name", "gender"],
+... )
+>>> for result in results:
+...     print(result)
+{'id': 'Bob', 'distance': 0.01307237, 'name': 'Bob', 'gender': 'Male'}
+{'id': 'Eve', 'distance': 0.07417983, 'name': 'Eve', 'gender': 'Female'}
 ```
 
 ::: tigergraphx.core.Graph.search_multi_vector_attributes
 
-**Examples:**
-
+Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
->>> 
+>>> G = Graph.from_db("SocialWithVector")
+>>> # Upsert multiple nodes with different vector attributes
+>>> G.upsert(
+...     data=[
+...         {"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3], "emb_2": [0.2, 0.4, 0.6]},
+...         {"name": "Bob", "age": 32, "gender": "Male", "emb_1": [0.4, 0.5, 0.6], "emb_2": [0.5, 0.6, 0.7]},
+...         {"name": "Eve", "age": 29, "gender": "Female", "emb_1": [0.3, 0.2, 0.1], "emb_2": [0.1, 0.2, 0.3]},
+...     ]
+... )
+3
+>>> # Search for nodes most similar to a query vector using multiple vector attributes
+>>> results = G.search_multi_vector_attributes(
+...     data=[0.1, 0.2, 0.3],
+...     vector_attribute_names=["emb_1", "emb_2"],
+...     limit=2,
+...     return_attributes_list=[["name", "gender"], ["name"]],
+... )
+>>> for result in results:
+...     print(result)
+{'id': 'Alice', 'distance': 1.192093e-07, 'name': 'Alice', 'gender': 'Female'}
+{'id': 'Eve', 'distance': 1.192093e-07, 'name': 'Eve'}
+```
+
+Multiple Node Types Example:
+```python
+>>> G = Graph.from_db("SocialWithVector")
+>>> # Upsert multiple nodes with vector attributes
+>>> G.upsert(
+...     data=[
+...         {"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3], "emb_2": [0.2, 0.4, 0.6]},
+...         {"name": "Bob", "age": 32, "gender": "Male", "emb_1": [0.4, 0.5, 0.6], "emb_2": [0.5, 0.6, 0.7]},
+...         {"name": "Eve", "age": 29, "gender": "Female", "emb_1": [0.3, 0.2, 0.1], "emb_2": [0.1, 0.2, 0.3]},
+...     ],
+...     node_type="Person",
+... )
+3
+>>> # Search for nodes most similar to a query vector using multiple vector attributes
+>>> results = G.search_multi_vector_attributes(
+...     data=[0.1, 0.2, 0.3],
+...     vector_attribute_names=["emb_1", "emb_2"],
+...     node_types=["Person", "Person"],
+...     limit=2,
+...     return_attributes_list=[["name", "gender"], ["name"]],
+... )
+>>> for result in results:
+...     print(result)
+{'id': 'Alice', 'distance': 1.192093e-07, 'name': 'Alice', 'gender': 'Female'}
+{'id': 'Bob', 'distance': 0.02536821, 'name': 'Bob', 'gender': 'Male'}
+>>> G.clear()
+True
 ```
 
 ::: tigergraphx.core.Graph.search_top_k_similar_nodes
 
 **Examples:**
 
+Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
->>> 
+>>> G = Graph.from_db("SocialWithVector")
+>>> # Upsert a node with vector data
+>>> G.upsert(
+...     data=[
+...         {"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
+...         {"name": "Bob", "age": 32, "gender": "Male", "emb_1": [0.1, 0.2, 0.4]},
+...         {"name": "Eve", "age": 29, "gender": "Female", "emb_1": [0.5, 0.6, 0.7]},
+...     ]
+... )
+3
+>>> # Retrieve the top-5 nodes similar to "Alice" based on the emb_1 vector
+>>> similar_nodes = G.search_top_k_similar_nodes(
+...     node_id="Alice",
+...     vector_attribute_name="emb_1",
+...     limit=5,
+...     return_attributes=["name", "age", "gender"]
+... )
+>>> for node in similar_nodes:
+...     print(node)
+{'id': 'Bob', 'distance': 0.008539915, 'name': 'Bob', 'age': 32, 'gender': 'Male'}
+>>> G.clear()
+True
 ```
 
+Multiple Node Types Example:
+```python
+>>> G = Graph.from_db("SocialWithVector")
+>>> # Upsert nodes with vector data
+>>> G.upsert(
+...     data=[
+...         {"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
+...         {"name": "Bob", "age": 32, "gender": "Male", "emb_1": [0.1, 0.2, 0.4]},
+...         {"name": "Eve", "age": 29, "gender": "Female", "emb_1": [0.5, 0.6, 0.7]},
+...     ],
+...     node_type="Person"
+... )
+2
+>>> # Retrieve the top-5 nodes similar to "Alice" based on the emb_1 vector
+>>> similar_nodes = G.search_top_k_similar_nodes(
+...     node_id="Alice",
+...     vector_attribute_name="emb_1",
+...     node_type="Person",
+...     limit=5,
+...     return_attributes=["name", "age", "gender"]
+... )
+>>> for node in similar_nodes:
+...     print(node)
+{'id': 'Bob', 'distance': 0.008539915, 'name': 'Bob', 'age': 32, 'gender': 'Male'}
+{'id': 'Eve', 'distance': 0.03167039, 'name': 'Eve', 'age': 29, 'gender': 'Female'}
+>>> G.clear()
+True
+```

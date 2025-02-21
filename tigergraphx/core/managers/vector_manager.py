@@ -201,8 +201,22 @@ class VectorManager(BaseManager):
             )
             combined_results.extend(result)
 
+        # Sort by distance
         combined_results.sort(key=lambda x: x["distance"])
-        return combined_results[:limit]
+
+        # Keep only the first occurrence of each unique node_id
+        unique_results = []
+        seen_node_ids = set()
+
+        for item in combined_results:
+            node_id = item.get("id")
+            if node_id not in seen_node_ids:
+                unique_results.append(item)
+                seen_node_ids.add(node_id)
+            if len(unique_results) >= limit:
+                break
+
+        return unique_results
 
     def search_top_k_similar_nodes(
         self,
