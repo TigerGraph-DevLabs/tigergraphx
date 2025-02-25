@@ -11,10 +11,10 @@ Since our data is stored in a TigerGraph instance—whether on-premise or in the
 
 
 ```python
-import os
-os.environ["TG_HOST"] = "http://127.0.0.1"
-os.environ["TG_USERNAME"] = "tigergraph"
-os.environ["TG_PASSWORD"] = "tigergraph"
+>>> import os
+>>> os.environ["TG_HOST"] = "http://127.0.0.1"
+>>> os.environ["TG_USERNAME"] = "tigergraph"
+>>> os.environ["TG_PASSWORD"] = "tigergraph"
 ```
 
 ### Define a Graph Schema
@@ -32,6 +32,7 @@ In this example, we will create a graph named "Social" that includes one node ty
 ...             "attributes": {
 ...                 "name": "STRING",
 ...                 "age": "UINT",
+...                 "gender": "STRING",
 ...             },
 ...         },
 ...     },
@@ -59,28 +60,119 @@ Running the following command will create a graph using the user-defined schema 
 >>> G = Graph(graph_schema)
 ```
 
-    2025-02-25 19:39:35,846 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for Social: does not exist
-    2025-02-25 19:39:35,847 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: Social...
-    2025-02-25 19:39:39,769 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
+    2025-02-25 22:06:45,313 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for Social: does not exist
+    2025-02-25 22:06:45,313 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: Social...
+    2025-02-25 22:06:48,364 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
 
 
-Once the graph has been created inside TigerGraph, a simpler way to get the graph without defining graph schema is using `Graph.from_db` method, which only graph name is required to provide. 
+### Retrieve a Graph and Print Its Schema
+Once a graph has been created in TigerGraph, you can retrieve it without manually defining the schema using the `Graph.from_db` method, which requires only the graph name:
 
 
 ```python
 >>> G = Graph.from_db("Social")
 ```
 
-## Nodes and Edges
-### Add Nodes and Edges
-*Note*: This example demonstrates how to easily add nodes and edges using the API. However, adding nodes and edges individually may not be efficient for large-scale operations. For better performance when loading data into TigerGraph, it is recommended to use a loading job. Nonetheless, these examples are ideal for quickly getting started.
+Now, let's print the schema of the graph in a well-formatted manner:
 
 
 ```python
->>> G.add_node("Alice", "Person", age=25)
->>> G.add_node("Michael", "Person", age=28)
->>> G.add_edge("Alice", "Michael", closeness=0.98)
+>>> import json
+>>> schema = G.get_schema()
+>>> print(json.dumps(schema, indent=4, default=str))
 ```
+
+    {
+        "graph_name": "Social",
+        "nodes": {
+            "Person": {
+                "primary_key": "name",
+                "attributes": {
+                    "name": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "age": {
+                        "data_type": "DataType.UINT",
+                        "default_value": null
+                    },
+                    "gender": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    }
+                },
+                "vector_attributes": {}
+            }
+        },
+        "edges": {
+            "Friendship": {
+                "is_directed_edge": false,
+                "from_node_type": "Person",
+                "to_node_type": "Person",
+                "discriminator": "set()",
+                "attributes": {
+                    "closeness": {
+                        "data_type": "DataType.DOUBLE",
+                        "default_value": null
+                    }
+                }
+            }
+        }
+    }
+
+
+## Nodes and Edges
+### Adding Nodes and Edges
+
+TigerGraphX provides NetworkX-like methods for node operations, edge operations, and statistical analysis. You can find the full API reference in the [Graph class reference](../../reference/01_core/graph).
+
+To add nodes or edges individually, use the following code:
+
+
+```python
+>>> G.add_node("Emily", age=25)
+>>> G.add_node("John", age=28)
+>>> G.add_edge("Emily", "John", closeness=0.98)
+```
+
+While this method is simple, it adds nodes and edges one by one. Alternatively, you can use `add_nodes_from` and `add_edges_from` to add them in small batches. The following example demonstrates how to add multiple nodes at once:
+
+
+```python
+>>> nodes_for_adding = [
+...    ("Alice", {"age": 30, "gender": "Female"}),
+...    ("Michael", {"age": 29}),
+... ]
+>>> G.add_nodes_from(nodes_for_adding)
+```
+
+
+
+
+    2
+
+
+
+Next, let's add edges with individual attributes using tuples in the format `(source ID, target ID, attribute_dict)`.
+
+
+```python
+>>> ebunch_to_add = [
+...    ("Alice", "Michael"),
+...    ("Alice", "John", {"closeness": 2.5}),
+...    ("Emily", "John", {"closeness": 1.5}),
+... ]
+>>> G.add_edges_from(ebunch_to_add)
+```
+
+
+
+
+    3
+
+
+
+For larger datasets, consider using [load_data](../../reference/01_core/graph/#tigergraphx.core.Graph.load_data) for efficient handling of large-scale data.
 
 ### Check if Nodes and Edges Exist
 
@@ -119,72 +211,135 @@ Since the 'Friendship' edge is undirected, both 'Alice -> Michael' and 'Michael 
 
 
 ### Display Node and Edge Attributes
-#### Using `get_node_data` and `get_edge_data` Functions
 
-
-```python
->>> print(G.get_node_data("Alice"))
-```
-
-    {'name': 'Alice', 'age': 25}
-
-
-
-```python
->>> print(G.get_edge_data("Alice", "Michael"))
-```
-
-    {'closeness': 0.98}
-
-
-#### Using Node View
+#### Display Node Attributes
+To display all attributes of a given node, use the following command:
 
 
 ```python
 >>> print(G.nodes["Alice"])
 ```
 
-    {'name': 'Alice', 'age': 25}
+    {'name': 'Alice', 'age': 30, 'gender': 'Female'}
 
+
+To display a specific attribute, use the command below:
 
 
 ```python
 >>> print(G.nodes["Michael"]["age"])
 ```
 
-    28
+    29
 
 
-*Note:* The Edge View feature is planned for future releases.
+#### Display Edge Attributes
+
+
+```python
+>>> print(G.get_edge_data("Alice", "Michael"))
+```
+
+    {'closeness': 0}
+
 
 ### Display the Degree of Nodes
+To display the degree of a given node, use the following command:
 
 
 ```python
 >>> print(G.degree("Alice"))
 ```
 
-    1
+    2
 
 
-### Retrieve the Neighbors of a Node
+## Query Operations
+### Retrieve Nodes
+Retrieve "Person" nodes that match a specific filter expression, use a custom alias, request only selected attributes, and limit the results:
 
 
 ```python
->>> neighbors = G.get_neighbors("Alice")
->>> print(neighbors)
+>>> df = G.get_nodes(
+...     node_type="Person",
+...     node_alias="s", # "s" is the default value, so you can remove this line
+...     filter_expression="s.age >= 29",
+...     return_attributes=["name", "age"],
+...     limit=1
+... )
+>>> print(df)
 ```
 
           name  age
-    0  Michael   28
+    0  Michael   29
+
+
+### Retrieve a Node's Neighbors
+Retrieve the first "Person" node that is a friend of Alice, filtering edges where closeness > 1 and returning the target node's "name" and "gender" attributes:
+
+
+```python
+>>> df = G.get_neighbors(
+...     start_nodes="Alice",
+...     start_node_type="Person",
+...     edge_types="Friendship",
+...     target_node_types="Person",
+...     filter_expression="e.closeness > 1",
+...     return_attributes=["name", "gender"],
+...     limit=1,
+... )
+>>> print(df)
+```
+
+       name gender
+    0  John       
+
+
+Note that the result of `get_neighbors` is a Pandas DataFrame.
+
+
+```python
+>>> print(type(df))
+```
+
+    <class 'pandas.core.frame.DataFrame'>
+
+
+### Breadth First Search
+Below is an example of multi-hop neighbor traversal:
+
+
+```python
+>>> # First hop: Retrieve neighbors of "Alice" of type "Person"
+>>> df = G.get_neighbors(start_nodes="Alice", start_node_type="Person")
+>>> primary_ids = set(df['name'])
+>>> print(primary_ids)
+```
+
+    {'Michael', 'John'}
 
 
 
 ```python
->>> print(type(neighbors))
+>>> # Second hop: Retrieve neighbors of the nodes identified in the first hop
+>>> df = G.get_neighbors(start_nodes=primary_ids, start_node_type="Person")
+>>> primary_ids = set(df['name'])
+>>> print(primary_ids)
 ```
 
-    <class 'pandas.core.frame.DataFrame'>
+    {'Emily', 'Alice'}
+
+
+
+```python
+>>> # Third hop: Retrieve neighbors of the nodes identified in the second hop
+>>> df = G.get_neighbors(start_nodes=primary_ids, start_node_type="Person")
+>>> print(df)
+```
+
+      gender     name  age
+    0            John   28
+    1         Michael   29
 
 
 ## Graph Statistics
@@ -195,7 +350,7 @@ Since the 'Friendship' edge is undirected, both 'Alice -> Michael' and 'Michael 
 >>> print(G.number_of_nodes())
 ```
 
-    2
+    4
 
 
 ### Display the Number of Edges
@@ -205,7 +360,7 @@ Since the 'Friendship' edge is undirected, both 'Alice -> Michael' and 'Michael 
 >>> print(G.number_of_edges())
 ```
 
-    1
+    3
 
 
 ## Clear and Drop a Graph
@@ -239,8 +394,8 @@ To clear the data and completely remove the graph—including schema, loading jo
 >>> G.drop_graph()
 ```
 
-    2025-02-25 18:11:56,813 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: Social...
-    2025-02-25 18:11:59,489 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
+    2025-02-25 22:08:00,495 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: Social...
+    2025-02-25 22:08:03,255 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
 
 
 ---
