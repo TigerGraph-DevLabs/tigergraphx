@@ -219,7 +219,7 @@ For details on setting the TigerGraph connection configuration, please refer to 
 
 If your graph contains only one node type, you don’t need to specify the type when accessing nodes:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.add_nodes_from(["Alice", "Mike"])
 >>> len(G.nodes)
 2
@@ -231,7 +231,7 @@ True
 
 For graphs with multiple node types, you must include the node type when accessing nodes:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.add_nodes_from(["Alice", "Mike"], "Person")
 >>> len(G.nodes)
 2
@@ -253,7 +253,7 @@ The following methods handle schema operations:
 
 The default schema format retrieved from the database is a Python dictionary. 
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.get_schema()
 {'graph_name': 'Social',
  'nodes': {'Person': {'primary_key': 'name',
@@ -273,7 +273,7 @@ The default schema format retrieved from the database is a Python dictionary.
 
 To retrieve the schema in JSON format, you can use:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.get_schema("json")
 '{"graph_name":"Social","nodes":{"Person":{"primary_key":"name","attributes":{"name":{"data_type":"STRING","default_value":null},"age":{"data_type":"UINT","default_value":null},"gender":{"data_type":"STRING","default_value":null}},"vector_attributes":{}}},"edges":{"Friendship":{"is_directed_edge":false,"from_node_type":"Person","to_node_type":"Person","discriminator":[],"attributes":{"closeness":{"data_type":"DOUBLE","default_value":null}}}}}'
 ```
@@ -286,7 +286,7 @@ This method is rarely used because it is already called in the constructor.
 
 If you do not need to drop the existing graph before creating the schema, you can use:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.create_schema()
 2025-01-21 16:27:34,021 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for Social: exists
 2025-01-21 16:27:34,022 - tigergraphx.core.managers.schema_manager - INFO - Graph 'Social' already exists. Skipping graph creation.
@@ -295,7 +295,7 @@ False
 
 If you need to drop the existing graph, you can call:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.create_schema(True)
 2025-01-21 16:27:52,323 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for Social: exists
 2025-01-21 16:27:52,323 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: Social...
@@ -310,7 +310,7 @@ True
 **Examples:**
 
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.drop_graph()
 2025-01-20 16:45:04,544 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: Social...
 2025-01-20 16:45:07,645 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
@@ -466,7 +466,7 @@ The code above defines the configuration for a loading job into the graph. It sp
 
 After the loading job is defined, we can load data by running the command below:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.load_data(loading_job_config)
 2025-01-21 16:31:41,444 - tigergraphx.core.managers.data_manager - INFO - Initiating data load for job: loading_job_Social...
 2025-01-21 16:31:49,010 - tigergraphx.core.managers.data_manager - INFO - Data load completed successfully.
@@ -496,7 +496,7 @@ The following methods manage nodes:
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.add_node("Alice", age=30, gender="Female")
 >>> G.add_node("Mike", age=29)
 >>> len(G.nodes)
@@ -507,7 +507,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.add_node("Alice", "Person", age=30, gender="Female")
 >>> G.add_node("Mike", "Person", age=29)
 >>> len(G.nodes)
@@ -528,7 +528,7 @@ True
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> # Add nodes using a list of node IDs only, without additional attributes
 >>> G.add_nodes_from(["Alice", "Mike"])
 2
@@ -548,7 +548,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -569,7 +569,7 @@ True
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.add_node("Alice", age=30, gender="Female")
 >>> len(G.nodes)
 1
@@ -581,7 +581,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.add_node("Alice", "Person", age=30, gender="Female")
 >>> len(G.nodes)
 1
@@ -600,7 +600,7 @@ True
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.add_node("Alice", age=30, gender="Female")
 >>> G.has_node("Alice")
 True
@@ -610,7 +610,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.add_node("Alice", "Person", age=30, gender="Female")
 >>> G.has_node("Alice", "Person")
 True
@@ -628,7 +628,7 @@ True
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.add_node("Alice", age=30, gender="Female")
 >>> G.get_node_data("Alice")
 {'name': 'Alice', 'age': 30, 'gender': 'Female'}
@@ -638,7 +638,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.add_node("Alice", "Person", age=30, gender="Female")
 >>> G.get_node_data("Alice", "Person")
 {'name': 'Alice', 'age': 30, 'gender': 'Female'}
@@ -652,7 +652,7 @@ True
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -669,7 +669,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -699,7 +699,7 @@ True
 **Examples:**
 
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -732,7 +732,7 @@ The following methods manage edges:
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -748,7 +748,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -774,7 +774,7 @@ True
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -800,7 +800,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -822,7 +822,7 @@ True
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -838,7 +838,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -861,7 +861,7 @@ True
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -877,7 +877,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -901,7 +901,7 @@ The following methods handle statistics operations:
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -918,7 +918,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> G.add_edges_from([("Alice", "Mike")], "Person", "Friendship", "Person")
 1
 >>> # Get the degree of node Alice for all edge types
@@ -942,7 +942,7 @@ True
 **Examples:**
 
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29}),
@@ -967,7 +967,7 @@ True
 **Examples:**
 
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> ebunch_to_add = [
 ...    ("Alice", "Mike"),
 ...    ("Alice", "John", {"closeness": 2.5}),
@@ -993,7 +993,7 @@ The following methods perform query operations:
 **Examples:**
 
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29, "gender": "Male"}),
@@ -1070,7 +1070,7 @@ True
 **Examples:**
 
 ```python
->>> G = Graph.from_db("Social")
+>>> G = Graph(graph_schema)
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Mike", {"age": 29, "gender": "Male"}),
@@ -1149,6 +1149,24 @@ True
 >>> print(df)
    name gender
 0  Mike   Male
+>>> # Multi-hop neighbor traversal example
+>>> # First hop: Retrieve neighbors of "Alice" of type "Person"
+>>> df = G.get_neighbors(start_nodes="Alice", start_node_type="Person")
+>>> primary_ids = set(df['name'])
+>>> print(primary_ids)
+{'John', 'Mike'}
+>>> # Second hop: Retrieve neighbors of the nodes identified in the first hop
+>>> df = G.get_neighbors(start_nodes=primary_ids, start_node_type="Person")
+>>> primary_ids = set(df['name'])
+>>> print(primary_ids)
+{'Emily', 'Alice'}
+>>> # Third hop: Retrieve neighbors of the nodes identified in the second hop
+>>> df = G.get_neighbors(start_nodes=primary_ids, start_node_type="Person")
+>>> print(df)
+   gender  name  age
+0    Male  John   27
+1  Female  Mary   28
+2    Male  Mike   29
 >>> G.clear()
 True
 ```
@@ -1293,7 +1311,7 @@ For details on setting the TigerGraph connection configuration, please refer to 
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("SocialWithVector")
+>>> G = Graph(graph_schema)
 >>> # Upsert a single node with vector data
 >>> G.upsert(
 ...     data={"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
@@ -1316,7 +1334,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("SocialWithVector")
+>>> G = Graph(graph_schema)
 >>> # Upsert a single node with vector data
 >>> G.upsert(
 ...     data={"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
@@ -1345,7 +1363,7 @@ True
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("SocialWithVector")
+>>> G = Graph(graph_schema)
 >>> # Upsert a single node with vector data
 >>> G.upsert(
 ...     data={"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
@@ -1364,7 +1382,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("SocialWithVector")
+>>> G = Graph(graph_schema)
 >>> # Upsert a single node with vector data, specifying node type
 >>> G.upsert(
 ...     data={"name": "Alice", "age": 30, "gender": "Female", "emb_1": [0.1, 0.2, 0.3]},
@@ -1389,7 +1407,7 @@ True
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("SocialWithVector")
+>>> G = Graph(graph_schema)
 >>> # Upsert multiple nodes with vector data
 >>> G.upsert(
 ...     data=[
@@ -1411,7 +1429,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("SocialWithVector")
+>>> G = Graph(graph_schema)
 >>> # Upsert multiple nodes with vector data, specifying node type
 >>> G.upsert(
 ...     data=[
@@ -1439,7 +1457,7 @@ True
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("SocialWithVector")
+>>> G = Graph(graph_schema)
 >>> # Upsert multiple nodes with vector data
 >>> G.upsert(
 ...     data=[
@@ -1464,7 +1482,7 @@ Single Node Type Example:
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("SocialWithVector")
+>>> G = Graph(graph_schema)
 >>> # Upsert multiple nodes with vector data, specifying node type
 >>> G.upsert(
 ...     data=[
@@ -1493,7 +1511,7 @@ Multiple Node Types Example:
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("SocialWithVector")
+>>> G = Graph(graph_schema)
 >>> # Upsert multiple nodes with different vector attributes
 >>> G.upsert(
 ...     data=[
@@ -1518,7 +1536,7 @@ Single Node Type Example:
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("SocialWithVector")
+>>> G = Graph(graph_schema)
 >>> # Upsert multiple nodes with vector attributes
 >>> G.upsert(
 ...     data=[
@@ -1551,7 +1569,7 @@ True
 
 Single Node Type Example:
 ```python
->>> G = Graph.from_db("SocialWithVector")
+>>> G = Graph(graph_schema)
 >>> # Upsert a node with vector data
 >>> G.upsert(
 ...     data=[
@@ -1561,11 +1579,11 @@ Single Node Type Example:
 ...     ]
 ... )
 3
->>> # Retrieve the top-5 nodes similar to "Alice" based on the emb_1 vector
+>>> # Retrieve the top-1 nodes similar to "Alice" based on the emb_1 vector
 >>> similar_nodes = G.search_top_k_similar_nodes(
 ...     node_id="Alice",
 ...     vector_attribute_name="emb_1",
-...     limit=5,
+...     limit=1,
 ...     return_attributes=["name", "age", "gender"]
 ... )
 >>> for node in similar_nodes:
@@ -1577,7 +1595,7 @@ True
 
 Multiple Node Types Example:
 ```python
->>> G = Graph.from_db("SocialWithVector")
+>>> G = Graph(graph_schema)
 >>> # Upsert nodes with vector data
 >>> G.upsert(
 ...     data=[
@@ -1587,7 +1605,7 @@ Multiple Node Types Example:
 ...     ],
 ...     node_type="Person"
 ... )
-2
+3
 >>> # Retrieve the top-5 nodes similar to "Alice" based on the emb_1 vector
 >>> similar_nodes = G.search_top_k_similar_nodes(
 ...     node_id="Alice",

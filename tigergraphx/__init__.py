@@ -8,7 +8,9 @@
 from .core import (
     Graph,
 )
+from .utils import setup_logging
 
 __all__ = [
     "Graph",
+    "setup_logging",
 ]
