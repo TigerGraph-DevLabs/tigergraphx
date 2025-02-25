@@ -1,3 +1,10 @@
+# Copyright 2025 TigerGraph Inc.
+# Licensed under the Apache License, Version 2.0.
+# See the LICENSE file or https://www.apache.org/licenses/LICENSE-2.0
+#
+# Permission is granted to use, copy, modify, and distribute this software
+# under the License. The software is provided "AS IS", without warranty.
+
 import os
 import pandas as pd
 from tigergraphx import ParquetProcessor
@@ -90,11 +97,11 @@ def map_relationships_to_entities(processor: ParquetProcessor):
     )
 
     filtered_df = relationships_df[["id", "source_id"]].dropna()
-    renamed_df = filtered_df.rename(columns={"source_id": "entity_id"})
+    renamed_df = filtered_df.rename(columns={"source_id": "entity_id"}) # pyright: ignore
     processor.save_dataframe_to_csv(renamed_df, "relationship_source.csv")
 
     filtered_df = relationships_df[["id", "target_id"]].dropna()
-    renamed_df = filtered_df.rename(columns={"target_id": "entity_id"})
+    renamed_df = filtered_df.rename(columns={"target_id": "entity_id"}) # pyright: ignore
     processor.save_dataframe_to_csv(renamed_df, "relationship_target.csv")
 
 
