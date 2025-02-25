@@ -8,17 +8,17 @@ nav:
   - Getting Started:
       - Installation: getting_started/installation.md
       - "TigerGraphX Quick Start":
-        - "Using TigerGraph as Graph Database": getting_started/quick_start_graph.ipynb
-        - "Using TigerGraph as Vector Database": getting_started/quick_start_vector.ipynb
-        - "Using TigerGraph for Graph and Vector Database": getting_started/quick_start_both.ipynb
+        - "Using TigerGraph as Graph Database": getting_started/quick_start_graph.md
+        - "Using TigerGraph as Vector Database": getting_started/quick_start_vector.md
+        - "Using TigerGraph for Graph and Vector Database": getting_started/quick_start_both.md
   - GraphRAG:
       - "GraphRAG Overview": graphrag/graphrag_overview.md
-      - "Supporting LightRAG": graphrag/lightrag.ipynb
+      - "Supporting LightRAG": graphrag/lightrag.md
       - "Supporting Microsoft's GraphRAG":
           - "Part 1 - Setup and Data Preparation": graphrag/msft_graphrag_1.md
-          - "Part 2 - Graph Creation and Data Loading": graphrag/msft_graphrag_2.ipynb
-          - "Part 3 - Graph Analysis": graphrag/msft_graphrag_3.ipynb
-          - "Part 4 - Hybrid Retrieval and Integration with LLM": graphrag/msft_graphrag_4.ipynb
+          - "Part 2 - Graph Creation and Data Loading": graphrag/msft_graphrag_2.md
+          - "Part 3 - Graph Analysis": graphrag/msft_graphrag_3.md
+          - "Part 4 - Hybrid Retrieval and Integration with LLM": graphrag/msft_graphrag_4.md
   - API Reference:
       - Introduction: reference/introduction.md
       - Core:
@@ -87,8 +87,6 @@ theme:
         name: Switch to system preference
 
 plugins:
-  - mkdocs-jupyter:
-      ignore_h1_titles: True
   - search
   - mkdocstrings:
       handlers:
