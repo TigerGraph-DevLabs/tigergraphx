@@ -58,7 +58,7 @@ This ensures that the library is properly installed and ready for use.
 
 ### **Option 2: Build from Source Code**
 
-If you want to modify or explore the source code, you can install TigerGraphX from its GitHub repository. The source code is available here: [TigerGraphX on GitHub](https://github.com/xuanleilin/tigergraphx).
+If you want to modify or explore the source code, you can install TigerGraphX from its GitHub repository. The source code is available here: [TigerGraphX on GitHub](https://github.com/tigergraph/tigergraphx).
 
 This project uses **Poetry** to manage dependencies. If you don’t have Poetry installed, follow the instructions on the [Poetry website](https://python-poetry.org/docs/#installation).
 

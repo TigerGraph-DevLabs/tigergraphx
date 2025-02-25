@@ -5,8 +5,8 @@ description = "TigerGraphX is a high-level Python library offering a unified, Py
 authors = ["Xuanlei Lin <xuanlei.lin@tigergraph.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/xuanleilin/TigerGraphX"
-repository = "https://github.com/xuanleilin/TigerGraphX"
+homepage = "https://github.com/tigergraph/tigergraphx"
+repository = "https://github.com/tigergraph/tigergraphx"
 packages = [{ include = "tigergraphx" }]
 keywords = ["tigergraph", "graph database", "graphrag", "machine learning", "graph analytics"]
 
