@@ -1,18 +1,18 @@
 from unittest.mock import AsyncMock, patch
 import pytest
 
-from tigergraphx import (
-    OpenAIEmbedding,
+from tigergraphx.config import (
     OpenAIEmbeddingConfig,
     OpenAIConfig,
 )
+from tigergraphx.vector_search import OpenAIEmbedding
 
 
 class TestOpenAIEmbedding:
     @pytest.mark.asyncio
     async def test_generate_embedding(self):
         # Mock OpenAIManager and its methods
-        with patch("tigergraphx.OpenAIManager", autospec=True) as MockOpenAIManager:
+        with patch("tigergraphx.llm.OpenAIManager", autospec=True) as MockOpenAIManager:
             # Configure the mock OpenAIManager
             mock_manager = MockOpenAIManager.return_value
             mock_manager.config = OpenAIConfig(type="OpenAI", OPENAI_API_KEY="mock_key")

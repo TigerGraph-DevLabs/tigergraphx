@@ -18,7 +18,7 @@ from .context_builder import (
 )
 
 from tigergraphx import Graph
-from tigergraphx import create_openai_components
+from tigergraphx.factories import create_openai_components
 
 logger = logging.getLogger(__name__)
 

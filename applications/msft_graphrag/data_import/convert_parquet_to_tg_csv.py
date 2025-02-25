@@ -7,7 +7,7 @@
 
 import os
 import pandas as pd
-from tigergraphx import ParquetProcessor
+from tigergraphx.pipelines import ParquetProcessor
 
 
 def generate_parquet_configs() -> list[dict]:
