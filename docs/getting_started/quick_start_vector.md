@@ -9,6 +9,17 @@ To run this Jupyter Notebook, download the original `.ipynb` file from [quick_st
 ---
 
 ## Create a Graph
+### Define the TigerGraph Connection Configuration
+Since our data is stored in a TigerGraph instance—whether on-premise or in the cloud—we need to configure the connection settings. The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__).
+
+
+```python
+>>> import os
+>>> os.environ["TG_HOST"] = "http://127.0.0.1"
+>>> os.environ["TG_USERNAME"] = "tigergraph"
+>>> os.environ["TG_PASSWORD"] = "tigergraph"
+```
+
 ### Define a Graph Schema
 
 TigerGraph is a schema-based database, which requires defining a schema to structure your graph. A typical schema includes the graph name, nodes (vertices), edges (relationships), and their respective attributes. However, when using TigerGraph as a pure vector database, you only need to define the graph name, the node (vertex) type, and its attributes, including vector attributes.
@@ -33,17 +44,7 @@ In this example, we create a graph called "FinancialGraph" with one node type: "
 ... }
 ```
 
-### Define the TigerGraph Connection Configuration
-In addition to defining the schema, a connection configuration is necessary to establish communication with the TigerGraph server.
-
-
-```python
->>> connection = {
-...     "host": "http://127.0.0.1",
-...     "username": "tigergraph",
-...     "password": "tigergraph",
-... }
-```
+TigerGraphX offers several methods to define the schema, including a Python dictionary, YAML file, or JSON file. Above is an example using a Python dictionary. For other methods, please refer to [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__) for more details.
 
 ### Create a Graph
 Running the following command will create a graph using the user-defined schema if it does not already exist. If the graph exists, the command will return the existing graph. To overwrite the existing graph, set the drop_existing_graph parameter to True. Note that creating the graph may take several seconds.
@@ -51,14 +52,60 @@ Running the following command will create a graph using the user-defined schema 
 
 ```python
 >>> from tigergraphx import Graph
->>> G = Graph(graph_schema, connection)
+>>> G = Graph(graph_schema)
 ```
 
-    2025-02-25 17:53:21,057 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for FinancialGraph: does not exist
-    2025-02-25 17:53:21,058 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: FinancialGraph...
-    2025-02-25 17:53:24,286 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
-    2025-02-25 17:53:24,287 - tigergraphx.core.managers.schema_manager - INFO - Adding vector attribute(s) for graph: FinancialGraph...
-    2025-02-25 17:54:19,747 - tigergraphx.core.managers.schema_manager - INFO - Vector attribute(s) added successfully.
+    2025-02-26 14:55:19,078 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for FinancialGraph: does not exist
+    2025-02-26 14:55:19,078 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: FinancialGraph...
+    2025-02-26 14:55:22,642 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
+    2025-02-26 14:55:22,644 - tigergraphx.core.managers.schema_manager - INFO - Adding vector attribute(s) for graph: FinancialGraph...
+    2025-02-26 14:56:18,912 - tigergraphx.core.managers.schema_manager - INFO - Vector attribute(s) added successfully.
+
+
+### Retrieve a Graph and Print Its Schema
+Once a graph has been created in TigerGraph, you can retrieve it without manually defining the schema using the `Graph.from_db` method, which requires only the graph name:
+
+
+```python
+>>> G = Graph.from_db("FinancialGraph")
+```
+
+Now, let's print the schema of the graph in a well-formatted manner:
+
+
+```python
+>>> import json
+>>> schema = G.get_schema()
+>>> print(json.dumps(schema, indent=4, default=str))
+```
+
+    {
+        "graph_name": "FinancialGraph",
+        "nodes": {
+            "Account": {
+                "primary_key": "name",
+                "attributes": {
+                    "name": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "isBlocked": {
+                        "data_type": "DataType.BOOL",
+                        "default_value": null
+                    }
+                },
+                "vector_attributes": {
+                    "emb1": {
+                        "dimension": 3,
+                        "index_type": "HNSW",
+                        "data_type": "FLOAT",
+                        "metric": "COSINE"
+                    }
+                }
+            }
+        },
+        "edges": {}
+    }
 
 
 ## Add Nodes
@@ -78,11 +125,13 @@ In this example, we add multiple nodes representing accounts to the graph. Each 
 >>> print("Number of Account Nodes Inserted:", G.add_nodes_from(nodes_for_adding, node_type="Account"))
 ```
 
-    2025-02-25 17:52:38,777 - tigergraphx.core.managers.node_manager - ERROR - Error adding nodes: ("The query didn't finish because it exceeded the query timeout threshold (16 seconds). Please check GSE log for license expiration and RESTPP/GPE log with request id (16777217.RESTPP_1_1.1740477142564.N) for details. Try increase RESTPP.Factory.DefaultQueryTimeoutSec or add header GSQL-TIMEOUT to override default system timeout. ", 'REST-3002')
-    Number of Account Nodes Inserted: None
+    Number of Account Nodes Inserted: 5
 
 
-## Display the Number of Nodes
+For larger datasets, consider using [load_data](../../reference/01_core/graph/#tigergraphx.core.Graph.load_data) for efficient handling of large-scale data.
+
+## (insert the title here)
+### Display the Number of Nodes
 Next, let's verify that the data has been inserted into the graph by using the following command. As expected, the number of nodes is 5.
 
 
@@ -93,7 +142,95 @@ Next, let's verify that the data has been inserted into the graph by using the f
     5
 
 
+### Check if Nodes Exist
+
+
+```python
+>>> print(G.has_node("Scott"))
+```
+
+    True
+
+
+
+```python
+>>> print(G.has_node("Jenny"))
+```
+
+    True
+
+
+### Display Node Attributes
+To display all attributes of a given node, use the following command:
+
+
+```python
+>>> print(G.nodes["Scott"])
+```
+
+    {'name': 'Scott', 'isBlocked': False}
+
+
+To display a specific attribute, use the command below:
+
+
+```python
+>>> print(G.nodes["Scott"]["isBlocked"])
+```
+
+    False
+
+
+### Filter the Nodes
+Retrieve "Account" nodes that match a specific filter expression, request only selected attributes, and limit the results:
+
+
+```python
+>>> df = G.get_nodes(
+...     node_type="Account",
+...     node_alias="s", # "s" is the default value, so you can remove this line
+...     filter_expression="s.isBlocked == False",
+...     return_attributes=["name", "isBlocked"],
+...     limit=2
+... )
+>>> print(df)
+```
+
+        name  isBlocked
+    0   Paul      False
+    1  Scott      False
+
+
+### Display Node's Vector Attributes
+
+
+```python
+>>> vector = G.fetch_node(
+...     node_id="Scott",
+...     vector_attribute_name="emb1",
+... )
+>>> print(vector)
+```
+
+    [-0.01773397, -0.01019224, -0.01657188]
+
+
+
+```python
+>>> vectors = G.fetch_nodes(
+...     node_ids=["Scott", "Jenny"],
+...     vector_attribute_name="emb1",
+... )
+>>> for vector in vectors.items():
+...     print(vector)
+```
+
+    ('Scott', [-0.01773397, -0.01019224, -0.01657188])
+    ('Jenny', [-0.01926511, 0.0004929182, 0.006711317])
+
+
 ## Perform Vector Search
+### Top-k Vector Search on a Given Vertex Type's Vector Attribute
 To find the top 2 most similar accounts to "Scott" based on the embedding, we use the following code. As expected, "Scott" will appear in the list with a distance of 0.
 
 
@@ -103,13 +240,92 @@ To find the top 2 most similar accounts to "Scott" based on the embedding, we us
 ...    vector_attribute_name="emb1",
 ...    node_type="Account",
 ...    limit=2
-...)
+... )
+>>> for result in results:
+...     print(result)
+```
+
+    {'id': 'Scott', 'distance': 0, 'name': 'Scott', 'isBlocked': False}
+    {'id': 'Steven', 'distance': 0.0325563, 'name': 'Steven', 'isBlocked': True}
+
+
+### Top-k Vector Search Using a Vertex Embedding as the Query Vector
+This code performs a top-k vector search for similar nodes to a specified node "Scott". It searches within the "Account" node type using the "emb1" embedding attribute and retrieves the top 2 similar node.
+
+
+```python
+>>> results = G.search_top_k_similar_nodes(
+...     node_id="Scott",
+...     vector_attribute_name="emb1",
+...     node_type="Account",
+...     limit=2
+... )
+>>> for result in results:
+...     print(result)
+```
+
+    {'id': 'Paul', 'distance': 0.3933879, 'name': 'Paul', 'isBlocked': False}
+    {'id': 'Steven', 'distance': 0.0325563, 'name': 'Steven', 'isBlocked': True}
+
+
+### Top-k Vector Search with Specified Candidates
+This code performs a top-2 vector search on the "Account" node type using the "emb1" embedding attribute. It limits the search to the specified candidate nodes: "Jenny", "Steven", and "Ed".
+
+
+```python
+>>> results = G.search(
+...     data=[-0.017733968794345856, -0.01019224338233471, -0.016571875661611557],
+...     vector_attribute_name="emb1",
+...     node_type="Account",
+...     limit=2,
+...     candidate_ids=["Jenny", "Steven", "Ed"]
+... )
+>>> for result in results:
+...     print(result)
+```
+
+    {'id': 'Steven', 'distance': 0.0325563, 'name': 'Steven', 'isBlocked': True}
+    {'id': 'Jenny', 'distance': 0.5804119, 'name': 'Jenny', 'isBlocked': False}
+
+
+## Filtered Vector Search
+Let's first retrieves all "Account" nodes where the isBlocked attribute is False and returns their name attributes in a Pandas DataFrame.
+
+
+```python
+>>> nodes_df = G.get_nodes(
+...     node_type="Account",
+...     node_alias="s", # The alias "s" is used in filter_expression. You can remove this line since the default node alias is "s"
+...     filter_expression='s.isBlocked == False AND s.name != "Ed"',
+...     return_attributes=["name"],
+... )
+>>> print(nodes_df)
+```
+
+        name
+    0   Paul
+    1  Scott
+    2  Jenny
+
+
+Then convert the name column of the retrieved DataFrame into a set of candidate IDs and performs a top-2 vector search on the "Account" node type using the "emb1" embedding attribute, restricted to the specified candidate IDs.
+
+
+```python
+>>> candidate_ids = set(nodes_df['name'])
+... results = G.search(
+...     data=[-0.017733968794345856, -0.01019224338233471, -0.016571875661611557],
+...     vector_attribute_name="emb1",
+...     node_type="Account",
+...     limit=2,
+...     candidate_ids=candidate_ids
+... )
 >>> for result in results:
 ...     print(result)
 ```
 
     {'id': 'Paul', 'distance': 0.393388, 'name': 'Paul', 'isBlocked': False}
-    {'id': 'Ed', 'distance': 0.8887959, 'name': 'Ed', 'isBlocked': False}
+    {'id': 'Scott', 'distance': 0, 'name': 'Scott', 'isBlocked': False}
 
 
 ## Clear and Drop a Graph
@@ -143,8 +359,8 @@ To clear the data and completely remove the graph—including schema, loading jo
 >>> G.drop_graph()
 ```
 
-    2025-02-25 17:53:05,613 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: FinancialGraph...
-    2025-02-25 17:53:09,351 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
+    2025-02-26 15:02:40,344 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: FinancialGraph...
+    2025-02-26 15:02:43,117 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
 
 
 ---
