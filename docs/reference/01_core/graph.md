@@ -1149,24 +1149,26 @@ True
 >>> print(df)
    name gender
 0  Mike   Male
->>> # Multi-hop neighbor traversal example
+>>> # Breadth First Search example
 >>> # First hop: Retrieve neighbors of "Alice" of type "Person"
+>>> visited = set(["Alice"])  # Track visited nodes
 >>> df = G.get_neighbors(start_nodes="Alice", start_node_type="Person")
->>> primary_ids = set(df['name'])
+>>> primary_ids = set(df['name']) - visited  # Exclude already visited nodes
 >>> print(primary_ids)
-{'John', 'Mike'}
+{'Mike', 'John'}
 >>> # Second hop: Retrieve neighbors of the nodes identified in the first hop
+>>> visited.update(primary_ids)  # Mark these nodes as visited
 >>> df = G.get_neighbors(start_nodes=primary_ids, start_node_type="Person")
->>> primary_ids = set(df['name'])
+>>> primary_ids = set(df['name']) - visited  # Exclude visited nodes
 >>> print(primary_ids)
-{'Emily', 'Alice'}
+{'Emily'}
 >>> # Third hop: Retrieve neighbors of the nodes identified in the second hop
+>>> visited.update(primary_ids)  # Mark these nodes as visited
 >>> df = G.get_neighbors(start_nodes=primary_ids, start_node_type="Person")
+>>> df = df[~df['name'].isin(visited)]  # Remove visited nodes from the final result
 >>> print(df)
    gender  name  age
-0    Male  John   27
-1  Female  Mary   28
-2    Male  Mike   29
+0  Female  Mary   28
 >>> G.clear()
 True
 ```

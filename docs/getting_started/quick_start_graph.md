@@ -60,9 +60,9 @@ Running the following command will create a graph using the user-defined schema 
 >>> G = Graph(graph_schema)
 ```
 
-    2025-02-25 22:06:45,313 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for Social: does not exist
-    2025-02-25 22:06:45,313 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: Social...
-    2025-02-25 22:06:48,364 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
+    2025-02-26 15:22:48,539 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for Social: does not exist
+    2025-02-26 15:22:48,540 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: Social...
+    2025-02-26 15:22:51,758 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
 
 
 ### Retrieve a Graph and Print Its Schema
@@ -130,8 +130,8 @@ To add nodes or edges individually, use the following code:
 
 
 ```python
->>> G.add_node("Emily", age=25)
->>> G.add_node("John", age=28)
+>>> G.add_node("Emily", age=25, gender="Female")
+>>> G.add_node("John", age=28, gender="Male")
 >>> G.add_edge("Emily", "John", closeness=0.98)
 ```
 
@@ -142,6 +142,7 @@ While this method is simple, it adds nodes and edges one by one. Alternatively, 
 >>> nodes_for_adding = [
 ...    ("Alice", {"age": 30, "gender": "Female"}),
 ...    ("Michael", {"age": 29}),
+...    ("Victor", {"age": 31, "gender": "Male"}),
 ... ]
 >>> G.add_nodes_from(nodes_for_adding)
 ```
@@ -149,7 +150,7 @@ While this method is simple, it adds nodes and edges one by one. Alternatively, 
 
 
 
-    2
+    3
 
 
 
@@ -160,7 +161,7 @@ Next, let's add edges with individual attributes using tuples in the format `(so
 >>> ebunch_to_add = [
 ...    ("Alice", "Michael"),
 ...    ("Alice", "John", {"closeness": 2.5}),
-...    ("Emily", "John", {"closeness": 1.5}),
+...    ("Emily", "Victor", {"closeness": 1.5}),
 ... ]
 >>> G.add_edges_from(ebunch_to_add)
 ```
@@ -237,10 +238,10 @@ To display a specific attribute, use the command below:
 
 
 ```python
->>> print(G.get_edge_data("Alice", "Michael"))
+>>> print(G.get_edge_data("Alice", "John"))
 ```
 
-    {'closeness': 0}
+    {'closeness': 2.5}
 
 
 ### Display the Degree of Nodes
@@ -270,8 +271,8 @@ Retrieve "Person" nodes that match a specific filter expression, use a custom al
 >>> print(df)
 ```
 
-          name  age
-    0  Michael   29
+         name  age
+    0  Victor   31
 
 
 ### Retrieve a Node's Neighbors
@@ -292,7 +293,7 @@ Retrieve the first "Person" node that is a friend of Alice, filtering edges wher
 ```
 
        name gender
-    0  John       
+    0  John   Male
 
 
 Note that the result of `get_neighbors` is a Pandas DataFrame.
@@ -311,8 +312,9 @@ Below is an example of multi-hop neighbor traversal:
 
 ```python
 >>> # First hop: Retrieve neighbors of "Alice" of type "Person"
+>>> visited = set(["Alice"])  # Track visited nodes
 >>> df = G.get_neighbors(start_nodes="Alice", start_node_type="Person")
->>> primary_ids = set(df['name'])
+>>> primary_ids = set(df['name']) - visited  # Exclude already visited nodes
 >>> print(primary_ids)
 ```
 
@@ -322,24 +324,26 @@ Below is an example of multi-hop neighbor traversal:
 
 ```python
 >>> # Second hop: Retrieve neighbors of the nodes identified in the first hop
+>>> visited.update(primary_ids)  # Mark these nodes as visited
 >>> df = G.get_neighbors(start_nodes=primary_ids, start_node_type="Person")
->>> primary_ids = set(df['name'])
+>>> primary_ids = set(df['name']) - visited  # Exclude visited nodes
 >>> print(primary_ids)
 ```
 
-    {'Emily', 'Alice'}
+    {'Emily'}
 
 
 
 ```python
 >>> # Third hop: Retrieve neighbors of the nodes identified in the second hop
+>>> visited.update(primary_ids)  # Mark these nodes as visited
 >>> df = G.get_neighbors(start_nodes=primary_ids, start_node_type="Person")
+>>> df = df[~df['name'].isin(visited)]  # Remove visited nodes from the final result
 >>> print(df)
 ```
 
-      gender     name  age
-    0            John   28
-    1         Michael   29
+      gender    name  age
+    0   Male  Victor   31
 
 
 ## Graph Statistics
@@ -350,7 +354,7 @@ Below is an example of multi-hop neighbor traversal:
 >>> print(G.number_of_nodes())
 ```
 
-    4
+    5
 
 
 ### Display the Number of Edges
@@ -360,7 +364,7 @@ Below is an example of multi-hop neighbor traversal:
 >>> print(G.number_of_edges())
 ```
 
-    3
+    4
 
 
 ## Clear and Drop a Graph
@@ -394,8 +398,7 @@ To clear the data and completely remove the graph—including schema, loading jo
 >>> G.drop_graph()
 ```
 
-    2025-02-25 22:08:00,495 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: Social...
-    2025-02-25 22:08:03,255 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
+    2025-02-26 15:23:17,281 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: Social...
 
 
 ---
