@@ -98,7 +98,7 @@ class TestEdgeManager:
         )
         assert result is False
 
-    def test_get_edge_data_success(self):
+    def test_get_edge_data_single_edge_success(self):
         src_node_id = "node1"
         tgt_node_id = "node2"
         src_node_type = "Person"
@@ -116,7 +116,7 @@ class TestEdgeManager:
         )
         assert result == {"since": 2021}
 
-    def test_get_edge_data_failure(self):
+    def test_get_edge_data_no_edges(self):
         src_node_id = "node1"
         tgt_node_id = "node2"
         src_node_type = "Person"
@@ -133,3 +133,93 @@ class TestEdgeManager:
             src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id
         )
         assert result is None
+
+    def test_get_edge_data_multi_edge_with_discriminator(self):
+        src_node_id = "node1"
+        tgt_node_id = "node2"
+        src_node_type = "Person"
+        edge_type = "Friend"
+        tgt_node_type = "Person"
+
+        self.mock_connection.getEdges.return_value = [
+            {"discriminator": "best_friend", "attributes": {"since": 2020}},
+            {"discriminator": "colleague", "attributes": {"since": 2019}},
+        ]
+
+        result = self.edge_manager.get_edge_data(
+            src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type
+        )
+
+        assert result == {
+            "best_friend": {"since": 2020},
+            "colleague": {"since": 2019},
+        }
+
+    def test_get_edge_data_multi_edge_without_discriminator(self):
+        src_node_id = "node1"
+        tgt_node_id = "node2"
+        src_node_type = "Person"
+        edge_type = "Friend"
+        tgt_node_type = "Person"
+
+        self.mock_connection.getEdges.return_value = [
+            {"attributes": {"since": 2020}},
+            {"attributes": {"since": 2019}},
+        ]
+
+        result = self.edge_manager.get_edge_data(
+            src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type
+        )
+
+        assert result == {
+            0: {"since": 2020},
+            1: {"since": 2019},
+        }
+
+    def test_get_edge_data_invalid_edge_format(self):
+        src_node_id = "node1"
+        tgt_node_id = "node2"
+        src_node_type = "Person"
+        edge_type = "Friend"
+        tgt_node_type = "Person"
+
+        self.mock_connection.getEdges.return_value = [
+            "invalid_edge",  # Not a dict
+            {"attributes": {"since": 2021}},  # Valid edge
+        ]
+
+        result = self.edge_manager.get_edge_data(
+            src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type
+        )
+
+        assert result == {"since": 2021}
+
+    def test_get_edge_data_unexpected_return_type(self):
+        src_node_id = "node1"
+        tgt_node_id = "node2"
+        src_node_type = "Person"
+        edge_type = "Friend"
+        tgt_node_type = "Person"
+
+        self.mock_connection.getEdges.return_value = "unexpected_string"
+
+        result = self.edge_manager.get_edge_data(
+            src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type
+        )
+
+        assert result is None  # Should return None for unexpected response
+
+    def test_get_edge_data_exception_handling(self):
+        src_node_id = "node1"
+        tgt_node_id = "node2"
+        src_node_type = "Person"
+        edge_type = "Friend"
+        tgt_node_type = "Person"
+
+        self.mock_connection.getEdges.side_effect = Exception("Test exception")
+
+        result = self.edge_manager.get_edge_data(
+            src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type
+        )
+
+        assert result is None  # Should return None on exception

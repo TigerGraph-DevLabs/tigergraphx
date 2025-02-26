@@ -79,14 +79,30 @@ class EdgeManager(BaseManager):
         src_node_type: str,
         edge_type: str,
         tgt_node_type: str,
-    ) -> Dict | None:
+    ) -> Dict | Dict[int | str, Dict] | None:
         try:
             result = self._connection.getEdges(
                 src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id
             )
-            if isinstance(result, List) and result:  # pyright: ignore
-                return result[0].get("attributes", None)  # pyright: ignore
-            else:
-                raise TypeError(f"Unsupported type for result: {type(result)}")
+
+            if isinstance(result, list) and result:  # pyright: ignore
+                # Ensure elements are dicts
+                valid_edges = [edge for edge in result if isinstance(edge, dict)]
+                if not valid_edges:
+                    return None
+
+                # Single edge case
+                if len(valid_edges) == 1:
+                    return valid_edges[0].get("attributes", None)
+
+                # Multi-edge case
+                multi_edge_data = {}
+                for index, edge in enumerate(valid_edges):
+                    edge_id = edge.get("discriminator", index)
+                    multi_edge_data[edge_id] = edge.get("attributes", {})
+                return multi_edge_data
+
+            return None  # Return None if result is not a valid list or empty
+
         except Exception:
-            return None
+            return None  # Suppress errors (could log for debugging)
