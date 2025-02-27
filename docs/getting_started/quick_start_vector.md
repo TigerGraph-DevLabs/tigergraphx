@@ -55,11 +55,10 @@ Running the following command will create a graph using the user-defined schema 
 >>> G = Graph(graph_schema)
 ```
 
-    2025-02-26 14:55:19,078 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for FinancialGraph: does not exist
-    2025-02-26 14:55:19,078 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: FinancialGraph...
-    2025-02-26 14:55:22,642 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
-    2025-02-26 14:55:22,644 - tigergraphx.core.managers.schema_manager - INFO - Adding vector attribute(s) for graph: FinancialGraph...
-    2025-02-26 14:56:18,912 - tigergraphx.core.managers.schema_manager - INFO - Vector attribute(s) added successfully.
+    2025-02-27 17:35:49,124 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: FinancialGraph...
+    2025-02-27 17:35:52,641 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
+    2025-02-27 17:35:52,642 - tigergraphx.core.managers.schema_manager - INFO - Adding vector attribute(s) for graph: FinancialGraph...
+    2025-02-27 17:36:52,825 - tigergraphx.core.managers.schema_manager - INFO - Vector attribute(s) added successfully.
 
 
 ### Retrieve a Graph and Print Its Schema
@@ -130,7 +129,7 @@ In this example, we add multiple nodes representing accounts to the graph. Each 
 
 For larger datasets, consider using [load_data](../../reference/01_core/graph/#tigergraphx.core.Graph.load_data) for efficient handling of large-scale data.
 
-## (insert the title here)
+## Exploring Nodes in the Graph
 ### Display the Number of Nodes
 Next, let's verify that the data has been inserted into the graph by using the following command. As expected, the number of nodes is 5.
 
@@ -143,6 +142,7 @@ Next, let's verify that the data has been inserted into the graph by using the f
 
 
 ### Check if Nodes Exist
+Use the following commands to check whether specific nodes are present in the graph:
 
 
 ```python
@@ -202,6 +202,7 @@ Retrieve "Account" nodes that match a specific filter expression, request only s
 
 
 ### Display Node's Vector Attributes
+Retrieve the vector attribute of a specific node:
 
 
 ```python
@@ -214,6 +215,8 @@ Retrieve "Account" nodes that match a specific filter expression, request only s
 
     [-0.01773397, -0.01019224, -0.01657188]
 
+
+Retrieve vector attributes for multiple nodes:
 
 
 ```python
@@ -359,8 +362,8 @@ To clear the data and completely remove the graph—including schema, loading jo
 >>> G.drop_graph()
 ```
 
-    2025-02-26 15:02:40,344 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: FinancialGraph...
-    2025-02-26 15:02:43,117 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
+    2025-02-27 17:38:44,545 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: FinancialGraph...
+    2025-02-27 17:38:47,882 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
 
 
 ---

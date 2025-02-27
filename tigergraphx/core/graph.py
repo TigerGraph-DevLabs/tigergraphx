@@ -567,6 +567,44 @@ class Graph:
             limit=limit,
         )
 
+    def bfs(
+        self,
+        start_nodes: str | int | List[str | int],
+        node_type: Optional[str] = None,
+        edge_types: Optional[str | List[str]] = None,
+        target_node_types: Optional[str | List[str]] = None,
+        max_hops: Optional[int] = None,
+        limit: Optional[int] = None,
+    ) -> pd.DataFrame:
+        """
+        Perform BFS traversal from a set of start nodes, using batch processing.
+
+        Args:
+            start_nodes: Starting node(s) for BFS.
+            node_type: Type of the nodes.
+            edge_types: Edge types to consider.
+            limit: Maximum number of neighbors per hop.
+            max_hops: Maximum depth (number of hops) for BFS traversal.
+
+        Returns:
+            A DataFrame containing the BFS results with the same structure as get_neighbors(),
+            plus an additional '_bfs_level' column.
+        """
+        if isinstance(start_nodes, str | int):
+            new_start_nodes = self._to_str_node_id(start_nodes)
+        else:
+            new_start_nodes = self._to_str_node_ids(start_nodes)
+        node_type = self._validate_node_type(node_type)
+        edge_type_set = self._validate_edge_types_as_set(edge_types)
+
+        return self._query_manager.bfs(
+            start_nodes=new_start_nodes,
+            node_type=node_type,
+            edge_type_set=edge_type_set,
+            max_hops=max_hops,
+            limit=limit,
+        )
+
     # ------------------------------ Vector Operations ------------------------------
     def upsert(
         self,

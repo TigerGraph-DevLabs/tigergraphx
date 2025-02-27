@@ -60,9 +60,8 @@ Running the following command will create a graph using the user-defined schema 
 >>> G = Graph(graph_schema)
 ```
 
-    2025-02-26 15:22:48,539 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for Social: does not exist
-    2025-02-26 15:22:48,540 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: Social...
-    2025-02-26 15:22:51,758 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
+    2025-02-27 17:21:21,632 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: Social...
+    2025-02-27 17:21:25,763 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
 
 
 ### Retrieve a Graph and Print Its Schema
@@ -318,7 +317,7 @@ Below is an example of multi-hop neighbor traversal:
 >>> print(primary_ids)
 ```
 
-    {'Michael', 'John'}
+    {'John', 'Michael'}
 
 
 
@@ -339,6 +338,18 @@ Below is an example of multi-hop neighbor traversal:
 >>> visited.update(primary_ids)  # Mark these nodes as visited
 >>> df = G.get_neighbors(start_nodes=primary_ids, start_node_type="Person")
 >>> df = df[~df['name'].isin(visited)]  # Remove visited nodes from the final result
+>>> print(df)
+```
+
+      gender    name  age
+    0   Male  Victor   31
+
+
+Alternatively, you can also use the built-in `bfs` method.
+
+
+```python
+>>> df = G.bfs(start_nodes=["Alice"], node_type="Person", max_hops=3)
 >>> print(df)
 ```
 
@@ -398,7 +409,8 @@ To clear the data and completely remove the graph—including schema, loading jo
 >>> G.drop_graph()
 ```
 
-    2025-02-26 15:23:17,281 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: Social...
+    2025-02-27 17:21:57,607 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: Social...
+    2025-02-27 17:22:00,482 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
 
 
 ---

@@ -97,7 +97,7 @@ class SchemaManager(BaseManager):
 
             return True
 
-        logger.info(f"Graph '{graph_name}' already exists. Skipping graph creation.")
+        logger.debug(f"Graph '{graph_name}' already exists. Skipping graph creation.")
         return False
 
     def drop_graph(self) -> None:
@@ -116,7 +116,7 @@ class SchemaManager(BaseManager):
         """Check if the specified graph name exists in the gsql_script."""
         graph_name = self._graph_schema.graph_name
         result = self._connection.gsql(f"USE Graph {graph_name}")
-        logger.info(
+        logger.debug(
             "Graph existence check for %s: %s",
             graph_name,
             "exists" if "Using graph" in result else "does not exist",

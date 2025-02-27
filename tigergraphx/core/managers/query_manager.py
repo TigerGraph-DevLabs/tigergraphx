@@ -181,6 +181,62 @@ class QueryManager(BaseManager):
             )
         return pd.DataFrame()
 
+    def bfs(
+        self,
+        start_nodes: str | List[str],
+        node_type: str,
+        edge_type_set: Optional[Set[str]] = None,
+        max_hops: Optional[int] = 3,
+        limit: Optional[int] = None,
+    ) -> pd.DataFrame:
+        """
+        Perform BFS traversal from a set of start nodes, using batch processing.
+
+        Args:
+            start_nodes: Starting node(s) for BFS.
+            node_type: Type of the nodes.
+            edge_type_set: Edge types to consider.
+            max_hops: Maximum depth (number of hops) for BFS traversal.
+            limit: Maximum number of neighbors per hop.
+
+        Returns:
+            A DataFrame containing the BFS results with the same structure as get_neighbors(),
+            plus an additional '_bfs_level' column.
+        """
+        start_node_set = (
+            {start_nodes} if isinstance(start_nodes, str) else set(start_nodes)
+        )
+        visited = start_node_set.copy()
+        queue = start_node_set.copy()
+        level = 0  # BFS level counter
+        last_level_df = pd.DataFrame()
+        primary_key = self._graph_schema.nodes[node_type].primary_key
+
+        while queue and (not max_hops or level < max_hops):
+            df = self.get_neighbors(
+                start_nodes=list(queue),
+                start_node_type=node_type,
+                edge_type_set=edge_type_set,
+                target_node_type_set={node_type},
+                limit=limit,
+            )
+
+            if df.empty:
+                break  # No more neighbors to explore
+
+            next_queue = set(df[primary_key]) - visited
+            if not next_queue:
+                break  # No new nodes to explore
+
+            if max_hops and level == max_hops - 1:
+                last_level_df = pd.DataFrame(df[~df[primary_key].isin(list(visited))])
+
+            visited.update(next_queue)
+            queue = next_queue
+            level += 1  # Increment BFS depth
+
+        return last_level_df
+
     def _create_gsql_get_nodes(self, spec: NodeSpec) -> str:
         """
         Core function to generate a GSQL query based on a NodeSpec object.

@@ -288,8 +288,6 @@ If you do not need to drop the existing graph before creating the schema, you ca
 ```python
 >>> G = Graph(graph_schema)
 >>> G.create_schema()
-2025-01-21 16:27:34,021 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for Social: exists
-2025-01-21 16:27:34,022 - tigergraphx.core.managers.schema_manager - INFO - Graph 'Social' already exists. Skipping graph creation.
 False
 ```
 
@@ -297,7 +295,6 @@ If you need to drop the existing graph, you can call:
 ```python
 >>> G = Graph(graph_schema)
 >>> G.create_schema(True)
-2025-01-21 16:27:52,323 - tigergraphx.core.managers.schema_manager - INFO - Graph existence check for Social: exists
 2025-01-21 16:27:52,323 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: Social...
 2025-01-21 16:27:55,618 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
 2025-01-21 16:27:55,619 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: Social...
@@ -468,8 +465,10 @@ After the loading job is defined, we can load data by running the command below:
 ```python
 >>> G = Graph(graph_schema)
 >>> G.load_data(loading_job_config)
-2025-01-21 16:31:41,444 - tigergraphx.core.managers.data_manager - INFO - Initiating data load for job: loading_job_Social...
-2025-01-21 16:31:49,010 - tigergraphx.core.managers.data_manager - INFO - Data load completed successfully.
+2025-02-27 17:06:48,941 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: Social...
+2025-02-27 17:06:52,332 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
+2025-02-27 17:06:52,353 - tigergraphx.core.managers.data_manager - INFO - Initiating data load for job: loading_job_Social...
+2025-02-27 17:06:59,944 - tigergraphx.core.managers.data_manager - INFO - Data load completed successfully.
 >>> print(G.number_of_nodes())
 1
 >>> print(G.number_of_edges())
@@ -1149,6 +1148,7 @@ True
 >>> print(df)
    name gender
 0  Mike   Male
+>>>
 >>> # Breadth First Search example
 >>> # First hop: Retrieve neighbors of "Alice" of type "Person"
 >>> visited = set(["Alice"])  # Track visited nodes
@@ -1166,6 +1166,12 @@ True
 >>> visited.update(primary_ids)  # Mark these nodes as visited
 >>> df = G.get_neighbors(start_nodes=primary_ids, start_node_type="Person")
 >>> df = df[~df['name'].isin(visited)]  # Remove visited nodes from the final result
+>>> print(df)
+   gender  name  age
+0  Female  Mary   28
+>>>
+>>> # Alternatively, you can also use the built-in `bfs` method.
+>>> df = G.bfs(start_nodes=["Alice"], node_type="Person", max_hops=3)
 >>> print(df)
    gender  name  age
 0  Female  Mary   28
