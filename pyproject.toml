@@ -86,4 +86,4 @@ lightrag_evaluation = "python -m applications.lightrag.evaluation"
 lightrag_reset = "python -m applications.lightrag.reset"
 
 # Documentation
-convert-notebooks = "jupyter nbconvert --to markdown docs/getting_started/*.ipynb docs/graphrag/*.ipynb"
+notebook-to-markdown = "jupyter nbconvert --to markdown docs/getting_started/*.ipynb docs/graphrag/*.ipynb"

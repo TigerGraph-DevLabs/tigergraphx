@@ -397,7 +397,7 @@ class Graph:
         src_node_type: Optional[str] = None,
         edge_type: Optional[str] = None,
         tgt_node_type: Optional[str] = None,
-    ) -> Dict | None:
+    ) -> Dict | Dict[int | str, Dict] | None:
         """
         Get data for a specific edge.
 

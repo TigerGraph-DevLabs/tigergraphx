@@ -38,7 +38,15 @@ class TestTigerVector(TestBaseGraph):
                 },
             },
         }
-        self.G = Graph(graph_schema=graph_schema)
+        self.tigergraph_connection_config = {
+            "host": "http://localhost",
+            "username": "tigergraph",
+            "password": "tigergraph",
+        }
+        self.G = Graph(
+            graph_schema=graph_schema,
+            tigergraph_connection_config=self.tigergraph_connection_config,
+        )
 
     @pytest.fixture(autouse=True)
     def add_nodes_and_edges(self):
@@ -103,9 +111,9 @@ class TestTigerVector(TestBaseGraph):
         )
 
         expected_embedding = [-0.01773, -0.01019, -0.01657]
-        assert (
-            result == expected_embedding
-        ), f"Expected {expected_embedding}, got {result}"
+        assert result == expected_embedding, (
+            f"Expected {expected_embedding}, got {result}"
+        )
 
     def test_fetch_multiple_nodes_embeddings(self):
         """
@@ -120,9 +128,9 @@ class TestTigerVector(TestBaseGraph):
             "Entity_1": [-0.01773, -0.01019, -0.01657],
             "Entity_2": [-0.01926, 0.000496, 0.00671],
         }
-        assert (
-            result == expected_embeddings
-        ), f"Expected {expected_embeddings}, got {result}"
+        assert result == expected_embeddings, (
+            f"Expected {expected_embeddings}, got {result}"
+        )
 
     def test_vector_search(self):
         assert self.G.has_node("Entity_1")

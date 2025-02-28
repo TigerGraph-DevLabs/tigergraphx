@@ -1,5 +1,6 @@
 import pytest
 from requests.exceptions import ConnectionError
+from pydantic import HttpUrl
 
 from tigergraphx.core import Graph
 from tigergraphx.core.tigergraph_api import TigerGraphAPI, TigerGraphAPIError
@@ -37,9 +38,9 @@ class TestTigerGraphAPI:
             },
         }
         self.tigergraph_connection_config = TigerGraphConnectionConfig(
-            # username="tigergraph",
-            # password="tigergraph",
-            secret="rgtf030s4kfcsv2ahpnkljcafrclafos",
+            host=HttpUrl("http://localhost"),
+            username="tigergraph",
+            password="tigergraph",
         )
         self.G = Graph(
             graph_schema=graph_schema,
