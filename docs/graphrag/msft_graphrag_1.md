@@ -26,21 +26,11 @@ The indexing process transforms raw documents into structured data using Microso
 
 ### Data Preparation
 
-#### Create an Input Folder
-Create an `input` folder in the `data` directory under `applications/msft_graphrag` to store the documents you want to index. You can specify a different directory by replacing `data` with your desired path.
+For this demo, we will use `applications/msft_graphrag/data` as the working directory.
 
-```bash
-mkdir -p data/input
-```
+The input dataset, `input/clapnq_dev_answerable_orig.jsonl.10.txt`, is located in the working directory. It consists of the first ten records from the [original dataset](https://github.com/primeqa/clapnq/blob/main/original_documents/dev/clapnq_dev_answerable_orig.jsonl).
 
-#### Add Documents to the Input Folder
-Copy your documents into the `data/input` folder.
-
-For this demo, we will use the dataset *A Christmas Carol* by Charles Dickens.
-
-```
-curl https://www.gutenberg.org/cache/epub/24022/pg24022.txt -o data/input/book.txt
-```
+Additionally, we have another dataset, `clapnq_dev_answerable.jsonl.10`, for evaluation, stored in `applications/resources`. This dataset contains ten questions from the [annotated dataset](https://github.com/primeqa/clapnq/blob/main/annotated_data/dev/clapnq_dev_answerable.jsonl), each with corresponding context from the original dataset.
 
 ---
 
@@ -125,7 +115,7 @@ scp data/tg_csv/* username@tigergraph-server:/home/tigergraph/data/graphrag
 
 ## Next Steps
 
-- [Supporting Microsoft’s GraphRAG: Part 2](msft_graphrag_2.ipynb): Use Jupyter Notebook to create the schema and load data into TigerGraph.
+- [Supporting Microsoft’s GraphRAG: Part 2](msft_graphrag_2.md): Use Jupyter Notebook to create the schema and load data into TigerGraph.
 
 ---
 

@@ -73,8 +73,8 @@ class TestTigerGraphAPI:
     def drop_graph(self):
         """Drop the graph after all tests are done in the session."""
         yield
-        # self.setup_graph()
-        # self.G.drop_graph()
+        self.setup_graph()
+        self.G.drop_graph()
 
     def test_connection_failure(self, mocker):
         """

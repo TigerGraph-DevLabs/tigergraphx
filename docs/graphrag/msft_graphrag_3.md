@@ -8,68 +8,222 @@ To run this Jupyter Notebook, you can download the original `.ipynb` file from [
 
 ---
 
-## Get the Graph from TigerGraph
+## Retrieving the Graph from TigerGraph
 Since the graph has already been created in TigerGraph, redefining its schema is unnecessary. Instead, you can provide the graph name to retrieve it. TigerGraphX will verify if the graph exists in TigerGraph and, if it does, will return the corresponding graph.
 
+### Define the TigerGraph Connection Configuration
+Before retrieving the graph schema, you need to configure the **TigerGraph connection settings**.  
+
+The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__).
+
 
 ```python
-from tigergraphx import Graph
-connection = {
-    "host": "http://127.0.0.1",
-    "username": "tigergraph",
-    "password": "tigergraph",
-}
-G = Graph.from_db("GraphRAG", connection)
+>>> import os
+>>> os.environ["TG_HOST"] = "http://127.0.0.1"
+>>> os.environ["TG_USERNAME"] = "tigergraph"
+>>> os.environ["TG_PASSWORD"] = "tigergraph"
 ```
 
-    2025-01-05 23:30:15,203 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph GraphRAG...
-    2025-01-05 23:30:15,223 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
+### Retrieve a Graph and Print Its Schema
+Once the graph has been created in TigerGraph, you can retrieve it without manually defining the schema using the `Graph.from_db` method, which requires only the graph name:
 
+
+```python
+>>> from tigergraphx import Graph
+>>> G = Graph.from_db("GraphRAG")
+```
 
 ## Display the Graph Schema
-
-Let's retrieve the graph schema using the `get_schema` method. The output is a Python dictionary containing three keys: `"graph_name"`, `"nodes"`, and `"edges"`. We'll print each of them individually to explore the schema details.
-### Retrieve the Graph Schema and Display the Graph Name
+Now, let's print the schema of the graph in a well-formatted manner:
 
 
 ```python
-schema = G.get_schema()
-print(schema["graph_name"])
+>>> import json
+>>> schema = G.get_schema()
+>>> print(json.dumps(schema, indent=4, default=str))
 ```
 
-    GraphRAG
-
-
-### Display the Node Tyeps
-
-
-```python
-for node in schema["nodes"].items():
-    print(node)
-```
-
-    ('Document', {'primary_key': 'id', 'attributes': {'title': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}, 'id': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}}, 'vector_attributes': {}})
-    ('TextUnit', {'primary_key': 'id', 'attributes': {'text': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}, 'n_tokens': {'data_type': <DataType.UINT: 'UINT'>, 'default_value': None}, 'id': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}}, 'vector_attributes': {}})
-    ('Entity', {'primary_key': 'id', 'attributes': {'human_readable_id': {'data_type': <DataType.UINT: 'UINT'>, 'default_value': None}, 'name': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}, 'entity_type': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}, 'description': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}, 'id': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}}, 'vector_attributes': {}})
-    ('Relationship', {'primary_key': 'id', 'attributes': {'human_readable_id': {'data_type': <DataType.UINT: 'UINT'>, 'default_value': None}, 'rank': {'data_type': <DataType.UINT: 'UINT'>, 'default_value': None}, 'weight': {'data_type': <DataType.DOUBLE: 'DOUBLE'>, 'default_value': None}, 'description': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}, 'id': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}}, 'vector_attributes': {}})
-    ('Community', {'primary_key': 'id', 'attributes': {'level': {'data_type': <DataType.UINT: 'UINT'>, 'default_value': None}, 'rank': {'data_type': <DataType.DOUBLE: 'DOUBLE'>, 'default_value': None}, 'rank_explanation': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}, 'title': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}, 'full_content': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}, 'summary': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}, 'id': {'data_type': <DataType.STRING: 'STRING'>, 'default_value': None}}, 'vector_attributes': {}})
-
-
-### Display the Edge Types
-
-
-```python
-for edge in schema["edges"].items():
-    print(edge)
-```
-
-    ('document_contains_text_unit', {'is_directed_edge': False, 'from_node_type': 'Document', 'to_node_type': 'TextUnit', 'discriminator': set(), 'attributes': {}})
-    ('text_unit_contains_entity', {'is_directed_edge': False, 'from_node_type': 'TextUnit', 'to_node_type': 'Entity', 'discriminator': set(), 'attributes': {}})
-    ('text_unit_contains_relationship', {'is_directed_edge': False, 'from_node_type': 'TextUnit', 'to_node_type': 'Relationship', 'discriminator': set(), 'attributes': {}})
-    ('relationship_source', {'is_directed_edge': False, 'from_node_type': 'Relationship', 'to_node_type': 'Entity', 'discriminator': set(), 'attributes': {}})
-    ('relationship_target', {'is_directed_edge': False, 'from_node_type': 'Relationship', 'to_node_type': 'Entity', 'discriminator': set(), 'attributes': {}})
-    ('community_contains_entity', {'is_directed_edge': False, 'from_node_type': 'Community', 'to_node_type': 'Entity', 'discriminator': set(), 'attributes': {}})
-    ('community_contains_relationship', {'is_directed_edge': False, 'from_node_type': 'Community', 'to_node_type': 'Relationship', 'discriminator': set(), 'attributes': {}})
+    {
+        "graph_name": "GraphRAG",
+        "nodes": {
+            "Document": {
+                "primary_key": "id",
+                "attributes": {
+                    "id": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "title": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    }
+                },
+                "vector_attributes": {}
+            },
+            "TextUnit": {
+                "primary_key": "id",
+                "attributes": {
+                    "id": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "text": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "n_tokens": {
+                        "data_type": "DataType.UINT",
+                        "default_value": null
+                    }
+                },
+                "vector_attributes": {}
+            },
+            "Entity": {
+                "primary_key": "id",
+                "attributes": {
+                    "id": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "human_readable_id": {
+                        "data_type": "DataType.UINT",
+                        "default_value": null
+                    },
+                    "name": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "entity_type": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "description": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    }
+                },
+                "vector_attributes": {
+                    "emb_description": {
+                        "dimension": 1536,
+                        "index_type": "HNSW",
+                        "data_type": "FLOAT",
+                        "metric": "COSINE"
+                    }
+                }
+            },
+            "Relationship": {
+                "primary_key": "id",
+                "attributes": {
+                    "id": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "human_readable_id": {
+                        "data_type": "DataType.UINT",
+                        "default_value": null
+                    },
+                    "rank": {
+                        "data_type": "DataType.UINT",
+                        "default_value": null
+                    },
+                    "weight": {
+                        "data_type": "DataType.DOUBLE",
+                        "default_value": null
+                    },
+                    "description": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    }
+                },
+                "vector_attributes": {}
+            },
+            "Community": {
+                "primary_key": "id",
+                "attributes": {
+                    "id": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "level": {
+                        "data_type": "DataType.UINT",
+                        "default_value": null
+                    },
+                    "rank": {
+                        "data_type": "DataType.DOUBLE",
+                        "default_value": null
+                    },
+                    "rank_explanation": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "title": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "full_content": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    },
+                    "summary": {
+                        "data_type": "DataType.STRING",
+                        "default_value": null
+                    }
+                },
+                "vector_attributes": {}
+            }
+        },
+        "edges": {
+            "document_contains_text_unit": {
+                "is_directed_edge": false,
+                "from_node_type": "Document",
+                "to_node_type": "TextUnit",
+                "discriminator": "set()",
+                "attributes": {}
+            },
+            "text_unit_contains_entity": {
+                "is_directed_edge": false,
+                "from_node_type": "TextUnit",
+                "to_node_type": "Entity",
+                "discriminator": "set()",
+                "attributes": {}
+            },
+            "text_unit_contains_relationship": {
+                "is_directed_edge": false,
+                "from_node_type": "TextUnit",
+                "to_node_type": "Relationship",
+                "discriminator": "set()",
+                "attributes": {}
+            },
+            "relationship_source": {
+                "is_directed_edge": false,
+                "from_node_type": "Relationship",
+                "to_node_type": "Entity",
+                "discriminator": "set()",
+                "attributes": {}
+            },
+            "relationship_target": {
+                "is_directed_edge": false,
+                "from_node_type": "Relationship",
+                "to_node_type": "Entity",
+                "discriminator": "set()",
+                "attributes": {}
+            },
+            "community_contains_entity": {
+                "is_directed_edge": false,
+                "from_node_type": "Community",
+                "to_node_type": "Entity",
+                "discriminator": "set()",
+                "attributes": {}
+            },
+            "community_contains_relationship": {
+                "is_directed_edge": false,
+                "from_node_type": "Community",
+                "to_node_type": "Relationship",
+                "discriminator": "set()",
+                "attributes": {}
+            }
+        }
+    }
 
 
 ## Display Node and Edge Counts
@@ -80,13 +234,13 @@ Gain deeper insights into the graph by exploring details such as the total numbe
 
 
 ```python
-G.number_of_nodes()
+>>> G.number_of_nodes()
 ```
 
 
 
 
-    371
+    2883
 
 
 
@@ -94,28 +248,28 @@ G.number_of_nodes()
 
 
 ```python
-for node_type in schema["nodes"]:
-    print(f"{node_type}: {G.number_of_nodes(node_type)}")
+>>> for node_type in schema["nodes"]:
+...     print(f"{node_type}: {G.number_of_nodes(node_type)}")
 ```
 
     Document: 1
-    TextUnit: 42
-    Entity: 138
-    Relationship: 168
-    Community: 22
+    TextUnit: 104
+    Entity: 1577
+    Relationship: 1092
+    Community: 109
 
 
 ### Display the Total Number of Edges
 
 
 ```python
-G.number_of_edges()
+>>> G.number_of_edges()
 ```
 
 
 
 
-    1545
+    10313
 
 
 
@@ -123,211 +277,78 @@ G.number_of_edges()
 
 
 ```python
-for edge_type in schema["edges"]:
-    print(f"{edge_type}: {G.number_of_edges(edge_type)}")
+>>> for edge_type in schema["edges"]:
+...     print(f"{edge_type}: {G.number_of_edges(edge_type)}")
 ```
 
-    document_contains_text_unit: 42
-    text_unit_contains_entity: 274
-    text_unit_contains_relationship: 238
-    relationship_source: 168
-    relationship_target: 168
-    community_contains_entity: 236
-    community_contains_relationship: 419
+    document_contains_text_unit: 104
+    text_unit_contains_entity: 2095
+    text_unit_contains_relationship: 1282
+    relationship_source: 1092
+    relationship_target: 1092
+    community_contains_entity: 1956
+    community_contains_relationship: 2692
 
 
-## Retrieve Sample Nodes from the Graph
+## Retrieving Sample Nodes
+Retrieve Sample `Entity` Nodes.
 
 
 ```python
-G.get_nodes(node_type="Entity", limit=2)
+>>> print(G.get_nodes(node_type="Entity", limit=2))
 ```
 
+                                   v_id  v_type  human_readable_id entity_type  \
+    0  c0803923646246c5a203810faa4e4464  Entity                825         GEO   
+    1  6069e8895f924b659534f74d6736e69d  Entity                830         GEO   
+    
+                name                                        description  \
+    0  VALLEY STREAM  Valley Stream is a location in New York where ...   
+    1          CHINA  China is a country in East Asia where Walmart ...   
+    
+                                     id  
+    0  c0803923646246c5a203810faa4e4464  
+    1  6069e8895f924b659534f74d6736e69d  
 
 
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>v_id</th>
-      <th>v_type</th>
-      <th>human_readable_id</th>
-      <th>entity_type</th>
-      <th>name</th>
-      <th>description</th>
-      <th>id</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>473502492d0a419981fed4fbc1493832</td>
-      <td>Entity</td>
-      <td>69</td>
-      <td>PERSON</td>
-      <td>THE THREE MISS FEZZIWIGS</td>
-      <td>Daughters of Mr. and Mrs. Fezziwig, described ...</td>
-      <td>473502492d0a419981fed4fbc1493832</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>6fb90dc954fe40d5969f7532a66376e9</td>
-      <td>Entity</td>
-      <td>108</td>
-      <td>PERSON</td>
-      <td>WANT</td>
-      <td>Want is depicted as a girl, symbolizing povert...</td>
-      <td>6fb90dc954fe40d5969f7532a66376e9</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
+Retrieve Sample `Relationship` Nodes
 
 
 ```python
-G.get_nodes(node_type="Relationship", limit=2)
+>>> print(G.get_nodes(node_type="Relationship", limit=2))
 ```
 
+                                   v_id        v_type  human_readable_id  rank  \
+    0  5e7864d8153f4aa8936b253792f0b636  Relationship               1066    32   
+    1  1db19aed7ed54b44b4e8f71b7588e0dd  Relationship               1058    16   
+    
+       weight                                        description  \
+    0       8  Animax is a channel owned by Sony Pictures Tel...   
+    1       7  Guerrilla Cambridge developed games for the Pl...   
+    
+                                     id  
+    0  5e7864d8153f4aa8936b253792f0b636  
+    1  1db19aed7ed54b44b4e8f71b7588e0dd  
 
 
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>v_id</th>
-      <th>v_type</th>
-      <th>human_readable_id</th>
-      <th>rank</th>
-      <th>weight</th>
-      <th>description</th>
-      <th>id</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>9953ed9db4c5418e8bf9fee18032c0da</td>
-      <td>Relationship</td>
-      <td>63</td>
-      <td>9</td>
-      <td>20</td>
-      <td>Fezziwig and Mrs. Fezziwig share a close perso...</td>
-      <td>9953ed9db4c5418e8bf9fee18032c0da</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>e9953a1648364e878d835bc6bcc0d3ef</td>
-      <td>Relationship</td>
-      <td>37</td>
-      <td>5</td>
-      <td>1</td>
-      <td>The activities and cheer that the Ghost of Chr...</td>
-      <td>e9953a1648364e878d835bc6bcc0d3ef</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
+Retrieve Sample `Community` Nodes
 
 
 ```python
-G.get_nodes(node_type="Community", limit=2)
+>>> print(G.get_nodes(node_type="Community", limit=2))
 ```
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>v_id</th>
-      <th>v_type</th>
-      <th>summary</th>
-      <th>level</th>
-      <th>full_content</th>
-      <th>rank</th>
-      <th>id</th>
-      <th>rank_explanation</th>
-      <th>title</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>12</td>
-      <td>Community</td>
-      <td>This report delves into the interconnected rel...</td>
-      <td>1</td>
-      <td># The Transformation of Ebenezer Scrooge: A Ch...</td>
-      <td>8.5</td>
-      <td>12</td>
-      <td>The high impact severity rating reflects the p...</td>
-      <td>Community 12</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>7</td>
-      <td>Community</td>
-      <td>This report explores the network surrounding P...</td>
-      <td>0</td>
-      <td># Project Gutenberg and the Digital Disseminat...</td>
-      <td>8.5</td>
-      <td>7</td>
-      <td>The high impact severity rating reflects Proje...</td>
-      <td>Community 7</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+      v_id     v_type                                            summary  level  \
+    0   49  Community  This community encompasses various command-lin...      1   
+    1   61  Community  The community centers around the Battles of Ma...      1   
+    
+                                            full_content  rank  id  \
+    0  # DOS and Command-Line Operating Systems Commu...   7.5  49   
+    1  # Battles of Manassas and Civil War Historians...   6.5  61   
+    
+                                        rank_explanation         title  
+    0  The impact severity rating is high due to the ...  Community 49  
+    1  The impact severity rating is moderate to high...  Community 61  
 
 
 ---

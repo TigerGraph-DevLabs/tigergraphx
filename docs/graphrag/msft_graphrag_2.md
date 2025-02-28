@@ -7,49 +7,46 @@ Now, let’s use Jupyter Notebook to create the schema and load the CSV files in
 To run this Jupyter Notebook, you can download the original `.ipynb` file from [msft_graphrag_2.ipynb](https://github.com/tigergraph/tigergraphx/tree/main/docs/graphrag/msft_graphrag_2.ipynb).
 
 ## Create a Graph
-TigerGraph is a schema-based database, which requires defining a schema to structure your graph. This schema specifies the graph name, nodes (vertices), edges (relationships), and their respective attributes.
+### Define the TigerGraph Connection Configuration
+Since our data is stored in a TigerGraph instance—whether on-premise or in the cloud—we need to configure the connection settings. The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__).
+
+
+```python
+>>> import os
+>>> os.environ["TG_HOST"] = "http://127.0.0.1"
+>>> os.environ["TG_USERNAME"] = "tigergraph"
+>>> os.environ["TG_PASSWORD"] = "tigergraph"
+```
 
 ### Define a Graph Schema
+TigerGraph is a schema-based database, which requires defining a schema to structure your graph. This schema specifies the graph name, nodes (vertices), edges (relationships), and their respective attributes.
 
-The graph schema can be defined using a YAML file, a JSON file, or a Python dictionary.
 In this example, we will initialize a graph using a schema defined in [a YAML file](https://github.com/tigergraph/tigergraphx/blob/main/applications/msft_graphrag/query/resources/graph_schema.yaml). The schema structure is represented visually in the following image.
 
 ![image](https://github.com/tigergraph/tigergraphx/blob/main/docs/images/graphrag/schema.png?raw=true)
 
 
 ```python
-from tigergraphx import Graph
-resource_dir = "../../applications/msft_graphrag/query/resources/"
-graph_schema = resource_dir + "graph_schema.yaml"
+>>> from tigergraphx import Graph
+>>> resource_dir = "../../applications/msft_graphrag/query/resources/"
+>>> graph_schema = resource_dir + "graph_schema.yaml"
 ```
 
-### Define the TigerGraph Connection Configuration
-
-In addition to defining the schema, you also need a connection configuration to establish communication with the TigerGraph server. You can connect using either a username/password, a secret, or a token. Below is an example of connecting to TigerGraph using a username and password.
-
-
-```python
-connection = {
-    "host": "http://127.0.0.1",
-    "username": "tigergraph",
-    "password": "tigergraph",
-}
-```
+TigerGraphX offers several methods to define the schema, including a Python dictionary, YAML file, or JSON file. Above is an example using a YAML file. For other methods, please refer to [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__) for more details.
 
 ### Create a Graph
 Running the following command will create a graph using the user-defined schema if it does not already exist. If the graph exists, the command will return the existing graph. To overwrite the existing graph, set the drop_existing_graph parameter to True. Note that creating the graph may take several seconds.
 
 
 ```python
-G = Graph(
-    graph_schema=graph_schema,
-    tigergraph_connection_config=connection,
-    drop_existing_graph=False,
-)
+>>> from tigergraphx import Graph
+>>> G = Graph(graph_schema)
 ```
 
-    2025-01-05 23:22:37,193 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph GraphRAG...
-    2025-01-05 23:23:30,577 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
+    2025-02-28 21:48:49,181 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: GraphRAG...
+    2025-02-28 21:48:52,805 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
+    2025-02-28 21:48:52,806 - tigergraphx.core.managers.schema_manager - INFO - Adding vector attribute(s) for graph: GraphRAG...
+    2025-02-28 21:49:58,529 - tigergraphx.core.managers.schema_manager - INFO - Vector attribute(s) added successfully.
 
 
 ## Load Data
@@ -71,6 +68,10 @@ loading_job_config = resource_dir + "loading_job_config.yaml"
 G.load_data(loading_job_config)
 ```
 
+    2025-02-28 21:52:18,639 - tigergraphx.core.managers.data_manager - INFO - Initiating data load for job: loading_job_GraphRAG...
+    2025-02-28 21:52:26,261 - tigergraphx.core.managers.data_manager - INFO - Data load completed successfully.
+
+
 Now, let's check the total number of nodes in the graph again. We should observe that some nodes have been successfully loaded into the graph.
 
 
@@ -78,7 +79,7 @@ Now, let's check the total number of nodes in the graph again. We should observe
 print(G.number_of_nodes())
 ```
 
-    371
+    2883
 
 
 ---

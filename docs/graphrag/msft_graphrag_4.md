@@ -5,21 +5,28 @@ To run this Jupyter Notebook, you can download the original `.ipynb` file from [
 ---
 
 ## Get the Graph from TigerGraph
+Since the graph has already been created in TigerGraph, redefining its schema is unnecessary. Instead, you can provide the graph name to retrieve it. TigerGraphX will verify if the graph exists in TigerGraph and, if it does, will return the corresponding graph.
+
+### Define the TigerGraph Connection Configuration
+Before retrive the graph schema from TigerGraph, you shoulddefine the  TigerGraph Connection Configuration first.
+The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__).
 
 
 ```python
-from tigergraphx import Graph
-connection = {
-    "host": "http://127.0.0.1",
-    "username": "tigergraph",
-    "password": "tigergraph",
-}
-G = Graph.from_db("GraphRAG", connection)
+>>> import os
+>>> os.environ["TG_HOST"] = "http://127.0.0.1"
+>>> os.environ["TG_USERNAME"] = "tigergraph"
+>>> os.environ["TG_PASSWORD"] = "tigergraph"
 ```
 
-    2025-01-05 23:51:06,143 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph GraphRAG...
-    2025-01-05 23:51:06,152 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
+### Retrieve the Graph
+Once a graph has been created in TigerGraph, you can retrieve it without manually defining the schema using the `Graph.from_db` method, which requires only the graph name:
 
+
+```python
+>>> from tigergraphx import Graph
+>>> G = Graph.from_db("GraphRAG")
+```
 
 ---
 
@@ -37,59 +44,20 @@ You can use the following code to fetch up to two nodes of type "Entity" and dis
 
 
 ```python
-G.get_nodes(
-    node_type="Entity",
-    return_attributes=["id", "name", "entity_type", "description"],
-    limit=2,
-)
+>>> print(G.get_nodes(
+...     node_type="Entity",
+...     return_attributes=["id", "name", "entity_type", "description"],
+...     limit=2,
+... ))
 ```
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>name</th>
-      <th>entity_type</th>
-      <th>description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>473502492d0a419981fed4fbc1493832</td>
-      <td>THE THREE MISS FEZZIWIGS</td>
-      <td>PERSON</td>
-      <td>Daughters of Mr. and Mrs. Fezziwig, described ...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>6fb90dc954fe40d5969f7532a66376e9</td>
-      <td>WANT</td>
-      <td>PERSON</td>
-      <td>Want is depicted as a girl, symbolizing povert...</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+                                     id           name entity_type  \
+    0  c0803923646246c5a203810faa4e4464  VALLEY STREAM         GEO   
+    1  6069e8895f924b659534f74d6736e69d          CHINA         GEO   
+    
+                                             description  
+    0  Valley Stream is a location in New York where ...  
+    1  China is a country in East Asia where Walmart ...  
 
 
 #### Retrieve Neighbors with Specific Attributes
@@ -98,70 +66,21 @@ The following code demonstrates how to fetch neighbors of specific nodes. In thi
 
 
 ```python
-start_nodes = ["473502492d0a419981fed4fbc1493832", "6fb90dc954fe40d5969f7532a66376e9"]
-G.get_neighbors(
-    start_nodes=start_nodes,
-    start_node_type="Entity",
-    edge_types="community_contains_entity",
-    return_attributes=["id", "title", "full_content"],
-)
+>>> start_nodes = ["2268d4506af346a3a308a2145cd19734", "38515ccf6ce14852a0c0fabee67b7c42"]
+>>> print(G.get_neighbors(
+...     start_nodes=start_nodes,
+...     start_node_type="Entity",
+...     edge_types="community_contains_entity",
+...     return_attributes=["id", "title", "full_content"],
+... ))
 ```
 
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>id</th>
-      <th>title</th>
-      <th>full_content</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>9</td>
-      <td>Community 9</td>
-      <td># The Transformation of Ebenezer Scrooge: A St...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>0</td>
-      <td>Community 0</td>
-      <td># The Transformation Journey of Ebenezer Scroo...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>19</td>
-      <td>Community 19</td>
-      <td># The Transformation of Ebenezer Scrooge: A Ch...</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>1</td>
-      <td>Community 1</td>
-      <td># Fezziwig's Christmas Celebration Community\n...</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+       id         title                                       full_content
+    0   4   Community 4  # Bull Run Battles Community\n\nThe Bull Run B...
+    1  64  Community 64  # Walmart and Global Retail Expansion\n\nThe c...
+    2  31  Community 31  # Bull Run and the American Civil War\n\nThe c...
+    3  80  Community 80  # Bull Run and Its Historical Significance\n\n...
+    4  20  Community 20  # Walmart and Its Global Impact\n\nThe communi...
 
 
 #### Retrieve Top-K Using TigerVector's Vector Search Capability
@@ -169,18 +88,18 @@ The following code generates a random query vector of 1536 float values and uses
 
 
 ```python
-import random
-random_floats: list[float] = [random.random() for _ in range(1536)]
-results = G.search(
-    data=random_floats,
-    vector_attribute_name="emb_description",
-    node_type="Entity",
-    limit=1,
-)
-print(results)
+>>> import random
+>>> random_floats: list[float] = [random.random() for _ in range(1536)]
+>>> results = G.search(
+...     data=random_floats,
+...     vector_attribute_name="emb_description",
+...     node_type="Entity",
+...     limit=1,
+... )
+>>> print(results)
 ```
 
-    [{'id': '9b24fbfeb0e94dd889c10700718b048f', 'distance': 0.9512004, 'human_readable_id': 83, 'name': 'GROCER', 'entity_type': '', 'description': ''}]
+    [{'id': '98d96d2568b9413b8aafc4e982f676c0', 'distance': 0.9290141, 'human_readable_id': 511, 'name': 'WASHINGTON DULLES INTERNATIONAL AIRPORT', 'entity_type': 'GEO', 'description': 'Washington Dulles International Airport is a major airport serving the Washington, D.C. metropolitan area, facilitating both domestic and international travel.'}]
 
 
 ---
@@ -290,19 +209,22 @@ class GlobalContextBuilder(BaseContextBuilder):
         return context
 ```
 
+    2025-02-28 22:22:44,129 - datasets - INFO - PyTorch version 2.6.0 available.
+
+
 Here’s how you can utilize the custom global context builder:
 
 
 ```python
-global_context_builder = GlobalContextBuilder(G)
-context_list = await global_context_builder.build_context()
-# Print the first 1000 characters for easier visualization of long text
-print(context_list[0][:1000])
+>>> global_context_builder = GlobalContextBuilder(G)
+>>> context_list = await global_context_builder.build_context()
+>>> # Print the first 1000 characters for easier visualization of long text
+>>> print(context_list[0][:1000])
 ```
 
     -----Communities-----
     id|rank|title|full_content
-    18|8.5|Community 18|# Project Gutenberg Ecosystem\n\nThe Project Gutenberg ecosystem is a collaborative network focused on the free distribution of electronic literature. Central to this community are the Project Gutenberg Literary Archive Foundation, Project Gutenberg™, and its electronic works, supported by a structure of copyright management, royalty fees, and the pioneering efforts of Michael S. Hart. This network facilitates the global dissemination of literature in digital formats, ensuring accessibility and promoting literary heritage.\n\n## The foundational role of the Project Gutenberg Literary Archive Foundation\n\nThe Project Gutenberg Literary Archive Foundation is pivotal in the Project Gutenberg ecosystem, managing copyrights and the Project Gutenberg trademark. It receives donations and royalties, supporting the mission to preserve and provide free access to electronic works. This foundation ensures the sustainability of P
+    77|7.5|Community 77|# PlayStation Network and Its Ecosystem\n\nThe community centers around the PlayStation Network, a vital online service for PlayStation consoles, and its associated entities, including various gaming consoles and key figures in Sony. The relationships among these entities highlight the interconnectedness of gaming hardware, online services, and leadership within Sony, which collectively shape the gaming experience for users.\n\n## PlayStation Network as a central hub\n\nThe PlayStation Network serves as the core online service for various PlayStation consoles, including the PS3, PS4, and PS5. This network enables online gaming, digital media access, and social interactions among users, making it a crucial component of the PlayStation ecosystem. Its establishment marked a significant shift in how users engage with gaming, allowing for multiplayer experiences and a wide array of digital content. The network's importance
 
 
 ---
@@ -329,6 +251,7 @@ return "\n\n".join(context)
 ```
 
 For full implementations of different context builders, refer to the following links:
+
 - [LocalContextBuilder Code](https://github.com/tigergraph/tigergraphx/blob/main/applications/msft_graphrag/query/context_builder/local_context_builder.py)
 
 
@@ -357,7 +280,7 @@ The integration process follows the workflow illustrated below:
 
 ## What’s Next?
 
-- [API Reference](../../reference/features_overview): Dive deeper into TigerGraphX APIs.
+- [Supporting Microsoft’s GraphRAG: Part 5](../msft_graphrag_5): Query Microsoft’s GraphRAG and assess its performance.
 
 ---
 

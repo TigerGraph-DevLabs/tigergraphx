@@ -19,6 +19,7 @@ nav:
           - "Part 2 - Graph Creation and Data Loading": graphrag/msft_graphrag_2.md
           - "Part 3 - Graph Analysis": graphrag/msft_graphrag_3.md
           - "Part 4 - Hybrid Retrieval and Integration with LLM": graphrag/msft_graphrag_4.md
+          - "Part 5 - Query and Evaluation": graphrag/msft_graphrag_5.md
   - API Reference:
       - Introduction: reference/introduction.md
       - Core:
