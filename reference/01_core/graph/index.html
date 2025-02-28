@@ -828,6 +828,28 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../graphrag/msft_graphrag_5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part 5 - Query and Evaluation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2867,7 +2889,7 @@ for various applications in network analysis, data modeling, and beyond.</p>
     <ul>
         <li class="doc-section-item field-body">
             <b><code>graph_schema</code></b>
-              (<code><a class="autorefs autorefs-internal" title="tigergraphx.config.GraphSchema" href="../../04_config/01_graph_db/schema_config/#tigergraphx.config.graph_db.schema.graph_schema.GraphSchema">GraphSchema</a> | <span title="typing.Dict">Dict</span> | str | <span title="pathlib.Path">Path</span></code>)
+              (<code><a class="autorefs autorefs-internal" title="tigergraphx.config.GraphSchema" href="../../04_config/01_graph_db/schema_config/#tigergraphx.config.graph_db.schema.graph_schema.GraphSchema">GraphSchema</a> | <span title="typing.Dict">Dict</span> | <span title="str">str</span> | <span title="pathlib.Path">Path</span></code>)
           –
           <div class="doc-md-description">
             <p>The schema of the graph.</p>
@@ -2875,7 +2897,7 @@ for various applications in network analysis, data modeling, and beyond.</p>
         </li>
         <li class="doc-section-item field-body">
             <b><code>tigergraph_connection_config</code></b>
-              (<code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="tigergraphx.config.TigerGraphConnectionConfig" href="../../04_config/01_graph_db/tigergraph_connection_config/#tigergraphx.config.graph_db.tigergraph_connection_config.TigerGraphConnectionConfig">TigerGraphConnectionConfig</a> | <span title="typing.Dict">Dict</span> | str | <span title="pathlib.Path">Path</span>]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="tigergraphx.config.TigerGraphConnectionConfig" href="../../04_config/01_graph_db/tigergraph_connection_config/#tigergraphx.config.graph_db.tigergraph_connection_config.TigerGraphConnectionConfig">TigerGraphConnectionConfig</a> | <span title="typing.Dict">Dict</span> | <span title="str">str</span> | <span title="pathlib.Path">Path</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -2885,7 +2907,7 @@ for various applications in network analysis, data modeling, and beyond.</p>
         </li>
         <li class="doc-section-item field-body">
             <b><code>drop_existing_graph</code></b>
-              (<code>bool</code>, default:
+              (<code><span title="bool">bool</span></code>, default:
                   <code>False</code>
 )
           –
@@ -3104,7 +3126,7 @@ The contents of the file "/path/to/your/schema.json" is as follows:
     <ul>
         <li class="doc-section-item field-body">
             <b><code>graph_name</code></b>
-              (<code>str</code>)
+              (<code><span title="str">str</span></code>)
           –
           <div class="doc-md-description">
             <p>The name of the graph to retrieve.</p>
@@ -3112,7 +3134,7 @@ The contents of the file "/path/to/your/schema.json" is as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>tigergraph_connection_config</code></b>
-              (<code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="tigergraphx.config.TigerGraphConnectionConfig" href="../../04_config/01_graph_db/tigergraph_connection_config/#tigergraphx.config.graph_db.tigergraph_connection_config.TigerGraphConnectionConfig">TigerGraphConnectionConfig</a> | <span title="typing.Dict">Dict</span> | str | <span title="pathlib.Path">Path</span>]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="tigergraphx.config.TigerGraphConnectionConfig" href="../../04_config/01_graph_db/tigergraph_connection_config/#tigergraphx.config.graph_db.tigergraph_connection_config.TigerGraphConnectionConfig">TigerGraphConnectionConfig</a> | <span title="typing.Dict">Dict</span> | <span title="str">str</span> | <span title="pathlib.Path">Path</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -3180,7 +3202,7 @@ The contents of the file "/path/to/your/schema.json" is as follows:
 </div><p><strong>Examples:</strong></p>
 <p><code>nodes</code> is a property of the <code>Graph</code> class. Using it allows you to get the total number of nodes, retrieve data for a specific node, and check if a node exists.</p>
 <p>If your graph contains only one node type, you don’t need to specify the type when accessing nodes:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">])</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
 <span class="mi">2</span>
@@ -3190,7 +3212,7 @@ The contents of the file "/path/to/your/schema.json" is as follows:
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>For graphs with multiple node types, you must include the node type when accessing nodes:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">],</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
 <span class="mi">2</span>
@@ -3237,7 +3259,7 @@ The contents of the file "/path/to/your/schema.json" is as follows:
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code>str | <span title="typing.Dict">Dict</span></code>
+              <code><span title="str">str</span> | <span title="typing.Dict">Dict</span></code>
           –
           <div class="doc-md-description">
             <p>The graph schema.</p>
@@ -3249,7 +3271,7 @@ The contents of the file "/path/to/your/schema.json" is as follows:
 
 </div><p><strong>Examples:</strong></p>
 <p>The default schema format retrieved from the database is a Python dictionary. 
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">get_schema</span><span class="p">()</span>
 <span class="p">{</span><span class="s1">&#39;graph_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Social&#39;</span><span class="p">,</span>
  <span class="s1">&#39;nodes&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;Person&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;primary_key&#39;</span><span class="p">:</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span>
@@ -3267,7 +3289,7 @@ The contents of the file "/path/to/your/schema.json" is as follows:
      <span class="s1">&#39;default_value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}}}}</span>
 </code></pre></div></p>
 <p>To retrieve the schema in JSON format, you can use:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">get_schema</span><span class="p">(</span><span class="s2">&quot;json&quot;</span><span class="p">)</span>
 <span class="s1">&#39;{&quot;graph_name&quot;:&quot;Social&quot;,&quot;nodes&quot;:{&quot;Person&quot;:{&quot;primary_key&quot;:&quot;name&quot;,&quot;attributes&quot;:{&quot;name&quot;:{&quot;data_type&quot;:&quot;STRING&quot;,&quot;default_value&quot;:null},&quot;age&quot;:{&quot;data_type&quot;:&quot;UINT&quot;,&quot;default_value&quot;:null},&quot;gender&quot;:{&quot;data_type&quot;:&quot;STRING&quot;,&quot;default_value&quot;:null}},&quot;vector_attributes&quot;:</span><span class="si">{}</span><span class="s1">}},&quot;edges&quot;:{&quot;Friendship&quot;:{&quot;is_directed_edge&quot;:false,&quot;from_node_type&quot;:&quot;Person&quot;,&quot;to_node_type&quot;:&quot;Person&quot;,&quot;discriminator&quot;:[],&quot;attributes&quot;:{&quot;closeness&quot;:{&quot;data_type&quot;:&quot;DOUBLE&quot;,&quot;default_value&quot;:null}}}}}&#39;</span>
 </code></pre></div></p>
@@ -3291,7 +3313,7 @@ The contents of the file "/path/to/your/schema.json" is as follows:
     <ul>
         <li class="doc-section-item field-body">
             <b><code>drop_existing_graph</code></b>
-              (<code>bool</code>, default:
+              (<code><span title="bool">bool</span></code>, default:
                   <code>False</code>
 )
           –
@@ -3305,7 +3327,7 @@ The contents of the file "/path/to/your/schema.json" is as follows:
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code>bool</code>
+              <code><span title="bool">bool</span></code>
           –
           <div class="doc-md-description">
             <p>True if schema was created successfully.</p>
@@ -3318,16 +3340,13 @@ The contents of the file "/path/to/your/schema.json" is as follows:
 </div><p><strong>Examples:</strong></p>
 <p>This method is rarely used because it is already called in the constructor.</p>
 <p>If you do not need to drop the existing graph before creating the schema, you can use:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">create_schema</span><span class="p">()</span>
-<span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">16</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">34</span><span class="p">,</span><span class="mi">021</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">schema_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Graph</span> <span class="n">existence</span> <span class="n">check</span> <span class="k">for</span> <span class="n">Social</span><span class="p">:</span> <span class="n">exists</span>
-<span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">16</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">34</span><span class="p">,</span><span class="mi">022</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">schema_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Graph</span> <span class="s1">&#39;Social&#39;</span> <span class="n">already</span> <span class="n">exists</span><span class="o">.</span> <span class="n">Skipping</span> <span class="n">graph</span> <span class="n">creation</span><span class="o">.</span>
 <span class="kc">False</span>
 </code></pre></div></p>
 <p>If you need to drop the existing graph, you can call:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">create_schema</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-<span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">16</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">52</span><span class="p">,</span><span class="mi">323</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">schema_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Graph</span> <span class="n">existence</span> <span class="n">check</span> <span class="k">for</span> <span class="n">Social</span><span class="p">:</span> <span class="n">exists</span>
 <span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">16</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">52</span><span class="p">,</span><span class="mi">323</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">schema_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Dropping</span> <span class="n">graph</span><span class="p">:</span> <span class="n">Social</span><span class="o">...</span>
 <span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">16</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">55</span><span class="p">,</span><span class="mi">618</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">schema_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Graph</span> <span class="n">dropped</span> <span class="n">successfully</span><span class="o">.</span>
 <span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">16</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">55</span><span class="p">,</span><span class="mi">619</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">schema_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Creating</span> <span class="n">schema</span> <span class="k">for</span> <span class="n">graph</span><span class="p">:</span> <span class="n">Social</span><span class="o">...</span>
@@ -3352,7 +3371,7 @@ The contents of the file "/path/to/your/schema.json" is as follows:
     </div>
 
 </div><p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">drop_graph</span><span class="p">()</span>
 <span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">20</span> <span class="mi">16</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">04</span><span class="p">,</span><span class="mi">544</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">schema_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Dropping</span> <span class="n">graph</span><span class="p">:</span> <span class="n">Social</span><span class="o">...</span>
 <span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">20</span> <span class="mi">16</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">07</span><span class="p">,</span><span class="mi">645</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">schema_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Graph</span> <span class="n">dropped</span> <span class="n">successfully</span><span class="o">.</span>
@@ -3379,7 +3398,7 @@ The contents of the file "/path/to/your/schema.json" is as follows:
     <ul>
         <li class="doc-section-item field-body">
             <b><code>loading_job_config</code></b>
-              (<code><a class="autorefs autorefs-internal" title="tigergraphx.config.LoadingJobConfig" href="../../04_config/01_graph_db/loading_job_config/#tigergraphx.config.graph_db.loading_job_config.LoadingJobConfig">LoadingJobConfig</a> | <span title="typing.Dict">Dict</span> | str | <span title="pathlib.Path">Path</span></code>)
+              (<code><a class="autorefs autorefs-internal" title="tigergraphx.config.LoadingJobConfig" href="../../04_config/01_graph_db/loading_job_config/#tigergraphx.config.graph_db.loading_job_config.LoadingJobConfig">LoadingJobConfig</a> | <span title="typing.Dict">Dict</span> | <span title="str">str</span> | <span title="pathlib.Path">Path</span></code>)
           –
           <div class="doc-md-description">
             <p>Loading job config.</p>
@@ -3531,10 +3550,12 @@ This section is optional if the user’s configuration matches these defaults.</
 </li>
 </ul>
 <p>After the loading job is defined, we can load data by running the command below:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">loading_job_config</span><span class="p">)</span>
-<span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">16</span><span class="p">:</span><span class="mi">31</span><span class="p">:</span><span class="mi">41</span><span class="p">,</span><span class="mi">444</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">data_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Initiating</span> <span class="n">data</span> <span class="n">load</span> <span class="k">for</span> <span class="n">job</span><span class="p">:</span> <span class="n">loading_job_Social</span><span class="o">...</span>
-<span class="mi">2025</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">16</span><span class="p">:</span><span class="mi">31</span><span class="p">:</span><span class="mi">49</span><span class="p">,</span><span class="mi">010</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">data_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Data</span> <span class="n">load</span> <span class="n">completed</span> <span class="n">successfully</span><span class="o">.</span>
+<span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">27</span> <span class="mi">17</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">48</span><span class="p">,</span><span class="mi">941</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">schema_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Creating</span> <span class="n">schema</span> <span class="k">for</span> <span class="n">graph</span><span class="p">:</span> <span class="n">Social</span><span class="o">...</span>
+<span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">27</span> <span class="mi">17</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">52</span><span class="p">,</span><span class="mi">332</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">schema_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Graph</span> <span class="n">schema</span> <span class="n">created</span> <span class="n">successfully</span><span class="o">.</span>
+<span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">27</span> <span class="mi">17</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">52</span><span class="p">,</span><span class="mi">353</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">data_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Initiating</span> <span class="n">data</span> <span class="n">load</span> <span class="k">for</span> <span class="n">job</span><span class="p">:</span> <span class="n">loading_job_Social</span><span class="o">...</span>
+<span class="mi">2025</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">27</span> <span class="mi">17</span><span class="p">:</span><span class="mi">06</span><span class="p">:</span><span class="mi">59</span><span class="p">,</span><span class="mi">944</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">data_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Data</span> <span class="n">load</span> <span class="n">completed</span> <span class="n">successfully</span><span class="o">.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">())</span>
 <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">())</span>
@@ -3564,7 +3585,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>The identifier of the node.</p>
@@ -3572,7 +3593,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -3602,7 +3623,7 @@ This section is optional if the user’s configuration matches these defaults.</
 </div>
 <p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">29</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
@@ -3611,7 +3632,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">29</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
@@ -3639,7 +3660,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>nodes_for_adding</code></b>
-              (<code><span title="typing.List">List</span>[str | int] | <span title="typing.List">List</span>[<span title="typing.Tuple">Tuple</span>[str | int, <span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]]]</code>)
+              (<code><span title="typing.List">List</span>[<span title="str">str</span> | <span title="int">int</span>] | <span title="typing.List">List</span>[<span title="typing.Tuple">Tuple</span>[<span title="str">str</span> | <span title="int">int</span>, <span title="typing.Dict">Dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]]]</code>)
           –
           <div class="doc-md-description">
             <p>List of node IDs or (ID, attributes) tuples.</p>
@@ -3647,7 +3668,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -3668,7 +3689,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><span title="typing.Optional">Optional</span>[int]</code>
+              <code><span title="typing.Optional">Optional</span>[<span title="int">int</span>]</code>
           –
           <div class="doc-md-description">
             <p>The number of nodes added</p>
@@ -3688,7 +3709,7 @@ This section is optional if the user’s configuration matches these defaults.</
 </div>
 <p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Add nodes using a list of node IDs only, without additional attributes</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">([</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">])</span>
 <span class="mi">2</span>
@@ -3706,7 +3727,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -3736,7 +3757,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>The identifier of the node.</p>
@@ -3744,7 +3765,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -3758,7 +3779,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code>bool</code>
+              <code><span title="bool">bool</span></code>
           –
           <div class="doc-md-description">
             <p>True if the node was removed, False otherwise.</p>
@@ -3774,7 +3795,7 @@ This section is optional if the user’s configuration matches these defaults.</
 </div>
 <p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
 <span class="mi">1</span>
@@ -3784,7 +3805,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="mi">0</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span>
 <span class="mi">1</span>
@@ -3813,7 +3834,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>The identifier of the node.</p>
@@ -3821,7 +3842,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -3835,7 +3856,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code>bool</code>
+              <code><span title="bool">bool</span></code>
           –
           <div class="doc-md-description">
             <p>True if the node exists, False otherwise.</p>
@@ -3851,7 +3872,7 @@ This section is optional if the user’s configuration matches these defaults.</
 </div>
 <p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">)</span>
 <span class="kc">True</span>
@@ -3859,7 +3880,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">has_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
 <span class="kc">True</span>
@@ -3886,7 +3907,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>The identifier of the node.</p>
@@ -3894,7 +3915,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -3924,7 +3945,7 @@ This section is optional if the user’s configuration matches these defaults.</
 </ul>
 <p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">get_node_data</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">)</span>
 <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">}</span>
@@ -3932,7 +3953,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">get_node_data</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
 <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">}</span>
@@ -3959,7 +3980,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>The identifier of the node.</p>
@@ -3967,7 +3988,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -3977,7 +3998,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>edge_types</code></b>
-              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[str] | str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[<span title="str">str</span>] | <span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4003,7 +4024,7 @@ This section is optional if the user’s configuration matches these defaults.</
 
 </div><p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4018,7 +4039,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4058,7 +4079,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code>bool</code>
+              <code><span title="bool">bool</span></code>
           –
           <div class="doc-md-description">
             <p>True if nodes were cleared.</p>
@@ -4073,7 +4094,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p>This method follows a similar interface to NetworkX's <code>clear()</code>.</p>
 </div>
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4109,7 +4130,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>src_node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>Source node identifier.</p>
@@ -4117,7 +4138,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>tgt_node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>Target node identifier.</p>
@@ -4125,7 +4146,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>src_node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4135,7 +4156,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>edge_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4145,7 +4166,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>tgt_node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4175,7 +4196,7 @@ This section is optional if the user’s configuration matches these defaults.</
 </div>
 <p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4189,7 +4210,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4222,7 +4243,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>ebunch_to_add</code></b>
-              (<code><span title="typing.Sequence">Sequence</span>[<span title="typing.Tuple">Tuple</span>[str | int, str | int]] | <span title="typing.Sequence">Sequence</span>[<span title="typing.Tuple">Tuple</span>[str | int, str | int, <span title="typing.Dict">Dict</span>[str, <span title="typing.Any">Any</span>]]]</code>)
+              (<code><span title="typing.Sequence">Sequence</span>[<span title="typing.Tuple">Tuple</span>[<span title="str">str</span> | <span title="int">int</span>, <span title="str">str</span> | <span title="int">int</span>]] | <span title="typing.Sequence">Sequence</span>[<span title="typing.Tuple">Tuple</span>[<span title="str">str</span> | <span title="int">int</span>, <span title="str">str</span> | <span title="int">int</span>, <span title="typing.Dict">Dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]]]</code>)
           –
           <div class="doc-md-description">
             <p>List of edges to add.</p>
@@ -4230,7 +4251,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>src_node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4240,7 +4261,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>edge_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4250,7 +4271,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>tgt_node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4274,7 +4295,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><span title="typing.Optional">Optional</span>[int]</code>
+              <code><span title="typing.Optional">Optional</span>[<span title="int">int</span>]</code>
           –
           <div class="doc-md-description">
             <p>The number of edges added</p>
@@ -4294,7 +4315,7 @@ This section is optional if the user’s configuration matches these defaults.</
 </div>
 <p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4318,7 +4339,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4350,7 +4371,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>src_node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>Source node identifier.</p>
@@ -4358,7 +4379,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>tgt_node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>Target node identifier.</p>
@@ -4366,7 +4387,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>src_node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4376,7 +4397,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>edge_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4386,7 +4407,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>tgt_node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4400,7 +4421,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code>bool</code>
+              <code><span title="bool">bool</span></code>
           –
           <div class="doc-md-description">
             <p>True if the edge exists, False otherwise.</p>
@@ -4416,7 +4437,7 @@ This section is optional if the user’s configuration matches these defaults.</
 </div>
 <p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4430,7 +4451,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4463,7 +4484,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>src_node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>Source node identifier.</p>
@@ -4471,7 +4492,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>tgt_node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>Target node identifier.</p>
@@ -4479,7 +4500,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>src_node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4489,7 +4510,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>edge_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4499,7 +4520,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>tgt_node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4513,7 +4534,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><span title="typing.Dict">Dict</span> | None</code>
+              <code><span title="typing.Dict">Dict</span> | <span title="typing.Dict">Dict</span>[<span title="int">int</span> | <span title="str">str</span>, <span title="typing.Dict">Dict</span>] | None</code>
           –
           <div class="doc-md-description">
             <p>The edge data or None if not found.</p>
@@ -4529,7 +4550,7 @@ This section is optional if the user’s configuration matches these defaults.</
 </div>
 <p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4543,7 +4564,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4578,7 +4599,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>Node identifier.</p>
@@ -4586,7 +4607,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4596,7 +4617,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>edge_types</code></b>
-              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[str] | str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[<span title="str">str</span>] | <span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4610,7 +4631,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code>int</code>
+              <code><span title="int">int</span></code>
           –
           <div class="doc-md-description">
             <p>The degree of the node.</p>
@@ -4622,7 +4643,7 @@ This section is optional if the user’s configuration matches these defaults.</
 
 </div><p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4637,7 +4658,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">([(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">)],</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
 <span class="mi">1</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Get the degree of node Alice for all edge types</span>
@@ -4672,7 +4693,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4686,7 +4707,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code>int</code>
+              <code><span title="int">int</span></code>
           –
           <div class="doc-md-description">
             <p>The number of nodes.</p>
@@ -4701,7 +4722,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p>This method follows a similar interface to NetworkX's <code>number_of_nodes()</code>.</p>
 </div>
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">}),</span>
@@ -4737,7 +4758,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>edge_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4751,7 +4772,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code>int</code>
+              <code><span title="int">int</span></code>
           –
           <div class="doc-md-description">
             <p>The number of edges.</p>
@@ -4766,7 +4787,7 @@ This section is optional if the user’s configuration matches these defaults.</
 <p>This method follows a similar interface to NetworkX's <code>number_of_edges()</code>.</p>
 </div>
 <p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">ebunch_to_add</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">}),</span>
@@ -4804,7 +4825,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4814,7 +4835,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>all_node_types</code></b>
-              (<code>bool</code>, default:
+              (<code><span title="bool">bool</span></code>, default:
                   <code>False</code>
 )
           –
@@ -4824,7 +4845,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_alias</code></b>
-              (<code>str</code>, default:
+              (<code><span title="str">str</span></code>, default:
                   <code>&#39;s&#39;</code>
 )
           –
@@ -4834,7 +4855,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>filter_expression</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4844,7 +4865,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>return_attributes</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str | <span title="typing.List">List</span>[str]]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span> | <span title="typing.List">List</span>[<span title="str">str</span>]]</code>, default:
                   <code>None</code>
 )
           –
@@ -4854,7 +4875,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>limit</code></b>
-              (<code><span title="typing.Optional">Optional</span>[int]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="int">int</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4879,7 +4900,7 @@ This section is optional if the user’s configuration matches these defaults.</
     </div>
 
 </div><p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">}),</span>
@@ -4970,7 +4991,7 @@ This section is optional if the user’s configuration matches these defaults.</
     <ul>
         <li class="doc-section-item field-body">
             <b><code>start_nodes</code></b>
-              (<code>str | int | <span title="typing.List">List</span>[str | int]</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span> | <span title="typing.List">List</span>[<span title="str">str</span> | <span title="int">int</span>]</code>)
           –
           <div class="doc-md-description">
             <p>Starting node or nodes.</p>
@@ -4978,7 +4999,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>start_node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -4988,7 +5009,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>start_node_alias</code></b>
-              (<code>str</code>, default:
+              (<code><span title="str">str</span></code>, default:
                   <code>&#39;s&#39;</code>
 )
           –
@@ -4998,7 +5019,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>edge_types</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str | <span title="typing.List">List</span>[str]]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span> | <span title="typing.List">List</span>[<span title="str">str</span>]]</code>, default:
                   <code>None</code>
 )
           –
@@ -5008,7 +5029,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>edge_alias</code></b>
-              (<code>str</code>, default:
+              (<code><span title="str">str</span></code>, default:
                   <code>&#39;e&#39;</code>
 )
           –
@@ -5018,7 +5039,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>target_node_types</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str | <span title="typing.List">List</span>[str]]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span> | <span title="typing.List">List</span>[<span title="str">str</span>]]</code>, default:
                   <code>None</code>
 )
           –
@@ -5028,7 +5049,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>target_node_alias</code></b>
-              (<code>str</code>, default:
+              (<code><span title="str">str</span></code>, default:
                   <code>&#39;t&#39;</code>
 )
           –
@@ -5038,7 +5059,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>filter_expression</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -5048,7 +5069,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>return_attributes</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str | <span title="typing.List">List</span>[str]]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span> | <span title="typing.List">List</span>[<span title="str">str</span>]]</code>, default:
                   <code>None</code>
 )
           –
@@ -5058,7 +5079,7 @@ This section is optional if the user’s configuration matches these defaults.</
         </li>
         <li class="doc-section-item field-body">
             <b><code>limit</code></b>
-              (<code><span title="typing.Optional">Optional</span>[int]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="int">int</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -5083,7 +5104,7 @@ This section is optional if the user’s configuration matches these defaults.</
     </div>
 
 </div><p><strong>Examples:</strong></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;Social&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
 <span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">}),</span>
@@ -5162,6 +5183,33 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
    <span class="n">name</span> <span class="n">gender</span>
 <span class="mi">0</span>  <span class="n">Mike</span>   <span class="n">Male</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Breadth First Search example</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># First hop: Retrieve neighbors of &quot;Alice&quot; of type &quot;Person&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;Alice&quot;</span><span class="p">])</span>  <span class="c1"># Track visited nodes</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_neighbors</span><span class="p">(</span><span class="n">start_nodes</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">start_node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">primary_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="n">visited</span>  <span class="c1"># Exclude already visited nodes</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">primary_ids</span><span class="p">)</span>
+<span class="p">{</span><span class="s1">&#39;Mike&#39;</span><span class="p">,</span> <span class="s1">&#39;John&#39;</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Second hop: Retrieve neighbors of the nodes identified in the first hop</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">visited</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">primary_ids</span><span class="p">)</span>  <span class="c1"># Mark these nodes as visited</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_neighbors</span><span class="p">(</span><span class="n">start_nodes</span><span class="o">=</span><span class="n">primary_ids</span><span class="p">,</span> <span class="n">start_node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">primary_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="n">visited</span>  <span class="c1"># Exclude visited nodes</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">primary_ids</span><span class="p">)</span>
+<span class="p">{</span><span class="s1">&#39;Emily&#39;</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Third hop: Retrieve neighbors of the nodes identified in the second hop</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">visited</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">primary_ids</span><span class="p">)</span>  <span class="c1"># Mark these nodes as visited</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_neighbors</span><span class="p">(</span><span class="n">start_nodes</span><span class="o">=</span><span class="n">primary_ids</span><span class="p">,</span> <span class="n">start_node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">visited</span><span class="p">)]</span>  <span class="c1"># Remove visited nodes from the final result</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+   <span class="n">gender</span>  <span class="n">name</span>  <span class="n">age</span>
+<span class="mi">0</span>  <span class="n">Female</span>  <span class="n">Mary</span>   <span class="mi">28</span>
+<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Alternatively, you can also use the built-in `bfs` method.</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">bfs</span><span class="p">(</span><span class="n">start_nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">],</span> <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">max_hops</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+   <span class="n">gender</span>  <span class="n">name</span>  <span class="n">age</span>
+<span class="mi">0</span>  <span class="n">Female</span>  <span class="n">Mary</span>   <span class="mi">28</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 <span class="kc">True</span>
 </code></pre></div>
@@ -5317,7 +5365,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -5342,7 +5390,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 
 </div><p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert a single node with vector data</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
@@ -5363,7 +5411,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert a single node with vector data</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
@@ -5405,7 +5453,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
     <ul>
         <li class="doc-section-item field-body">
             <b><code>node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>The node's identifier.</p>
@@ -5413,7 +5461,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>vector_attribute_name</code></b>
-              (<code>str</code>)
+              (<code><span title="str">str</span></code>)
           –
           <div class="doc-md-description">
             <p>The vector attribute name.</p>
@@ -5421,7 +5469,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -5435,7 +5483,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[float]]</code>
+              <code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[<span title="float">float</span>]]</code>
           –
           <div class="doc-md-description">
             <p>The embedding vector or None if not found.</p>
@@ -5447,7 +5495,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 
 </div><p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert a single node with vector data</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
@@ -5464,7 +5512,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert a single node with vector data, specifying node type</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span> <span class="s2">&quot;emb_1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]},</span>
@@ -5502,7 +5550,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
     <ul>
         <li class="doc-section-item field-body">
             <b><code>node_ids</code></b>
-              (<code><span title="typing.List">List</span>[str | int]</code>)
+              (<code><span title="typing.List">List</span>[<span title="str">str</span> | <span title="int">int</span>]</code>)
           –
           <div class="doc-md-description">
             <p>List of node identifiers.</p>
@@ -5510,7 +5558,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>vector_attribute_name</code></b>
-              (<code>str</code>)
+              (<code><span title="str">str</span></code>)
           –
           <div class="doc-md-description">
             <p>The vector attribute name.</p>
@@ -5518,7 +5566,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -5532,7 +5580,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><span title="typing.Dict">Dict</span>[str, <span title="typing.List">List</span>[float]]</code>
+              <code><span title="typing.Dict">Dict</span>[<span title="str">str</span>, <span title="typing.List">List</span>[<span title="float">float</span>]]</code>
           –
           <div class="doc-md-description">
             <p>Mapping of node IDs to embedding vectors.</p>
@@ -5544,7 +5592,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 
 </div><p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with vector data</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
@@ -5564,7 +5612,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with vector data, specifying node type</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
@@ -5605,7 +5653,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
     <ul>
         <li class="doc-section-item field-body">
             <b><code>data</code></b>
-              (<code><span title="typing.List">List</span>[float]</code>)
+              (<code><span title="typing.List">List</span>[<span title="float">float</span>]</code>)
           –
           <div class="doc-md-description">
             <p>Query vector.</p>
@@ -5613,7 +5661,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>vector_attribute_name</code></b>
-              (<code>str</code>)
+              (<code><span title="str">str</span></code>)
           –
           <div class="doc-md-description">
             <p>The vector attribute name.</p>
@@ -5621,7 +5669,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -5631,7 +5679,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>limit</code></b>
-              (<code>int</code>, default:
+              (<code><span title="int">int</span></code>, default:
                   <code>10</code>
 )
           –
@@ -5641,7 +5689,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>return_attributes</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str | <span title="typing.List">List</span>[str]]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span> | <span title="typing.List">List</span>[<span title="str">str</span>]]</code>, default:
                   <code>None</code>
 )
           –
@@ -5651,7 +5699,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>candidate_ids</code></b>
-              (<code><span title="typing.Optional">Optional</span>[<span title="typing.Set">Set</span>[str]]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="typing.Set">Set</span>[<span title="str">str</span>]]</code>, default:
                   <code>None</code>
 )
           –
@@ -5677,7 +5725,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 
 </div><p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with vector data</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
@@ -5700,7 +5748,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Eve&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">0.07417983</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Eve&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Female&#39;</span><span class="p">}</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with vector data, specifying node type</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
@@ -5744,7 +5792,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
     <ul>
         <li class="doc-section-item field-body">
             <b><code>data</code></b>
-              (<code><span title="typing.List">List</span>[float]</code>)
+              (<code><span title="typing.List">List</span>[<span title="float">float</span>]</code>)
           –
           <div class="doc-md-description">
             <p>Query vector.</p>
@@ -5752,7 +5800,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>vector_attribute_names</code></b>
-              (<code><span title="typing.List">List</span>[str]</code>)
+              (<code><span title="typing.List">List</span>[<span title="str">str</span>]</code>)
           –
           <div class="doc-md-description">
             <p>List of vector attribute names.</p>
@@ -5760,7 +5808,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_types</code></b>
-              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[str]]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[<span title="str">str</span>]]</code>, default:
                   <code>None</code>
 )
           –
@@ -5770,7 +5818,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>limit</code></b>
-              (<code>int</code>, default:
+              (<code><span title="int">int</span></code>, default:
                   <code>10</code>
 )
           –
@@ -5780,7 +5828,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>return_attributes_list</code></b>
-              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[<span title="typing.List">List</span>[str]]]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[<span title="typing.List">List</span>[<span title="str">str</span>]]]</code>, default:
                   <code>None</code>
 )
           –
@@ -5805,7 +5853,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
     </div>
 
 </div><p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with different vector attributes</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
@@ -5828,7 +5876,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="s1">&#39;Eve&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">1.192093e-07</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Eve&#39;</span><span class="p">}</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with vector attributes</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
@@ -5874,7 +5922,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
     <ul>
         <li class="doc-section-item field-body">
             <b><code>node_id</code></b>
-              (<code>str | int</code>)
+              (<code><span title="str">str</span> | <span title="int">int</span></code>)
           –
           <div class="doc-md-description">
             <p>The source node's identifier.</p>
@@ -5882,7 +5930,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>vector_attribute_name</code></b>
-              (<code>str</code>)
+              (<code><span title="str">str</span></code>)
           –
           <div class="doc-md-description">
             <p>The embedding attribute name.</p>
@@ -5890,7 +5938,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>node_type</code></b>
-              (<code><span title="typing.Optional">Optional</span>[str]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
                   <code>None</code>
 )
           –
@@ -5900,7 +5948,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>limit</code></b>
-              (<code>int</code>, default:
+              (<code><span title="int">int</span></code>, default:
                   <code>5</code>
 )
           –
@@ -5910,7 +5958,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
         </li>
         <li class="doc-section-item field-body">
             <b><code>return_attributes</code></b>
-              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[str]]</code>, default:
+              (<code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>[<span title="str">str</span>]]</code>, default:
                   <code>None</code>
 )
           –
@@ -5936,7 +5984,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 
 </div><p><strong>Examples:</strong></p>
 <p>Single Node Type Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert a node with vector data</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
@@ -5946,11 +5994,11 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 <span class="o">...</span>     <span class="p">]</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="mi">3</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve the top-5 nodes similar to &quot;Alice&quot; based on the emb_1 vector</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve the top-1 nodes similar to &quot;Alice&quot; based on the emb_1 vector</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">similar_nodes</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">search_top_k_similar_nodes</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">node_id</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">vector_attribute_name</span><span class="o">=</span><span class="s2">&quot;emb_1&quot;</span><span class="p">,</span>
-<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
 <span class="o">...</span>     <span class="n">return_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">]</span>
 <span class="o">...</span> <span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">similar_nodes</span><span class="p">:</span>
@@ -5960,7 +6008,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 <span class="kc">True</span>
 </code></pre></div></p>
 <p>Multiple Node Types Example:
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;SocialWithVector&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert nodes with vector data</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">data</span><span class="o">=</span><span class="p">[</span>
@@ -5970,7 +6018,7 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 <span class="o">...</span>     <span class="p">],</span>
 <span class="o">...</span>     <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span>
 <span class="o">...</span> <span class="p">)</span>
-<span class="mi">2</span>
+<span class="mi">3</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Retrieve the top-5 nodes similar to &quot;Alice&quot; based on the emb_1 vector</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">similar_nodes</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">search_top_k_similar_nodes</span><span class="p">(</span>
 <span class="o">...</span>     <span class="n">node_id</span><span class="o">=</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span>
