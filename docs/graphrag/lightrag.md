@@ -6,33 +6,38 @@ To run this Jupyter Notebook, you can download the original `.ipynb` file from [
 
 ## Prerequisites
 
-Before proceeding, ensure you’ve completed the installation and setup steps outlined in the [Installation Guide](../getting_started/installation.md), including:
+- Before proceeding, complete the installation and setup steps outlined in the [Installation Guide](../getting_started/installation.md), including:
 
-- Setting up Python and TigerGraph. For more details, refer to the [Requirements](../../getting_started/installation/#requirements) section.
-- Install TigerGraphX along with its development dependencies. For more details, refer to the [Development Installation](../../getting_started/installation/#development-installation) section.
-- Set the environment variables **`TG_HOST`**, **`TG_USERNAME`**, and **`TG_PASSWORD`**, which are required to connect to the TigerGraph server, as well as **`OPENAI_API_KEY`** for connecting to OpenAI. Use a command like the following to set these variables:  
+- Setting up Python and TigerGraph. See the [Requirements](../../getting_started/installation/#requirements) section for details.
+- Installing TigerGraphX and its development dependencies. See the [Development Installation](../../getting_started/installation/#development-installation) section.
+- Setting the required environment variables:  
+  
 
    ```bash
    export TG_HOST=https://127.0.0.1
    export TG_USERNAME=tigergraph
    export TG_PASSWORD=tigergraph
-   export OPENAI_API_KEY=<your_key>
+   export OPENAI_API_KEY=<Your OpenAI API Key>
    ```
 
+   These variables configure the connection to the TigerGraph server and OpenAI.
 
 ---
 
-## Implement Graph and Vector Storage with TigerGraph
+## Implementing Graph and Vector Storage with TigerGraph
 
-In LightRAG, storage layers are abstracted into components such as graph storage, key-value storage, and vector storage. You can explore the base classes **BaseGraphStorage**, **BaseVectorStorage**, and **BaseKVStorage** in the [source code](https://github.com/HKUDS/LightRAG/blob/main/lightrag/base.py).
+LightRAG abstracts storage into components such as graph storage, key-value storage, and vector storage. You can explore the base classes **BaseGraphStorage**, **BaseVectorStorage**, and **BaseKVStorage** in the [source code](https://github.com/HKUDS/LightRAG/blob/main/lightrag/base.py).
 
-In this section, we will demonstrate how to use TigerGraphX to implement the `BaseGraphStorage` class for storing and retrieving graph data in TigerGraph. Additionally, we will show how to implement the `BaseVectorStorage` class for storing vector data and performing vector searches using the TigerVector feature in TigerGraph.
+This section demonstrates how to use **TigerGraphX** to implement:
+1. **`BaseGraphStorage`** for storing and retrieving graph data in TigerGraph.
+2. **`BaseVectorStorage`** for storing vector data and performing vector searches using TigerGraph's **TigerVector** feature.
 
-### Implement Graph Storage with TigerGraph
+### Implementing Graph Storage with TigerGraph
+
+The following code defines the `TigerGraphStorage` class, which interfaces with **TigerGraphX** to manage graph data in TigerGraph.
 
 
 ```python
-import os
 from dataclasses import dataclass
 from typing import Any, Dict
 import numpy as np
@@ -76,22 +81,8 @@ class TigerGraphStorage(BaseGraphStorage):
                 },
             }
 
-            # Retrieve connection configuration from environment variables
-            connection_config = {
-                "host": os.environ.get("TG_HOST", "http://127.0.0.1"),
-                "restpp_port": os.environ.get("TG_RESTPP_PORT", "14240"),
-                "gsql_port": os.environ.get("TG_GSQL_PORT", "14240"),
-                # Option 1: User/password authentication
-                "username": os.environ.get("TG_USERNAME"),
-                "password": os.environ.get("TG_PASSWORD"),
-                # Option 2: Secret-based authentication
-                "secret": os.environ.get("TG_SECRET"),
-                # Option 3: Token-based authentication
-                "token": os.environ.get("TG_TOKEN"),
-            }
-
             # Initialize the graph
-            self._graph = Graph(graph_schema, connection_config)
+            self._graph = Graph(graph_schema)
         except Exception as e:
             logger.error(f"An error occurred during initialization: {e}")
             raise
@@ -157,50 +148,44 @@ class TigerGraphStorage(BaseGraphStorage):
 
     async def embed_nodes(self, algorithm: str) -> tuple[np.ndarray, list[str]]:
         return np.array([]), []
-
-    def drop_graph(self) -> None:
-        self._graph.drop_graph()
 ```
-
-This code defines the `TigerGraphStorage` class, which interacts with **TigerGraphX** to manage graph data in TigerGraph.
 
 #### Key Features:
 
 1. **Graph Schema**  
-   - Defines a node type `"Entity"` with attributes like `id`, `entity_type`, `description`, and `source_id`.
-   - Defines an edge type `"relationship"` with attributes like `weight`, `description`, and `source_id`.
+   - Defines a node type `"Entity"` with attributes: `id`, `entity_type`, `description`, and `source_id`.
+   - Defines an edge type `"relationship"` with attributes: `weight`, `description`, and `source_id`.
 
 2. **Graph Initialization**  
-   - Initializes the graph with the schema using **TigerGraphX**.
-   - Connection details (host, ports, authentication) are fetched from environment variables.
+   - Initializes the graph schema using **TigerGraphX**.
 
 3. **Node and Edge Operations**  
    - **Node Operations**:
      - `has_node`: Checks if a node exists.
-     - `get_node`: Gets data for a node.
+     - `get_node`: Retrieves node data.
      - `upsert_node`: Adds or updates a node.
-     - `delete_node`: Deletes a node.
+     - `delete_node`: Removes a node.
    - **Edge Operations**:
      - `has_edge`: Checks if an edge exists.
-     - `get_edge`: Gets data for an edge.
+     - `get_edge`: Retrieves edge data.
      - `upsert_edge`: Adds or updates an edge.
 
 4. **Graph Metrics**  
-   - `node_degree`: Returns the number of connections a node has.
-   - `edge_degree`: Calculates the combined degrees of two nodes.
+   - `node_degree`: Returns a node’s connection count.
+   - `edge_degree`: Computes the combined degrees of two nodes.
 
-5. **Additional Functions**  
-   - **`clean_quotes`**: Strips quotes from strings.
+5. **Utility Functions**  
+   - **`clean_quotes`**: Removes surrounding quotes from strings.
    - **`drop_graph`**: Deletes the entire graph.
 
 #### Conclusion:
-The `TigerGraphStorage` class helps manage and interact with graph data in TigerGraph by offering simple methods for storing, retrieving, and managing nodes, edges, and graph metrics.
+The `TigerGraphStorage` class provides an efficient way to manage graph data in TigerGraph, offering straightforward methods for storing, retrieving, and handling nodes, edges, and graph metrics.
 
 ### Implement Vector Storage with TigerGraph
+The following code defines the `TigerVectorStorage` class, which enables storing and querying vector data (such as embeddings) in a TigerGraph database using **TigerGraphX**.
 
 
 ```python
-import os
 from dataclasses import dataclass
 import numpy as np
 from tqdm.asyncio import tqdm as tqdm_async
@@ -234,22 +219,8 @@ class TigerVectorStorage(BaseVectorStorage):
                 "edges": {},
             }
 
-            # Retrieve connection configuration from environment variables
-            connection_config = {
-                "host": os.environ.get("TG_HOST", "http://127.0.0.1"),
-                "restpp_port": os.environ.get("TG_RESTPP_PORT", "14240"),
-                "gsql_port": os.environ.get("TG_GSQL_PORT", "14240"),
-                # Option 1: User/password authentication
-                "username": os.environ.get("TG_USERNAME"),
-                "password": os.environ.get("TG_PASSWORD"),
-                # Option 2: Secret-based authentication
-                "secret": os.environ.get("TG_SECRET"),
-                # Option 3: Token-based authentication
-                "token": os.environ.get("TG_TOKEN"),
-            }
-
             # Initialize the graph
-            self._graph = Graph(graph_schema, connection_config)
+            self._graph = Graph(graph_schema)
             self._max_batch_size = self.global_config["embedding_batch_num"]
         except Exception as e:
             logger.error(f"An error occurred during initialization: {e}")
@@ -319,72 +290,76 @@ class TigerVectorStorage(BaseVectorStorage):
         return results
 ```
 
-This code defines the `TigerVectorStorage` class, which is used for storing and querying vector data (like embeddings) in a TigerGraph database using **TigerGraphX**.
-
 #### Key Features:
 
 1. **Graph Schema**  
-   - The graph schema defines a node type called `"Table"`, which has attributes including an `id` and a vector attribute for storing embeddings. The vector attribute's dimension is based on the `embedding_func`.
+   - Defines a node type `"Table"` with attributes including an `id` and a vector field for storing embeddings.  
+   - The vector attribute's dimension is determined by the `embedding_func`.
 
 2. **Upsert Method**  
-   - The `upsert` method inserts or updates vector data in the TigerGraph database. It batches the data and generates embeddings asynchronously using `embedding_func`, then stores these embeddings in the graph.
+   - Inserts or updates vector data in the TigerGraph database.  
+   - Batches the data and asynchronously generates embeddings using `embedding_func`, then stores them in the graph.
 
 3. **Query Method**  
-   - The `query` method performs a vector search in the TigerGraph database to find the most similar nodes based on a query vector. It uses the `embedding_func` to generate the query vector and then queries the database for the closest nodes.
+   - Performs vector search in the TigerGraph database to find the most similar nodes based on a query vector.  
+   - Uses `embedding_func` to generate the query vector and retrieves the closest nodes.
 
 #### Conclusion:
-`TigerVectorStorage` enables the use of vector embeddings in TigerGraph, allowing for efficient storage and search of vector data.
+`TigerVectorStorage` facilitates efficient storage and retrieval of vector embeddings in TigerGraph, enabling seamless integration of vector search capabilities.
 
 ## Integrating Custom Graph and Vector Storage with LightRAG
 
-After defining the `TigerGraphStorage` and `TigerVectorStorage` classes, we integrate them into LightRAG. By subclassing LightRAG and extending its storage mapping, you can easily replace or augment the default storage backends with your custom solutions.
+Once the `TigerGraphStorage` and `TigerVectorStorage` classes are defined, they can be integrated into LightRAG. By subclassing LightRAG and extending its storage mapping, you can seamlessly replace or enhance the default storage backends with custom implementations.
 
-While modifying the LightRAG source code is another option, this example demonstrates how to achieve the integration without altering the original source code.
+Although modifying the LightRAG source code is an option, this example demonstrates how to achieve integration without altering the original code.
 
-Below is the code for creating a `CustomLightRAG` class that incorporates both `TigerGraphStorage` and `TigerVectorStorage` into its storage mapping.
-
+Below is the implementation of `CustomLightRAG`, which incorporates `TigerGraphStorage` and `TigerVectorStorage` into its storage mapping:
 
 
 ```python
 from lightrag import LightRAG
+from lightrag.lightrag import lazy_external_import
 
 
-# Define a subclass to include your custom graph storage in the storage mapping
 class CustomLightRAG(LightRAG):
-    def _get_storage_class(self):
-        # Extend the default storage mapping with your custom storage
-        base_mapping = super()._get_storage_class()
-        base_mapping["TigerGraphStorage"] = TigerGraphStorage
-        base_mapping["TigerVectorStorage"] = TigerVectorStorage
-        return base_mapping
+    def _get_storage_class(self, storage_name: str) -> dict:
+        """Override storage retrieval to use a custom storage mapping."""
+
+        custom_storages = {
+            "TigerGraphStorage": "__main__",
+            "TigerVectorStorage": "__main__",
+        }
+
+        if storage_name in custom_storages:
+            import_path = custom_storages[storage_name]
+            return lazy_external_import(import_path, storage_name
+
+        # Call the parent class's method to prevent infinite recursion
+        return super()._get_storage_class(storage_name)
 ```
 
 ---
 
 ## Indexing
 ### Data Preparation
-#### Set Up Working Directory
-Create a folder to serve as the working directory. For this demo, we will use `applications/lightrag/data`.
+For this demo, we will use `applications/lightrag/data` as the working directory.
 
-Next, create an `input` folder inside the `data` directory to store the documents you want to index:  
+The input dataset, `input/clapnq_dev_answerable_orig.jsonl.10.txt`, is located in the working directory. It consists of the first ten records from the [original dataset](https://github.com/primeqa/clapnq/blob/main/original_documents/dev/clapnq_dev_answerable_orig.jsonl).
 
-```bash
-mkdir -p applications/lightrag/data/input
-```
-
-#### Add Documents to the Input Folder
-Copy your documents (e.g., `fin.txt`) into the `applications/lightrag/data/input` folder. Ensure that the JSON files in the `applications/lightrag/data` folder are removed before rerunning the Jupyter Notebook.
+Additionally, we have another dataset, `clapnq_dev_answerable.jsonl.10`, for evaluation, stored in `applications/resources`. This dataset contains ten questions from the [annotated dataset](https://github.com/primeqa/clapnq/blob/main/annotated_data/dev/clapnq_dev_answerable.jsonl), each with corresponding context from the original dataset.
 
 ---
 
 ### Indexing
-The following code sets up a working directory and demonstrates how to index a given document using LightRAG.
+The following code sets up the working directory and demonstrates how to index a document using LightRAG:
 
 
 ```python
 import logging
+from lightrag.llm.openai import gpt_4o_mini_complete, openai_embed
+
 import nest_asyncio
-# Use the nest_asyncio package to allow running nested event loops in Jupyter Notebook without conflicts.
+# Allow nested event loops in Jupyter Notebook without conflicts
 nest_asyncio.apply()
 
 
@@ -392,34 +367,20 @@ working_dir = "../../applications/lightrag/data"
 
 custom_rag = CustomLightRAG(
     working_dir=working_dir,
+    embedding_func=openai_embed,
+    llm_model_func=gpt_4o_mini_complete,
     graph_storage="TigerGraphStorage",
-    # Use TigerGraph for storing vectors.
-    # To switch to the default vector database in LightRAG, comment out the line below.
     vector_storage="TigerVectorStorage",
+    kv_storage="JsonKVStorage",
 )
 
-with open(working_dir + "/input/book.txt") as f:
+with open(working_dir + "/input/clapnq_dev_answerable_orig.jsonl.10.txt") as f:
     custom_rag.insert(f.read())
 ```
 
-    2025-01-09 17:01:20,891 - lightrag - INFO - Logger initialized for working directory: ../../applications/lightrag/data
-    2025-01-09 17:01:20,893 - lightrag - INFO - Load KV llm_response_cache with 2 data
-    2025-01-09 17:01:20,896 - lightrag - INFO - Load KV full_docs with 1 data
-    2025-01-09 17:01:20,900 - lightrag - INFO - Load KV text_chunks with 42 data
-    2025-01-09 17:01:21,017 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph LightRAG...
-    2025-01-09 17:01:21,052 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
-    2025-01-09 17:01:21,054 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph Vector_entities...
-    2025-01-09 17:01:21,064 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
-    2025-01-09 17:01:21,066 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph Vector_relationships...
-    2025-01-09 17:01:21,076 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
-    2025-01-09 17:01:21,078 - tigergraphx.core.graph.base_graph - INFO - Creating schema for graph Vector_chunks...
-    2025-01-09 17:01:21,105 - tigergraphx.core.graph.base_graph - INFO - Schema created successfully.
-    2025-01-09 17:01:21,108 - lightrag - WARNING - All docs are already in the storage
+**Note:** The output has been cleared due to its length, as most of it consists of logs.
 
-
-Please note that the output has been cleared here due to its length, as most of the content consists of logs.
-
-Additionally, TigerVector is supported only in TigerGraph version 4.2.0 and later. If you're using a version prior to 4.2.0, you can comment out the line `vector_storage="TigerVectorStorage",` to use the default vector database in LightRAG.
+Additionally, **TigerVector** is supported only in TigerGraph **v4.2.0 and later**.
 
 ## Querying
 The following code demonstrates how to perform a query in LightRAG using the TigerGraph graph storage implementation.
@@ -428,7 +389,7 @@ The following code demonstrates how to perform a query in LightRAG using the Tig
 ```python
 from lightrag import QueryParam
 
-query = "What are the top themes in this story?"
+query = "where is the world's largest man made lake"
 
 result = custom_rag.query(query=query, param=QueryParam(mode="hybrid"))
 
@@ -436,41 +397,215 @@ print("------------------- Query Result:  -------------------")
 print(result)
 ```
 
-    2025-01-09 17:01:24,700 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
-    2025-01-09 17:01:24,709 - lightrag - INFO - kw_prompt result:
-    {
-      "high_level_keywords": ["Themes", "Story analysis"],
-      "low_level_keywords": ["Character development", "Conflict", "Symbolism", "Plot", "Setting"]
-    }
-    2025-01-09 17:01:25,732 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
-    2025-01-09 17:03:32,444 - lightrag - INFO - Local query uses 60 entites, 80 relations, 3 text units
-    2025-01-09 17:03:33,135 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
-    2025-01-09 17:04:46,561 - lightrag - INFO - Global query uses 47 entites, 60 relations, 3 text units
-    2025-01-09 17:05:01,598 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+    2025-02-28 20:21:58,215 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:23:21,681 - lightrag - INFO - Global query uses 70 entites, 60 relations, 3 text units
+    2025-02-28 20:23:21,683 - lightrag - INFO - Local query uses 60 entites, 32 relations, 3 text units
     ------------------- Query Result:  -------------------
-    In Charles Dickens' "A Christmas Carol," several prominent themes intertwine within the narrative, reflecting the transformative journey of the central character, Ebenezer Scrooge. These themes serve as moral lessons that resonate deeply with readers and highlight the societal issues of Dickens' time.
+    ### World's Largest Man-Made Lake
     
-    ### Redemption and Transformation
+    The world's largest man-made lake is **Lake Kariba**, which is located on the Zambezi River, straddling the border between **Zambia** and **Zimbabwe**. The lake was created by the construction of the **Kariba Dam**, which significantly impacted the surrounding environment and local communities when it was completed between 1958 and 1963. 
     
-    The theme of redemption stands out as one of the most significant aspects of Scrooge's character arc. Initially portrayed as a miserly and cold-hearted individual, Scrooge’s encounters with various spirits—most notably the Spirit of Christmas Past, the Spirit of Christmas Present, and the Spirit of Christmas Yet to Come—underscore his potential for change. Through these supernatural visitations, Scrooge comes to realize the consequences of his actions and attitudes toward others, particularly his neglect of the less fortunate. This realization serves as a catalyst for his transformation from a figure of disdain to one of generosity and kindness, ultimately embodying the spirit of Christmas.
+    ### Key Features
     
-    ### The Spirit of Christmas
+    - **Size**: Lake Kariba has a surface area of approximately **5,580 square kilometers** and is known for its rich biodiversity, supporting various fish species and wildlife.
+    - **Biodiversity**: The lake is home to numerous species, including **kapenta**, a fish introduced to enhance its ecological dynamics and commercial value.
+    - **Economical Importance**: The lake plays a critical role in supporting the **tourism industry** for both Zambia and Zimbabwe, attracting visitors with its natural beauty and wildlife.
     
-    Another essential theme revolves around the essence of Christmas itself, characterized by joy, goodwill, and communal spirit. Christmas is portrayed as a time of reflection, compassion, and generosity, contrasting sharply with Scrooge’s initial cynicism. Dickens emphasizes that the holiday season is an opportunity for individuals to reconnect with their humanity, fostering relationships and nurturing feelings of empathy. Instances within the story, such as the Cratchit family's humble Christmas dinner, reveal how love and celebration can thrive even amidst hardship, highlighting the importance of community and kind-heartedness.
-    
-    ### Compassion and Social Responsibility
-    
-    Compassion emerges as a vital theme, urging recognition of the struggles faced by the less fortunate. Scrooge’s initial apathy towards the needy epitomizes societal indifference, reflected in his dismissive responses to the pleas for charitable contributions. In stark contrast, the Cratchit family, particularly through the character of Tiny Tim, embodies the spirit of resilience and hope despite their economic hardships. Dickens employs Tiny Tim's situation to showcase the impact of poverty, advocating for social responsibility and awareness of those less fortunate. Scrooge's eventual embracing of compassion signifies a shift from self-interest to a broader understanding that one’s moral obligations extend to the community at large.
-    
-    ### The Consequences of Isolation
-    
-    The narrative also explores the repercussions of isolation and disconnection. Scrooge, who initially chooses solitude over companionship, experiences profound loneliness, which blinds him to the joys of life and the importance of human connections. His relationships with characters such as his nephew Fred, who embodies the spirit of family and celebration, illustrate the positive impact of social ties. The evolution of Scrooge's character highlights the essential human need for connection, revealing that true wealth lies not in material possessions but in shared experiences and relationships.
-    
-    ### Time and Reflection
-    
-    Lastly, the theme of time plays a critical role in Scrooge's transformation. His encounters with the spirits allow him to reflect on his past choices, current realities, and potential futures. The narrative demonstrates how reflecting on one's life can prompt significant personal growth and ultimately shape one's destiny. This exploration of time serves as a reminder that it is never too late to change one's path, advocating for mindfulness in one's actions and their implications.
-    
-    ### Conclusion
-    
-    In summary, "A Christmas Carol" is rich with themes of redemption, the spirit of Christmas, compassion, the effects of isolation, and the significance of time. Together, these themes contribute to a timeless narrative that not only entertains but also imparts profound moral lessons about the nature of humanity and the transformative power of kindness and generosity. Through Scrooge’s journey, Dickens encourages readers to embrace the festive spirit and recognize their roles as members of a compassionate community.
+    Lake Kariba not only serves as a significant geographical landmark but also as a crucial resource for the economies of the surrounding nations.
 
+
+## Evaluation
+To evaluate the performance of LightRAG, we use TigerGraphX's `RagasEvaluator` class, which leverages Ragas for evaluation.
+
+In the code below, we define the `prepare_evaluation_data` function to construct the evaluation dataset. This function processes `ragas_data` by extracting questions and ground-truth answers, then queries `custom_rag` to retrieve both context passages and generated responses. The extracted data is then structured into evaluation samples, where each sample includes the question, retrieved contexts, generated answer, and ground-truth answers from the `clapnq_dev_answerable.jsonl.10` dataset stored in `applications/resources`.
+
+
+```python
+from typing import Literal, cast
+
+from tigergraphx.graphrag import RagasEvaluator
+
+def query_light_rag(
+    custom_rag,
+    query,
+    mode: Literal["naive", "hybrid"] = "hybrid",
+    only_context=False,
+):
+    """Query LightRAG to retrieve context or generated responses."""
+    param = QueryParam(mode=mode, only_need_context=only_context)
+    result = custom_rag.query(query=query, param=param)
+    return result
+
+
+def prepare_evaluation_data(
+    custom_rag,
+    ragas_data,
+    mode: Literal["naive", "hybrid"] = "hybrid",
+):
+    """Prepare evaluation dataset using queries from ragas_data."""
+    eval_samples = []
+
+    for row in ragas_data:
+        question = row["input"]  # Adjust to match dataset structure
+        ground_truths = [
+            ans["answer"] for ans in row["output"]
+        ]  # Extract ground truth answers
+
+        # Extract passages from the dataset (context retrieval)
+        retrieved_contexts = query_light_rag(
+            custom_rag, question, mode, only_context=True
+        )
+
+        # Extract generated response from LightRAG
+        response = query_light_rag(custom_rag, question, mode, only_context=False)
+
+        eval_samples.append(
+            {
+                "question": question,
+                "contexts": retrieved_contexts
+                if isinstance(retrieved_contexts, list)
+                else [retrieved_contexts],
+                "answer": response,
+                "ground_truth": ground_truths,
+            }
+        )
+    return eval_samples
+```
+
+Next, we load the evaluation dataset from `clapnq_dev_answerable.jsonl.10`, which contains queries and ground-truth answers. We then use the `prepare_evaluation_data` function to generate evaluation samples by retrieving context passages and responses from `custom_rag`.
+
+Once the evaluation dataset is prepared, we initialize the `RagasEvaluator` with the `gpt-4o` model and run the evaluation to assess LightRAG's performance.
+
+
+```python
+from datasets import Dataset, load_dataset
+# Load datasets
+dataset = load_dataset(
+    "json",
+    data_files="../../applications/resources/clapnq_dev_answerable.jsonl.10",
+    split="train",
+)
+dataset = cast(Dataset, dataset)
+
+# Prepare evaluation dataset
+eval_samples = prepare_evaluation_data(custom_rag, dataset, "hybrid")
+
+# Evaluate LightRAG
+evaluator = RagasEvaluator(model="gpt-4o")
+
+# Run evaluation
+results = evaluator.evaluate_dataset(eval_samples)
+```
+
+    2025-02-28 20:31:01,776 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:32:24,563 - lightrag - INFO - Global query uses 53 entites, 60 relations, 3 text units
+    2025-02-28 20:32:24,565 - lightrag - INFO - Local query uses 60 entites, 24 relations, 3 text units
+    2025-02-28 20:32:24,647 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:32:34,144 - lightrag - INFO - Global query uses 53 entites, 60 relations, 3 text units
+    2025-02-28 20:32:34,146 - lightrag - INFO - Local query uses 60 entites, 24 relations, 3 text units
+    2025-02-28 20:32:41,812 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:33:44,706 - lightrag - INFO - Global query uses 76 entites, 60 relations, 3 text units
+    2025-02-28 20:33:47,394 - lightrag - INFO - Local query uses 60 entites, 40 relations, 3 text units
+    2025-02-28 20:33:47,425 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:33:55,750 - lightrag - INFO - Global query uses 76 entites, 60 relations, 3 text units
+    2025-02-28 20:33:57,289 - lightrag - INFO - Local query uses 60 entites, 40 relations, 3 text units
+    2025-02-28 20:34:03,817 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:35:07,504 - lightrag - INFO - Global query uses 59 entites, 60 relations, 3 text units
+    2025-02-28 20:35:10,693 - lightrag - INFO - Local query uses 60 entites, 39 relations, 3 text units
+    2025-02-28 20:35:10,724 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:35:19,992 - lightrag - INFO - Global query uses 59 entites, 60 relations, 3 text units
+    2025-02-28 20:35:21,489 - lightrag - INFO - Local query uses 60 entites, 39 relations, 3 text units
+    2025-02-28 20:35:26,577 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:35:47,741 - lightrag - WARNING - Some nodes are missing, maybe the storage is damaged
+    2025-02-28 20:36:22,940 - lightrag - INFO - Global query uses 71 entites, 60 relations, 3 text units
+    2025-02-28 20:36:22,943 - lightrag - INFO - Local query uses 58 entites, 37 relations, 3 text units
+    2025-02-28 20:36:22,982 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:36:28,583 - lightrag - WARNING - Some nodes are missing, maybe the storage is damaged
+    2025-02-28 20:36:30,848 - lightrag - INFO - Global query uses 71 entites, 60 relations, 3 text units
+    2025-02-28 20:36:32,222 - lightrag - INFO - Local query uses 58 entites, 37 relations, 3 text units
+    2025-02-28 20:36:36,151 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:37:35,089 - lightrag - INFO - Global query uses 59 entites, 60 relations, 3 text units
+    2025-02-28 20:38:01,468 - lightrag - INFO - Local query uses 60 entites, 125 relations, 3 text units
+    2025-02-28 20:38:01,517 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:38:10,021 - lightrag - INFO - Global query uses 59 entites, 60 relations, 3 text units
+    2025-02-28 20:38:16,022 - lightrag - INFO - Local query uses 60 entites, 125 relations, 3 text units
+    2025-02-28 20:38:21,065 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:39:28,932 - lightrag - INFO - Global query uses 61 entites, 60 relations, 3 text units
+    2025-02-28 20:39:28,935 - lightrag - INFO - Local query uses 60 entites, 95 relations, 3 text units
+    2025-02-28 20:39:28,977 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:39:40,160 - lightrag - INFO - Global query uses 61 entites, 60 relations, 3 text units
+    2025-02-28 20:39:40,162 - lightrag - INFO - Local query uses 60 entites, 95 relations, 3 text units
+    2025-02-28 20:39:51,972 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:39:52,129 - openai._base_client - INFO - Retrying request to /embeddings in 0.436530 seconds
+    2025-02-28 20:40:52,287 - lightrag - INFO - Global query uses 68 entites, 60 relations, 3 text units
+    2025-02-28 20:40:52,290 - lightrag - INFO - Local query uses 60 entites, 36 relations, 3 text units
+    2025-02-28 20:40:52,339 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:41:01,041 - lightrag - INFO - Global query uses 68 entites, 60 relations, 3 text units
+    2025-02-28 20:41:02,383 - lightrag - INFO - Local query uses 60 entites, 36 relations, 3 text units
+    2025-02-28 20:41:10,024 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:41:31,041 - lightrag - WARNING - Some nodes are missing, maybe the storage is damaged
+    2025-02-28 20:42:11,316 - lightrag - INFO - Global query uses 81 entites, 60 relations, 3 text units
+    2025-02-28 20:42:11,319 - lightrag - INFO - Local query uses 57 entites, 43 relations, 3 text units
+    2025-02-28 20:42:11,351 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:42:17,018 - lightrag - WARNING - Some nodes are missing, maybe the storage is damaged
+    2025-02-28 20:42:19,114 - lightrag - INFO - Global query uses 81 entites, 60 relations, 3 text units
+    2025-02-28 20:42:20,809 - lightrag - INFO - Local query uses 57 entites, 43 relations, 3 text units
+    2025-02-28 20:42:30,206 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:42:30,375 - openai._base_client - INFO - Retrying request to /embeddings in 0.428693 seconds
+    2025-02-28 20:43:28,485 - lightrag - INFO - Global query uses 56 entites, 60 relations, 3 text units
+    2025-02-28 20:43:43,044 - lightrag - INFO - Local query uses 60 entites, 109 relations, 3 text units
+    2025-02-28 20:43:43,080 - lightrag - INFO - Using hybrid mode for query processing
+    2025-02-28 20:43:47,577 - lightrag - INFO - Global query uses 56 entites, 60 relations, 3 text units
+    2025-02-28 20:43:48,136 - openai._base_client - INFO - Retrying request to /embeddings in 0.396963 seconds
+    2025-02-28 20:43:58,277 - lightrag - INFO - Local query uses 60 entites, 109 relations, 3 text units
+
+
+
+    Evaluating:   0%|          | 0/40 [00:00<?, ?it/s]
+
+
+    2025-02-28 20:44:08,812 - openai._base_client - INFO - Retrying request to /chat/completions in 0.480058 seconds
+    2025-02-28 20:44:08,814 - openai._base_client - INFO - Retrying request to /chat/completions in 0.397422 seconds
+    2025-02-28 20:47:02,781 - ragas.executor - ERROR - Exception raised in Job[3]: TimeoutError()
+    2025-02-28 20:47:02,788 - ragas.executor - ERROR - Exception raised in Job[2]: TimeoutError()
+    2025-02-28 20:47:03,337 - tigergraphx.graphrag.evaluation.ragas_evaluator - INFO - Evaluation results: {'answer_relevancy': 0.8976, 'faithfulness': 0.6659, 'llm_context_precision_with_reference': 0.5556, 'context_recall': 0.4444}
+
+
+The final line displays the evaluation results:
+
+`Evaluation results: {'answer_relevancy': 0.8976, 'faithfulness': 0.6659, 'llm_context_precision_with_reference': 0.5556, 'context_recall': 0.4444}`
+
+---
+## Reset
+
+After completing the evaluation, it is recommended to clean up the environment by removing the previously created graphs. The following code iterates through a list of graph names and attempts to drop each graph from the TigerGraph database. If a graph does not exist or an error occurs during deletion, the error message is printed.
+
+
+```python
+from tigergraphx import Graph
+
+graphs_to_drop = [
+    "LightRAG",
+    "Vector_chunks",
+    "Vector_entities",
+    "Vector_relationships",
+]
+for graph_name in graphs_to_drop:
+    try:
+        G = Graph.from_db(graph_name)
+        G.drop_graph()
+    except Exception as e:
+        print(f"Error message: {str(e)}")
+```
+
+    2025-02-28 20:50:07,250 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: LightRAG...
+    2025-02-28 20:50:10,802 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
+    2025-02-28 20:50:10,840 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: Vector_chunks...
+    2025-02-28 20:50:14,019 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
+    2025-02-28 20:50:14,050 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: Vector_entities...
+    2025-02-28 20:50:17,205 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
+    2025-02-28 20:50:17,268 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: Vector_relationships...
+    2025-02-28 20:50:20,638 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
+
+
+---
