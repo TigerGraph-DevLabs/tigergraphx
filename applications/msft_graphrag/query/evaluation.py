@@ -1,3 +1,10 @@
+# Copyright 2025 TigerGraph Inc.
+# Licensed under the Apache License, Version 2.0.
+# See the LICENSE file or https://www.apache.org/licenses/LICENSE-2.0
+#
+# Permission is granted to use, copy, modify, and distribute this software
+# under the License. The software is provided "AS IS", without warranty.
+
 from typing import Literal, cast
 import argparse
 from datasets import Dataset, load_dataset
@@ -75,7 +82,7 @@ def main(mode: Literal["local", "global"], to_load_data: bool):
     # Load datasets
     dataset = load_dataset(
         "json",
-        data_files="applications/resources/clapnq_dev_answerable.jsonl.50",
+        data_files="applications/resources/clapnq_dev_answerable.jsonl.10",
         split="train",
     )
     dataset = cast(Dataset, dataset)

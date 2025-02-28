@@ -1,3 +1,10 @@
+# Copyright 2025 TigerGraph Inc.
+# Licensed under the Apache License, Version 2.0.
+# See the LICENSE file or https://www.apache.org/licenses/LICENSE-2.0
+#
+# Permission is granted to use, copy, modify, and distribute this software
+# under the License. The software is provided "AS IS", without warranty.
+
 import logging
 from typing import Dict, Literal, Optional
 from pathlib import Path
@@ -31,7 +38,6 @@ class SchemaManager(BaseManager):
         if not is_graph_existing or drop_existing_graph:
             # Create schema
             gsql_graph_schema = self._create_gsql_graph_schema()
-            logger.debug(f"Generated GSQL graph schema: {gsql_graph_schema}")
             logger.info(f"Creating schema for graph: {graph_name}...")
             result = self._connection.gsql(gsql_graph_schema)
             logger.debug(f"GSQL response: {result}")
@@ -58,9 +64,6 @@ class SchemaManager(BaseManager):
             # Add vector attributes
             gsql_add_vector_attr = self._create_gsql_add_vector_attr()
             if gsql_add_vector_attr:
-                logger.debug(
-                    f"Generated GSQL for vector attributes: {gsql_add_vector_attr}"
-                )
                 logger.info(f"Adding vector attribute(s) for graph: {graph_name}...")
                 result = self._connection.gsql(gsql_add_vector_attr)
                 logger.debug(f"GSQL response: {result}")
@@ -94,7 +97,7 @@ class SchemaManager(BaseManager):
 
             return True
 
-        logger.info(f"Graph '{graph_name}' already exists. Skipping graph creation.")
+        logger.debug(f"Graph '{graph_name}' already exists. Skipping graph creation.")
         return False
 
     def drop_graph(self) -> None:
@@ -113,7 +116,7 @@ class SchemaManager(BaseManager):
         """Check if the specified graph name exists in the gsql_script."""
         graph_name = self._graph_schema.graph_name
         result = self._connection.gsql(f"USE Graph {graph_name}")
-        logger.info(
+        logger.debug(
             "Graph existence check for %s: %s",
             graph_name,
             "exists" if "Using graph" in result else "does not exist",
@@ -314,7 +317,6 @@ CREATE OR REPLACE QUERY api_search_{node_type}_{vector_attribute_name} (
 CREATE OR REPLACE QUERY api_fetch(
   SET<VERTEX> input
 ) SYNTAX v3 {
-  gds.vector.distance([0], [0], "L2"); // TODO: Remove this line
   Nodes = {input};
   PRINT Nodes WITH VECTOR;
 }
@@ -360,18 +362,21 @@ INSTALL QUERY *
             graph_schema=initial_graph_schema,
             tigergraph_connection_config=tigergraph_connection_config,
         )
+
         # Retrieve the schema from TigerGraph DB
         raw_schema = context.connection.getSchema()
         logger.debug(f"The raw schema: {raw_schema}")
 
         # Construct nodes dictionary
         nodes = {}
-        for vertex in raw_schema["VertexTypes"]:
+        for vertex in raw_schema.get("VertexTypes", []):
             primary_id = vertex["PrimaryId"]
             if not primary_id["PrimaryIdAsAttribute"]:
                 raise ValueError(
                     f"PrimaryIdAsAttribute must be set to True for node type {vertex['Name']}."
                 )
+
+            # Extract regular attributes
             attributes = {
                 primary_id["AttributeName"]: {
                     "data_type": primary_id["AttributeType"]["Name"],
@@ -384,27 +389,43 @@ INSTALL QUERY *
                         "data_type": attr["AttributeType"]["Name"],
                         "default_value": attr.get("DefaultValue"),
                     }
-                    for attr in vertex["Attributes"]
+                    for attr in vertex.get("Attributes", [])
                 }
             )
+
+            # Extract vector attributes
+            vector_attributes = {}
+            vector_attributes.update(
+                {
+                    attr["Name"]: {
+                        "dimension": attr["Dimension"],
+                        "index_type": attr["IndexType"],
+                        "data_type": attr["DataType"],
+                        "metric": attr["Metric"],
+                    }
+                    for attr in vertex.get("EmbeddingAttributes", [])
+                }
+            )
+
             nodes[vertex["Name"]] = {
                 "primary_key": primary_id["AttributeName"],
                 "attributes": attributes,
+                "vector_attributes": vector_attributes,
             }
 
         # Construct edges dictionary
         edges = {}
-        for edge in raw_schema["EdgeTypes"]:
+        for edge in raw_schema.get("EdgeTypes", []):
             attributes = {
                 attr["AttributeName"]: {
                     "data_type": attr["AttributeType"]["Name"],
                     "default_value": attr.get("DefaultValue"),
                 }
-                for attr in edge["Attributes"]
+                for attr in edge.get("Attributes", [])
             }
             discriminator = {
                 attr["AttributeName"]
-                for attr in edge["Attributes"]
+                for attr in edge.get("Attributes", [])
                 if attr.get("IsDiscriminator")
             }
             edges[edge["Name"]] = {

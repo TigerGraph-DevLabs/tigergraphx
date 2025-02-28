@@ -1,6 +1,6 @@
 import pytest
 
-from tigergraphx import (
+from tigergraphx.config import (
     Settings,
     TigerVectorConfig,
     OpenAIConfig,

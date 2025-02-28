@@ -1,3 +1,10 @@
+# Copyright 2025 TigerGraph Inc.
+# Licensed under the Apache License, Version 2.0.
+# See the LICENSE file or https://www.apache.org/licenses/LICENSE-2.0
+#
+# Permission is granted to use, copy, modify, and distribute this software
+# under the License. The software is provided "AS IS", without warranty.
+
 import logging
 from dataclasses import dataclass
 from typing import Literal
@@ -11,7 +18,7 @@ from .context_builder import (
 )
 
 from tigergraphx import Graph
-from tigergraphx import create_openai_components
+from tigergraphx.factories import create_openai_components
 
 logger = logging.getLogger(__name__)
 

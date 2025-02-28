@@ -16,6 +16,9 @@ class TestQueryManager:
 
         self.mock_graph_schema = MagicMock()
         self.mock_graph_schema.graph_name = "MyGraph"
+        mock_node_schema = MagicMock()
+        mock_node_schema.primary_key = "id"
+        self.mock_graph_schema.nodes = {"Person": mock_node_schema}
 
         mock_context = MagicMock()
         # we assume that our QueryManager uses context.connection internally
@@ -51,7 +54,7 @@ class TestQueryManager:
 
     def test_get_nodes_from_spec_with_attributes_success(self):
         spec = NodeSpec(
-            node_type="test_type",
+            node_type="Person",
             all_node_types=False,
             node_alias="s",
             filter_expression=None,
@@ -77,7 +80,7 @@ class TestQueryManager:
 
     def test_get_nodes_from_spec_without_attributes_success(self):
         spec = NodeSpec(
-            node_type="test_type",
+            node_type="Person",
             all_node_types=False,
             node_alias="s",
             filter_expression=None,
@@ -101,7 +104,7 @@ class TestQueryManager:
 
     def test_get_nodes_from_spec_failure(self):
         spec = NodeSpec(
-            node_type="test_type",
+            node_type="Person",
             all_node_types=False,
             node_alias="s",
             filter_expression=None,
@@ -132,11 +135,11 @@ class TestQueryManager:
         # Create a NeighborSpec including the new alias parameters.
         spec = NeighborSpec(
             start_nodes="node1",
-            start_node_type="type1",
+            start_node_type="Person",
             start_node_alias="s",
             edge_type_set={"relationship", "reverse_relationship"},
             edge_alias="e",
-            target_node_type_set={"type2"},
+            target_node_type_set={"Person"},
             target_node_alias="t",
             filter_expression=None,
             return_attributes=["id", "name"],
@@ -171,11 +174,11 @@ class TestQueryManager:
         # Create a NeighborSpec with no return attributes.
         spec = NeighborSpec(
             start_nodes="node1",
-            start_node_type="type1",
+            start_node_type="Person",
             start_node_alias="s",
             edge_type_set={"relationship", "reverse_relationship"},
             edge_alias="e",
-            target_node_type_set={"type2"},
+            target_node_type_set={"Person"},
             target_node_alias="t",
             filter_expression=None,
             return_attributes=None,
@@ -202,11 +205,11 @@ class TestQueryManager:
         # Create a NeighborSpec with alias parameters.
         spec = NeighborSpec(
             start_nodes="node1",
-            start_node_type="type1",
+            start_node_type="Person",
             start_node_alias="s",
             edge_type_set={"relationship"},
             edge_alias="e",
-            target_node_type_set={"type2"},
+            target_node_type_set={"Person"},
             target_node_alias="t",
             filter_expression=None,
             return_attributes=None,
@@ -217,6 +220,87 @@ class TestQueryManager:
         # The method should catch the exception and return None (or handle it gracefully).
         df = self.query_manager.get_neighbors_from_spec(spec)
         assert df.empty, "Expected df to be an empty DataFrame"
+
+    def test_bfs_single_level(self):
+        self.query_manager.get_neighbors = MagicMock(
+            return_value=pd.DataFrame(
+                {"id": ["Bob", "Charlie"], "age": [30, 25], "gender": ["M", "M"]}
+            )
+        )
+
+        df = self.query_manager.bfs(start_nodes="Alice", node_type="Person", max_hops=1)
+
+        assert not df.empty
+        assert set(df["id"]) == {"Bob", "Charlie"}
+
+    def test_bfs_multi_level(self):
+        bfs_results = [
+            pd.DataFrame(
+                {"id": ["Bob", "Charlie"], "age": [30, 25], "gender": ["M", "M"]}
+            ),
+            pd.DataFrame({"id": ["David"], "age": [35], "gender": ["M"]}),
+        ]
+
+        self.query_manager.get_neighbors = MagicMock(side_effect=bfs_results)
+
+        df = self.query_manager.bfs(start_nodes="Alice", node_type="Person", max_hops=2)
+
+        assert not df.empty
+        assert set(df["id"]) == {"David"}
+
+    def test_bfs_respects_max_hops(self):
+        bfs_results = [
+            pd.DataFrame(
+                {"id": ["Bob", "Charlie"], "age": [30, 25], "gender": ["M", "M"]}
+            ),
+            pd.DataFrame({"id": ["David"], "age": [35], "gender": ["M"]}),
+            pd.DataFrame({"id": ["Eve"], "age": [28], "gender": ["F"]}),
+        ]
+
+        self.query_manager.get_neighbors = MagicMock(side_effect=bfs_results)
+
+        df = self.query_manager.bfs(start_nodes="Alice", node_type="Person", max_hops=2)
+
+        assert not df.empty
+        assert set(df["id"]) == {"David"}
+
+    def test_bfs_no_neighbors(self):
+        self.query_manager.get_neighbors = MagicMock(return_value=pd.DataFrame())
+
+        df = self.query_manager.bfs(start_nodes="Alice", node_type="Person", max_hops=3)
+
+        assert df.empty
+
+    def test_bfs_multiple_start_nodes(self):
+        bfs_results = [
+            pd.DataFrame(
+                {"id": ["Bob", "Charlie"], "age": [30, 25], "gender": ["M", "M"]}
+            ),
+            pd.DataFrame({"id": ["David"], "age": [35], "gender": ["M"]}),
+            pd.DataFrame({"id": ["Eve"], "age": [28], "gender": ["F"]}),
+        ]
+        self.query_manager.get_neighbors = MagicMock(side_effect=bfs_results)
+
+        df = self.query_manager.bfs(
+            start_nodes=["Alice", "Ed"], node_type="Person", max_hops=3
+        )
+
+        assert not df.empty
+        assert set(df["id"]) == {"Eve"}
+
+    def test_bfs_with_limit(self):
+        self.query_manager.get_neighbors = MagicMock(
+            return_value=pd.DataFrame(
+                {"id": ["Bob", "Charlie"], "age": [30, 25], "gender": ["M", "M"]}
+            )
+        )
+
+        df = self.query_manager.bfs(
+            start_nodes="Alice", node_type="Person", limit=2, max_hops=1
+        )
+
+        assert not df.empty
+        assert len(df) <= 2
 
     # --- GSQL Query Creation Tests for get_nodes ---
     def create_gsql_get_nodes(
@@ -242,10 +326,10 @@ class TestQueryManager:
         return self.query_manager._create_gsql_get_nodes(spec)
 
     def test_create_gsql_get_nodes_simple(self):
-        actual_gsql_script = self.create_gsql_get_nodes(node_type="Community")
+        actual_gsql_script = self.create_gsql_get_nodes(node_type="Person")
         expected_gsql_script = (
             "INTERPRET QUERY() FOR GRAPH MyGraph {\n"
-            "  Nodes = {Community.*};\n"
+            "  Nodes = {Person.*};\n"
             "  PRINT Nodes;\n"
             "}"
         )
@@ -253,7 +337,7 @@ class TestQueryManager:
 
     def test_create_gsql_get_nodes_with_all_types(self):
         actual_gsql_script = self.create_gsql_get_nodes(
-            node_type="Community", all_types=True
+            node_type="Person", all_types=True
         )
         expected_gsql_script = (
             "INTERPRET QUERY() FOR GRAPH MyGraph {\n  Nodes = {ANY};\n  PRINT Nodes;\n}"
@@ -261,10 +345,10 @@ class TestQueryManager:
         assert actual_gsql_script == expected_gsql_script
 
     def test_create_gsql_get_nodes_with_limit(self):
-        actual_gsql_script = self.create_gsql_get_nodes(node_type="Community", limit=10)
+        actual_gsql_script = self.create_gsql_get_nodes(node_type="Person", limit=10)
         expected_gsql_script = (
             "INTERPRET QUERY() FOR GRAPH MyGraph {\n"
-            "  Nodes = {Community.*};\n"
+            "  Nodes = {Person.*};\n"
             "  Nodes =\n"
             "    SELECT s\n"
             "    FROM Nodes:s\n"
@@ -277,12 +361,12 @@ class TestQueryManager:
 
     def test_create_gsql_get_nodes_with_return_attributes(self):
         actual_gsql_script = self.create_gsql_get_nodes(
-            node_type="Community",
+            node_type="Person",
             return_attributes=["id", "rank"],
         )
         expected_gsql_script = (
             "INTERPRET QUERY() FOR GRAPH MyGraph {\n"
-            "  Nodes = {Community.*};\n"
+            "  Nodes = {Person.*};\n"
             "  PRINT Nodes[\n"
             "    Nodes.id AS id,\n"
             "    Nodes.rank AS rank\n"
@@ -293,12 +377,12 @@ class TestQueryManager:
 
     def test_create_gsql_get_nodes_with_filter_expression(self):
         actual_gsql_script = self.create_gsql_get_nodes(
-            node_type="Community",
+            node_type="Person",
             filter_expression="s.rank > 0",
         )
         expected_gsql_script = (
             "INTERPRET QUERY() FOR GRAPH MyGraph {\n"
-            "  Nodes = {Community.*};\n"
+            "  Nodes = {Person.*};\n"
             "  Nodes =\n"
             "    SELECT s\n"
             "    FROM Nodes:s\n"
@@ -311,7 +395,7 @@ class TestQueryManager:
 
     def test_create_gsql_get_nodes_with_all_options(self):
         actual_gsql_script = self.create_gsql_get_nodes(
-            node_type="Community",
+            node_type="Person",
             node_alias="n",
             filter_expression="n.rank > 0",
             return_attributes=["id", "rank"],
@@ -319,7 +403,7 @@ class TestQueryManager:
         )
         expected_gsql_script = (
             "INTERPRET QUERY() FOR GRAPH MyGraph {\n"
-            "  Nodes = {Community.*};\n"
+            "  Nodes = {Person.*};\n"
             "  Nodes =\n"
             "    SELECT n\n"
             "    FROM Nodes:n\n"
@@ -370,11 +454,11 @@ class TestQueryManager:
         # Get neighbors with minimal parameters
         actual_gsql_script = self.create_gsql_get_neighbors(
             start_nodes=["CYTOSORB"],
-            start_node_type="Entity",
+            start_node_type="Person",
         )
         expected_gsql_script = (
             "INTERPRET QUERY(\n"
-            "  SET<VERTEX<Entity>> start_nodes\n"
+            "  SET<VERTEX<Person>> start_nodes\n"
             ") FOR GRAPH MyGraph {\n"
             "  Nodes = {start_nodes};\n"
             "  Neighbors =\n"
@@ -389,14 +473,14 @@ class TestQueryManager:
     def test_create_gsql_get_neighbors_with_edge_and_target_types(self):
         actual_gsql_script = self.create_gsql_get_neighbors(
             start_nodes=["CYTOSORB"],
-            start_node_type="Entity",
+            start_node_type="Person",
             edge_type_set={"relationship"},
             target_node_type_set={"Entity"},
             limit=10,
         )
         expected_gsql_script = (
             "INTERPRET QUERY(\n"
-            "  SET<VERTEX<Entity>> start_nodes\n"
+            "  SET<VERTEX<Person>> start_nodes\n"
             ") FOR GRAPH MyGraph {\n"
             "  Nodes = {start_nodes};\n"
             "  Neighbors =\n"
@@ -411,21 +495,21 @@ class TestQueryManager:
 
     def test_create_gsql_get_neighbors_with_single_return_attribute(self):
         actual_gsql_script = self.create_gsql_get_neighbors(
-            start_nodes="CYTOSORB",
-            start_node_type="Entity",
+            start_nodes="Sam",
+            start_node_type="Person",
             edge_type_set={"relationship"},
-            target_node_type_set={"Entity"},
+            target_node_type_set={"Person"},
             return_attributes="id",
             limit=10,
         )
         expected_gsql_script = (
             "INTERPRET QUERY(\n"
-            "  SET<VERTEX<Entity>> start_nodes\n"
+            "  SET<VERTEX<Person>> start_nodes\n"
             ") FOR GRAPH MyGraph {\n"
             "  Nodes = {start_nodes};\n"
             "  Neighbors =\n"
             "    SELECT t\n"
-            "    FROM Nodes:s -(relationship:e)- Entity:t\n"
+            "    FROM Nodes:s -(relationship:e)- Person:t\n"
             "    LIMIT 10\n"
             "  ;\n"
             "  PRINT Neighbors[\n"
@@ -438,20 +522,20 @@ class TestQueryManager:
     def test_create_gsql_get_neighbors_with_multiple_return_attributes(self):
         actual_gsql_script = self.create_gsql_get_neighbors(
             start_nodes="CYTOSORB",
-            start_node_type="Entity",
+            start_node_type="Person",
             edge_type_set={"relationship"},
-            target_node_type_set={"Entity"},
+            target_node_type_set={"Person"},
             return_attributes=["id", "entity_type"],
             limit=10,
         )
         expected_gsql_script = (
             "INTERPRET QUERY(\n"
-            "  SET<VERTEX<Entity>> start_nodes\n"
+            "  SET<VERTEX<Person>> start_nodes\n"
             ") FOR GRAPH MyGraph {\n"
             "  Nodes = {start_nodes};\n"
             "  Neighbors =\n"
             "    SELECT t\n"
-            "    FROM Nodes:s -(relationship:e)- Entity:t\n"
+            "    FROM Nodes:s -(relationship:e)- Person:t\n"
             "    LIMIT 10\n"
             "  ;\n"
             "  PRINT Neighbors[\n"
@@ -465,21 +549,21 @@ class TestQueryManager:
     def test_create_gsql_get_neighbors_with_filter_expression(self):
         actual_gsql_script = self.create_gsql_get_neighbors(
             start_nodes=["CYTOSORB", "ITALY"],
-            start_node_type="Entity",
+            start_node_type="Person",
             edge_type_set={"relationship"},
-            target_node_type_set={"Entity"},
+            target_node_type_set={"Person"},
             filter_expression="s.id != t.id",
             return_attributes=["id", "entity_type"],
             limit=10,
         )
         expected_gsql_script = (
             "INTERPRET QUERY(\n"
-            "  SET<VERTEX<Entity>> start_nodes\n"
+            "  SET<VERTEX<Person>> start_nodes\n"
             ") FOR GRAPH MyGraph {\n"
             "  Nodes = {start_nodes};\n"
             "  Neighbors =\n"
             "    SELECT t\n"
-            "    FROM Nodes:s -(relationship:e)- Entity:t\n"
+            "    FROM Nodes:s -(relationship:e)- Person:t\n"
             "    WHERE s.id != t.id\n"
             "    LIMIT 10\n"
             "  ;\n"
@@ -494,11 +578,11 @@ class TestQueryManager:
     def test_create_gsql_get_neighbors_with_alias(self):
         actual_gsql_script = self.create_gsql_get_neighbors(
             start_nodes=["CYTOSORB", "ITALY"],
-            start_node_type="Entity",
+            start_node_type="Person",
             start_node_alias="s1",
             edge_type_set={"relationship"},
             edge_alias="e1",
-            target_node_type_set={"Entity"},
+            target_node_type_set={"Person"},
             target_node_alias="s2",
             filter_expression="s1.id != s2.id",
             return_attributes=["id", "entity_type"],
@@ -506,12 +590,12 @@ class TestQueryManager:
         )
         expected_gsql_script = (
             "INTERPRET QUERY(\n"
-            "  SET<VERTEX<Entity>> start_nodes\n"
+            "  SET<VERTEX<Person>> start_nodes\n"
             ") FOR GRAPH MyGraph {\n"
             "  Nodes = {start_nodes};\n"
             "  Neighbors =\n"
             "    SELECT s2\n"
-            "    FROM Nodes:s1 -(relationship:e1)- Entity:s2\n"
+            "    FROM Nodes:s1 -(relationship:e1)- Person:s2\n"
             "    WHERE s1.id != s2.id\n"
             "    LIMIT 10\n"
             "  ;\n"
@@ -525,17 +609,17 @@ class TestQueryManager:
 
     def test_create_gsql_get_neighbors_with_multiple_edge_types(self):
         actual_gsql_script = self.create_gsql_get_neighbors(
-            start_nodes=["CYTOSORB"],
-            start_node_type="Entity",
+            start_nodes=["Sam"],
+            start_node_type="Person",
             edge_type_set={"relationship", "reverse_relationship"},
-            target_node_type_set={"Entity"},
+            target_node_type_set={"Person"},
             limit=10,
         )
         expected_gsql_script_1 = (
-            "FROM Nodes:s -((relationship|reverse_relationship):e)- Entity:t\n"
+            "FROM Nodes:s -((relationship|reverse_relationship):e)- Person:t\n"
         )
         expected_gsql_script_2 = (
-            "FROM Nodes:s -((reverse_relationship|relationship):e)- Entity:t\n"
+            "FROM Nodes:s -((reverse_relationship|relationship):e)- Person:t\n"
         )
         assert (
             expected_gsql_script_1 in actual_gsql_script

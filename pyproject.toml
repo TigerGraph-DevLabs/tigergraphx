@@ -5,8 +5,8 @@ description = "TigerGraphX is a high-level Python library offering a unified, Py
 authors = ["Xuanlei Lin <xuanlei.lin@tigergraph.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://github.com/xuanleilin/TigerGraphX"
-repository = "https://github.com/xuanleilin/TigerGraphX"
+homepage = "https://github.com/tigergraph/tigergraphx"
+repository = "https://github.com/tigergraph/tigergraphx"
 packages = [{ include = "tigergraphx" }]
 keywords = ["tigergraph", "graph database", "graphrag", "machine learning", "graph analytics"]
 
@@ -64,7 +64,6 @@ datasets = "^3.2.0"
 # Documentation Generation
 mkdocs = "^1.6.1"
 mkdocs-material = "^9.5.48"
-mkdocs-jupyter = "^0.25.1"
 mkdocstrings-python = "^1.12.2"
 
 [build-system]
@@ -79,9 +78,15 @@ unit_test = {cmd = "pytest -vs ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "
 integration_test = {cmd = "pytest -vs ./tests/integration", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Applications
+## MSFT's GraphRAG
 graphrag_query = "python -m applications.msft_graphrag.query.main"
 graphrag_evaluation = "python -m applications.msft_graphrag.query.evaluation"
+graphrag_reset = "python -m applications.msft_graphrag.query.reset"
+## LightRAG
 lightrag_index = "python -m applications.lightrag.index"
 lightrag_query = "python -m applications.lightrag.query"
 lightrag_evaluation = "python -m applications.lightrag.evaluation"
 lightrag_reset = "python -m applications.lightrag.reset"
+
+# Documentation
+notebook-to-markdown = "jupyter nbconvert --to markdown docs/getting_started/*.ipynb docs/graphrag/*.ipynb"
