@@ -2,7 +2,29 @@
 
 ---
 
-## 0.0.12
+## 0.2.0
+- docs: add copywrie to all Python files; add document LICENSE
+- perf: importing fewer classes in `tigergraphx/__init__.py`
+- feat: add support for TigerGraph APIs (ping, gsql, get_schema)
+- feat: add support for TigerGraph APIs (run_interpreted_query)
+- test: add unit test cases to class TigerGraphConnectionConfig
+- fix: get_schema_from_db should consider vector attributes
+- fix: add multi-edge support in `get_edge_data`
+- feat: add method `bfs`
+- feat: integrate Ragas for GraphRAG evaluation
+- feat: add Ragas-based evaluation for LightRAG
+- feat: add Ragas-based evaluation for MSFT GraphRAG
+- perf: replace mkdocs-jupyter with jupyter nbconvert for faster ipynb-to-md conversion
+- docs: add more examples in "TigerGraphX Quick Start: Using TigerGraph as Graph Database"
+- docs: add more examples in "TigerGraphX Quick Start: Using TigerGraph as Vector Database"
+- docs: add more examples in "TigerGraphX Quick Start: Using TigerGraph for Graph and Vector Database"
+- docs: add evaluation section to LightRAG
+- docs: add evaluation content to MSFT GraphRAG
+- docs: add examples for query operations APIs
+- docs: add BFS example by using method get_neighbors
+- docs: add examples for vector operations APIs
+
+## 0.1.12
 - docs: add CHANGELOG.md
 - fix: improve error messages and logging for schema creation
 - feat: add aliases to TigerGraphConnectionConfig for environment variables
