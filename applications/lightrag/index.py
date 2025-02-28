@@ -52,8 +52,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--input-file",
         type=str,
-        default="clapnq_dev_answerable_orig.jsonl.50.txt",
-        help="Specify the input file name (default: clapnq_dev_answerable_orig.jsonl.50.txt)",
+        default="clapnq_dev_answerable_orig.jsonl.10.txt",
+        help="Specify the input file name (default: clapnq_dev_answerable_orig.jsonl.10.txt)",
     )
 
     args = parser.parse_args()

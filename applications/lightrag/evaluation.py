@@ -99,7 +99,7 @@ def main(mode: Literal["naive", "hybrid"]):
     # Load datasets
     dataset = load_dataset(
         "json",
-        data_files="applications/resources/clapnq_dev_answerable.jsonl.50",
+        data_files="applications/resources/clapnq_dev_answerable.jsonl.10",
         split="train",
     )
     dataset = cast(Dataset, dataset)

@@ -1,2 +1,4 @@
 data/*
-!data/input/clapnq_dev_answerable_orig.jsonl.50.txt
+!data/input/
+data/input/*
+!data/input/clapnq_dev_answerable_orig.jsonl.10.txt
