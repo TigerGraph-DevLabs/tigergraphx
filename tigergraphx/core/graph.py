@@ -518,7 +518,7 @@ class Graph:
 
     def get_neighbors(
         self,
-        start_nodes: str | int | List[str | int],
+        start_nodes: str | int | List[str] | List[int],
         start_node_type: Optional[str] = None,
         start_node_alias: str = "s",
         edge_types: Optional[str | List[str]] = None,
@@ -569,10 +569,9 @@ class Graph:
 
     def bfs(
         self,
-        start_nodes: str | int | List[str | int],
+        start_nodes: str | int | List[str] | List[int],
         node_type: Optional[str] = None,
         edge_types: Optional[str | List[str]] = None,
-        target_node_types: Optional[str | List[str]] = None,
         max_hops: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> pd.DataFrame:
@@ -649,7 +648,7 @@ class Graph:
 
     def fetch_nodes(
         self,
-        node_ids: List[str | int],
+        node_ids: List[str] | List[int],
         vector_attribute_name: str,
         node_type: Optional[str] = None,
     ) -> Dict[str, List[float]]:
@@ -926,7 +925,7 @@ class Graph:
 
     @staticmethod
     def _to_str_node_ids(
-        node_ids: List[str | int],
+        node_ids: List[str] | List[int],
     ) -> List[str]:
         """Converts node_ids to a list of strings.
 

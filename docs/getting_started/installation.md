@@ -62,36 +62,42 @@ If you want to modify or explore the source code, you can install TigerGraphX fr
 
 This project uses **Poetry** to manage dependencies. If you don’t have Poetry installed, follow the instructions on the [Poetry website](https://python-poetry.org/docs/#installation).
 
-Once Poetry is installed, clone the repository, navigate to the project’s root directory, and use one of the following commands to install dependencies based on your needs:
+Once Poetry is installed, clone the repository, navigate to the project’s root directory, and use the following steps to set up your environment:
 
-#### **Core Installation**
+#### **1. Set Python Version**
+
+Make sure to use Python 3.10–3.12:
+```bash
+poetry env use python3.12  # Replace with your Python version (3.10–3.12)
+```
+
+#### **2. Install Dependencies**
+
+Choose one of the following commands based on your needs:
+
+##### **Core Installation**
 If you need only the core functionality of TigerGraphX (without running application examples like GraphRAG, unit tests, or integration tests), run:
 ```bash
 poetry install --without dev
 ```
 
-This command will:
-
-- Install only the dependencies required for the core features of TigerGraphX.
-
-#### **Development Installation**
+##### **Development Installation**
 If you’re contributing to the project or want to use advanced features like running the GraphRAG examples or test cases, run:
 ```bash
 poetry install --with dev
 ```
 
-This command will:
+This will:
 
 - Install all core dependencies.
 - Include development dependencies defined under `[tool.poetry.group.dev.dependencies]` in `pyproject.toml`.
 
-#### **Verify Your Installation**
-After installing dependencies, verify your setup by listing the installed packages:
-```bash
-poetry show --with dev
-```
+#### **3. Activate the Virtual Environment**
 
-This ensures all required dependencies (including optional ones) are successfully installed.
+After installation, activate the Poetry-managed virtual environment:
+```bash
+eval $(poetry env activate)
+```
 
 ---
 
