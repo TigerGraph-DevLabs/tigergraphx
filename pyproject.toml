@@ -42,6 +42,7 @@ poethepoet = "^0.31.0"
 pytest = "^8.3.3"
 pytest-asyncio = "^0.24.0"
 pytest-mock = "^3.14.0"
+pytest-html = "^4.1.0"
 
 # Interactive Development
 notebook = "^7.3.1"
@@ -72,10 +73,10 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
 # Unit Test
-unit_test = {cmd = "pytest -vs ./tests/unit", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+unit_test = {cmd = "pytest -vs ./tests/unit --html=ut-report.html", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Integration Test
-integration_test = {cmd = "pytest -vs ./tests/integration", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+integration_test = {cmd = "pytest -vs ./tests/integration --html=it-report.html", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Applications
 ## MSFT's GraphRAG

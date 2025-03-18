@@ -1,0 +1,51 @@
+name: Publish to PyPI
+
+on:
+  release:
+    types: released
+
+
+permissions:
+  issues: write     # This is required for manual-approval
+  contents: read    # This is required for actions/checkout
+  id-token: write   # This is required for requesting the JWT
+
+
+jobs:
+  manual-approval:
+    name: Approval Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Manual Approval for Release
+        uses: trstringer/manual-approval@v1
+        with:
+          issue-title: "[Prod] Deploying IAM (sha: ${{ github.sha }}), tag: ${{ github.event.release.tag_name }})"
+          minimum-approvals: 1
+          secret: ${{ secrets.github_token }}
+          approvers: ${{ vars.DEPLOYMENT_APPROVERS }}
+
+  release:
+    name: Release
+    needs: manual-approval
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v4
+    
+      - name: Setup a local virtual environment
+        run: |
+          poetry install --with dev
+
+      - name: Build and Publish
+        run: |
+          TAG=${{ github.event.release.tag_name }}
+          NEW_VERSION=${TAG#v}
+          sed -i "s/^version = .*/version = \"$NEW_VERSION\"/" pyproject.toml
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+          poetry build
+          poetry publish --build
