@@ -9,6 +9,10 @@ permissions:
   contents: read
   id-token: write 
 
+concurrency:
+  group: '${{ github.workflow }} - ${{ github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -52,7 +56,7 @@ jobs:
         uses: tj-actions/changed-files@v44
         with:
           files: |
-            *.py
+            **/*.py
           base_sha: ${{ github.event.pull_request.base.sha }}
 
       - name: Run pylint on changed files
@@ -60,7 +64,7 @@ jobs:
           if [ -n "${{ steps.changed-files.outputs.all_changed_files }}" ]; then
             echo "Changed files: ${{ steps.changed-files.outputs.all_changed_files }}"
             pylint ${{ steps.changed-files.outputs.all_changed_files }} --output-format=json > pylint-report.json
-            pylint-json2html -o pylint-report.html pylint-report.json
+            pylint-json2html -o htmlcov/pylint-report.html pylint-report.json
           else
             echo "No Python files changed."
           fi
@@ -81,5 +85,4 @@ jobs:
         with:
           name: test-result
           path: |
-            *.html
-            assets/
+            htmlcov/

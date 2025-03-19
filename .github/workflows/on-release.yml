@@ -4,12 +4,10 @@ on:
   release:
     types: released
 
-
 permissions:
-  issues: write     # This is required for manual-approval
-  contents: read    # This is required for actions/checkout
-  id-token: write   # This is required for requesting the JWT
-
+  issues: write
+  contents: read
+  id-token: write
 
 jobs:
   manual-approval:
@@ -19,7 +17,7 @@ jobs:
       - name: Manual Approval for Release
         uses: trstringer/manual-approval@v1
         with:
-          issue-title: "[Prod] Deploying IAM (sha: ${{ github.sha }}), tag: ${{ github.event.release.tag_name }})"
+          issue-title: "[Prod] Publish to Pypi (sha: ${{ github.sha }}), tag: ${{ github.event.release.tag_name }})"
           minimum-approvals: 1
           secret: ${{ secrets.github_token }}
           approvers: ${{ vars.DEPLOYMENT_APPROVERS }}
