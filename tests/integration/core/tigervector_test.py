@@ -39,7 +39,7 @@ class TestTigerVector(TestBaseGraph):
             },
         }
         self.tigergraph_connection_config = {
-            "host": "http://localhost",
+            "host": "http://34.31.117.27",
             "username": "tigergraph",
             "password": "tigergraph",
         }

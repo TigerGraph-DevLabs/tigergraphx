@@ -54,7 +54,7 @@ class TestGraph1(TestBaseGraph):
             },
         }
         self.tigergraph_connection_config = {
-            "host": "http://localhost",
+            "host": "http://34.31.117.27",
             "username": "tigergraph",
             "password": "tigergraph",
         }
@@ -374,7 +374,7 @@ class TestGraph2(TestBaseGraph):
             },
         }
         self.tigergraph_connection_config = {
-            "host": "http://localhost",
+            "host": "http://34.31.117.27",
             "username": "tigergraph",
             "password": "tigergraph",
         }

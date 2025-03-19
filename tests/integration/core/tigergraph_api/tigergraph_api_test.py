@@ -38,7 +38,7 @@ class TestTigerGraphAPI:
             },
         }
         self.tigergraph_connection_config = TigerGraphConnectionConfig(
-            host=HttpUrl("http://localhost"),
+            host=HttpUrl("http://34.31.117.27"),
             username="tigergraph",
             password="tigergraph",
         )
