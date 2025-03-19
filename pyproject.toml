@@ -73,10 +73,10 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poe.tasks]
 # Unit Test
-unit_test = {cmd = "pytest -vs ./tests/unit --html=ut-report.html", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+unit_test = {cmd = "pytest -vs ./tests/unit --html=htmlcov/ut-report.html", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Integration Test
-integration_test = {cmd = "pytest -vs ./tests/integration --html=it-report.html", env = {PYTHONDONTWRITEBYTECODE = "1"}}
+integration_test = {cmd = "pytest -vs ./tests/integration --html=htmlcov/it-report.html", env = {PYTHONDONTWRITEBYTECODE = "1"}}
 
 # Applications
 ## MSFT's GraphRAG
