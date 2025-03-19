@@ -3,13 +3,13 @@ import time
 import json
 from typing import Dict
 
-from .base_graph_test import TestBaseGraph
+from .base_graph_fixture import BaseGraphFixture
 
 from tigergraphx.core import Graph
 from tigergraphx.core.view.node_view import NodeView
 
 
-class TestGraph1(TestBaseGraph):
+class TestGraph1(BaseGraphFixture):
     def setup_graph(self):
         """Set up the graph and add nodes and edges."""
         graph_schema = {
@@ -52,11 +52,6 @@ class TestGraph1(TestBaseGraph):
                     },
                 },
             },
-        }
-        self.tigergraph_connection_config = {
-            "host": "http://localhost",
-            "username": "tigergraph",
-            "password": "tigergraph",
         }
         self.G = Graph(
             graph_schema=graph_schema,
@@ -343,7 +338,7 @@ class TestGraph1(TestBaseGraph):
         )
 
 
-class TestGraph2(TestBaseGraph):
+class TestGraph2(BaseGraphFixture):
     def setup_graph(self):
         """Set up the graph and add nodes and edges."""
         graph_schema = {
@@ -372,11 +367,6 @@ class TestGraph2(TestBaseGraph):
                     },
                 },
             },
-        }
-        self.tigergraph_connection_config = {
-            "host": "http://localhost",
-            "username": "tigergraph",
-            "password": "tigergraph",
         }
         self.G = Graph(
             graph_schema=graph_schema,

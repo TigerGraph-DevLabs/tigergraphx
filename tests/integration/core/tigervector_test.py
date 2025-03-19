@@ -1,13 +1,13 @@
 import pytest
 import time
 
-from .base_graph_test import TestBaseGraph
+from .base_graph_fixture import BaseGraphFixture
 
 from tigergraphx.core import Graph
 from tigergraphx.vector_search import TigerVectorManager
 
 
-class TestTigerVector(TestBaseGraph):
+class TestTigerVector(BaseGraphFixture):
     def setup_graph(self):
         """Set up the graph and add nodes and edges."""
         graph_schema = {
@@ -37,11 +37,6 @@ class TestTigerVector(TestBaseGraph):
                     },
                 },
             },
-        }
-        self.tigergraph_connection_config = {
-            "host": "http://localhost",
-            "username": "tigergraph",
-            "password": "tigergraph",
         }
         self.G = Graph(
             graph_schema=graph_schema,
