@@ -20,7 +20,7 @@ Start here:
 
 - [Introduction to TigerGraphX](introduction.md): Discover the features and benefits of using TigerGraphX for graph database management and analytics.
 - [Getting Started](getting_started/installation.md): Learn how to install and set up TigerGraphX.
-- [Quick Start Guide](../getting_started/quick_start): Quickly set up TigerGraphX and build your first graph with this step-by-step guide.
+- [Quick Start Guide](getting_started/quick_start_graph.md): Quickly set up TigerGraphX and build your first graph with this step-by-step guide.
 
 ---
 
