@@ -1,6 +1,6 @@
 # Supporting Microsoft’s GraphRAG: Part 2 - Graph Creation and Data Loading
 
-In the [previous section](../msft_graphrag_1), we used Microsoft's GraphRAG to convert unstructured documents into Parquet files, and then used TigerGraphX to transform these files into CSV format.
+In the [previous section](msft_graphrag_1.md), we used Microsoft's GraphRAG to convert unstructured documents into Parquet files, and then used TigerGraphX to transform these files into CSV format.
 
 Now, let’s use Jupyter Notebook to create the schema and load the CSV files into TigerGraph.
 
@@ -8,7 +8,7 @@ To run this Jupyter Notebook, you can download the original `.ipynb` file from [
 
 ## Create a Graph
 ### Define the TigerGraph Connection Configuration
-Since our data is stored in a TigerGraph instance—whether on-premise or in the cloud—we need to configure the connection settings. The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__).
+Since our data is stored in a TigerGraph instance—whether on-premise or in the cloud—we need to configure the connection settings. The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../reference/01_core/graph.md#tigergraphx.core.graph.Graph.__init__).
 
 
 ```python
@@ -32,7 +32,7 @@ In this example, we will initialize a graph using a schema defined in [a YAML fi
 >>> graph_schema = resource_dir + "graph_schema.yaml"
 ```
 
-TigerGraphX offers several methods to define the schema, including a Python dictionary, YAML file, or JSON file. Above is an example using a YAML file. For other methods, please refer to [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__) for more details.
+TigerGraphX offers several methods to define the schema, including a Python dictionary, YAML file, or JSON file. Above is an example using a YAML file. For other methods, please refer to [Graph.\_\_init\_\_](../reference/01_core/graph.md#tigergraphx.core.graph.Graph.__init__) for more details.
 
 ### Create a Graph
 Running the following command will create a graph using the user-defined schema if it does not already exist. If the graph exists, the command will return the existing graph. To overwrite the existing graph, set the drop_existing_graph parameter to True. Note that creating the graph may take several seconds.
@@ -86,7 +86,7 @@ print(G.number_of_nodes())
 
 ## Next Steps
 
-- [Supporting Microsoft’s GraphRAG: Part 3](../msft_graphrag_3): Use Jupyter Notebook to explore graph data and perform Graph Analysis.
+- [Supporting Microsoft’s GraphRAG: Part 3](msft_graphrag_3.md): Use Jupyter Notebook to explore graph data and perform Graph Analysis.
 
 ---
 

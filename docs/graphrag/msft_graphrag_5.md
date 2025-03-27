@@ -294,7 +294,7 @@ After completing the evaluation, it is recommended to clean up the environment b
 
 ## What’s Next?
 
-- [API Reference](../../reference/introduction): Dive deeper into TigerGraphX APIs.
+- [API Reference](../reference/introduction.md): Dive deeper into TigerGraphX APIs.
 
 ---
 
