@@ -1,0 +1,30 @@
+
+Product Summary: Sonaris Pro Charging Stand
+
+Price: $29.00
+
+Manufacturer: Sonaris Audio
+
+Description: Keep your Sonaris Pro or Sonaris Max headphones charged and displayed in style with the Sonaris Pro Charging Stand. This elegantly designed stand provides a convenient and stable charging solution, ensuring your headphones are always ready when you are. Its sleek profile complements your headphones and any desktop environment.
+
+Features:
+
+*   Dedicated charging contact points for seamless power transfer.
+*   Stable base prevents tipping.
+*   Sleek, minimalist design.
+*   Protective padding to prevent scratching.
+*   Keeps headphones organized and ready for use.
+
+Specifications:
+
+*   Compatibility: Sonaris Pro, Sonaris Max
+*   Material: Durable ABS Plastic with soft-touch finish
+*   Color: Matte Black
+*   Dimensions: 4 inches (width) x 4 inches (depth) x 2.5 inches (height)
+*   Weight: 6 ounces
+*   Charging Cable: USB-C (cable included)
+*   Input: 5V/2A
+*   Output: 5V/1A
+Category: Accessories
+Segment: ['Home']
+Tags: ['Phone']

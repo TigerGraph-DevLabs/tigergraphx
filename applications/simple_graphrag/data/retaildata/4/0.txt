@@ -1,0 +1,40 @@
+,
+Product Summary: Aura X5 Smartphone
+
+Experience the future of mobile technology with the Aura X5. Featuring a revolutionary holographic display and an intuitive AI assistant, the Aura X5 redefines what a smartphone can be.
+
+Price: $899.00
+
+Manufacturer: Stellaris Tech
+
+Features:
+
+*   Holographic Display: Experience immersive visuals like never before. Project images and videos into the air for a stunning 3D effect.
+*   Integrated AI Assistant: "Aura" learns your habits and anticipates your needs. Manage your schedule, answer questions, and control your smart home devices with ease.
+*   Advanced Camera System: Capture breathtaking photos and videos with the 108MP main lens, 48MP ultra-wide lens, and 12MP telephoto lens.
+*   Blazing-Fast Processor: Powered by the Octa-Core Snapdragon 8 Gen 2 processor for seamless multitasking and lag-free gaming.
+*   5G Connectivity: Experience lightning-fast download and streaming speeds.
+*   Long-lasting Battery: 5000mAh battery provides all-day power.
+
+Specifications:
+
+*   Display: 6.8-inch Holographic AMOLED Display (2400 x 1080 resolution)
+*   Processor: Qualcomm Snapdragon 8 Gen 2
+*   RAM: 12GB
+*   Storage: 256GB Internal Storage
+*   Operating System: StellarisOS 7 (Based on Android 14)
+*   Front Camera: 32MP
+*   Rear Camera: 108MP (Main) + 48MP (Ultra-Wide) + 12MP (Telephoto)
+*   Battery: 5000mAh
+*   Connectivity: 5G, Wi-Fi 6E, Bluetooth 5.3, NFC, USB-C
+*   Water Resistance: IP68
+*   Dimensions: 165.1 x 75.6 x 8.9 mm
+*   Weight: 205g
+
+Accessorize your Aura X5:
+
+*   Aura X5 Case: Protect your investment with a custom-designed case. Available in multiple colors. (Sold Separately)
+Category: Mobile Phones
+Segment: ['Home']
+Tags: ['Phone']
+

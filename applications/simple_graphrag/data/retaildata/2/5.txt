@@ -1,0 +1,28 @@
+
+PrivacyGuard Standard
+
+Price: $49.00
+
+Manufacturer: Privacy Solutions Inc.
+
+Description: Keep your on-screen information private with the PrivacyGuard Standard screen protector. Designed for optimal viewing clarity directly in front of the screen while blocking visibility from side angles, this screen protector is perfect for working in public spaces, commuting, or protecting sensitive information.
+
+Features:
+
+*   Blocks side views for privacy
+*   Anti-glare finish reduces eye strain
+*   Scratch-resistant coating protects your screen
+*   Easy to apply and remove
+*   Bubble-free installation
+
+Specifications:
+
+*   Compatibility: AuraBook Air
+*   Material: PET Film with Privacy Layer
+*   Thickness: 0.4mm
+*   Transparency: 65%
+*   Viewing Angle: 60 degrees (30 degrees left/right)
+*   Package Contents: PrivacyGuard Standard, cleaning cloth, application instructions.
+Category: Accessories
+Segment: ['Home', 'Office']
+Tags: ['Computer']

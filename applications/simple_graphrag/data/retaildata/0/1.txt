@@ -1,0 +1,14 @@
+
+  Bundle:SkyHawk Zephyr Starter Package
+  Price: $129.99
+  Everything you need to begin your drone journey:
+  This package includes the essentials to get you flying and capturing stunning aerial footage. Perfect for first-time pilots who want a user-friendly and reliable drone.
+  Package Includes:
+  SkyHawk Zephyr Drone
+  Remote Controller
+  Rechargeable Battery
+  USB Charging Cable
+  Spare Propellers
+  User Manual
+  Take flight with the SkyHawk Zephyr Starter Package!
+  Tags: ['Photography', 'Videography']

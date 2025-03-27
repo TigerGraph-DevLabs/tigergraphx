@@ -1,0 +1,16 @@
+
+  Product: SkyHawk Zephyr Drone
+  Price: $129.99
+  Weight: 220g (7.8 oz)
+  The SkyHawk Zephyr is the perfect drone for beginners. It's built for effortless flying, offering a smooth and enjoyable experience from the moment you unpack it.
+  Features:
+  Simple Controls: Beginner friendly and intuitive controls, plus automatic takeoff and landing.
+  Tough Build: Designed to handle rookie mistakes, thanks to its robust construction.
+  Capture Memories: Record crisp HD photos and videos from above.
+  Extended Fun: Enjoy up to 15 minutes of flight time per charge.
+  Worry-Free Flying: Free Fly mode lets you fly without directional concerns.
+  Take your first flight with the SkyHawk Zephyr and discover the joy of aerial views!
+
+  Category: Drone
+  Segment: ['Home']
+  Tags: ['Photography', 'Videography']

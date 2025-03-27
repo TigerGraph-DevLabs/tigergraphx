@@ -105,7 +105,11 @@ class BaseContextBuilder(ABC):
         return batches[0] if single_batch else batches
 
     async def retrieve_top_k_objects(
-        self, query: str, k: int = 10, **kwargs: Dict[str, Any]
+        self,
+        query: str,
+        k: int = 10,
+        oversample_scaler: int = 2,
+        **kwargs: Dict[str, Any],
     ) -> List[str]:
         """
         Retrieve the top-k objects most similar to the query.
@@ -128,7 +132,6 @@ class BaseContextBuilder(ABC):
             raise ValueError("Search engine is not initialized.")
 
         if query:
-            oversample_scaler = 2
             search_results = await self.search_engine.search(
                 text=query,
                 k=k * oversample_scaler,

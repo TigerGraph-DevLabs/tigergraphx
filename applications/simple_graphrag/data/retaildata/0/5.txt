@@ -1,0 +1,21 @@
+
+  Product: SkyHawk Zephyr 2.0 - Reach New Heights
+  Price: $199.99
+  Weight: 250g (8.8 oz)
+  Soar to New Heights:
+
+  This is an upgrade from SkyHawk Zephyr Drone
+  The SkyHawk Zephyr 2.0 builds upon the success of its predecessor,
+  offering more advanced features and improved performance for an even more incredible flying experience.
+  Features:
+  4K Camera: Capture breathtaking aerial footage in stunning 4K resolution with enhanced image stabilization.
+  Extended Flight Time: Enjoy up to 20 minutes of flight time on a single charge.
+  Increased Range: Fly farther with an extended control range of up to 1.2km (3/4 mile).
+  Intelligent Flight Modes: Explore creative filming options with Follow Me, Orbit, and Waypoint modes.
+  GPS-Assisted Flight: Benefit from precise positioning and enhanced safety features like Return-to-Home.
+  Upgraded Motors: Experience smoother, more responsive flight and increased agility.
+  Streamlined Design: A sleek and aerodynamic design for improved flight performance.
+  Upgrade your aerial photography and videography with the SkyHawk Zephyr 2.0!
+  Category: 'Drone'
+  Segment: ['Home']
+  Tags: ['Photography', 'Videography']

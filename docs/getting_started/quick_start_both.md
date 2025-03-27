@@ -8,7 +8,7 @@ To run this Jupyter Notebook, download the original `.ipynb` file from [quick_st
 
 In this quick start guide, we will work with the following graph:
 
-![Financial Graph](https://raw.githubusercontent.com/tigergraph/ecosys/master/demos/guru_scripts/docker/tutorial/4.x/FinancialGraph.jpg)
+![Financial Graph](https://github.com/tigergraph/ecosys/blob/master/demos/guru_scripts/docker/tutorial/4.x/pictures/FinancialGraph.jpg?raw=true)
 
 ## Create a Graph
 ### Define the TigerGraph Connection Configuration

@@ -1,0 +1,34 @@
+
+ **Product Summary: TitanDrive X5000 - 5TB Ruggedized External SSD**
+
+Unleash unparalleled speed and durability with the TitanDrive X5000, the ultimate external SSD for professionals and enthusiasts. This ruggedized 5TB drive provides lightning-fast data transfer rates in a compact and robust design, perfect for on-the-go creatives, gamers, and anyone needing reliable and high-performance storage.
+
+**Price:** $299.99
+
+**Manufacturer:** TitanTech Solutions
+
+**Key Features:**
+
+*   **Extreme Speed:** Experience blazing-fast read/write speeds up to 2000 MB/s for rapid file transfers and seamless workflow.
+*   **Ruggedized Design:** Built to withstand the elements with IP67 water and dust resistance, as well as shock and vibration protection.
+*   **Massive Storage:** 5TB capacity provides ample space for large files, including 4K/8K video, high-resolution photos, and extensive game libraries.
+*   **Universal Compatibility:** Works with Windows, macOS, and Android devices via USB 3.2 Gen 2 Type-C port.
+*   **Compact and Portable:** Sleek and lightweight design easily fits in your pocket or bag for convenient portability.
+*   **DataSafe Vault Compatible:** Enhanced security features when used with the DataSafe Vault.
+
+**Specifications:**
+
+*   **Capacity:** 5TB
+*   **Interface:** USB 3.2 Gen 2 Type-C
+*   **Read Speed:** Up to 2000 MB/s
+*   **Write Speed:** Up to 2000 MB/s
+*   **Operating Temperature:** 0°C to 60°C (32°F to 140°F)
+*   **Dimensions:** 4.5" x 2.3" x 0.6" (114.3 x 58.4 x 15.2 mm)
+*   **Weight:** 4.2 oz (119 g)
+*   **Water Resistance:** IP67
+*   **Shock Resistance:** Up to 1500G
+*   **Included in Box:** TitanDrive X5000 SSD, USB Type-C to Type-C cable, USB Type-C to Type-A adapter, Quick Start Guide
+*   **Upgrade From:** TitanDrive X4000Category: External Hard Drive
+Segment: ['Home', 'Office']
+Tags: ['Storage', 'Data']
+

@@ -1,0 +1,53 @@
+
+Office Bundle
+
+Price: $1600
+
+Manufacturer: Aura Systems
+
+Description: Enhance your productivity with this comprehensive office bundle, featuring a powerful laptop and essential accessories designed for seamless workflow.
+
+Features:
+
+AuraBook Air:
+    Ultra-thin and lightweight design for portability.
+    14-inch Full HD IPS Display with anti-glare coating.
+    Intel Core i5-1235U Processor.
+    8GB LPDDR5 RAM.
+    512GB NVMe SSD storage.
+    Integrated Intel Iris Xe Graphics.
+    Up to 12 hours of battery life.
+    Windows 11 Home.
+
+Lumix Keyboard:
+    Ergonomic design for comfortable typing.
+    Wireless Bluetooth 5.0 connection.
+    Full-size layout with number pad.
+    Quiet Scissor-Switch Keys.
+    Integrated rechargeable battery with up to 3 months of battery life.
+    Compatible with Windows, macOS, iOS, and Android.
+
+PrivacyGuard Standard:
+    14-inch Anti-glare privacy screen filter.
+    Limits viewing angle to 60 degrees.
+    Protects sensitive information from prying eyes.
+    Easy to attach and remove.
+    Reduces blue light exposure.
+
+Specifications:
+
+AuraBook Air:
+    Dimensions: 12.3 x 8.5 x 0.6 inches
+    Weight: 2.5 lbs
+    Ports: 2 x USB-C, 1 x USB-A, 1 x HDMI, 1 x 3.5mm headphone jack
+
+Lumix Keyboard:
+    Dimensions: 17.2 x 4.9 x 0.8 inches
+    Weight: 1.2 lbs
+
+PrivacyGuard Standard:
+    Size: 14 inch (diagonal)
+    Aspect Ratio: 16:9
+Category: Bundles
+Segment: ['Home', 'Office']
+Tags: ['Computer']

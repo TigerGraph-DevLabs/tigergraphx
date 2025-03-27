@@ -1,0 +1,40 @@
+
+Product Summary: Aura X5 Pro - Capture Brilliance, Last Longer
+
+Price: $1299.00
+
+Manufacturer: Aura Mobile
+
+Description: Experience the pinnacle of mobile technology with the Aura X5 Pro. Building upon the acclaimed Aura X5, this enhanced model boasts a significantly improved camera system and extended battery life, ensuring you never miss a moment. Capture stunning photos and videos, and stay connected all day long.
+
+Features:
+
+*   Advanced Camera System: Featuring a 50MP primary sensor with OIS, a 12MP ultrawide lens, and a 10MP telephoto lens with 3x optical zoom, the Aura X5 Pro captures professional-quality images in any lighting conditions.
+*   Extended Battery Life: The 5000mAh battery delivers all-day power, allowing you to browse, stream, and create without worrying about running out of charge. Supports 65W fast charging.
+*   Brilliant Display: Immerse yourself in vibrant colors and sharp details on the 6.7-inch AMOLED display with a 120Hz refresh rate.
+*   Powerful Performance: Powered by the Snapdragon 8 Gen 2 processor, the Aura X5 Pro delivers lightning-fast performance for gaming, multitasking, and demanding applications.
+*   Enhanced Security: Features an in-display fingerprint sensor and advanced facial recognition for secure and convenient unlocking.
+*   Durable Design: Crafted with a premium aluminum frame and Gorilla Glass Victus+ on both the front and back for exceptional durability.
+
+Specifications:
+
+*   Display: 6.7-inch AMOLED, 120Hz refresh rate
+*   Processor: Snapdragon 8 Gen 2
+*   RAM: 12GB
+*   Storage: 256GB
+*   Rear Camera: 50MP (OIS) + 12MP (Ultrawide) + 10MP (Telephoto, 3x Optical Zoom)
+*   Front Camera: 32MP
+*   Battery: 5000mAh, 65W Fast Charging
+*   Operating System: Aura UI 5.0 (Based on Android 13)
+*   Connectivity: 5G, Wi-Fi 6E, Bluetooth 5.3, NFC, USB-C
+*   Water Resistance: IP68
+*   Dimensions: 163.5 x 75.5 x 8.2 mm
+*   Weight: 205g
+
+Upgrade Of: Aura X5
+
+Compatible Accessories: Aura X5 Case
+Category: Mobile Phones
+Segment: ['Home']
+Tags: ['Phone']
+

@@ -1,0 +1,18 @@
+
+  Product: SnapShot Voyager Camera 3.0
+  Price: $249.99
+  Weight: 350g (12.3 oz)
+  Capture Your World with Clarity:
+  The SnapShot Voyager is the ideal camera for both aspiring photographers and casual users. Designed for ease of use and exceptional image quality, it allows you to capture your memories with stunning detail.
+  Features:
+  Intuitive Interface: Navigate settings and modes effortlessly with a user-friendly touchscreen and simple controls.
+  High-Resolution Sensor: Capture sharp, vibrant photos and videos with a 24-megapixel sensor.
+  Optical Image Stabilization: Reduce blur from camera shake for clear images even in low light or while in motion.
+  4K Video Recording: Record smooth, high-definition video at 4K resolution.
+  Built-in Wi-Fi: Easily transfer photos and videos to your smartphone or tablet for sharing.
+  Versatile Shooting Modes: Choose from a variety of modes, including portrait, landscape, sports, and night mode.
+  Long Battery Life: Enjoy extended shooting sessions with a long-lasting rechargeable battery.
+  Embark on your photographic journey with the SnapShot Voyager!
+  Category: 'Camera'
+  Segment: ['Home']
+  Tags: ['Photography']
