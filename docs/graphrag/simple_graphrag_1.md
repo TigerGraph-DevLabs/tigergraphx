@@ -62,7 +62,7 @@ TigerGraph is a schema-based database, which requires defining a schema to struc
 
 We can define a graph schema based on the raw dataset, and the schema structure is visually represented in the following image.
 
-![image](https://github.com/tigergraph/tigergraphx/blob/main/docs/images/graphrag/schema_simple_graphrag.png?raw=true).
+![image](https://raw.githubusercontent.com/tigerGraph/tigergraphx/refs/heads/main/docs/images/graphrag/schema_simple_graphrag.png).
 
 In this example, we will initialize a graph using the schema defined in the following Python dictionary, `graph_schema`.
 

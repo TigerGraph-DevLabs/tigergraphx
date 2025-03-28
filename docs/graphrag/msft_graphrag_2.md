@@ -23,7 +23,7 @@ TigerGraph is a schema-based database, which requires defining a schema to struc
 
 In this example, we will initialize a graph using a schema defined in [a YAML file](https://github.com/tigergraph/tigergraphx/blob/main/applications/msft_graphrag/query/resources/graph_schema.yaml). The schema structure is represented visually in the following image.
 
-![image](https://github.com/tigergraph/tigergraphx/blob/main/docs/images/graphrag/schema.png?raw=true)
+![image](https://raw.githubusercontent.com/tigerGraph/tigergraphx/refs/heads/main/docs/images/graphrag/schema.png)
 
 
 ```python
