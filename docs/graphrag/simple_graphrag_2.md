@@ -8,7 +8,7 @@ To run this Jupyter Notebook, you can download the original `.ipynb` file from [
 
 The query process of GraphRAG follows this workflow. TigerGraphX serves as the key interface, facilitating interaction with the embedding model to generate embeddings for user queries, retrieving context from TigerGraph, and communicating with the LLM chat model to generate answers.
 
-![](https://github.com/tigergraph/tigergraphx/blob/main/docs/images/graphrag/querying.png?raw=true)
+![](https://raw.githubusercontent.com/tigerGraph/tigergraphx/refs/heads/main/docs/images/graphrag/querying.png)
 
 ---
 

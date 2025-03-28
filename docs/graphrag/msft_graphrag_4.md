@@ -233,7 +233,7 @@ Here’s how you can utilize the custom global context builder:
 
 To understand the functionality of the `LocalContextBuilder` class, let's review the key code from its `build_context` method.
 
-![](https://github.com/tigergraph/tigergraphx/blob/main/docs/images/graphrag/local_context_builder.png?raw=true)
+![](https://raw.githubusercontent.com/tigergraph/tigergraphx/refs/heads/main/docs/images/graphrag/local_context_builder.png)
 
 ```
 # Retrieve top-k objects
@@ -274,7 +274,7 @@ We have provided an example implementation, which you can find here: [Example Co
 
 The integration process follows the workflow illustrated below:
 
-![](https://github.com/tigergraph/tigergraphx/blob/main/docs/images/graphrag/querying.png?raw=true)
+![](https://raw.githubusercontent.com/tigergraph/tigergraphx/refs/heads/main/docs/images/graphrag/querying.png)
 
 ---
 
