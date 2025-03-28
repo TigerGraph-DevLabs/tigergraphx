@@ -46,4 +46,9 @@ jobs:
           sed -i "s/^version = .*/version = \"$NEW_VERSION\"/" pyproject.toml
           poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
           poetry build
-          poetry publish --build --no-input
+          expect -c '
+            spawn poetry publish --build
+            expect "Build anyway?"
+            send "yes\r"
+            expect eof
+          '
