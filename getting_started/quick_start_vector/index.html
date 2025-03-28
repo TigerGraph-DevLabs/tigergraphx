@@ -1115,6 +1115,99 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Supporting Simple GraphRAG
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Supporting Simple GraphRAG
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graphrag/simple_graphrag_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part 1 - Graph Construction and Graph Store
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../graphrag/simple_graphrag_2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part 2 - Context Retreival and Answer Generation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -2400,8 +2493,8 @@
 
 
 <h1 id="tigergraphx-quick-start-using-tigergraph-as-vector-database">TigerGraphX Quick Start: Using TigerGraph as Vector Database</h1>
-<p>TigerGraph has supported vector storage since version 4.2. In this guide, we will demonstrate how to use TigerGraph as a pure vector database, without storing edges. This setup can be useful when you want to leverage TigerGraph solely as a vector database. However, to fully unlock the potential of TigerGraph, you can also use it as both a graph and vector storage solution. For more details, refer to the <a href="../quick_start_both">next guide</a>.</p>
-<p>This guide assumes that you have already installed TigerGraphX and its dependencies, as outlined in the <a href="../installation">Installation Guide</a>.</p>
+<p>TigerGraph has supported vector storage since version 4.2. In this guide, we will demonstrate how to use TigerGraph as a pure vector database, without storing edges. This setup can be useful when you want to leverage TigerGraph solely as a vector database. However, to fully unlock the potential of TigerGraph, you can also use it as both a graph and vector storage solution. For more details, refer to the <a href="../quick_start_both/">next guide</a>.</p>
+<p>This guide assumes that you have already installed TigerGraphX and its dependencies, as outlined in the <a href="../installation/">Installation Guide</a>.</p>
 <p>To run this Jupyter Notebook, download the original <code>.ipynb</code> file from <a href="https://github.com/tigergraph/tigergraphx/tree/main/docs/getting_started/quick_start_vector.ipynb">quick_start_vector.ipynb</a>.</p>
 <hr />
 <h2 id="create-a-graph">Create a Graph</h2>
@@ -2479,9 +2572,11 @@
 }
 </code></pre>
 <h2 id="add-nodes">Add Nodes</h2>
-<p>In this example, we add multiple nodes representing accounts to the graph. Each node is uniquely identified by a name and comes with two attributes:
-- <strong>isBlocked:</strong> A Boolean indicating whether the account is blocked.
-- <strong>emb1:</strong> A three-dimensional embedding vector.</p>
+<p>In this example, we add multiple nodes representing accounts to the graph. Each node is uniquely identified by a name and comes with two attributes:</p>
+<ul>
+<li><strong>isBlocked:</strong> A Boolean indicating whether the account is blocked.</li>
+<li><strong>emb1:</strong> A three-dimensional embedding vector.</li>
+</ul>
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
 <span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Scott&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;isBlocked&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;emb1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.017733968794345856</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.01019224338233471</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.016571875661611557</span><span class="p">]}),</span>
 <span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Jenny&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;isBlocked&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;emb1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.019265105947852135</span><span class="p">,</span> <span class="mf">0.0004929182468913496</span><span class="p">,</span> <span class="mf">0.006711316294968128</span><span class="p">]}),</span>
@@ -2653,9 +2748,11 @@
 </code></pre>
 <hr />
 <h2 id="whats-next">What’s Next?</h2>
-<p>Now that you've learned how to use TigerGraph for storing both graph data and vectors, you can dive into more advanced features of TigerGraphX:
-- <a href="../../graphrag/graphrag_overview">GraphRAG Overview</a>: Learn about integrating graphs with LLMs.
-- <a href="../../reference/features_overview">API Reference</a>: Dive deeper into TigerGraphX APIs.</p>
+<p>Now that you've learned how to use TigerGraph for storing both graph data and vectors, you can dive into more advanced features of TigerGraphX:</p>
+<ul>
+<li><a href="../../graphrag/graphrag_overview/">GraphRAG Overview</a>: Learn about integrating graphs with LLMs.</li>
+<li><a href="../../reference/introduction/">API Reference</a>: Dive deeper into TigerGraphX APIs.</li>
+</ul>
 <hr />
 <p>Start unlocking the power of graphs with <strong>TigerGraphX</strong> today!</p>
 

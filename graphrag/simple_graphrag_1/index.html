@@ -1,0 +1,3025 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../msft_graphrag_5/">
+      
+      
+        <link rel="next" href="../simple_graphrag_2/">
+      
+      
+      <link rel="icon" href="../../images/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+    
+    
+      
+        <title>Part 1 - Graph Construction and Graph Store - TigerGraphX</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.4af4bdda.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#supporting-simple-graphrag-part-1-graph-construction-and-graph-store" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="TigerGraphX" class="md-header__button md-logo" aria-label="TigerGraphX" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TigerGraphX
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Part 1 - Graph Construction and Graph Store
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19.8 5.67A9.8 9.8 0 0 1 22 11h-2.06c-.2-1.43-.78-2.78-1.68-3.9zM13 2.05c1.96.19 3.81.95 5.33 2.21L16.9 5.69A8 8 0 0 0 13 4.05zm-2 .01c-1.96.2-3.81.97-5.33 2.21L7.1 5.69A8 8 0 0 1 11 4.06zM4.26 5.67l1.37 1.39v.04A8 8 0 0 0 4 11H2c.21-1.96 1-3.82 2.26-5.33M2 14v5l1.6-1.6C5.38 20.17 8.47 22 12 22c4.82 0 8.87-3.45 9.8-8h-2.05c-.89 3.45-4.03 6-7.75 6-2.95 0-5.61-1.61-7-4l2-2zm10 3 1.56-3.42L17 12l-3.44-1.56L12 7l-1.57 3.44L7 12l3.43 1.58z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../.." class="md-tabs__link">
+          
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting_started/installation/" class="md-tabs__link">
+          
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../graphrag_overview/" class="md-tabs__link">
+          
+  
+  GraphRAG
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../reference/introduction/" class="md-tabs__link">
+          
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="TigerGraphX" class="md-nav__button md-logo" aria-label="TigerGraphX" data-md-component="logo">
+      
+  <img src="../../images/logo.png" alt="logo">
+
+    </a>
+    TigerGraphX
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Home
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to TigerGraphX
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graphrag_overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GraphRAG Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/installation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    TigerGraphX Quick Start
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            TigerGraphX Quick Start
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/quick_start_graph/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using TigerGraph as Graph Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/quick_start_vector/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using TigerGraph as Vector Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/quick_start_both/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Using TigerGraph for Graph and Vector Database
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    GraphRAG
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            GraphRAG
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../graphrag_overview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    GraphRAG Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lightrag/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Supporting LightRAG
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Supporting Microsoft's GraphRAG
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Supporting Microsoft's GraphRAG
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../msft_graphrag_1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part 1 - Setup and Data Preparation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../msft_graphrag_2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part 2 - Graph Creation and Data Loading
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../msft_graphrag_3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part 3 - Graph Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../msft_graphrag_4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part 4 - Hybrid Retrieval and Integration with LLM
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../msft_graphrag_5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part 5 - Query and Evaluation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Supporting Simple GraphRAG
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            Supporting Simple GraphRAG
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Part 1 - Graph Construction and Graph Store
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Part 1 - Graph Construction and Graph Store
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raw-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Raw Dataset
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create a Graph
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create a Graph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#define-the-tigergraph-connection-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Define the TigerGraph Connection Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-a-graph-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Define a Graph Schema
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-graph_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create a Graph
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#construct-the-graph-and-generate-the-embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Construct the Graph and Generate the Embeddings
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Construct the Graph and Generate the Embeddings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load Documents
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-the-llm-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Define the LLM Prompts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graph-construction-and-embedding-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graph Construction and Embedding Generation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transfer-csv-files-to-tigergraph-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transfer CSV Files to TigerGraph Server
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../simple_graphrag_2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Part 2 - Context Retreival and Answer Generation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Core
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/01_core/graph/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Graph
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/01_core/nodeview/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NodeView
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Vector Search
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Vector Search
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/02_vector_search/vector_db/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vector DB
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/02_vector_search/embedding/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Embedding
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/02_vector_search/search_engine/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Search Engine
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    LLM
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            LLM
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/03_llm/llm_manager/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LMM Manager
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/03_llm/chat/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chat
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Config
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Config
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/04_config/base_config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    BaseConfig
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5_2" id="__nav_4_5_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Graph DB
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_5_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5_2">
+            <span class="md-nav__icon md-icon"></span>
+            Graph DB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/04_config/01_graph_db/tigergraph_connection_config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    TigerGraphConnectionConfig
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/04_config/01_graph_db/schema_config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Schema Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/04_config/01_graph_db/loading_job_config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Loading Job Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5_3" id="__nav_4_5_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Query
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            Query
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/04_config/02_query/node_spec/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Node Specification
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/04_config/02_query/neighbor_spec/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Neighbor Specification
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5_4" id="__nav_4_5_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Settings
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            Settings
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/04_config/03_settings/vector_db_settings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vector DB Settings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/04_config/03_settings/llm_settings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LLM Settings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/04_config/03_settings/embedding_settings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Embedding Settings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/04_config/03_settings/chat_settings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Chat Settings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/04_config/03_settings/settings/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Settings
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Graphrag
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            Graphrag
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/05_graphrag/base_context_builder/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    BaseContextBuilder
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Pipelines
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            Pipelines
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/06_pipelines/parquet_processor/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Parquet Processor
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Utils
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            Utils
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/07_utils/retry_mixin/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    RetryMixin
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#raw-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Raw Dataset
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#create-a-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create a Graph
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Create a Graph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#define-the-tigergraph-connection-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Define the TigerGraph Connection Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-a-graph-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      Define a Graph Schema
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-graph_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create a Graph
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#construct-the-graph-and-generate-the-embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Construct the Graph and Generate the Embeddings
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Construct the Graph and Generate the Embeddings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load-documents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load Documents
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-the-llm-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Define the LLM Prompts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graph-construction-and-embedding-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graph Construction and Embedding Generation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#transfer-csv-files-to-tigergraph-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      Transfer CSV Files to TigerGraph Server
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load Data
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Steps
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="supporting-simple-graphrag-part-1-graph-construction-and-graph-store">Supporting Simple GraphRAG: Part 1 - Graph Construction and Graph Store</h1>
+<hr />
+<h2 id="introduction">Introduction</h2>
+<p>We have introduced how to integrate TigerGraph with LightRAG and Microsoft's GraphRAG. However, both solutions have some drawbacks.  </p>
+<p>First, regarding the integration with LightRAG: we found that querying takes some time because it calls Graph methods like <code>get_node</code>, <code>get_node_edges</code>, etc., for individual nodes in parallel rather than in batch, which is inefficient for graph operations. Another issue is its lack of flexibility—since all indexing and querying operations are predefined in LightRAG, customization is limited. For example, LightRAG uses a homogeneous graph, whereas heterogeneous graphs are widely used in real-world applications.  </p>
+<p>Second, regarding the integration with Microsoft's GraphRAG: we found its source code to be complex and difficult to customize. Additionally, it does not abstract the storage layer for the graph, meaning the output of the indexing process cannot be stored directly in TigerGraph. Instead, we need to convert Parquet files into a format that TigerGraph supports.  </p>
+<p>In this solution, we aim to create a simple, customizable approach inspired by the blog <a href="https://cloud.google.com/blog/products/databases/using-spanner-graph-with-langchain-for-graphrag">Build GraphRAG applications using Spanner Graph and LangChain</a>. We will use the same dataset from the blog for demonstration purposes. However, when implementing LangChain's <code>LLMGraphTransformer</code>—which is responsible for generating graph nodes, edges, and properties—we encountered several issues. First, the schema is not expressive enough. While it allows specifying node types and edge types, it does not allow defining which node types an edge connects. Additionally, it does not allow specifying which properties belong to which nodes or edges. When reviewing the <a href="https://github.com/googleapis/langchain-google-spanner-python/blob/main/docs/graph_rag.ipynb">source code of the blog</a>, we noticed extensive post-processing code to remove unwanted relationships, fix edge directions, etc. The second issue is performance—this solution takes three times longer to generate the graph topology compared to ours.</p>
+<p>To address these limitations, we will call the LLM directly for better performance and data quality. TigerGraphX already integrates with OpenAI's chat and embedding functionality, so we will leverage these capabilities for generating the graph and embeddings during the indexing step, as well as for generating query embeddings and answers during the querying step.</p>
+<p>To run this Jupyter Notebook, you can download the original <code>.ipynb</code> file from <a href="https://github.com/tigergraph/tigergraphx/tree/main/docs/graphrag/simple_graphrag_1.ipynb">simple_graphrag_1.ipynb</a>.</p>
+<hr />
+<h2 id="raw-dataset">Raw Dataset</h2>
+<p>The raw dataset focuses on retail products. Here is an example of a document:</p>
+<div class="highlight"><pre><span></span><code>Product: SkyHawk Zephyr Drone
+Price: $129.99
+Weight: 220g (7.8 oz)
+The SkyHawk Zephyr is the perfect drone for beginners. It&#39;s built for effortless flying, offering a smooth and enjoyable experience from the moment you unpack it.
+
+Features:
+- Simple Controls: Beginner friendly and intuitive controls, plus automatic takeoff and landing.
+- Tough Build: Designed to handle rookie mistakes, thanks to its robust construction.
+- Capture Memories: Record crisp HD photos and videos from above.
+- Extended Fun: Enjoy up to 15 minutes of flight time per charge.
+- Worry-Free Flying: Free Fly mode lets you fly without directional concerns.
+
+Take your first flight with the SkyHawk Zephyr and discover the joy of aerial views!
+
+Category: Drone
+Segment: [&#39;Home&#39;]
+Tags: [&#39;Photography&#39;, &#39;Videography&#39;]
+</code></pre></div>
+<p>As you can see, each document represents a product, with properties such as price, weight, etc., and relationships to its category, segment, tags, and more.</p>
+<hr />
+<h2 id="create-a-graph">Create a Graph</h2>
+<h3 id="define-the-tigergraph-connection-configuration">Define the TigerGraph Connection Configuration</h3>
+<p>Since our data is stored in a TigerGraph instance—whether on-premise or in the cloud—we need to configure the connection settings. The recommended approach is to use environment variables, such as setting them with the <code>export</code> command in the shell. Here, to illustrate the demo, we configure them within Python using the <code>os.environ</code> method. You can find more methods for configuring connection settings in <a href="../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__">Graph.__init__</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TG_HOST&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TG_USERNAME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;tigergraph&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TG_PASSWORD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;tigergraph&quot;</span>
+</code></pre></div>
+<h3 id="define-a-graph-schema">Define a Graph Schema</h3>
+<p>TigerGraph is a schema-based database, which requires defining a schema to structure your graph. This schema specifies the graph name, nodes (vertices), edges (relationships), and their respective attributes.</p>
+<p>We can define a graph schema based on the raw dataset, and the schema structure is visually represented in the following image.</p>
+<p><img alt="image" src="https://github.com/tigergraph/tigergraphx/blob/main/docs/images/graphrag/schema_simple_graphrag.png?raw=true" />.</p>
+<p>In this example, we will initialize a graph using the schema defined in the following Python dictionary, <code>graph_schema</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">graph_schema</span> <span class="o">=</span> <span class="p">{</span>
+<span class="o">...</span>     <span class="s2">&quot;graph_name&quot;</span><span class="p">:</span> <span class="s2">&quot;RetailGraph&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="s2">&quot;nodes&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>         <span class="s2">&quot;Product&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="s2">&quot;DOUBLE&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;DOUBLE&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="p">},</span>
+<span class="o">...</span>             <span class="s2">&quot;vector_attributes&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;emb_features&quot;</span><span class="p">:</span> <span class="mi">1536</span><span class="p">},</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="s2">&quot;Tag&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="p">},</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="s2">&quot;Category&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="p">},</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="s2">&quot;Segment&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="p">},</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="s2">&quot;Bundle&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="p">},</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="s2">&quot;Deal&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;primary_key&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>                 <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;STRING&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;deal_end_date&quot;</span><span class="p">:</span> <span class="s2">&quot;DATETIME&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="p">},</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>     <span class="p">},</span>
+<span class="o">...</span>     <span class="s2">&quot;edges&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>         <span class="s2">&quot;In_Category&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;is_directed_edge&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;from_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Product&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;to_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Category&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="s2">&quot;Tagged_With&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;is_directed_edge&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;from_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Product&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;to_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Tag&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="s2">&quot;In_Segment&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;is_directed_edge&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;from_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Product&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;to_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Segment&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="s2">&quot;In_Bundle&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;is_directed_edge&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;from_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Product&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;to_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Bundle&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="s2">&quot;Is_Accessory_Of&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;is_directed_edge&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;from_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Product&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;to_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Product&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="s2">&quot;Is_Upgrade_Of&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;is_directed_edge&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;from_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Product&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;to_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Product&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="s2">&quot;Has_Deal&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;is_directed_edge&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;from_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Product&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;to_node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Deal&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>     <span class="p">},</span>
+<span class="o">...</span> <span class="p">}</span>
+</code></pre></div>
+<p>TigerGraphX offers several methods to define the schema, including a Python dictionary, YAML file, or JSON file. Above is an example using a Python dictionary. For other methods, please refer to <a href="../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__">Graph.__init__</a> for more details.</p>
+<h3 id="create-a-graph_1">Create a Graph</h3>
+<p>Running the following command will create a graph using the user-defined schema if it does not already exist. If the graph exists, the command will return the existing graph. To overwrite the existing graph, set the drop_existing_graph parameter to True. Note that creating the graph may take several seconds.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>2025-03-28 12:58:41,809 - tigergraphx.core.managers.schema_manager - INFO - Creating schema for graph: RetailGraph...
+2025-03-28 12:58:44,789 - tigergraphx.core.managers.schema_manager - INFO - Graph schema created successfully.
+2025-03-28 12:58:44,790 - tigergraphx.core.managers.schema_manager - INFO - Adding vector attribute(s) for graph: RetailGraph...
+2025-03-28 12:59:44,226 - tigergraphx.core.managers.schema_manager - INFO - Vector attribute(s) added successfully.
+</code></pre>
+<hr />
+<h2 id="construct-the-graph-and-generate-the-embeddings">Construct the Graph and Generate the Embeddings</h2>
+<h3 id="load-documents">Load Documents</h3>
+<p>To construct the graph using LLM, we first need to load the raw dataset. The raw dataset has already been downloaded under the "../../applications/simple_graphrag/data/retaildata" directory, where all the documents are in ".txt" format. We define a method called <code>load_documents</code> to load all the documents from a specified path.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="o">...</span> <span class="k">def</span><span class="w"> </span><span class="nf">load_documents</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s2">&quot;&quot;&quot;Load text documents from subdirectories.&quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="n">documents</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+<span class="o">...</span>         <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+<span class="o">...</span>             <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.txt&quot;</span><span class="p">):</span>  <span class="c1"># Only process text files</span>
+<span class="o">...</span>                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="o">...</span>                     <span class="n">documents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">documents</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">document_lists</span> <span class="o">=</span> <span class="n">load_documents</span><span class="p">(</span><span class="s2">&quot;../../applications/simple_graphrag/data/retaildata&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">document_lists</span><span class="p">))</span>
+</code></pre></div>
+<pre><code>68
+</code></pre>
+<h3 id="define-the-llm-prompts">Define the LLM Prompts</h3>
+<p>The key to enabling LLM to construct a high-quality graph is the prompt. The prompt consists of the following components:</p>
+<ul>
+<li>The graph schema we previously defined for the TigerGraph graph. It is crucial to ensure that LLM strictly adheres to this schema.</li>
+<li>Extraction rules, which are essential for improving data quality. During our tests, we added more rules to align the generated results with our expectations.</li>
+<li>Example document and expected output: This helps guide the LLM in generating the desired output.</li>
+<li>The document to be processed is also provided.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span><span class="w"> </span><span class="nf">generate_prompt</span><span class="p">(</span><span class="n">document</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s2">&quot;&quot;&quot;Generate a structured prompt for OpenAI based on document content.&quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">... You are an AI that extracts structured graph data from a given document, strictly following this schema:</span>
+<span class="s2">... </span>
+<span class="s2">... </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">... </span>
+<span class="s2">... ### **Extraction Rules:**</span>
+<span class="s2">... - Extract the exact `name` of each entity as it appears in the document. **Do not modify, expand, or infer names.**</span>
+<span class="s2">... - The `Segment` can only be one of: `&quot;Home&quot;`, `&quot;Office&quot;`, or `&quot;Fitness&quot;`. If a `Segment` is not explicitly mentioned, **do not assign one**.</span>
+<span class="s2">... - Every `Product` must have:</span>
+<span class="s2">...   - A `features` property describing key characteristics.</span>
+<span class="s2">...   - A `price` (as a numeric value, not a string).</span>
+<span class="s2">...   - A `weight` (as a numeric value, not a string).</span>
+<span class="s2">... - Do not infer missing information. Only extract what is explicitly stated in the document.</span>
+<span class="s2">... - **Do not create relationships with `null` targets.** If a valid target is not available, omit the relationship from the output.</span>
+<span class="s2">... - If a `Category` is not mentioned explicitly, **do not generate it**.</span>
+<span class="s2">... - If a `Bundle` is not mentioned explicitly, **do not generate it**.</span>
+<span class="s2">... - If a `Deal` is not mentioned explicitly, **do not generate it**.</span>
+<span class="s2">... - Maintain consistent formatting for all properties.</span>
+<span class="s2">... - **Do not add comments to the JSON output**.</span>
+<span class="s2">... - If a field is missing or the value is unknown, set it as `&quot;&quot;`. </span>
+<span class="s2">... </span>
+<span class="s2">... ---</span>
+<span class="s2">... </span>
+<span class="s2">... ### **Example Document &amp; Expected Output:**</span>
+<span class="s2">... </span>
+<span class="s2">... #### **Document:**</span>
+<span class="s2">... ```</span>
+<span class="s2">... Product: SkyHawk Zephyr Drone</span>
+<span class="s2">... Price: $129.99</span>
+<span class="s2">... Weight: 220g (7.8 oz)</span>
+<span class="s2">... The SkyHawk Zephyr is the perfect drone for beginners. It&#39;s built for effortless flying, offering a smooth and enjoyable experience from the moment you unpack it.</span>
+<span class="s2">... </span>
+<span class="s2">... Features:</span>
+<span class="s2">... - Simple Controls: Beginner friendly and intuitive controls, plus automatic takeoff and landing.</span>
+<span class="s2">... - Tough Build: Designed to handle rookie mistakes, thanks to its robust construction.</span>
+<span class="s2">... - Capture Memories: Record crisp HD photos and videos from above.</span>
+<span class="s2">... - Extended Fun: Enjoy up to 15 minutes of flight time per charge.</span>
+<span class="s2">... - Worry-Free Flying: Free Fly mode lets you fly without directional concerns.</span>
+<span class="s2">... </span>
+<span class="s2">... Take your first flight with the SkyHawk Zephyr and discover the joy of aerial views!</span>
+<span class="s2">... </span>
+<span class="s2">... Category: Drone</span>
+<span class="s2">... Segment: [&#39;Home&#39;]</span>
+<span class="s2">... Tags: [&#39;Photography&#39;, &#39;Videography&#39;]</span>
+<span class="s2">... ```</span>
+<span class="s2">... </span>
+<span class="s2">... #### **Expected Output (JSON format):**</span>
+<span class="s2">... ```json</span>
+<span class="s2">... </span><span class="se">{{</span>
+<span class="s2">...   &quot;nodes&quot;: [</span>
+<span class="s2">...     </span><span class="se">{{</span><span class="s2">&quot;id&quot;: &quot;SkyHawk Zephyr Drone&quot;, &quot;type&quot;: &quot;Product&quot;, &quot;properties&quot;: </span><span class="se">{{</span><span class="s2">&quot;name&quot;: &quot;SkyHawk Zephyr Drone&quot;, &quot;price&quot;: 129.99, &quot;weight&quot;: 220, &quot;features&quot;: &quot;Simple Controls: Beginner friendly and intuitive controls, plus automatic takeoff and landing. Tough Build: Designed to handle rookie mistakes, thanks to its robust construction. Capture Memories: Record crisp HD photos and videos from above. Extended Fun: Enjoy up to 15 minutes of flight time per charge. Worry-Free Flying: Free Fly mode lets you fly without directional concerns.&quot;</span><span class="se">}}}}</span><span class="s2">,</span>
+<span class="s2">...     </span><span class="se">{{</span><span class="s2">&quot;id&quot;: &quot;Drone&quot;, &quot;type&quot;: &quot;Category&quot;, &quot;properties&quot;: </span><span class="se">{{</span><span class="s2">&quot;name&quot;: &quot;Drone&quot;</span><span class="se">}}}}</span><span class="s2">,</span>
+<span class="s2">...     </span><span class="se">{{</span><span class="s2">&quot;id&quot;: &quot;Photography&quot;, &quot;type&quot;: &quot;Tag&quot;, &quot;properties&quot;: </span><span class="se">{{</span><span class="s2">&quot;name&quot;: &quot;Photography&quot;</span><span class="se">}}}}</span><span class="s2">,</span>
+<span class="s2">...     </span><span class="se">{{</span><span class="s2">&quot;id&quot;: &quot;Videography&quot;, &quot;type&quot;: &quot;Tag&quot;, &quot;properties&quot;: </span><span class="se">{{</span><span class="s2">&quot;name&quot;: &quot;Videography&quot;</span><span class="se">}}}}</span><span class="s2">,</span>
+<span class="s2">...     </span><span class="se">{{</span><span class="s2">&quot;id&quot;: &quot;Home&quot;, &quot;type&quot;: &quot;Segment&quot;, &quot;properties&quot;: </span><span class="se">{{</span><span class="s2">&quot;name&quot;: &quot;Home&quot;</span><span class="se">}}}}</span>
+<span class="s2">...   ],</span>
+<span class="s2">...   &quot;relationships&quot;: [</span>
+<span class="s2">...     </span><span class="se">{{</span><span class="s2">&quot;source&quot;: &quot;SkyHawk Zephyr Drone&quot;, &quot;target&quot;: &quot;Drone&quot;, &quot;type&quot;: &quot;In_Category&quot;</span><span class="se">}}</span><span class="s2">,</span>
+<span class="s2">...     </span><span class="se">{{</span><span class="s2">&quot;source&quot;: &quot;SkyHawk Zephyr Drone&quot;, &quot;target&quot;: &quot;Photography&quot;, &quot;type&quot;: &quot;Tagged_With&quot;</span><span class="se">}}</span><span class="s2">,</span>
+<span class="s2">...     </span><span class="se">{{</span><span class="s2">&quot;source&quot;: &quot;SkyHawk Zephyr Drone&quot;, &quot;target&quot;: &quot;Videography&quot;, &quot;type&quot;: &quot;Tagged_With&quot;</span><span class="se">}}</span><span class="s2">,</span>
+<span class="s2">...     </span><span class="se">{{</span><span class="s2">&quot;source&quot;: &quot;SkyHawk Zephyr Drone&quot;, &quot;target&quot;: &quot;Home&quot;, &quot;type&quot;: &quot;In_Segment&quot;</span><span class="se">}}</span>
+<span class="s2">...   ]</span>
+<span class="s2">... </span><span class="se">}}</span>
+<span class="s2">... ```</span>
+<span class="s2">... </span>
+<span class="s2">... ---</span>
+<span class="s2">... </span>
+<span class="s2">... ### **Now process the following document:**</span>
+<span class="s2">... </span><span class="si">{</span><span class="n">document</span><span class="si">}</span>
+<span class="s2">... </span>
+<span class="s2">... **Follow the exact JSON structure as shown above.**</span>
+<span class="s2">... &quot;&quot;&quot;</span>
+</code></pre></div>
+<h3 id="graph-construction-and-embedding-generation">Graph Construction and Embedding Generation</h3>
+<p>In this section, we define an asynchronous pipeline for processing documents with an LLM and structuring the extracted information into a graph format. The key components of this process are:</p>
+<ul>
+<li><strong>Processing Individual Documents:</strong> Each document is processed using <code>process_document()</code>, which sends a request to the LLM and retrieves a structured response based on the defined prompt.</li>
+<li><strong>Writing Graph Data to CSV:</strong> The <code>write_csv()</code> function saves extracted nodes and relationships into separate CSV files, enabling efficient storage and retrieval.</li>
+<li><strong>Handling Multiple Documents:</strong> <code>process_all_documents()</code> processes multiple documents in parallel, extracts structured graph data, and writes it to output files.</li>
+<li><strong>Generating Embeddings:</strong> If a node contains features, an embedding representation is generated using OpenAI's embedding model and stored as a node property.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">aiofiles</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx.llm</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIManager</span><span class="p">,</span> <span class="n">OpenAIChat</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx.vector_search</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIEmbedding</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_document</span><span class="p">(</span><span class="n">openai_chat</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s2">&quot;&quot;&quot;Process a single document asynchronously and return structured data.&quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">openai_chat</span><span class="o">.</span><span class="n">chat</span><span class="p">(</span>
+<span class="o">...</span>         <span class="p">[</span>
+<span class="o">...</span>             <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;You are a helpful assistant.&quot;</span><span class="p">},</span>
+<span class="o">...</span>             <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">generate_prompt</span><span class="p">(</span><span class="n">document</span><span class="p">)},</span>
+<span class="o">...</span>         <span class="p">]</span>
+<span class="o">...</span>     <span class="p">)</span>
+<span class="o">...</span>     <span class="k">return</span> <span class="n">response</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">write_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data_list</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+<span class="o">...</span>     <span class="s2">&quot;&quot;&quot;Write nodes or relationships to a CSV file asynchronously.&quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="k">async</span> <span class="k">with</span> <span class="n">aiofiles</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;node&quot;</span><span class="p">:</span>
+<span class="o">...</span>             <span class="n">all_keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+<span class="o">...</span>                 <span class="p">{</span><span class="n">key</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">data_list</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()}</span>
+<span class="o">...</span>             <span class="p">)</span>
+<span class="o">...</span>             <span class="k">await</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">all_keys</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="o">...</span> 
+<span class="o">...</span>             <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
+<span class="o">...</span>                 <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span>
+<span class="o">...</span>                     <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">))</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
+<span class="o">...</span>                     <span class="k">if</span> <span class="s2">&quot;,&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+<span class="o">...</span>                     <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+<span class="o">...</span>                     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">all_keys</span>
+<span class="o">...</span>                 <span class="p">]</span>
+<span class="o">...</span>                 <span class="k">await</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="o">...</span> 
+<span class="o">...</span>         <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s2">&quot;relationship&quot;</span><span class="p">:</span>
+<span class="o">...</span>             <span class="k">await</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;source,target</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="o">...</span>             <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">data_list</span><span class="p">:</span>
+<span class="o">...</span>                 <span class="k">await</span> <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rel</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">rel</span><span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_all_documents</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">openai_chat</span><span class="p">:</span> <span class="n">OpenAIChat</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">openai_embedding</span><span class="p">:</span> <span class="n">OpenAIEmbedding</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">document_lists</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">output_dir</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">):</span>
+<span class="o">...</span>     <span class="s2">&quot;&quot;&quot;Process all documents asynchronously and write results to CSV.&quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="o">...</span> 
+<span class="o">...</span>     <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span>
+<span class="o">...</span>         <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">process_document</span><span class="p">(</span><span class="n">openai_chat</span><span class="p">,</span> <span class="n">doc</span><span class="p">))</span>
+<span class="o">...</span>         <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">document_lists</span>
+<span class="o">...</span>     <span class="p">]</span>
+<span class="o">...</span>     <span class="n">responses</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span>
+<span class="o">...</span> 
+<span class="o">...</span>     <span class="c1"># Flatten responses and parse JSON</span>
+<span class="o">...</span>     <span class="n">graph_documents</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">response</span> <span class="ow">in</span> <span class="n">responses</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">cleaned_response</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;`&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+<span class="o">...</span>             <span class="s2">&quot;json</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
+<span class="o">...</span>         <span class="p">)</span>  <span class="c1"># Remove backticks and json tag</span>
+<span class="o">...</span>         <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>             <span class="n">parsed_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">cleaned_response</span><span class="p">)</span>
+<span class="o">...</span>             <span class="n">graph_documents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+<span class="o">...</span>             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error parsing JSON: </span><span class="si">{</span><span class="n">cleaned_response</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># Debugging</span>
+<span class="o">...</span>             <span class="k">continue</span>  <span class="c1"># Skip invalid JSON</span>
+<span class="o">...</span> 
+<span class="o">...</span>     <span class="c1"># Organize nodes and relationships</span>
+<span class="o">...</span>     <span class="n">nodes</span><span class="p">,</span> <span class="n">relationships</span> <span class="o">=</span> <span class="p">{},</span> <span class="p">{}</span>
+<span class="o">...</span> 
+<span class="o">...</span>     <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">graph_documents</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;nodes&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+<span class="o">...</span>             <span class="n">node_type</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+<span class="o">...</span>             <span class="n">nodes</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">node_type</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+<span class="o">...</span> 
+<span class="o">...</span>         <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;relationships&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+<span class="o">...</span>             <span class="n">rel_type</span> <span class="o">=</span> <span class="n">rel</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+<span class="o">...</span>             <span class="n">relationships</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">rel_type</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rel</span><span class="p">)</span>
+<span class="o">...</span> 
+<span class="o">...</span>     <span class="c1"># Add embeddings to the graph documents for Product nodes</span>
+<span class="o">...</span>     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Product&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="s2">&quot;features&quot;</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;properties&quot;</span><span class="p">,</span> <span class="p">{}):</span>
+<span class="o">...</span>             <span class="n">embedding</span> <span class="o">=</span> <span class="k">await</span> <span class="n">openai_embedding</span><span class="o">.</span><span class="n">generate_embedding</span><span class="p">(</span>
+<span class="o">...</span>                 <span class="n">node</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="s2">&quot;features&quot;</span><span class="p">]</span>
+<span class="o">...</span>             <span class="p">)</span>
+<span class="o">...</span>             <span class="n">node</span><span class="p">[</span><span class="s2">&quot;properties&quot;</span><span class="p">][</span><span class="s2">&quot;embedding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">embedding</span><span class="p">))</span>
+<span class="o">...</span> 
+<span class="o">...</span>     <span class="c1"># Write CSV files</span>
+<span class="o">...</span>     <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
+<span class="o">...</span>         <span class="o">*</span><span class="p">[</span>
+<span class="o">...</span>             <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+<span class="o">...</span>                 <span class="n">write_csv</span><span class="p">(</span>
+<span class="o">...</span>                     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;nodes_</span><span class="si">{</span><span class="n">node_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">),</span>
+<span class="o">...</span>                     <span class="n">node_list</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;node&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="p">)</span>
+<span class="o">...</span>             <span class="p">)</span>
+<span class="o">...</span>             <span class="k">for</span> <span class="n">node_type</span><span class="p">,</span> <span class="n">node_list</span> <span class="ow">in</span> <span class="n">nodes</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="o">...</span>         <span class="p">],</span>
+<span class="o">...</span>         <span class="o">*</span><span class="p">[</span>
+<span class="o">...</span>             <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+<span class="o">...</span>                 <span class="n">write_csv</span><span class="p">(</span>
+<span class="o">...</span>                     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;edges_</span><span class="si">{</span><span class="n">rel_type</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">),</span>
+<span class="o">...</span>                     <span class="n">rel_list</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;relationship&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="p">)</span>
+<span class="o">...</span>             <span class="p">)</span>
+<span class="o">...</span>             <span class="k">for</span> <span class="n">rel_type</span><span class="p">,</span> <span class="n">rel_list</span> <span class="ow">in</span> <span class="n">relationships</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="o">...</span>         <span class="p">],</span>
+<span class="o">...</span>     <span class="p">)</span>
+</code></pre></div>
+<p>After defining the functions, we configure the LLM and embedding models and execute the document processing pipeline. The steps include:</p>
+<ul>
+<li><strong>Setting Up Logging:</strong> Minimizes unnecessary warnings from HTTP requests.</li>
+<li><strong>Initializing OpenAI Components:</strong> <code>OpenAIManager</code>, <code>OpenAIChat</code>, and <code>OpenAIEmbedding</code> are initialized for LLM interaction and embedding generation.</li>
+<li><strong>Defining the Output Directory:</strong> Specifies the location for storing processed CSV files.</li>
+<li><strong>Running the Processing Pipeline:</strong> Executes <code>process_all_documents()</code> asynchronously to process and structure the dataset into a graph format.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;httpx&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">openai</span> <span class="o">=</span> <span class="n">OpenAIManager</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="p">{})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">openai_chat</span> <span class="o">=</span> <span class="n">OpenAIChat</span><span class="p">(</span><span class="n">openai</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">openai_embedding</span> <span class="o">=</span> <span class="n">OpenAIEmbedding</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">openai</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;text-embedding-3-small&quot;</span><span class="p">}</span>
+<span class="o">...</span> <span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;../../applications/simple_graphrag/data/output&quot;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting document processing...&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">await</span> <span class="n">process_all_documents</span><span class="p">(</span><span class="n">openai_chat</span><span class="p">,</span> <span class="n">openai_embedding</span><span class="p">,</span> <span class="n">document_lists</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Document processing completed successfully!&quot;</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>Starting document processing...
+2025-03-28 12:59:56,462 - openai._base_client - INFO - Retrying request to /chat/completions in 0.388280 seconds
+2025-03-28 12:59:56,473 - openai._base_client - INFO - Retrying request to /chat/completions in 0.444269 seconds
+Document processing completed successfully!
+</code></pre>
+<h3 id="transfer-csv-files-to-tigergraph-server">Transfer CSV Files to TigerGraph Server</h3>
+<p>To transfer the generated CSV files to your TigerGraph server, you need to use the <code>scp</code> command. Before running the command, make sure to replace "d" with the correct server alias or hostname that you have configured in your <code>~/.ssh/config</code> file. For example, if your <code>~/.ssh/config</code> contains an entry like this:</p>
+<div class="highlight"><pre><span></span><code># Docker
+Host d
+  Hostname localhost
+  Port 14222
+  User tigergraph
+  IdentityFile ~/.ssh/tigergraph_rsa
+</code></pre></div>
+<p>You would replace "d" in the command with the alias <code>d</code> or the corresponding hostname you’ve set up. Here's the command you need to run:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="err">!</span><span class="n">scp</span> <span class="o">../../</span><span class="n">applications</span><span class="o">/</span><span class="n">simple_graphrag</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">output</span><span class="o">/*.</span><span class="n">csv</span> <span class="n">d</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">tigergraph</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">simple_graphrag</span>
+</code></pre></div>
+<pre><code>/opt/homebrew/Cellar/python@3.12/3.12.6/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pty.py:95: DeprecationWarning: This process (pid=57331) is multi-threaded, use of forkpty() may lead to deadlocks in the child.
+  pid, fd = os.forkpty()
+
+
+edges_ tagged_with.csv                        100%   40    33.6KB/s   00:00    
+edges_in_bundle.csv                           100%  493   745.3KB/s   00:00    
+edges_in_category.csv                         100% 1374     2.0MB/s   00:00    
+edges_in_segment.csv                          100% 1891     3.4MB/s   00:00    
+edges_is_accessory_of.csv                     100%  478   885.8KB/s   00:00    
+edges_is_upgrade_of.csv                       100%   94   201.3KB/s   00:00    
+edges_tagged_with.csv                         100% 2746     3.6MB/s   00:00    
+nodes_bundle.csv                              100%  854     1.4MB/s   00:00    
+nodes_category.csv                            100% 1182     2.6MB/s   00:00    
+nodes_product.csv                             100% 2074KB 105.0MB/s   00:00    
+nodes_segment.csv                             100% 1265     3.1MB/s   00:00    
+nodes_tag.csv                                 100% 1791     4.1MB/s   00:00
+</code></pre>
+<hr />
+<h2 id="load-data">Load Data</h2>
+<p>First, let's check the total number of nodes in the graph. As anticipated, the graph is currently empty.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">())</span>
+</code></pre></div>
+<pre><code>0
+</code></pre>
+<p>After that, we will load data into the graph using a pre-defined loading job configuration. Note that loading the data may take several seconds.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">loading_job</span> <span class="o">=</span> <span class="p">{</span>
+<span class="o">...</span>     <span class="s2">&quot;loading_job_name&quot;</span><span class="p">:</span> <span class="s2">&quot;loading_job_retail&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="s2">&quot;files&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="o">...</span>         <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;file_alias&quot;</span><span class="p">:</span> <span class="s2">&quot;f_nodes_product&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/tigergraph/data/simple_graphrag/nodes_product.csv&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;csv_parsing_options&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>                 <span class="s2">&quot;separator&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;EOL&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;quote&quot;</span><span class="p">:</span> <span class="s2">&quot;DOUBLE&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="p">},</span>
+<span class="o">...</span>             <span class="s2">&quot;node_mappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="o">...</span>                 <span class="p">{</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Product&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;attribute_column_mappings&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>                         <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<span class="o">...</span>                         <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="s2">&quot;price&quot;</span><span class="p">,</span>
+<span class="o">...</span>                         <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="s2">&quot;weight&quot;</span><span class="p">,</span>
+<span class="o">...</span>                         <span class="s2">&quot;features&quot;</span><span class="p">:</span> <span class="s2">&quot;features&quot;</span><span class="p">,</span>
+<span class="o">...</span>                         <span class="s2">&quot;emb_features&quot;</span><span class="p">:</span> <span class="s1">&#39;SPLIT($&quot;embedding&quot;, &quot; &quot;)&#39;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="p">},</span>
+<span class="o">...</span>                 <span class="p">}</span>
+<span class="o">...</span>             <span class="p">],</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;file_alias&quot;</span><span class="p">:</span> <span class="s2">&quot;f_nodes_tag&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/tigergraph/data/simple_graphrag/nodes_tag.csv&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;csv_parsing_options&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>                 <span class="s2">&quot;separator&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;EOL&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;quote&quot;</span><span class="p">:</span> <span class="s2">&quot;DOUBLE&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="p">},</span>
+<span class="o">...</span>             <span class="s2">&quot;node_mappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="o">...</span>                 <span class="p">{</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Tag&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;attribute_column_mappings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">},</span>
+<span class="o">...</span>                 <span class="p">}</span>
+<span class="o">...</span>             <span class="p">],</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;file_alias&quot;</span><span class="p">:</span> <span class="s2">&quot;f_nodes_category&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/tigergraph/data/simple_graphrag/nodes_category.csv&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;csv_parsing_options&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>                 <span class="s2">&quot;separator&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;EOL&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;quote&quot;</span><span class="p">:</span> <span class="s2">&quot;DOUBLE&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="p">},</span>
+<span class="o">...</span>             <span class="s2">&quot;node_mappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="o">...</span>                 <span class="p">{</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Category&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;attribute_column_mappings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">},</span>
+<span class="o">...</span>                 <span class="p">}</span>
+<span class="o">...</span>             <span class="p">],</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;file_alias&quot;</span><span class="p">:</span> <span class="s2">&quot;f_nodes_segment&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/tigergraph/data/simple_graphrag/nodes_segment.csv&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;csv_parsing_options&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>                 <span class="s2">&quot;separator&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;EOL&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;quote&quot;</span><span class="p">:</span> <span class="s2">&quot;DOUBLE&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="p">},</span>
+<span class="o">...</span>             <span class="s2">&quot;node_mappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="o">...</span>                 <span class="p">{</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Segment&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;attribute_column_mappings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">},</span>
+<span class="o">...</span>                 <span class="p">}</span>
+<span class="o">...</span>             <span class="p">],</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;file_alias&quot;</span><span class="p">:</span> <span class="s2">&quot;f_nodes_bundle&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/tigergraph/data/simple_graphrag/nodes_bundle.csv&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;csv_parsing_options&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>                 <span class="s2">&quot;separator&quot;</span><span class="p">:</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;EOL&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="s2">&quot;quote&quot;</span><span class="p">:</span> <span class="s2">&quot;DOUBLE&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="p">},</span>
+<span class="o">...</span>             <span class="s2">&quot;node_mappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="o">...</span>                 <span class="p">{</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bundle&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;attribute_column_mappings&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;name&quot;</span><span class="p">},</span>
+<span class="o">...</span>                 <span class="p">}</span>
+<span class="o">...</span>             <span class="p">],</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;file_alias&quot;</span><span class="p">:</span> <span class="s2">&quot;f_edges_in_category&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/tigergraph/data/simple_graphrag/edges_in_category.csv&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;edge_mappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="o">...</span>                 <span class="p">{</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_name&quot;</span><span class="p">:</span> <span class="s2">&quot;In_Category&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;source_node_column&quot;</span><span class="p">:</span> <span class="s2">&quot;source&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_node_column&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="p">}</span>
+<span class="o">...</span>             <span class="p">],</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;file_alias&quot;</span><span class="p">:</span> <span class="s2">&quot;f_edges_tagged_with&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/tigergraph/data/simple_graphrag/edges_tagged_with.csv&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;edge_mappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="o">...</span>                 <span class="p">{</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Tagged_With&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;source_node_column&quot;</span><span class="p">:</span> <span class="s2">&quot;source&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_node_column&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="p">}</span>
+<span class="o">...</span>             <span class="p">],</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;file_alias&quot;</span><span class="p">:</span> <span class="s2">&quot;f_edges_in_segment&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/tigergraph/data/simple_graphrag/edges_in_segment.csv&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;edge_mappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="o">...</span>                 <span class="p">{</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_name&quot;</span><span class="p">:</span> <span class="s2">&quot;In_Segment&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;source_node_column&quot;</span><span class="p">:</span> <span class="s2">&quot;source&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_node_column&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="p">}</span>
+<span class="o">...</span>             <span class="p">],</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;file_alias&quot;</span><span class="p">:</span> <span class="s2">&quot;f_edges_in_bundle&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/tigergraph/data/simple_graphrag/edges_in_bundle.csv&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;edge_mappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="o">...</span>                 <span class="p">{</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_name&quot;</span><span class="p">:</span> <span class="s2">&quot;In_Bundle&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;source_node_column&quot;</span><span class="p">:</span> <span class="s2">&quot;source&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_node_column&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="p">}</span>
+<span class="o">...</span>             <span class="p">],</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;file_alias&quot;</span><span class="p">:</span> <span class="s2">&quot;f_edges_is_accessory_of&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/tigergraph/data/simple_graphrag/edges_is_accessory_of.csv&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;edge_mappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="o">...</span>                 <span class="p">{</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Is_Accessory_Of&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;source_node_column&quot;</span><span class="p">:</span> <span class="s2">&quot;source&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_node_column&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="p">}</span>
+<span class="o">...</span>             <span class="p">],</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>         <span class="p">{</span>
+<span class="o">...</span>             <span class="s2">&quot;file_alias&quot;</span><span class="p">:</span> <span class="s2">&quot;f_edges_is_upgrade_of&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/tigergraph/data/simple_graphrag/edges_is_upgrade_of.csv&quot;</span><span class="p">,</span>
+<span class="o">...</span>             <span class="s2">&quot;edge_mappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+<span class="o">...</span>                 <span class="p">{</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_name&quot;</span><span class="p">:</span> <span class="s2">&quot;Is_Upgrade_Of&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;source_node_column&quot;</span><span class="p">:</span> <span class="s2">&quot;source&quot;</span><span class="p">,</span>
+<span class="o">...</span>                     <span class="s2">&quot;target_node_column&quot;</span><span class="p">:</span> <span class="s2">&quot;target&quot;</span><span class="p">,</span>
+<span class="o">...</span>                 <span class="p">}</span>
+<span class="o">...</span>             <span class="p">],</span>
+<span class="o">...</span>         <span class="p">},</span>
+<span class="o">...</span>     <span class="p">],</span>
+<span class="o">...</span> <span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">loading_job</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>2025-03-28 13:01:07,369 - tigergraphx.core.managers.data_manager - INFO - Initiating data load for job: loading_job_retail...
+2025-03-28 13:01:14,751 - tigergraphx.core.managers.data_manager - INFO - Data load completed successfully.
+</code></pre>
+<p>Now, let's check the total number of nodes in the graph again. We should observe that some nodes have been successfully loaded into the graph.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">())</span>
+</code></pre></div>
+<pre><code>102
+</code></pre>
+<hr />
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li><a href="../simple_graphrag_2/">Supporting Simple GraphRAG: Part 2</a>: Learn how to retrieve context and generate answers for user queries.</li>
+</ul>
+<hr />
+<p>Start transforming your GraphRAG workflows with the power of <strong>TigerGraphX</strong> today!</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../msft_graphrag_5/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part 5 - Query and Evaluation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Part 5 - Query and Evaluation
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../simple_graphrag_2/" class="md-footer__link md-footer__link--next" aria-label="Next: Part 2 - Context Retreival and Answer Generation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Part 2 - Context Retreival and Answer Generation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.footer", "content.code.copy", "content.code.select"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+    
+  </body>
+</html>

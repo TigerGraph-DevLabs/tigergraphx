@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../msft_graphrag_2/">
+        <link rel="prev" href="../simple_graphrag_1/">
       
       
-        <link rel="next" href="../msft_graphrag_4/">
+        <link rel="next" href="../../reference/introduction/">
       
       
       <link rel="icon" href="../../images/logo.png">
@@ -20,7 +20,7 @@
     
     
       
-        <title>Part 3 - Graph Analysis - TigerGraphX</title>
+        <title>Part 2 - Context Retreival and Answer Generation - TigerGraphX</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#supporting-microsofts-graphrag-part-3-graph-analysis" class="md-skip">
+        <a href="#supporting-simple-graphrag-part-2-context-retrieval-and-answer-generation" class="md-skip">
           Skip to content
         </a>
       
@@ -109,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Part 3 - Graph Analysis
+              Part 2 - Context Retreival and Answer Generation
             
           </span>
         </div>
@@ -706,8 +706,6 @@
                 
   
   
-    
-  
   
   
     
@@ -717,11 +715,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
         
           
           <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
@@ -736,7 +736,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             Supporting Microsoft's GraphRAG
@@ -791,31 +791,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Part 3 - Graph Analysis
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../msft_graphrag_3/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -825,137 +804,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#retrieving-the-graph-from-tigergraph" class="md-nav__link">
-    <span class="md-ellipsis">
-      Retrieving the Graph from TigerGraph
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Retrieving the Graph from TigerGraph">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#define-the-tigergraph-connection-configuration" class="md-nav__link">
-    <span class="md-ellipsis">
-      Define the TigerGraph Connection Configuration
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#retrieve-a-graph-and-print-its-schema" class="md-nav__link">
-    <span class="md-ellipsis">
-      Retrieve a Graph and Print Its Schema
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#display-the-graph-schema" class="md-nav__link">
-    <span class="md-ellipsis">
-      Display the Graph Schema
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#display-node-and-edge-counts" class="md-nav__link">
-    <span class="md-ellipsis">
-      Display Node and Edge Counts
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Display Node and Edge Counts">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#display-the-total-number-of-nodes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Display the Total Number of Nodes
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#display-the-count-of-nodes-for-each-node-type" class="md-nav__link">
-    <span class="md-ellipsis">
-      Display the Count of Nodes for Each Node Type
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#display-the-total-number-of-edges" class="md-nav__link">
-    <span class="md-ellipsis">
-      Display the Total Number of Edges
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#display-the-count-of-edges-for-each-edge-type" class="md-nav__link">
-    <span class="md-ellipsis">
-      Display the Count of Edges for Each Edge Type
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#retrieving-sample-nodes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Retrieving Sample Nodes
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      What’s Next?
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1017,8 +865,10 @@
                 
   
   
+    
   
   
+  
     
     
     
@@ -1026,13 +876,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
         
           
           <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
@@ -1047,7 +895,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_4">
             <span class="md-nav__icon md-icon"></span>
             Supporting Simple GraphRAG
@@ -1080,10 +928,31 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../simple_graphrag_2/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Part 2 - Context Retreival and Answer Generation
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1093,6 +962,137 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#workflow-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-the-graph-from-tigergraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get the Graph from TigerGraph
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Get the Graph from TigerGraph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#define-the-tigergraph-connection-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Define the TigerGraph Connection Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieve-the-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retrieve the Graph
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#context-building-writing-custom-context-builders" class="md-nav__link">
+    <span class="md-ellipsis">
+      Context Building: Writing Custom Context Builders
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generate-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generate Answer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Generate Answer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#define-a-prompt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Define a Prompt
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#define-a-function-to-generate-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Define a Function to Generate Answer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-the-function-to-generate-an-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run the Function to Generate an Answer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reset
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      What’s Next?
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -2162,13 +2162,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#retrieving-the-graph-from-tigergraph" class="md-nav__link">
+  <a href="#workflow-overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Retrieving the Graph from TigerGraph
+      Workflow Overview
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Retrieving the Graph from TigerGraph">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-the-graph-from-tigergraph" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get the Graph from TigerGraph
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Get the Graph from TigerGraph">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2181,9 +2190,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#retrieve-a-graph-and-print-its-schema" class="md-nav__link">
+  <a href="#retrieve-the-graph" class="md-nav__link">
     <span class="md-ellipsis">
-      Retrieve a Graph and Print Its Schema
+      Retrieve the Graph
     </span>
   </a>
   
@@ -2195,55 +2204,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#display-the-graph-schema" class="md-nav__link">
+  <a href="#context-building-writing-custom-context-builders" class="md-nav__link">
     <span class="md-ellipsis">
-      Display the Graph Schema
+      Context Building: Writing Custom Context Builders
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#display-node-and-edge-counts" class="md-nav__link">
+  <a href="#generate-answer" class="md-nav__link">
     <span class="md-ellipsis">
-      Display Node and Edge Counts
+      Generate Answer
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Display Node and Edge Counts">
+    <nav class="md-nav" aria-label="Generate Answer">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#display-the-total-number-of-nodes" class="md-nav__link">
+  <a href="#define-a-prompt" class="md-nav__link">
     <span class="md-ellipsis">
-      Display the Total Number of Nodes
+      Define a Prompt
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#display-the-count-of-nodes-for-each-node-type" class="md-nav__link">
+  <a href="#define-a-function-to-generate-answer" class="md-nav__link">
     <span class="md-ellipsis">
-      Display the Count of Nodes for Each Node Type
+      Define a Function to Generate Answer
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#display-the-total-number-of-edges" class="md-nav__link">
+  <a href="#run-the-function-to-generate-an-answer" class="md-nav__link">
     <span class="md-ellipsis">
-      Display the Total Number of Edges
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#display-the-count-of-edges-for-each-edge-type" class="md-nav__link">
-    <span class="md-ellipsis">
-      Display the Count of Edges for Each Edge Type
+      Run the Function to Generate an Answer
     </span>
   </a>
   
@@ -2255,9 +2255,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#retrieving-sample-nodes" class="md-nav__link">
+  <a href="#reset" class="md-nav__link">
     <span class="md-ellipsis">
-      Retrieving Sample Nodes
+      Reset
     </span>
   </a>
   
@@ -2288,298 +2288,283 @@
 
 
 
-<h1 id="supporting-microsofts-graphrag-part-3-graph-analysis">Supporting Microsoft’s GraphRAG: Part 3 - Graph Analysis</h1>
-<p>In the <a href="../msft_graphrag_2/">previous section</a>, we have created a graph in TigerGraph, and loaded the CSV data into it.</p>
-<p>Now, let’s use Jupyter Notebook to explore the graph data and perform graph analysis.</p>
-<p>To run this Jupyter Notebook, you can download the original <code>.ipynb</code> file from <a href="https://github.com/tigergraph/tigergraphx/tree/main/docs/graphrag/msft_graphrag_3.ipynb">msft_graphrag_3.ipynb</a>.</p>
+<h1 id="supporting-simple-graphrag-part-2-context-retrieval-and-answer-generation">Supporting Simple GraphRAG: Part 2 - Context Retrieval and Answer Generation</h1>
+<p>To run this Jupyter Notebook, you can download the original <code>.ipynb</code> file from <a href="https://github.com/tigergraph/tigergraphx/tree/main/docs/graphrag/simple_graphrag_2.ipynb">simple_graphrag_2.ipynb</a>.</p>
 <hr />
-<h2 id="retrieving-the-graph-from-tigergraph">Retrieving the Graph from TigerGraph</h2>
+<h2 id="workflow-overview">Workflow Overview</h2>
+<p>The query process of GraphRAG follows this workflow. TigerGraphX serves as the key interface, facilitating interaction with the embedding model to generate embeddings for user queries, retrieving context from TigerGraph, and communicating with the LLM chat model to generate answers.</p>
+<p><img alt="" src="https://github.com/tigergraph/tigergraphx/blob/main/docs/images/graphrag/querying.png?raw=true" /></p>
+<hr />
+<h2 id="get-the-graph-from-tigergraph">Get the Graph from TigerGraph</h2>
 <p>Since the graph has already been created in TigerGraph, redefining its schema is unnecessary. Instead, you can provide the graph name to retrieve it. TigerGraphX will verify if the graph exists in TigerGraph and, if it does, will return the corresponding graph.</p>
 <h3 id="define-the-tigergraph-connection-configuration">Define the TigerGraph Connection Configuration</h3>
-<p>Before retrieving the graph schema, you need to configure the <strong>TigerGraph connection settings</strong>.  </p>
-<p>The recommended approach is to use environment variables, such as setting them with the <code>export</code> command in the shell. Here, to illustrate the demo, we configure them within Python using the <code>os.environ</code> method. You can find more methods for configuring connection settings in <a href="../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__">Graph.__init__</a>.</p>
+<p>Before retrive the graph schema from TigerGraph, you shoulddefine the  TigerGraph Connection Configuration first.
+The recommended approach is to use environment variables, such as setting them with the <code>export</code> command in the shell. Here, to illustrate the demo, we configure them within Python using the <code>os.environ</code> method. You can find more methods for configuring connection settings in <a href="../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__">Graph.__init__</a>.</p>
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TG_HOST&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1&quot;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TG_USERNAME&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;tigergraph&quot;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TG_PASSWORD&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;tigergraph&quot;</span>
 </code></pre></div>
-<h3 id="retrieve-a-graph-and-print-its-schema">Retrieve a Graph and Print Its Schema</h3>
-<p>Once the graph has been created in TigerGraph, you can retrieve it without manually defining the schema using the <code>Graph.from_db</code> method, which requires only the graph name:</p>
+<h3 id="retrieve-the-graph">Retrieve the Graph</h3>
+<p>Once a graph has been created in TigerGraph, you can retrieve it without manually defining the schema using the <code>Graph.from_db</code> method, which requires only the graph name:</p>
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;GraphRAG&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="o">.</span><span class="n">from_db</span><span class="p">(</span><span class="s2">&quot;RetailGraph&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="display-the-graph-schema">Display the Graph Schema</h2>
-<p>Now, let's print the schema of the graph in a well-formatted manner:</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">schema</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_schema</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
-</code></pre></div>
-<pre><code>{
-    "graph_name": "GraphRAG",
-    "nodes": {
-        "Document": {
-            "primary_key": "id",
-            "attributes": {
-                "id": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                },
-                "title": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                }
-            },
-            "vector_attributes": {}
-        },
-        "TextUnit": {
-            "primary_key": "id",
-            "attributes": {
-                "id": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                },
-                "text": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                },
-                "n_tokens": {
-                    "data_type": "DataType.UINT",
-                    "default_value": null
-                }
-            },
-            "vector_attributes": {}
-        },
-        "Entity": {
-            "primary_key": "id",
-            "attributes": {
-                "id": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                },
-                "human_readable_id": {
-                    "data_type": "DataType.UINT",
-                    "default_value": null
-                },
-                "name": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                },
-                "entity_type": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                },
-                "description": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                }
-            },
-            "vector_attributes": {
-                "emb_description": {
-                    "dimension": 1536,
-                    "index_type": "HNSW",
-                    "data_type": "FLOAT",
-                    "metric": "COSINE"
-                }
-            }
-        },
-        "Relationship": {
-            "primary_key": "id",
-            "attributes": {
-                "id": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                },
-                "human_readable_id": {
-                    "data_type": "DataType.UINT",
-                    "default_value": null
-                },
-                "rank": {
-                    "data_type": "DataType.UINT",
-                    "default_value": null
-                },
-                "weight": {
-                    "data_type": "DataType.DOUBLE",
-                    "default_value": null
-                },
-                "description": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                }
-            },
-            "vector_attributes": {}
-        },
-        "Community": {
-            "primary_key": "id",
-            "attributes": {
-                "id": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                },
-                "level": {
-                    "data_type": "DataType.UINT",
-                    "default_value": null
-                },
-                "rank": {
-                    "data_type": "DataType.DOUBLE",
-                    "default_value": null
-                },
-                "rank_explanation": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                },
-                "title": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                },
-                "full_content": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                },
-                "summary": {
-                    "data_type": "DataType.STRING",
-                    "default_value": null
-                }
-            },
-            "vector_attributes": {}
-        }
-    },
-    "edges": {
-        "document_contains_text_unit": {
-            "is_directed_edge": false,
-            "from_node_type": "Document",
-            "to_node_type": "TextUnit",
-            "discriminator": "set()",
-            "attributes": {}
-        },
-        "text_unit_contains_entity": {
-            "is_directed_edge": false,
-            "from_node_type": "TextUnit",
-            "to_node_type": "Entity",
-            "discriminator": "set()",
-            "attributes": {}
-        },
-        "text_unit_contains_relationship": {
-            "is_directed_edge": false,
-            "from_node_type": "TextUnit",
-            "to_node_type": "Relationship",
-            "discriminator": "set()",
-            "attributes": {}
-        },
-        "relationship_source": {
-            "is_directed_edge": false,
-            "from_node_type": "Relationship",
-            "to_node_type": "Entity",
-            "discriminator": "set()",
-            "attributes": {}
-        },
-        "relationship_target": {
-            "is_directed_edge": false,
-            "from_node_type": "Relationship",
-            "to_node_type": "Entity",
-            "discriminator": "set()",
-            "attributes": {}
-        },
-        "community_contains_entity": {
-            "is_directed_edge": false,
-            "from_node_type": "Community",
-            "to_node_type": "Entity",
-            "discriminator": "set()",
-            "attributes": {}
-        },
-        "community_contains_relationship": {
-            "is_directed_edge": false,
-            "from_node_type": "Community",
-            "to_node_type": "Relationship",
-            "discriminator": "set()",
-            "attributes": {}
-        }
-    }
-}
-</code></pre>
-<h2 id="display-node-and-edge-counts">Display Node and Edge Counts</h2>
-<p>Gain deeper insights into the graph by exploring details such as the total number of nodes and the count of nodes for each node type.</p>
-<h3 id="display-the-total-number-of-nodes">Display the Total Number of Nodes</h3>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">()</span>
-</code></pre></div>
-<pre><code>2883
-</code></pre>
-<h3 id="display-the-count-of-nodes-for-each-node-type">Display the Count of Nodes for Each Node Type</h3>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">node_type</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">]:</span>
-<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">node_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_nodes</span><span class="p">(</span><span class="n">node_type</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</code></pre></div>
-<pre><code>Document: 1
-TextUnit: 104
-Entity: 1577
-Relationship: 1092
-Community: 109
-</code></pre>
-<h3 id="display-the-total-number-of-edges">Display the Total Number of Edges</h3>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">()</span>
-</code></pre></div>
-<pre><code>10313
-</code></pre>
-<h3 id="display-the-count-of-edges-for-each-edge-type">Display the Count of Edges for Each Edge Type</h3>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">edge_type</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">]:</span>
-<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">edge_type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">G</span><span class="o">.</span><span class="n">number_of_edges</span><span class="p">(</span><span class="n">edge_type</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</code></pre></div>
-<pre><code>document_contains_text_unit: 104
-text_unit_contains_entity: 2095
-text_unit_contains_relationship: 1282
-relationship_source: 1092
-relationship_target: 1092
-community_contains_entity: 1956
-community_contains_relationship: 2692
-</code></pre>
-<h2 id="retrieving-sample-nodes">Retrieving Sample Nodes</h2>
-<p>Retrieve Sample <code>Entity</code> Nodes.</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Entity&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
-</code></pre></div>
-<pre><code>                               v_id  v_type  human_readable_id entity_type  \
-0  c0803923646246c5a203810faa4e4464  Entity                825         GEO   
-1  6069e8895f924b659534f74d6736e69d  Entity                830         GEO
+<hr />
+<h2 id="context-building-writing-custom-context-builders">Context Building: Writing Custom Context Builders</h2>
+<p>Context builders play a vital role in graph-powered RAG workflows. They transform retrieved graph data into structured, meaningful contexts for tasks such as interactions with LLMs.</p>
+<p>TigerGraphX simplifies this process by offering the flexible <code>BaseContextBuilder</code> class, which allows developers to define custom logic for context building. You can find the source code in <a href="https://github.com/TigerGraph-DevLabs/tigergraphx/blob/main/tigergraphx/graphrag/base_context_builder.py">this link</a>.</p>
+<p>In this example, we create a simple <code>ContextBuilder</code> by implementing the <code>build_context</code> method to define how the context is constructed. The process involves:  </p>
+<ul>
+<li>Retrieving the top <strong>k</strong> relevant objects (products) using TigerGraph's vector search.  </li>
+<li>For each retrieved product, fetching its properties and edges.  </li>
+<li>Concatenating all the gathered information into a structured context and returning it.  </li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx.graphrag</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseContextBuilder</span>
 
-            name                                        description  \
-0  VALLEY STREAM  Valley Stream is a location in New York where ...   
-1          CHINA  China is a country in East Asia where Walmart ...
-
-                                 id  
-0  c0803923646246c5a203810faa4e4464  
-1  6069e8895f924b659534f74d6736e69d
-</code></pre>
-<p>Retrieve Sample <code>Relationship</code> Nodes</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Relationship&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">class</span><span class="w"> </span><span class="nc">ContextBuilder</span><span class="p">(</span><span class="n">BaseContextBuilder</span><span class="p">):</span>
+<span class="o">...</span>     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">build_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="o">...</span>         <span class="s2">&quot;&quot;&quot;Build local context.&quot;&quot;&quot;</span>
+<span class="o">...</span>         <span class="n">context</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">...</span> 
+<span class="o">...</span>         <span class="c1"># Retrieve top-k objects</span>
+<span class="o">...</span>         <span class="n">top_k_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">retrieve_top_k_objects</span><span class="p">(</span>
+<span class="o">...</span>             <span class="n">query</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">oversample_scaler</span><span class="o">=</span><span class="mi">1</span>
+<span class="o">...</span>         <span class="p">)</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="ow">not</span> <span class="n">top_k_objects</span><span class="p">:</span>
+<span class="o">...</span>             <span class="k">return</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># Return early if no objects are retrieved</span>
+<span class="o">...</span> 
+<span class="o">...</span>         <span class="c1"># Iterate over all products</span>
+<span class="o">...</span>         <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">top_k_objects</span><span class="p">:</span>
+<span class="o">...</span>             <span class="n">node_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_node_data</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="s2">&quot;Product&quot;</span><span class="p">)</span>
+<span class="o">...</span>             <span class="n">edges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">get_node_edges</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="s2">&quot;Product&quot;</span><span class="p">)</span>
+<span class="o">...</span>             <span class="n">context</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Node Data for </span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">node_data</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="o">...</span>             <span class="n">context</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Edges for </span><span class="si">{</span><span class="n">product</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">edges</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="o">...</span> 
+<span class="o">...</span>         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
 </code></pre></div>
-<pre><code>                               v_id        v_type  human_readable_id  rank  \
-0  5e7864d8153f4aa8936b253792f0b636  Relationship               1066    32   
-1  1db19aed7ed54b44b4e8f71b7588e0dd  Relationship               1058    16
-
-   weight                                        description  \
-0       8  Animax is a channel owned by Sony Pictures Tel...   
-1       7  Guerrilla Cambridge developed games for the Pl...
-
-                                 id  
-0  5e7864d8153f4aa8936b253792f0b636  
-1  1db19aed7ed54b44b4e8f71b7588e0dd
+<pre><code>2025-03-28 15:15:41,490 - datasets - INFO - PyTorch version 2.6.0 available.
 </code></pre>
-<p>Retrieve Sample <code>Community</code> Nodes</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">get_nodes</span><span class="p">(</span><span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Community&quot;</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<p>Here’s how you can utilize the custom context builder to integrate it with TigerGraphX and OpenAI components:  </p>
+<ul>
+<li><strong>Configure Vector Search:</strong> The <code>vector_db</code> settings specify that the search engine will use <strong>TigerVector</strong> to retrieve relevant <strong>Product</strong> nodes based on their <code>emb_features</code> attribute.  </li>
+<li><strong>Set Up OpenAI Components:</strong> The configuration defines models for <strong>LLM</strong>, <strong>embedding</strong>, and <strong>chat</strong>, ensuring that API keys are securely managed via environment variables.  </li>
+<li><strong>Initialize OpenAI and Search Engine:</strong> The <code>create_openai_components</code> function instantiates the OpenAI chat model and the vector-based search engine for retrieving relevant nodes.  </li>
+<li><strong>Create Context Builder:</strong> The <code>ContextBuilder</code> is initialized with the graph and search engine, allowing it to retrieve and structure context dynamically for downstream applications.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx.factories</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_openai_components</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
+<span class="o">...</span>     <span class="s2">&quot;vector_db&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;TigerVector&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="s2">&quot;graph_name&quot;</span><span class="p">:</span> <span class="s2">&quot;RetailGraph&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="s2">&quot;node_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Product&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="s2">&quot;vector_attribute_name&quot;</span><span class="p">:</span> <span class="s2">&quot;emb_features&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="p">},</span>
+<span class="o">...</span>     <span class="s2">&quot;llm&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenAI&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="c1"># NOTE: The api_key must be provided via the environment variable OPENAI_API_KEY</span>
+<span class="o">...</span>     <span class="p">},</span>
+<span class="o">...</span>     <span class="s2">&quot;embedding&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenAI&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;text-embedding-3-small&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="p">},</span>
+<span class="o">...</span>     <span class="s2">&quot;chat&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="o">...</span>         <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;OpenAI&quot;</span><span class="p">,</span>
+<span class="o">...</span>         <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="p">},</span>
+<span class="o">...</span> <span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="n">openai_chat</span><span class="p">,</span> <span class="n">search_engine</span><span class="p">)</span> <span class="o">=</span> <span class="n">create_openai_components</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">context_builder</span> <span class="o">=</span> <span class="n">ContextBuilder</span><span class="p">(</span><span class="n">graph</span><span class="o">=</span><span class="n">G</span><span class="p">,</span> <span class="n">search_engine</span><span class="o">=</span><span class="n">search_engine</span><span class="p">)</span>
 </code></pre></div>
-<pre><code>  v_id     v_type                                            summary  level  \
-0   49  Community  This community encompasses various command-lin...      1   
-1   61  Community  The community centers around the Battles of Ma...      1
+<p>Let's verify that the context builder functions as expected.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">context</span> <span class="o">=</span> <span class="k">await</span> <span class="n">context_builder</span><span class="o">.</span><span class="n">build_context</span><span class="p">(</span><span class="s2">&quot;I am looking for a begginer drone. Please give me some recommendations.&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>2025-03-28 15:15:46,803 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+Node Data for SnapShot Voyager Remote Shutter Release: {'name': 'SnapShot Voyager Remote Shutter Release', 'price': 24.99, 'weight': 40, 'features': "Reduced Camera Shake: Allows you to trigger the shutter without touching the camera, minimizing movement and ensuring sharper images. Convenient Control: Provides a comfortable and ergonomic grip with a simple button to activate the shutter. Long Cable: Offers flexibility and ease of use with a generous cable length. Easy Connection: Plugs directly into the camera's remote port for quick and simple setup."}
 
-                                        full_content  rank  id  \
-0  # DOS and Command-Line Operating Systems Commu...   7.5  49   
-1  # Battles of Manassas and Civil War Historians...   6.5  61
+Edges for SnapShot Voyager Remote Shutter Release: [('SnapShot Voyager Camera 3.0', 'SnapShot Voyager Remote Shutter Release'), ('SnapShot Voyager Remote Shutter Release', 'SnapShot Voyager Camera 3.0'), ('SnapShot Voyager Remote Shutter Release', 'Photography')]
 
-                                    rank_explanation         title  
-0  The impact severity rating is high due to the ...  Community 49  
-1  The impact severity rating is moderate to high...  Community 61
+Node Data for Aura X5 Pro: {'name': 'Aura X5 Pro', 'price': 1299, 'weight': 205, 'features': 'Advanced Camera System: Featuring a 50MP primary sensor with OIS, a 12MP ultrawide lens, and a 10MP telephoto lens with 3x optical zoom, the Aura X5 Pro captures professional-quality images in any lighting conditions. Extended Battery Life: The 5000mAh battery delivers all-day power, allowing you to browse, stream, and create without worrying about running out of charge. Supports 65W fast charging. Brilliant Display: Immerse yourself in vibrant colors and sharp details on the 6.7-inch AMOLED display with a 120Hz refresh rate. Powerful Performance: Powered by the Snapdragon 8 Gen 2 processor, the Aura X5 Pro delivers lightning-fast performance for gaming, multitasking, and demanding applications. Enhanced Security: Features an in-display fingerprint sensor and advanced facial recognition for secure and convenient unlocking. Durable Design: Crafted with a premium aluminum frame and Gorilla Glass Victus+ on both the front and back for exceptional durability.'}
+
+Edges for Aura X5 Pro: [('Aura X5', 'Aura X5 Pro'), ('Aura X5 Pro', 'Phone'), ('Aura X5 Pro', 'Mobile Phones'), ('Aura X5 Pro', 'Aura X5'), ('Aura X5 Pro', 'Home')]
+
+Node Data for SnapShot Voyager Camera 3.0: {'name': 'SnapShot Voyager Camera 3.0', 'price': 249.99, 'weight': 350, 'features': 'Intuitive Interface: Navigate settings and modes effortlessly with a user-friendly touchscreen and simple controls. High-Resolution Sensor: Capture sharp, vibrant photos and videos with a 24-megapixel sensor. Optical Image Stabilization: Reduce blur from camera shake for clear images even in low light or while in motion. 4K Video Recording: Record smooth, high-definition video at 4K resolution. Built-in Wi-Fi: Easily transfer photos and videos to your smartphone or tablet for sharing. Versatile Shooting Modes: Choose from a variety of modes, including portrait, landscape, sports, and night mode. Long Battery Life: Enjoy extended shooting sessions with a long-lasting rechargeable battery.'}
+
+Edges for SnapShot Voyager Camera 3.0: [('SnapShot Voyager Lens Hood', 'SnapShot Voyager Camera 3.0'), ('SnapShot Voyager Remote Shutter Release', 'SnapShot Voyager Camera 3.0'), ('SnapShot Voyager Camera 3.0', 'Camera'), ('SnapShot Voyager Camera 3.0', 'Home'), ('SnapShot Voyager Camera 3.0', 'SnapShot Voyager Remote Shutter Release'), ('SnapShot Voyager Camera 3.0', 'SnapShot Voyager Lens Hood'), ('SnapShot Voyager Camera 3.0', 'Photography')]
+
+Node Data for AuraBook Air: {'name': 'AuraBook Air', 'price': 999, 'weight': 2.5, 'features': 'Ultra-lightweight design for maximum portability. Brilliant 13.3-inch Full HD Display. Fast and responsive performance. Long-lasting battery life for all-day use. Integrated HD webcam for video conferencing. Sleek, modern design.'}
+
+Edges for AuraBook Air: [('AuraBook Air', 'Computer'), ('AuraBook Air', 'Office'), ('AuraBook Air', 'Laptops'), ('AuraBook Air', 'Home')]
+
+Node Data for SkyHawk Zephyr Drone: {'name': 'SkyHawk Zephyr Drone', 'price': 0, 'weight': 0, 'features': 'Simple Controls: Beginner friendly and intuitive controls, plus automatic takeoff and landing. Tough Build: Designed to handle rookie mistakes, thanks to its robust construction. Capture Memories: Record crisp HD photos and videos from above. Extended Fun: Enjoy up to 15 minutes of flight time per charge. Worry-Free Flying: Free Fly mode lets you fly without directional concerns.'}
+
+Edges for SkyHawk Zephyr Drone: [('SkyHawk Zephyr 2.0 - Reach New Heights', 'SkyHawk Zephyr Drone'), ('SkyHawk Zephyr Drone', 'Videography'), ('SkyHawk Zephyr Drone', 'SkyHawk Zephyr Propeller Guards'), ('SkyHawk Zephyr Drone', 'Drone'), ('SkyHawk Zephyr Propeller Guards', 'SkyHawk Zephyr Drone'), ('SkyHawk Zephyr Extended Battery', 'SkyHawk Zephyr Drone'), ('SkyHawk Zephyr Drone', 'SkyHawk Zephyr Extended Battery'), ('SkyHawk Zephyr Drone', 'Home'), ('SkyHawk Zephyr Drone', 'SkyHawk Zephyr 2.0 - Reach New Heights'), ('SkyHawk Zephyr Drone', 'Photography')]
+
+Node Data for SkyHawk Zephyr Extended Battery: {'name': 'SkyHawk Zephyr Extended Battery', 'price': 29.99, 'weight': 70, 'features': 'Increased Capacity: Enjoy up to 25 minutes of flight time on a single charge, a 67% increase over the standard battery. Easy Installation: Seamlessly swap out with the original battery in seconds. Safe and Reliable: Built to the same high-quality standards as the SkyHawk Zephyr drone.'}
+
+Edges for SkyHawk Zephyr Extended Battery: [('SkyHawk Zephyr Drone', 'SkyHawk Zephyr Extended Battery'), ('SkyHawk Zephyr Extended Battery', 'Videography'), ('SkyHawk Zephyr Extended Battery', 'Photography'), ('SkyHawk Zephyr Extended Battery', 'SkyHawk Zephyr Drone')]
+
+Node Data for SkyHawk Zephyr 2.0 - Reach New Heights: {'name': 'SkyHawk Zephyr 2.0 - Reach New Heights', 'price': 199.99, 'weight': 250, 'features': '4K Camera: Capture breathtaking aerial footage in stunning 4K resolution with enhanced image stabilization. Extended Flight Time: Enjoy up to 20 minutes of flight time on a single charge. Increased Range: Fly farther with an extended control range of up to 1.2km (3/4 mile). Intelligent Flight Modes: Explore creative filming options with Follow Me, Orbit, and Waypoint modes. GPS-Assisted Flight: Benefit from precise positioning and enhanced safety features like Return-to-Home. Upgraded Motors: Experience smoother, more responsive flight and increased agility. Streamlined Design: A sleek and aerodynamic design for improved flight performance.'}
+
+Edges for SkyHawk Zephyr 2.0 - Reach New Heights: [('SkyHawk Zephyr Drone', 'SkyHawk Zephyr 2.0 - Reach New Heights'), ('SkyHawk Zephyr 2.0 - Reach New Heights', 'Drone'), ('SkyHawk Zephyr 2.0 - Reach New Heights', 'Photography'), ('SkyHawk Zephyr 2.0 - Reach New Heights', 'SkyHawk Zephyr Drone'), ('SkyHawk Zephyr 2.0 - Reach New Heights', 'Home'), ('SkyHawk Zephyr 2.0 - Reach New Heights', 'Videography')]
+
+Node Data for  answer questions: {'name': ' answer questions', 'price': 0, 'weight': 0, 'features': ''}
+
+Edges for  answer questions: []
+
+Node Data for SkyHawk Zephyr Propeller Guards: {'name': 'SkyHawk Zephyr Propeller Guards', 'price': 14.99, 'weight': 20, 'features': 'Enhanced Safety: Prevent accidental damage to the propellers and surroundings during flight. Lightweight Design: Minimal impact on flight performance. Easy Installation: Snap on and off in seconds for quick and convenient use. Increased Durability: Provides an extra layer of protection for your drone.'}
+
+Edges for SkyHawk Zephyr Propeller Guards: [('SkyHawk Zephyr Drone', 'SkyHawk Zephyr Propeller Guards'), ('SkyHawk Zephyr Propeller Guards', 'Photography'), ('SkyHawk Zephyr Propeller Guards', 'SkyHawk Zephyr Drone'), ('SkyHawk Zephyr Propeller Guards', 'Videography')]
+
+Node Data for ChromaJet Starter Bundle: {'name': 'ChromaJet Starter Bundle', 'price': 528, 'weight': 12, 'features': 'Complete Starter Package: Includes printer and cleaning kit for immediate use. Professional-Grade Quality: Produce high-resolution prints with exceptional color accuracy. User-Friendly Interface: Intuitive controls for easy operation, even for beginners. Versatile Media Handling: Supports a wide range of paper types and sizes. Durable Construction: Built to last, ensuring years of reliable performance.'}
+
+Edges for ChromaJet Starter Bundle: [('ChromaJet Starter Bundle', 'Printing')]
+</code></pre>
+<p>Congratulations! It works.  </p>
+<hr />
+<h2 id="generate-answer">Generate Answer</h2>
+<p>The final step is to generate an answer using the LLM.  </p>
+<h3 id="define-a-prompt">Define a Prompt</h3>
+<p>First, let's define a prompt template for the LLM to generate an answer as follows.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">PROMPTS</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;---Role---</span>
+<span class="s2">... </span>
+<span class="s2">... You are a helpful assistant responding to questions about data in the tables provided.</span>
+<span class="s2">... </span>
+<span class="s2">... </span>
+<span class="s2">... ---Goal---</span>
+<span class="s2">... </span>
+<span class="s2">... Generate a response of the target length and format that responds to the user&#39;s question, summarizing all information in the input data tables appropriate for the response length and format, and incorporating any relevant general knowledge.</span>
+<span class="s2">... If you don&#39;t know the answer, just say so. Do not make anything up.</span>
+<span class="s2">... Do not include information where the supporting evidence for it is not provided.</span>
+<span class="s2">... </span>
+<span class="s2">... ---Target response length and format---</span>
+<span class="s2">... </span>
+<span class="s2">... </span><span class="si">{response_type}</span>
+<span class="s2">... </span>
+<span class="s2">... </span>
+<span class="s2">... ---Data tables---</span>
+<span class="s2">... </span>
+<span class="s2">... </span><span class="si">{context_data}</span>
+<span class="s2">... </span>
+<span class="s2">... </span>
+<span class="s2">... ---Goal---</span>
+<span class="s2">... </span>
+<span class="s2">... Generate a response of the target length and format that responds to the user&#39;s question, summarizing all information in the input data tables appropriate for the response length and format, and incorporating any relevant general knowledge.</span>
+<span class="s2">... </span>
+<span class="s2">... If you don&#39;t know the answer, just say so. Do not make anything up.</span>
+<span class="s2">... </span>
+<span class="s2">... Do not include information where the supporting evidence for it is not provided.</span>
+<span class="s2">... </span>
+<span class="s2">... </span>
+<span class="s2">... ---Target response length and format---</span>
+<span class="s2">... </span>
+<span class="s2">... </span><span class="si">{response_type}</span>
+<span class="s2">... </span>
+<span class="s2">... Add sections and commentary to the response as appropriate for the length and format. Style the response in markdown.</span>
+<span class="s2">... &quot;&quot;&quot;</span>
+</code></pre></div>
+<h3 id="define-a-function-to-generate-answer">Define a Function to Generate Answer</h3>
+<p>Then let's define a <code>query</code> function that integrates the context builder and OpenAIChat to process user queries. This function retrieves relevant context from the graph, constructs a system prompt, and generates a response using the LLM.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx.graphrag</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseContextBuilder</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx.llm</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAIChat</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">query</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">openai_chat</span><span class="p">:</span> <span class="n">OpenAIChat</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">context_builder</span><span class="p">:</span> <span class="n">BaseContextBuilder</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">top_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">only_need_context</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">response_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Multiple Paragraphs&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="o">...</span>     <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">...     Perform a local search using the context builder and return the result.</span>
+<span class="s2">...     &quot;&quot;&quot;</span>
+<span class="o">...</span>     <span class="c1"># Generate context using the local context builder</span>
+<span class="o">...</span>     <span class="n">context</span> <span class="o">=</span> <span class="k">await</span> <span class="n">context_builder</span><span class="o">.</span><span class="n">build_context</span><span class="p">(</span>
+<span class="o">...</span>         <span class="n">query</span><span class="p">,</span>
+<span class="o">...</span>         <span class="n">k</span><span class="o">=</span><span class="n">top_k</span><span class="p">,</span>
+<span class="o">...</span>     <span class="p">)</span>
+<span class="o">...</span>     <span class="k">if</span> <span class="n">only_need_context</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="o">...</span>             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;Expected `context` to be an instance of str.&quot;</span><span class="p">)</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="n">context</span>
+<span class="o">...</span> 
+<span class="o">...</span>     <span class="c1"># Validate that context exists</span>
+<span class="o">...</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">context</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="s2">&quot;Apologies, but I couldn&#39;t provide an answer as no relevant context was found for your query.&quot;</span>
+<span class="o">...</span> 
+<span class="o">...</span>     <span class="c1"># Construct the system prompt using the context</span>
+<span class="o">...</span>     <span class="n">system_prompt</span> <span class="o">=</span> <span class="n">PROMPTS</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">context_data</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="n">response_type</span><span class="o">=</span><span class="n">response_type</span><span class="p">)</span>
+<span class="o">...</span> 
+<span class="o">...</span>     <span class="c1"># Perform the query using OpenAIChat</span>
+<span class="o">...</span>     <span class="k">try</span><span class="p">:</span>
+<span class="o">...</span>         <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">openai_chat</span><span class="o">.</span><span class="n">chat</span><span class="p">(</span>
+<span class="o">...</span>             <span class="p">[</span>
+<span class="o">...</span>                 <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">system_prompt</span><span class="p">},</span>
+<span class="o">...</span>                 <span class="p">{</span><span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="n">query</span><span class="p">},</span>
+<span class="o">...</span>             <span class="p">]</span>
+<span class="o">...</span>         <span class="p">)</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="n">response</span>
+<span class="o">...</span>     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+<span class="o">...</span>         <span class="k">return</span> <span class="s2">&quot;An error occurred while processing the query.&quot;</span>
+</code></pre></div>
+<h3 id="run-the-function-to-generate-an-answer">Run the Function to Generate an Answer</h3>
+<p>Great job! The final step is to provide a question and call the function to generate an answer.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">query</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">query</span><span class="o">=</span><span class="s2">&quot;I am looking for a begginer drone. Please give me some recommendations.&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">openai_chat</span><span class="o">=</span><span class="n">openai_chat</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">context_builder</span><span class="o">=</span><span class="n">context_builder</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">only_need_context</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>
+<pre><code>2025-03-28 15:15:53,971 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/embeddings "HTTP/1.1 200 OK"
+2025-03-28 15:16:04,309 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+### Recommendations for Beginner Drones
+
+When it comes to selecting a beginner-friendly drone, it's essential to consider ease of use, durability, and features that enhance the flying experience. Based on available data, here are two excellent options for beginner drones:
+
+#### 1. SkyHawk Zephyr Drone
+
+**Price:** $0 (likely indicating it comes free with a package or promotional offer)
+
+**Features:**
+- **Simple Controls:** This drone is designed with beginner-friendly and intuitive controls, plus it includes automatic takeoff and landing capabilities to ease new users into flying.
+- **Robust Build:** The SkyHawk Zephyr is constructed to withstand typical beginner mistakes, making it durable and reliable for novice pilots.
+- **Photography and Videography:** Equipped with an HD camera, it allows users to capture crisp photos and videos from above, appealing to those interested in aerial photography.
+- **Flight Time:** Users can enjoy approximately 15 minutes of flight time per charge, giving a decent amount of flying enjoyment.
+
+Given its features, the SkyHawk Zephyr Drone is a fantastic option for newcomers to the world of drones, providing an intuitive flying experience while delivering quality content during flights.
+
+#### 2. SkyHawk Zephyr 2.0 - Reach New Heights
+
+**Price:** $199.99
+
+**Features:**
+- **4K Camera:** This drone boasts a high-quality 4K camera, perfect for capturing stunning aerial footage, appealing to users looking to create high-definition content.
+- **Extended Flight Time:** With up to 20 minutes of flight time on a single charge, users can enjoy longer flying sessions.
+- **Intelligent Flight Modes:** It offers advanced flight options such as Follow Me, Orbit, and Waypoint modes for creative filming, making it great for users interested in exploring versatile filming capabilities.
+- **GPS-Assisted Flight:** Features like Return-to-Home enhance safety for beginners, ensuring that even those new to flying can have a worry-free experience.
+
+The SkyHawk Zephyr 2.0 presents a step up in features from the base model. It's suitable for beginners who want to grow their skills while still having access to advanced features for creative pursuits.
+
+### Conclusion
+
+Both the SkyHawk Zephyr Drone and the SkyHawk Zephyr 2.0 are excellent choices for beginner drone enthusiasts. The former is particularly good for pure novices due to its straightforward controls and robust build, while the latter provides additional features that enhance the flying experience as users become more comfortable. When selecting a drone, consider your specific needs, such as the desire for photography or content creation, and choose the model that aligns best with those interests.
+</code></pre>
+<hr />
+<h2 id="reset">Reset</h2>
+<p>After completing the query, it is recommended to clean up the environment by removing the graph you created. You can drop the graph by running the following single line of code.</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">drop_graph</span><span class="p">()</span>
+</code></pre></div>
+<pre><code>2025-03-28 15:20:17,365 - tigergraphx.core.managers.schema_manager - INFO - Dropping graph: RetailGraph...
+2025-03-28 15:20:22,112 - tigergraphx.core.managers.schema_manager - INFO - Graph dropped successfully.
 </code></pre>
 <hr />
 <h2 id="whats-next">What’s Next?</h2>
 <ul>
-<li><a href="../msft_graphrag_4/">Supporting Microsoft’s GraphRAG: Part 4</a>: Perform queries using GSQL and Python-native TigerGraphX, with global and local context builders.</li>
+<li><a href="../../reference/introduction/">API Reference</a>: Dive deeper into TigerGraphX APIs.</li>
 </ul>
 <hr />
 <p>Start transforming your GraphRAG workflows with the power of <strong>TigerGraphX</strong> today!</p>
@@ -2612,7 +2597,7 @@ community_contains_relationship: 2692
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../msft_graphrag_2/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part 2 - Graph Creation and Data Loading">
+          <a href="../simple_graphrag_1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Part 1 - Graph Construction and Graph Store">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -2622,20 +2607,20 @@ community_contains_relationship: 2692
                 Previous
               </span>
               <div class="md-ellipsis">
-                Part 2 - Graph Creation and Data Loading
+                Part 1 - Graph Construction and Graph Store
               </div>
             </div>
           </a>
         
         
           
-          <a href="../msft_graphrag_4/" class="md-footer__link md-footer__link--next" aria-label="Next: Part 4 - Hybrid Retrieval and Integration with LLM">
+          <a href="../../reference/introduction/" class="md-footer__link md-footer__link--next" aria-label="Next: Introduction">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Part 4 - Hybrid Retrieval and Integration with LLM
+                Introduction
               </div>
             </div>
             <div class="md-footer__button md-icon">
