@@ -28,7 +28,7 @@ class BaseContextBuilder(ABC):
     def __init__(
         self,
         graph: Graph,
-        single_batch: bool,
+        single_batch: bool = True,
         search_engine: Optional[BaseSearchEngine] = None,
         token_encoder: Optional[tiktoken.Encoding] = None,
     ):

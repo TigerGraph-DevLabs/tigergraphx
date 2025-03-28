@@ -24,7 +24,7 @@ class VectorManager(BaseManager):
         self,
         data: Dict | List[Dict],
         node_type: str,
-    ):
+    ) -> Optional[int]:
         nodes_to_upsert = []
         node_schema = self._graph_schema.nodes.get(node_type)
 

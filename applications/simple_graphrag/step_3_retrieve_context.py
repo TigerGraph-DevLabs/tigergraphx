@@ -12,23 +12,10 @@ import asyncio
 from tigergraphx.core import Graph
 from tigergraphx.graphrag import BaseContextBuilder
 from tigergraphx.llm import OpenAIChat
-from tigergraphx.vector_search import BaseSearchEngine
 from tigergraphx.factories import create_openai_components
 
 
 class ContextBuilder(BaseContextBuilder):
-    def __init__(
-        self,
-        graph: Graph,
-        search_engine: BaseSearchEngine,
-    ):
-        """Initialize ContextBuilder with graph config, search engine, and token encoder."""
-        super().__init__(
-            graph=graph,
-            single_batch=True,
-            search_engine=search_engine,
-        )
-
     async def build_context(self, query: str, k: int = 10) -> str | List[str]:
         """Build local context."""
         context: List[str] = []
@@ -134,7 +121,7 @@ def main():
     os.environ["TG_USERNAME"] = "tigergraph"
     os.environ["TG_PASSWORD"] = "tigergraph"
 
-    graph = Graph.from_db("RetailGraph")
+    G = Graph.from_db("RetailGraph")
 
     # Create Context Builders
     settings = {
@@ -157,8 +144,8 @@ def main():
             "model": "gpt-4o-mini",
         },
     }
-    (openai_chat, search_engine) = create_openai_components(settings, graph)
-    context_builder = ContextBuilder(graph=graph, search_engine=search_engine)
+    (openai_chat, search_engine) = create_openai_components(settings, G)
+    context_builder = ContextBuilder(graph=G, search_engine=search_engine)
     result = asyncio.run(
         query(
             query="I am looking for a begginer drone. Please give me some recommendations.",

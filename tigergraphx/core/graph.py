@@ -610,7 +610,7 @@ class Graph:
         self,
         data: Dict | List[Dict],
         node_type: Optional[str] = None,
-    ):
+    ) -> Optional[int]:
         """
         Upsert nodes with vector data into the graph.
 
