@@ -2201,7 +2201,7 @@
 <h3 id="define-a-graph-schema">Define a Graph Schema</h3>
 <p>TigerGraph is a schema-based database, which requires defining a schema to structure your graph. This schema specifies the graph name, nodes (vertices), edges (relationships), and their respective attributes.</p>
 <p>In this example, we will initialize a graph using a schema defined in <a href="https://github.com/tigergraph/tigergraphx/blob/main/applications/msft_graphrag/query/resources/graph_schema.yaml">a YAML file</a>. The schema structure is represented visually in the following image.</p>
-<p><img alt="image" src="https://github.com/tigergraph/tigergraphx/blob/main/docs/images/graphrag/schema.png?raw=true" /></p>
+<p><img alt="image" src="https://raw.githubusercontent.com/tigerGraph/tigergraphx/refs/heads/main/docs/images/graphrag/schema.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">tigergraphx</span><span class="w"> </span><span class="kn">import</span> <span class="n">Graph</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">resource_dir</span> <span class="o">=</span> <span class="s2">&quot;../../applications/msft_graphrag/query/resources/&quot;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">graph_schema</span> <span class="o">=</span> <span class="n">resource_dir</span> <span class="o">+</span> <span class="s2">&quot;graph_schema.yaml&quot;</span>
