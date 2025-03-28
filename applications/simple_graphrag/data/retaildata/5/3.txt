@@ -1,0 +1,28 @@
+
+ Product Summary: Universal Adapter Kit
+
+Effortlessly connect your devices with the Universal Adapter Kit. This essential kit provides seamless compatibility across various USB standards, ensuring you're always prepared. Specifically designed as an accessory for the QuantumLeap Flash drive, this kit greatly expands compatibility with a wider range of devices.
+
+Price: $19.99
+
+Manufacturer: Generic
+
+Features:
+
+*   USB-A to USB-C Adapter: Connect USB-C devices to standard USB-A ports.
+*   USB-C to USB-A Adapter: Connect USB-A devices to USB-C ports.
+*   USB-C to Micro-USB Adapter: Connect Micro-USB devices to USB-C ports.
+*   Compact and Portable: Easily fits in your bag or pocket.
+*   Durable Construction: Built to withstand daily use.
+
+Specifications:
+
+*   Adapter Type: USB-A to USB-C, USB-C to USB-A, USB-C to Micro-USB
+*   Connector Material: Nickel-Plated
+*   Enclosure Material: ABS Plastic
+*   Color: Black
+*   Weight: 0.8 oz
+*   Accessory Of: QuantumLeap Flash
+*   Data Transfer Rate: Up to 5 Gbps (depending on device and port)
+Tags: ['Storage', 'Data']
+

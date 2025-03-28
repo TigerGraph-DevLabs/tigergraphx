@@ -1,5 +1,5 @@
 # TigerGraphX Quick Start: Using TigerGraph as Graph Database
-Follow this guide to quickly set up **TigerGraphX** and build your first graph. This guide assumes that you have already installed TigerGraphX and its dependencies as described in the [Installation Guide](../installation).
+Follow this guide to quickly set up **TigerGraphX** and build your first graph. This guide assumes that you have already installed TigerGraphX and its dependencies as described in the [Installation Guide](installation.md).
 
 To run this Jupyter Notebook, you can download the original `.ipynb` file from [quick_start_graph.ipynb](https://github.com/tigergraph/tigergraphx/tree/main/docs/getting_started/quick_start_graph.ipynb).
 
@@ -7,7 +7,7 @@ To run this Jupyter Notebook, you can download the original `.ipynb` file from [
 
 ## Create a Graph
 ### Define the TigerGraph Connection Configuration
-Since our data is stored in a TigerGraph instance—whether on-premise or in the cloud—we need to configure the connection settings. The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__).
+Since our data is stored in a TigerGraph instance—whether on-premise or in the cloud—we need to configure the connection settings. The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../reference/01_core/graph.md#tigergraphx.core.graph.Graph.__init__).
 
 
 ```python
@@ -49,7 +49,7 @@ In this example, we will create a graph named "Social" that includes one node ty
 ... }
 ```
 
-TigerGraphX offers several methods to define the schema, including a Python dictionary, YAML file, or JSON file. Above is an example using a Python dictionary. For other methods, please refer to [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__) for more details.
+TigerGraphX offers several methods to define the schema, including a Python dictionary, YAML file, or JSON file. Above is an example using a Python dictionary. For other methods, please refer to [Graph.\_\_init\_\_](../reference/01_core/graph.md#tigergraphx.core.graph.Graph.__init__) for more details.
 
 ### Create a Graph
 Running the following command will create a graph using the user-defined schema if it does not already exist. If the graph exists, the command will return the existing graph. To overwrite the existing graph, set the drop_existing_graph parameter to True. Note that creating the graph may take several seconds.
@@ -123,7 +123,7 @@ Now, let's print the schema of the graph in a well-formatted manner:
 ## Nodes and Edges
 ### Adding Nodes and Edges
 
-TigerGraphX provides NetworkX-like methods for node operations, edge operations, and statistical analysis. You can find the full API reference in the [Graph class reference](../../reference/01_core/graph).
+TigerGraphX provides NetworkX-like methods for node operations, edge operations, and statistical analysis. You can find the full API reference in the [Graph class reference](../reference/01_core/graph.md).
 
 To add nodes or edges individually, use the following code:
 
@@ -172,7 +172,7 @@ Next, let's add edges with individual attributes using tuples in the format `(so
 
 
 
-For larger datasets, consider using [load_data](../../reference/01_core/graph/#tigergraphx.core.Graph.load_data) for efficient handling of large-scale data.
+For larger datasets, consider using [load_data](../reference/01_core/graph.md#tigergraphx.core.Graph.load_data) for efficient handling of large-scale data.
 
 ### Check if Nodes and Edges Exist
 
@@ -419,8 +419,8 @@ To clear the data and completely remove the graph—including schema, loading jo
 
 Now that you've set up your graph storage and performed basic operations, you can explore more advanced features of TigerGraphX:
 
-- [TigerGraph Quick Start Guide for Vector Storage](../quick_start_vector): Quickly get started with TigerGraph for storing vector data.
-- [API Reference](../../reference/features_overview): Dive deeper into TigerGraphX APIs to understand its full capabilities.
+- [TigerGraph Quick Start Guide for Vector Storage](quick_start_vector.md): Quickly get started with TigerGraph for storing vector data.
+- [API Reference](../reference/introduction.md): Dive deeper into TigerGraphX APIs to understand its full capabilities.
 
 ---
 

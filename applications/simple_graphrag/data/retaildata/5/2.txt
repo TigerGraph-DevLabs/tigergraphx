@@ -1,0 +1,31 @@
+
+ DataSafe Vault
+
+Price: $39.99
+
+Manufacturer: SecureTech Solutions
+
+Description: Keep your sensitive data safe and secure with the DataSafe Vault. This rugged and encrypted hard drive case provides superior protection against unauthorized access, accidental damage, and environmental hazards. Perfect for safeguarding personal files, business documents, or any data you need to keep private.
+
+Features:
+
+*   Military-grade encryption: 256-bit AES hardware encryption ensures your data is unreadable without the correct password.
+*   Durable construction: Constructed with a shock-resistant polymer shell and a water-resistant seal to withstand harsh conditions.
+*   Tamper-proof design: Features a tamper-evident seal to alert you to any unauthorized access attempts.
+*   Password protection: Customizable password with alphanumeric and special character support.
+*   LED indicator: Clearly displays drive activity and encryption status.
+*   USB 3.0 connectivity: High-speed data transfer for quick and efficient backups.
+
+Specifications:
+
+*   Compatible drive size: 2.5-inch SATA HDD/SSD
+*   Interface: USB 3.0 (backward compatible with USB 2.0)
+*   Encryption type: 256-bit AES hardware encryption
+*   Material: High-impact polymer, rubber gasket
+*   Dimensions: 5.0 x 3.2 x 0.75 inches
+*   Weight: 4 ounces
+*   Operating temperature: 32°F to 140°F (0°C to 60°C)
+*   Power supply: USB powered
+*   Accessory of: TitanDrive X5000
+Tags: ['Storage', 'Data']
+

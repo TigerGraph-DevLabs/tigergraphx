@@ -1,0 +1,31 @@
+
+VESA Mount Adapter
+
+Price: $19.99
+
+Description: Easily adapt monitors without standard VESA mounting holes to VESA-compatible monitor arms and stands. This adapter allows you to use your existing non-VESA monitor with a wide range of monitor mounts, saving you the cost of a new display. Specifically designed as an accessory for the ErgoFlex Pro monitor arm, but compatible with many other mounts (check specifications below for compatibility).
+
+Manufacturer: Mount Solutions Inc.
+
+Features:
+
+*   Universal Compatibility: Supports most non-VESA monitors from 17" to 27" in size.
+*   Sturdy Steel Construction: Provides a secure and stable connection.
+*   Easy Installation: Includes all necessary hardware and instructions.
+*   Scratch-Resistant Finish: Protects your monitor and adapter.
+*   Low Profile Design: Minimizes the distance between the monitor and mount.
+
+Specifications:
+
+*   Material: Powder-Coated Steel
+*   VESA Compatibility: 75x75mm, 100x100mm
+*   Monitor Size Compatibility: 17" - 27" (Diagonal Measurement)
+*   Monitor Thickness Compatibility: 1" - 2.75"
+*   Weight Capacity: 17.6 lbs (8 kg)
+*   Color: Black
+*   Product Dimensions: 17.7" x 4.7" x 0.2"
+*   UPC: 728028891217
+Category: Accessories
+Segment: ['Home', 'Office']
+Tags: ['Computer']
+

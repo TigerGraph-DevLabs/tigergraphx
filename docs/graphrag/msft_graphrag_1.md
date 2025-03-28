@@ -15,8 +15,8 @@
 
 Before proceeding, ensure you’ve completed the installation and setup steps outlined in the [Installation Guide](../getting_started/installation.md), including:
 
-- Setting up Python and TigerGraph. For more details, refer to the [Requirements](../../getting_started/installation/#requirements) section.
-- Install TigerGraphX along with its development dependencies. For more details, refer to the [Development Installation](../../getting_started/installation/#development-installation) section.
+- Setting up Python and TigerGraph. For more details, refer to the [Requirements](../getting_started/installation.md#requirements) section.
+- Install TigerGraphX along with its development dependencies. For more details, refer to the [Development Installation](../getting_started/installation.md#development-installation) section.
 
 ---
 

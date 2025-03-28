@@ -1,0 +1,39 @@
+
+**Product Summary: AuraBook Air**
+
+Stay productive on the move with the AuraBook Air, a lightweight and powerful laptop designed for ultimate portability.
+
+Price: $999.00
+
+Manufacturer: Stellaris Systems
+
+Description: The AuraBook Air is engineered for users who demand performance without the bulk. Its sleek design and robust internal components make it the perfect companion for work, travel, and entertainment.
+
+Features:
+
+*   Ultra-lightweight design for maximum portability
+*   Brilliant 13.3-inch Full HD Display
+*   Fast and responsive performance
+*   Long-lasting battery life for all-day use
+*   Integrated HD webcam for video conferencing
+*   Sleek, modern design
+
+Specifications:
+
+*   Processor: Intel Core i5-1135G7 Processor
+*   Memory: 8GB LPDDR4X RAM
+*   Storage: 256GB NVMe PCIe SSD
+*   Graphics: Intel Iris Xe Graphics
+*   Display: 13.3-inch Full HD (1920 x 1080) IPS Display
+*   Operating System: Windows 11 Home
+*   Ports: 2 x Thunderbolt 4, 1 x USB 3.2 Gen 1, 1 x 3.5mm Headphone Jack
+*   Wireless: Wi-Fi 6 (802.11ax), Bluetooth 5.1
+*   Battery: Up to 12 hours
+*   Weight: 2.5 lbs
+*   Dimensions: 11.97" x 8.36" x 0.63"
+*   Color: Space Gray
+
+Accessories: Enhance your AuraBook Air experience with compatible accessories like the PrivacyGuard Standard screen protector and the Lumix Keyboard (sold separately).
+Category: Laptops
+Segment: ['Home', 'Office']
+Tags: ['Computer']

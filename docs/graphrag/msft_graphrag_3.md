@@ -1,6 +1,6 @@
 # Supporting Microsoft’s GraphRAG: Part 3 - Graph Analysis
 
-In the [previous section](../msft_graphrag_2), we have created a graph in TigerGraph, and loaded the CSV data into it.
+In the [previous section](msft_graphrag_2.md), we have created a graph in TigerGraph, and loaded the CSV data into it.
 
 Now, let’s use Jupyter Notebook to explore the graph data and perform graph analysis.
 
@@ -14,7 +14,7 @@ Since the graph has already been created in TigerGraph, redefining its schema is
 ### Define the TigerGraph Connection Configuration
 Before retrieving the graph schema, you need to configure the **TigerGraph connection settings**.  
 
-The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__).
+The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../reference/01_core/graph.md#tigergraphx.core.graph.Graph.__init__).
 
 
 ```python
@@ -355,7 +355,7 @@ Retrieve Sample `Community` Nodes
 
 ## What’s Next?
 
-- [Supporting Microsoft’s GraphRAG: Part 4](../msft_graphrag_4): Perform queries using GSQL and Python-native TigerGraphX, with global and local context builders.
+- [Supporting Microsoft’s GraphRAG: Part 4](msft_graphrag_4.md): Perform queries using GSQL and Python-native TigerGraphX, with global and local context builders.
 
 ---
 

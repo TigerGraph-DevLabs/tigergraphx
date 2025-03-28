@@ -1,0 +1,48 @@
+
+Dual Monitor Productivity Bundle
+
+Price: $849.99
+
+Manufacturer: Aura Displays
+
+Description: Supercharge your productivity with the Dual Monitor Productivity Bundle, featuring two stunning AuraView 32 monitors. Experience enhanced multitasking, seamless workflow, and immersive visuals for work, creative projects, or entertainment.
+
+Features:
+
+*   Dual Monitor Setup: Double your screen real estate for increased productivity.
+*   32-inch AuraView 32 Monitors: Experience vibrant colors and sharp details.
+*   Ultra-thin Bezel: Enjoy a near-seamless multi-monitor setup.
+*   Wide Viewing Angle: Consistent image quality from any perspective.
+*   Built-in Speakers: Integrated audio for convenient sound.
+*   VESA Mount Compatible: Flexibility in mounting options.
+*   Flicker-Free Technology: Reduces eye strain during prolonged use.
+*   Low Blue Light Mode: Minimizes blue light emission for comfortable viewing.
+
+Specifications (per monitor):
+
+*   Screen Size: 32 inches
+*   Panel Type: IPS
+*   Resolution: 2560 x 1440 (QHD)
+*   Aspect Ratio: 16:9
+*   Refresh Rate: 75Hz
+*   Response Time: 5ms (GTG)
+*   Brightness: 300 cd/m²
+*   Contrast Ratio: 1000:1 (Typical)
+*   Viewing Angle (H/V): 178°/178°
+*   Connectivity: 1 x HDMI 1.4, 1 x DisplayPort 1.2, 1 x 3.5mm Audio Out
+*   Power Consumption: 45W (Typical)
+*   Weight: 12 lbs (per monitor)
+*   Dimensions (with stand): 28.5" x 20" x 8" (per monitor)
+
+What's Included:
+
+*   2 x AuraView 32 Monitors
+*   2 x Monitor Stands
+*   2 x Power Cables
+*   1 x HDMI Cable
+*   1 x DisplayPort Cable
+*   User Manual
+Category: Bundles
+Segment: ['Home', 'Office']
+Tags: ['Computer']
+

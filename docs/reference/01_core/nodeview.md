@@ -4,7 +4,7 @@
 
 **Examples:**
 
-To obtain a `NodeView` instance, please use `Graph.nodes`. Refer to [Graph.nodes](../graph/#tigergraphx.core.graph.Graph.nodes):
+To obtain a `NodeView` instance, please use `Graph.nodes`. Refer to [Graph.nodes](graph.md/#tigergraphx.core.graph.Graph.nodes):
 
 ```python
 >>> G = Graph.from_db("Social")

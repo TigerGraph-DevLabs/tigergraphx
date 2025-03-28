@@ -1,0 +1,32 @@
+
+Product Summary:
+
+Product Name: Blue Light Filter Screen
+
+Price: $39.99
+
+Description: Combat eye strain and fatigue with our premium Blue Light Filter Screen. Designed to significantly reduce harmful blue light emitted from your monitor, this screen protector helps minimize eye strain, headaches, and disrupted sleep patterns caused by prolonged screen use. Enjoy greater comfort and productivity, whether you're working, gaming, or simply browsing.
+
+Manufacturer: VisionGuard Tech
+
+Features:
+
+*   Reduces Blue Light Emission: Filters out a significant percentage of harmful blue light.
+*   Anti-Glare Coating: Minimizes reflections and glare for improved visibility.
+*   Scratch Resistant: Protects your monitor screen from scratches and scuffs.
+*   Easy Installation: Simple clip-on design for quick and hassle-free attachment.
+*   Crystal Clear Clarity: Maintains optimal screen clarity and image quality.
+*   Lightweight and Durable: Made from high-quality acrylic material.
+
+Specifications:
+
+*   Screen Size Compatibility: Specifically designed for 32-inch monitors.
+*   Dimensions: 27.9 inches (width) x 15.7 inches (height)
+*   Material: Acrylic
+*   Blue Light Reduction: Up to 60%
+*   Weight: 1.2 lbs
+*   Compatibility: Perfectly fits AuraView 32 and AuraView 32 Pro monitors. Also compatible with most standard 32" monitors.
+Category: Accessories
+Segment: ['Home', 'Office']
+Tags: ['Computer']
+

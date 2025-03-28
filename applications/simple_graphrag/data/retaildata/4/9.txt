@@ -1,0 +1,37 @@
+
+**Product Summary: Aura X5 Starter Kit**
+
+**Description:** Get started with the revolutionary Aura X5 with this complete starter kit! Includes the Aura X5 device, a protective Aura X5 Case, and the Quantum Shield for enhanced security.
+
+**Price:** $920.00
+
+**Manufacturer:** Aura Technologies
+
+**Features:**
+
+*   **Aura X5:** Cutting-edge neural interface technology for enhanced cognitive function.
+*   **Aura X5 Case:** Durable, form-fitting case protects your Aura X5 from scratches and impacts. Made from aerospace-grade polymer.
+*   **Quantum Shield:** Encrypts all Aura X5 data with quantum-resistant algorithms, ensuring maximum privacy and security.
+
+**Specifications:**
+
+*   **Aura X5:**
+    *   Processor: Neural Core 7.0
+    *   Memory: 32GB RAM
+    *   Storage: 512GB Solid State Drive
+    *   Connectivity: Bluetooth 5.3, Wi-Fi 6E
+    *   Dimensions: 4.5" x 2.5" x 0.5"
+    *   Weight: 4.2 oz
+    *   Battery Life: Up to 12 hours
+*   **Aura X5 Case:**
+    *   Material: High-Density Polymer
+    *   Weight: 1.5 oz
+    *   Color: Matte Black
+*   **Quantum Shield:**
+    *   Encryption: Quantum-Resistant AES-256
+    *   Activation: One-Time Activation Key
+    *   Compatibility: Aura X5
+Category: Bundles
+Segment: ['Home']
+Tags: ['Phone']
+

@@ -1,0 +1,33 @@
+
+ChromaJet Starter Bundle
+
+Price: $528.00
+
+Manufacturer: ChromaCorp
+
+Description: Get started with everything you need for vibrant, professional-quality prints with the ChromaJet Starter Bundle. This bundle includes the flagship ChromaJet Pro printer and the essential ChromaClean Kit, ensuring pristine prints from day one.
+
+Features:
+
+*   Complete Starter Package: Includes printer and cleaning kit for immediate use.
+*   Professional-Grade Quality: Produce high-resolution prints with exceptional color accuracy.
+*   User-Friendly Interface: Intuitive controls for easy operation, even for beginners.
+*   Versatile Media Handling: Supports a wide range of paper types and sizes.
+*   Durable Construction: Built to last, ensuring years of reliable performance.
+
+Specifications (ChromaJet Pro):
+
+*   Print Resolution: Up to 4800 x 1200 dpi
+*   Print Speed: 15 ppm (black), 10 ppm (color)
+*   Paper Sizes: Letter, Legal, 4x6, 5x7, A4, A5
+*   Connectivity: USB 2.0, Wi-Fi
+*   Ink Cartridges: 4 individual ink cartridges (Cyan, Magenta, Yellow, Black)
+*   Dimensions: 17.5 x 13.0 x 6.0 inches
+*   Weight: 12 lbs
+
+Specifications (ChromaClean Kit):
+
+*   Includes: Printhead cleaning solution (100ml), lint-free cloths (10), cleaning swabs (10)
+*   Purpose: Effectively removes ink buildup and debris from printheads.
+Tags: ['Printing']
+

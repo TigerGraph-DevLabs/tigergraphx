@@ -20,6 +20,9 @@ nav:
           - "Part 3 - Graph Analysis": graphrag/msft_graphrag_3.md
           - "Part 4 - Hybrid Retrieval and Integration with LLM": graphrag/msft_graphrag_4.md
           - "Part 5 - Query and Evaluation": graphrag/msft_graphrag_5.md
+      - "Supporting Simple GraphRAG":
+          - "Part 1 - Graph Construction and Graph Store": graphrag/simple_graphrag_1.md
+          - "Part 2 - Context Retreival and Answer Generation": graphrag/simple_graphrag_2.md
   - API Reference:
       - Introduction: reference/introduction.md
       - Core:

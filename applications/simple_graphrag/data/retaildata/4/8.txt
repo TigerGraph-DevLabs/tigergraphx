@@ -1,0 +1,32 @@
+
+**Product Summary: Audio Lover's Bundle**
+
+Immerse yourself in a world of unparalleled audio fidelity with the Audio Lover's Bundle. This all-in-one package includes everything you need for an exceptional listening experience, from premium headphones to convenient charging and meticulous care.
+
+Price: $550
+
+Manufacturer: Sonaris Audio
+
+Bundle Includes:
+
+*   Sonaris Pro Headphones: Experience crystal-clear highs, rich mids, and deep bass with these over-ear headphones, expertly engineered for audiophiles.
+*   Sonaris Pro Charging Stand: Keep your Sonaris Pro headphones charged and ready to go with this sleek and stylish charging stand. Doubles as a display stand.
+*   Headphone Cleaning Kit: Maintain the pristine condition of your headphones with this specially formulated cleaning kit, designed to remove dust, fingerprints, and debris without damaging delicate components.
+
+Sonaris Pro Headphones Specifications:
+
+*   Driver Size: 45mm Dynamic Drivers
+*   Frequency Response: 10Hz - 40kHz
+*   Impedance: 32 Ohms
+*   Sensitivity: 100dB/mW
+*   Bluetooth Version: 5.2
+*   Wireless Range: Up to 30 feet
+*   Battery Life: Up to 30 hours (single charge)
+*   Charging Time: 2 hours (headphones), 3 hours (charging stand)
+*   Weight: 10.2 ounces
+*   Color: Matte Black
+*   Material: Aluminum frame, protein leather earcups
+Category: Bundles
+Segment: ['Home']
+Tags: ['Phone']
+

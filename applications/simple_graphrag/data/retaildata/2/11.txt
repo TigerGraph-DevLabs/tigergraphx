@@ -1,0 +1,38 @@
+
+**Product Summary: AuraView 32 Pro**
+
+Immerse yourself in stunning visuals with the AuraView 32 Pro monitor. Building upon the success of the AuraView 32, this enhanced version delivers exceptional brightness and a silky-smooth refresh rate, perfect for gaming, content creation, and everyday use.
+
+**Price:** $599.99
+
+**Manufacturer:** Aura Displays
+
+**Features:**
+
+*   Enhanced Brightness: Experience vibrant colors and deeper blacks with increased brightness levels.
+*   High Refresh Rate: Enjoy fluid motion and reduced blur with a 165Hz refresh rate.
+*   Adaptive Sync Technology: Eliminate screen tearing and stuttering for a seamless gaming experience.
+*   Ultra-Thin Bezel Design: Maximize your viewing area and create a multi-monitor setup with minimal distractions.
+*   Built-in Speakers: Integrated 2 x 3W speakers provide convenient audio output.
+*   Multiple Connectivity Options: Includes HDMI 2.0, DisplayPort 1.4, and USB ports.
+
+**Specifications:**
+
+*   Screen Size: 32 inches
+*   Panel Type: IPS
+*   Resolution: 2560 x 1440 (QHD)
+*   Aspect Ratio: 16:9
+*   Response Time: 1ms (MPRT)
+*   Brightness: 400 cd/m²
+*   Contrast Ratio: 1000:1 (Typical)
+*   Viewing Angle: 178° (H) / 178° (V)
+*   Color Gamut: 99% sRGB
+*   VESA Mount: 100 x 100 mm
+*   Weight: 12 lbs (with stand)
+
+**Related Accessories:**
+
+Enhance your viewing experience with the ErgoFlex Pro monitor arm (sold separately).
+Category: Monitors
+Segment: ['Home', 'Office']
+Tags: ['Computer']
