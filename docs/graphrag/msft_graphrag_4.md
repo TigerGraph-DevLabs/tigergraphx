@@ -9,7 +9,7 @@ Since the graph has already been created in TigerGraph, redefining its schema is
 
 ### Define the TigerGraph Connection Configuration
 Before retrive the graph schema from TigerGraph, you shoulddefine the  TigerGraph Connection Configuration first.
-The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__).
+The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../reference/01_core/graph.md#tigergraphx.core.graph.Graph.__init__).
 
 
 ```python
@@ -233,7 +233,7 @@ Here’s how you can utilize the custom global context builder:
 
 To understand the functionality of the `LocalContextBuilder` class, let's review the key code from its `build_context` method.
 
-![](https://github.com/tigergraph/tigergraphx/blob/main/docs/images/graphrag/local_context_builder.png?raw=true)
+![](https://raw.githubusercontent.com/tigergraph/tigergraphx/refs/heads/main/docs/images/graphrag/local_context_builder.png)
 
 ```
 # Retrieve top-k objects
@@ -274,13 +274,13 @@ We have provided an example implementation, which you can find here: [Example Co
 
 The integration process follows the workflow illustrated below:
 
-![](https://github.com/tigergraph/tigergraphx/blob/main/docs/images/graphrag/querying.png?raw=true)
+![](https://raw.githubusercontent.com/tigergraph/tigergraphx/refs/heads/main/docs/images/graphrag/querying.png)
 
 ---
 
 ## What’s Next?
 
-- [Supporting Microsoft’s GraphRAG: Part 5](../msft_graphrag_5): Query Microsoft’s GraphRAG and assess its performance.
+- [Supporting Microsoft’s GraphRAG: Part 5](msft_graphrag_5.md): Query Microsoft’s GraphRAG and assess its performance.
 
 ---
 

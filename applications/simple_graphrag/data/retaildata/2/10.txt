@@ -1,0 +1,40 @@
+
+Product Summary: AuraView 32 Curved Monitor
+
+Immerse yourself in stunning visuals with the AuraView 32, a 32-inch curved monitor designed for exceptional clarity and vibrant color reproduction. Whether you're gaming, working, or streaming, the AuraView 32 delivers an immersive and engaging experience.
+
+Price: $399.99
+
+Manufacturer: Aura Displays
+
+Features:
+
+*   32-inch Curved Display: Experience enhanced immersion with a gentle curve that wraps around your field of vision.
+*   Vibrant Color Display: Enjoy rich, accurate colors thanks to a wide color gamut and excellent color calibration.
+*   Flicker-Free Technology: Reduces eye strain during extended use.
+*   Blue Light Filter: Minimizes harmful blue light emissions for comfortable viewing.
+*   Multiple Ports: Includes HDMI and DisplayPort inputs for versatile connectivity.
+*   Built-in Speakers: Integrated speakers provide convenient audio without the need for external devices.
+*   VESA Mount Compatible: Easily mount the monitor on a wall or monitor arm for optimal positioning.
+*   Sleek, Modern Design: Complements any desktop setup.
+
+Specifications:
+
+*   Screen Size: 32 inches
+*   Panel Type: VA
+*   Resolution: 1920 x 1080 (Full HD)
+*   Aspect Ratio: 16:9
+*   Response Time: 5ms (GTG)
+*   Refresh Rate: 75Hz
+*   Brightness: 250 cd/m²
+*   Contrast Ratio: 3000:1 (Typical)
+*   Viewing Angles: 178° (Horizontal/Vertical)
+*   Connectivity: 1 x HDMI, 1 x DisplayPort, 1 x 3.5mm Audio Out
+*   Power Consumption: 45W (Typical)
+*   Dimensions (with stand): 28.1" x 20.5" x 8.7"
+*   Weight (with stand): 12.3 lbs
+
+Related Accessory: The AuraView 32 is fully compatible with the ErgoFlex Pro monitor arm for enhanced ergonomic adjustability.
+Category: Monitors
+Segment: ['Home', 'Office']
+Tags: ['Computer']

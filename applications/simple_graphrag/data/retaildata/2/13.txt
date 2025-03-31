@@ -1,0 +1,31 @@
+
+Cable Management Kit
+
+Price: $29.99
+
+Manufacturer: ErgoDynamics
+
+Description: Eliminate cable clutter and maintain a clean, professional workspace with our Cable Management Kit. Designed to seamlessly integrate with your ErgoFlex Pro monitor arm (but compatible with most desks and monitor setups), this kit provides everything you need to keep your monitor cables tidy and organized.
+
+Features:
+
+*   Comprehensive Kit: Includes cable ties, cable clips, and a flexible cable sleeve.
+*   Easy Installation: Simple, tool-free installation using adhesive backing and adjustable straps.
+*   Durable Materials: Made from high-quality, long-lasting materials for reliable performance.
+*   Sleek Design: Aesthetically pleasing design that complements any office environment.
+*   Reusable and Adjustable: Reconfigure your cable management as needed.
+
+Specifications:
+
+*   Material: Durable ABS plastic (clips), Nylon (sleeve), Velcro (ties)
+*   Color: Black
+*   Cable Sleeve Length: 24 inches
+*   Cable Clip Quantity: 6
+*   Cable Tie Quantity: 10
+*   Adhesive: 3M VHB tape
+*   Weight: 0.25 lbs
+*   Accessory Of: ErgoFlex Pro Monitor Arm
+Category: Accessories
+Segment: ['Home', 'Office']
+Tags: ['Computer']
+

@@ -292,9 +292,9 @@ After completing the evaluation, it is recommended to clean up the environment b
 
 ---
 
-## What’s Next?
+## Next Steps
 
-- [API Reference](../../reference/introduction): Dive deeper into TigerGraphX APIs.
+- [Supporting Simple GraphRAG: Part 1](simple_graphrag_1.md): Explore an alternative approach to implementing GraphRAG from scratch.
 
 ---
 

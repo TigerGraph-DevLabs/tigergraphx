@@ -1,0 +1,29 @@
+
+Product Summary: Quantum Charger
+
+Stay powered up and ready to go with the Quantum Charger, designed for unparalleled charging speed and reliability. This super fast charger significantly reduces downtime, letting you get back to what matters most. Specifically optimized for and fully compatible with the AuraBook X500.
+
+Price: $69.00
+
+Manufacturer: Quantum Dynamics
+
+Features:
+
+*   Super Fast Charging Technology: Provides significantly faster charging speeds compared to standard chargers.
+*   Optimized for AuraBook X500: Guarantees seamless compatibility and optimal performance with the AuraBook X500.
+*   Compact and Portable Design: Easily fits in your bag or backpack for charging on the go.
+*   Built-in Safety Features: Over-current, over-voltage, and short-circuit protection ensures safe and reliable charging.
+*   LED Indicator Light: Displays charging status at a glance.
+
+Specifications:
+
+*   Input: 100-240V AC, 50/60Hz
+*   Output: 20V/3.25A (65W Max)
+*   Connector Type: USB-C
+*   Cable Length: 6 ft
+*   Weight: 0.25 lbs
+*   Color: Space Gray
+*   Certifications: UL, CE, FCC, RoHS
+Category: Accessories
+Segment: ['Home', 'Office']
+Tags: ['Computer']

@@ -2,6 +2,11 @@
 
 ---
 
+## 0.2.1
+- feat: add simple GraphRAG
+- fix: correct the image link
+- docs: add documentation for Supporting Simple GraphRAG
+
 ## 0.2.0
 - docs: add copywrie to all Python files; add document LICENSE
 - perf: importing fewer classes in `tigergraphx/__init__.py`

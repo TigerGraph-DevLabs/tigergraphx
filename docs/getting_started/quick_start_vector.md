@@ -1,8 +1,8 @@
 # TigerGraphX Quick Start: Using TigerGraph as Vector Database
 
-TigerGraph has supported vector storage since version 4.2. In this guide, we will demonstrate how to use TigerGraph as a pure vector database, without storing edges. This setup can be useful when you want to leverage TigerGraph solely as a vector database. However, to fully unlock the potential of TigerGraph, you can also use it as both a graph and vector storage solution. For more details, refer to the [next guide](../quick_start_both).
+TigerGraph has supported vector storage since version 4.2. In this guide, we will demonstrate how to use TigerGraph as a pure vector database, without storing edges. This setup can be useful when you want to leverage TigerGraph solely as a vector database. However, to fully unlock the potential of TigerGraph, you can also use it as both a graph and vector storage solution. For more details, refer to the [next guide](quick_start_both.md).
 
-This guide assumes that you have already installed TigerGraphX and its dependencies, as outlined in the [Installation Guide](../installation).
+This guide assumes that you have already installed TigerGraphX and its dependencies, as outlined in the [Installation Guide](installation.md).
 
 To run this Jupyter Notebook, download the original `.ipynb` file from [quick_start_vector.ipynb](https://github.com/tigergraph/tigergraphx/tree/main/docs/getting_started/quick_start_vector.ipynb).
 
@@ -10,7 +10,7 @@ To run this Jupyter Notebook, download the original `.ipynb` file from [quick_st
 
 ## Create a Graph
 ### Define the TigerGraph Connection Configuration
-Since our data is stored in a TigerGraph instance—whether on-premise or in the cloud—we need to configure the connection settings. The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__).
+Since our data is stored in a TigerGraph instance—whether on-premise or in the cloud—we need to configure the connection settings. The recommended approach is to use environment variables, such as setting them with the `export` command in the shell. Here, to illustrate the demo, we configure them within Python using the `os.environ` method. You can find more methods for configuring connection settings in [Graph.\_\_init\_\_](../reference/01_core/graph.md#tigergraphx.core.graph.Graph.__init__).
 
 
 ```python
@@ -44,7 +44,7 @@ In this example, we create a graph called "FinancialGraph" with one node type: "
 ... }
 ```
 
-TigerGraphX offers several methods to define the schema, including a Python dictionary, YAML file, or JSON file. Above is an example using a Python dictionary. For other methods, please refer to [Graph.\_\_init\_\_](../../reference/01_core/graph/#tigergraphx.core.graph.Graph.__init__) for more details.
+TigerGraphX offers several methods to define the schema, including a Python dictionary, YAML file, or JSON file. Above is an example using a Python dictionary. For other methods, please refer to [Graph.\_\_init\_\_](../reference/01_core/graph.md#tigergraphx.core.graph.Graph.__init__) for more details.
 
 ### Create a Graph
 Running the following command will create a graph using the user-defined schema if it does not already exist. If the graph exists, the command will return the existing graph. To overwrite the existing graph, set the drop_existing_graph parameter to True. Note that creating the graph may take several seconds.
@@ -109,6 +109,7 @@ Now, let's print the schema of the graph in a well-formatted manner:
 
 ## Add Nodes
 In this example, we add multiple nodes representing accounts to the graph. Each node is uniquely identified by a name and comes with two attributes:
+
 - **isBlocked:** A Boolean indicating whether the account is blocked.
 - **emb1:** A three-dimensional embedding vector.
 
@@ -127,7 +128,7 @@ In this example, we add multiple nodes representing accounts to the graph. Each 
     Number of Account Nodes Inserted: 5
 
 
-For larger datasets, consider using [load_data](../../reference/01_core/graph/#tigergraphx.core.Graph.load_data) for efficient handling of large-scale data.
+For larger datasets, consider using [load_data](../reference/01_core/graph.md#tigergraphx.core.Graph.load_data) for efficient handling of large-scale data.
 
 ## Exploring Nodes in the Graph
 ### Display the Number of Nodes
@@ -371,8 +372,9 @@ To clear the data and completely remove the graph—including schema, loading jo
 ## What’s Next?
 
 Now that you've learned how to use TigerGraph for storing both graph data and vectors, you can dive into more advanced features of TigerGraphX:
-- [GraphRAG Overview](../../graphrag/graphrag_overview): Learn about integrating graphs with LLMs.
-- [API Reference](../../reference/features_overview): Dive deeper into TigerGraphX APIs.
+
+- [GraphRAG Overview](../graphrag/graphrag_overview.md): Learn about integrating graphs with LLMs.
+- [API Reference](../reference/introduction.md): Dive deeper into TigerGraphX APIs.
 
 ---
 

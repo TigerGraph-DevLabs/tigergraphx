@@ -1,0 +1,43 @@
+
+**Product Summary: Summer Savings Deal - AuraView 32" LED TV**
+
+**Headline:** Save Big This Summer on the AuraView 32" LED TV!
+
+**Price:** $349.99
+
+**Manufacturer:** AuraView
+
+**Description:** Don't miss out on our limited-time Summer Savings Deal! Get the stunning AuraView 32" LED TV at a discounted price. Experience vibrant colors, sharp details, and immersive sound, all in a compact and stylish design. This deal ends July 31st, 2024, so act fast!
+
+**Features:**
+
+*   32-inch LED Display: Enjoy crisp, clear picture quality.
+*   720p HD Resolution: Delivers detailed visuals for your favorite content.
+*   Built-in Speakers: Integrated speakers provide rich and clear audio.
+*   Multiple Ports: Includes HDMI, USB, and composite inputs for versatile connectivity.
+*   Slim Bezel Design: Maximizes screen space for an immersive viewing experience.
+*   Energy Efficient: Designed to consume less power, saving you money.
+*   Parental Control: Keep content safe for kids.
+*   Sleep Timer: Set the TV to turn off automatically.
+
+**Specifications:**
+
+*   Screen Size: 32 inches
+*   Resolution: 1366 x 768 (720p HD)
+*   Display Technology: LED
+*   Aspect Ratio: 16:9
+*   Refresh Rate: 60Hz
+*   HDMI Ports: 2
+*   USB Ports: 1
+*   Composite Input: 1
+*   Audio Output: 2 x 8W
+*   VESA Mount Compatible: 100mm x 100mm
+*   Power Consumption: 45W (Typical)
+*   Dimensions (with stand): 28.7" W x 18.5" H x 7.1" D
+*   Weight (with stand): 8.2 lbs
+*   Model Number: AV32-LE2024
+
+**Limited Time Offer:** This special summer pricing is only valid until July 31, 2024. Order yours today!
+Category: Deals
+Segment: ['Home', 'Office']
+Tags: ['Computer']

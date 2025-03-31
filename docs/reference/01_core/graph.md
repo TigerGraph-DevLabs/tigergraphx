@@ -621,7 +621,7 @@ True
 
 **See also:**
 
-- [NodeView.\_\_getitem\_\_](../nodeview/#tigergraphx.core.view.NodeView.__getitem__)
+- [NodeView.\_\_getitem\_\_](nodeview.md/#tigergraphx.core.view.NodeView.__getitem__)
 
 **Examples:**
 

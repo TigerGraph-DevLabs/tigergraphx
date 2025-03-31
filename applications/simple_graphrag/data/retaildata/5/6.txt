@@ -1,0 +1,37 @@
+
+ QuantumLeap Ultimate Kit
+
+Price: $64.99
+
+Manufacturer: QuantumLeap Technologies
+
+Description: Unleash the full potential of your data with the QuantumLeap Ultimate Kit! This comprehensive bundle includes the blazing-fast QuantumLeap Flash drive and the versatile Universal Adapter Kit, providing seamless connectivity across all your devices.
+
+Features:
+
+High-Speed Data Transfer: Experience lightning-fast file transfers with the QuantumLeap Flash drive.
+Universal Compatibility: The Universal Adapter Kit ensures you can connect to USB-A, USB-C, and Micro-USB ports.
+Durable and Reliable: Built with high-quality components for long-lasting performance.
+Portable and Compact: Take your data on the go with the kit's slim and lightweight design.
+Plug and Play: No drivers required – simply plug in and start transferring files.
+
+Specifications:
+
+QuantumLeap Flash:
+Capacity: 256GB
+Interface: USB 3.2 Gen 2
+Read Speed: Up to 400 MB/s
+Write Speed: Up to 300 MB/s
+Material: Aluminum Alloy
+Dimensions: 2.5 x 0.8 x 0.4 inches
+Weight: 0.5 oz
+
+Universal Adapter Kit:
+Connectors: USB-A, USB-C, Micro-USB
+Material: Durable Plastic
+Cable Length: 6 inches (approximate)
+Compatibility: Works with most devices that support USB data transfer.
+Includes: USB-C to USB-A adapter, Micro-USB to USB-A adapter.
+
+Tags: ['Storage', 'Data']
+

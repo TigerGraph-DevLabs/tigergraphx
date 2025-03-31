@@ -55,9 +55,9 @@ Pass the context to an LLM to generate responses, enabling advanced GraphRAG wor
 
 ---
 
-## Two Options for Implementing GraphRAG with TigerGraph
+## Three Options for Implementing GraphRAG with TigerGraph
 
-There are two approaches to implementing GraphRAG with TigerGraph.
+There are three approaches to implementing GraphRAG with TigerGraph.
 
 ### **1. TigerGraph as a Storage and Retrieval Engine**
 The first approach primarily utilizes TigerGraph for storing and retrieving graph/vector data. TigerGraphX provides interfaces similar to NetworkX, allowing seamless integration with GraphRAG applications. This approach is recommended for GraphRAG solutions like [LightRAG](https://github.com/HKUDS/LightRAG) and [Nano-GraphRAG](https://github.com/gusye1234/nano-graphrag), which abstract their storage layers (e.g., graph storage, key-value storage, and vector storage). Here, you only need to implement these layers in a way that aligns with TigerGraph.
@@ -65,11 +65,15 @@ The first approach primarily utilizes TigerGraph for storing and retrieving grap
 ### **2. TigerGraph for Storage and Retrieval; TigerGraphX for LLM Tasks**
 The second approach extends beyond storage and retrieval by leveraging TigerGraphX for tasks related to large language models (LLMs), such as chat or embedding generation. This approach is suitable for complex projects like [Microsoft's GraphRAG](https://github.com/microsoft/graphrag). As of December 2024, Microsoft's GraphRAG has not yet abstracted its storage layer, making it challenging to replace the indexing process. However, TigerGraphX can be used to convert the results of the indexing process (e.g., Parquet files) into a format supported by TigerGraph. These results can then be imported into TigerGraph, and TigerGraphX can handle the querying process without relying on Microsoft’s GraphRAG.
 
-### **Demonstrations**
-Both methods are demonstrated on the following pages, each with a real-world project:
+### **3. Fully Integrated TigerGraphX Solution for GraphRAG**
+The third approach eliminates dependencies on external GraphRAG frameworks by fully utilizing TigerGraphX for both retrieval and LLM-related tasks. Instead of relying on solutions like LightRAG or Microsoft's GraphRAG, this method directly integrates TigerGraphX as an interface for LLMs. This approach simplifies deployment, reduces integration complexity, and ensures full compatibility with TigerGraph’s ecosystem. By leveraging TigerGraphX for both vector storage and LLM interactions, users can build a streamlined, end-to-end GraphRAG pipeline within a single framework.
 
-- **LightRAG**: Refer to [LightRAG](../lightrag) for the first approach.
+### **Demonstrations**
+All three methods are demonstrated on the following pages, each with a real-world project:
+
+- **LightRAG**: Refer to [LightRAG](lightrag.md) for the first approach.
 - **Microsoft's GraphRAG**: Refer to [Microsoft GraphRAG: Part 1](msft_graphrag_1.md) for the second approach.
+- **Fully Integrated TigerGraphX Solution**: Refer to [Simple GraphRAG: Part 1](simple_graphrag_1.md) for the second approach.
 
 ---
 

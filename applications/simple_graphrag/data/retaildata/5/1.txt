@@ -1,0 +1,38 @@
+
+ Product Summary: QuantumLeap Flash
+
+Blazing-fast storage in a sleek, retractable design. The QuantumLeap Flash drive offers a massive 1TB of storage space with the latest USB 4.0 technology for unparalleled transfer speeds. Perfect for backing up large files, transferring videos, or expanding the storage of your laptop or desktop.
+
+Price: $49.99
+
+Manufacturer: QuantumLeap
+
+Features:
+
+*   1TB Storage Capacity
+*   USB 4.0 Interface
+*   Retractable Design: Protects the USB connector when not in use.
+*   Plug-and-Play: No drivers required.
+*   Durable Aluminum Casing
+*   Compact and Portable
+*   LED Activity Indicator
+
+Specifications:
+
+*   Capacity: 1TB (1000GB)
+*   Interface: USB 4.0 (backward compatible with USB 3.2, USB 3.1, and USB 3.0/2.0)
+*   Read Speed: Up to 800 MB/s
+*   Write Speed: Up to 600 MB/s
+*   Dimensions: 2.5 in x 0.8 in x 0.4 in
+*   Weight: 0.8 ounces
+*   Operating Temperature: 32°F to 140°F (0°C to 60°C)
+*   Storage Temperature: -4°F to 185°F (-20°C to 85°C)
+*   Compatibility: Windows, macOS, Linux
+*   Material: Aluminum Alloy, ABS Plastic
+*   Color: Space Gray
+
+Related Accessory: Universal Adapter Kit (Sold Separately) - Enhance your QuantumLeap Flash experience with our versatile adapter kit.
+Category: USB Flash Drive
+Segment: ['Home', 'Office']
+Tags: ['Storage', 'Data']
+

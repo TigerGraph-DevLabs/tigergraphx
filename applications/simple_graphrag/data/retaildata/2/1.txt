@@ -1,0 +1,31 @@
+
+Product Summary: SecureView Privacy Screen
+
+Price: $79.00
+
+Manufacturer: AuraTech (Designed for AuraBook)
+
+Description: Protect your sensitive information and work discreetly with the SecureView Privacy Screen. This easy-to-install screen attaches seamlessly to your laptop, limiting the viewing angle to +/- 30 degrees. Only you can see your screen clearly, while those around you see a darkened view. Ideal for travel, open office environments, and protecting confidential data.
+
+Features:
+
+* Privacy Protection: Keeps your screen content private from onlookers.
+* Anti-Glare: Reduces glare and reflections for comfortable viewing.
+* Easy Installation: Attaches quickly and easily with reusable adhesive strips.
+* Scratch Resistant: Durable coating protects your screen from scratches and smudges.
+* Lightweight & Thin: Maintains the sleek profile of your laptop.
+* Protects your screen from dust and scratches.
+
+Specifications:
+
+* Compatibility: AuraBook X500, AuraBook Air
+* Dimensions: Precisely sized to fit the AuraBook X500 and AuraBook Air screens.
+* Material: Premium multi-layered PET film
+* Viewing Angle: 60 degrees total (30 degrees from center on each side)
+* Thickness: 0.4mm
+* Attachment Method: Reusable adhesive strips (included)
+* Color: Black
+Category: Laptop Privacy Screen
+Segment: ['Home', 'Office']
+Tags: ['Computer']
+

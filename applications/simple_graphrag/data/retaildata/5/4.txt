@@ -1,0 +1,28 @@
+
+ Product Summary: Secure Erase Tool
+
+Price: $9.99
+
+Description: Ensure your sensitive data is permanently and securely erased with the Secure Erase Tool. This software provides a reliable method for completely wiping hard drives and flash drives, preventing data recovery and protecting your privacy. It's the perfect solution when retiring older drives, selling used devices, or simply maintaining data security.
+
+Manufacturer: DataSafe Solutions
+
+Features:
+* Securely overwrites data multiple times to prevent recovery.
+* Supports various wiping standards including DoD 5220.22-M, Gutmann, and custom configurations.
+* User-friendly interface for easy operation.
+* Compatible with HDDs, SSDs, and USB flash drives.
+* Generates detailed reports for verification.
+* Quick Erase and Full Erase options available.
+
+Specifications:
+* Software Type: Data Erasure Utility
+* Supported Operating Systems: Windows 10, Windows 8.1, Windows 7
+* File System Support: FAT32, NTFS, exFAT
+* Disk Interface Support: SATA, IDE, USB
+* License: Single-User License
+* File Size: 5MB
+* Minimum System Requirements: 1 GHz Processor, 512 MB RAM, 10 MB Hard Disk Space
+* Accessory Of: TitanDrive X5000, QuantumLeap Flash
+Tags: ['Storage', 'Data']
+

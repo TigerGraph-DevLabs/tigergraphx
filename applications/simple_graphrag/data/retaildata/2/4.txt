@@ -1,0 +1,34 @@
+
+Lumix Keyboard
+
+Price: $129.00
+
+Manufacturer: Lumix Tech
+
+Description: Experience unparalleled comfort and style with the Lumix Keyboard. Designed for ergonomic excellence, this keyboard minimizes strain and maximizes productivity. Immerse yourself in a world of color with customizable backlighting, allowing you to personalize your workspace to match your mood or gaming setup.
+
+Features:
+
+*   Ergonomic Design: Contoured shape promotes natural wrist and hand positioning, reducing fatigue during long typing sessions.
+*   Customizable RGB Backlighting: Choose from millions of colors and dynamic lighting effects to create a personalized ambiance.
+*   Durable Construction: Built to last with high-quality materials and a robust frame.
+*   Responsive Keys: Enjoy a tactile and responsive typing experience with precise key actuation.
+*   Plug and Play: Simple USB connection for instant compatibility with Windows and macOS.
+*   Anti-Ghosting Technology: Ensures every keystroke is registered accurately, even during fast-paced gaming.
+*   Dedicated Media Controls: Easily control your music and videos with convenient media buttons.
+
+Specifications:
+
+*   Model Number: LK-720
+*   Connectivity: USB 2.0
+*   Keycap Material: ABS Plastic
+*   Dimensions: 17.5 x 5.5 x 1.5 inches
+*   Weight: 1.8 pounds
+*   Cable Length: 6 feet
+*   Compatibility: Windows 10/8/7, macOS 10.12 or later
+*   Backlight: Customizable RGB
+*   Number of Keys: 104
+*   Accessory Of: AuraBook X500, AuraBook Air
+Category: Accessories
+Segment: ['Home', 'Office']
+Tags: ['Computer']

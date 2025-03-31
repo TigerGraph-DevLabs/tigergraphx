@@ -1,0 +1,44 @@
+
+ChromaJet Pro XL
+
+Price: $799.00
+
+Manufacturer: ChromaTech
+
+Description: Unlock professional-grade printing with the ChromaJet Pro XL. Building upon the acclaimed ChromaJet Pro, the XL version expands your creative possibilities with support for larger paper sizes and enhanced color management. Achieve vibrant, accurate colors and crisp details on every print. Perfect for graphic designers, photographers, and creative professionals who demand the best.
+
+Features:
+
+* Supports paper sizes up to 13" x 19" (Super B/A3+)
+* Advanced color management system with ICC profile support
+* High-resolution printing up to 4800 x 2400 dpi
+* Fast print speeds: Up to 15 ppm in black and 10 ppm in color
+* Wireless connectivity (Wi-Fi & AirPrint)
+* Ethernet connectivity
+* 250-sheet paper tray capacity
+* Individual ink cartridges for cost-effective printing
+* Intuitive LCD control panel
+
+Specifications:
+
+* Print Technology: Inkjet
+* Maximum Print Resolution: 4800 x 2400 dpi
+* Print Speed (Black): 15 ppm
+* Print Speed (Color): 10 ppm
+* Paper Sizes Supported: Letter, Legal, 4x6, 5x7, 8x10, 11x14, 13x19 (Super B/A3+)
+* Connectivity: USB 2.0, Wi-Fi, Ethernet
+* Ink Cartridge Type: Individual
+* Operating System Compatibility: Windows, macOS
+* Dimensions: 22" x 16" x 9"
+* Weight: 18 lbs
+
+Upgrade From: ChromaJet Pro
+
+Compatible Accessories (Sold Separately):
+
+* ChromaShield Laminator: Protect your prints with a durable laminate finish.
+* ChromaClean Kit: Keep your printer running smoothly with this comprehensive cleaning kit.
+* ChromaPaper Pro Pack: Experience superior print quality with our premium photo paper.
+Category: Printer
+Segment: ['Home', 'Office']
+Tags: ['Printing']

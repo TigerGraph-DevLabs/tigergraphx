@@ -1,0 +1,35 @@
+
+ TitanDrive X5000 Backup Bundle - Safeguard Your Data
+
+Price: $329.99
+
+Manufacturer: TitanDrive
+
+Description: The TitanDrive X5000 Backup Bundle provides a complete solution for protecting your valuable data. This bundle combines the high-performance TitanDrive X5000 external hard drive with our user-friendly Secure Erase Tool, ensuring both reliable backups and secure data disposal when needed.
+
+Features:
+
+*   High-Speed Data Transfer: Experience blazing-fast transfer speeds for quick and efficient backups.
+*   Large Storage Capacity: Store all your important documents, photos, videos, and more.
+*   Plug-and-Play Simplicity: Easy to set up and use, no technical expertise required.
+*   Automatic Backup Software: Schedule automatic backups to ensure your data is always protected.
+*   Secure Data Erasure: Permanently and securely erase sensitive data from your old drives.
+*   Durable and Reliable: Built to last with high-quality components for long-term reliability.
+*   Compact and Portable: Take your data with you wherever you go.
+
+Specifications (TitanDrive X5000):
+
+*   Capacity: 4TB
+*   Interface: USB 3.2 Gen 1 (backward compatible with USB 3.0 and USB 2.0)
+*   Data Transfer Rate: Up to 5 Gbps
+*   Dimensions: 4.5 x 3.2 x 0.8 inches
+*   Weight: 8 ounces
+*   Operating System Compatibility: Windows 10, Windows 8.1, Windows 7, macOS 10.13 or later
+*   Power Supply: USB Powered
+
+Secure Erase Tool:
+
+*   Compatibility: Windows 10, Windows 8.1, Windows 7, macOS 10.13 or later
+*   Erase Methods: Supports multiple secure erase standards including DoD 5220.22-M, Gutmann, and more.
+Tags: ['Storage', 'Data']
+

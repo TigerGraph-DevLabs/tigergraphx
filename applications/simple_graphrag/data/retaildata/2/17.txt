@@ -1,0 +1,42 @@
+
+**Ergonomic Workstation Bundle: AuraView 32 + ErgoFlex Pro**
+
+**Price:** $649.99
+
+**Manufacturer:** AuraCraft
+
+**Description:** Transform your workspace into a haven of comfort and productivity with the Ergonomic Workstation Bundle. This bundle combines the stunning visuals of the AuraView 32" monitor with the unparalleled ergonomic support of the ErgoFlex Pro adjustable standing desk. Say goodbye to aches, pains, and eye strain, and hello to a healthier, more efficient you.
+
+**Features:**
+
+*   **AuraView 32 Monitor:**
+    *   32-inch curved display for immersive viewing
+    *   Ultra HD (3840 x 2160) resolution for crystal-clear visuals
+    *   Low blue light filter for reduced eye strain
+    *   Built-in speakers for convenient audio
+    *   Adjustable tilt and swivel for optimal positioning
+*   **ErgoFlex Pro Standing Desk:**
+    *   Electric height adjustment from 27 inches to 46 inches
+    *   Spacious 48" x 24" work surface
+    *   Sturdy steel frame supports up to 220 lbs
+    *   Memory settings for personalized height preferences
+    *   Cable management system to keep your workspace tidy
+
+**Specifications:**
+
+*   **AuraView 32 Monitor:**
+    *   Panel Type: VA
+    *   Response Time: 5ms
+    *   Refresh Rate: 60Hz
+    *   Connectivity: HDMI 2.0 x 2, DisplayPort 1.2 x 1, Audio Out
+    *   VESA Mount Compatibility: 100x100mm
+*   **ErgoFlex Pro Standing Desk:**
+    *   Frame Material: Powder-coated steel
+    *   Desktop Material: Engineered wood
+    *   Motor Type: Single motor
+    *   Noise Level: <50dB
+    *   Weight Capacity: 220 lbs
+Category: Bundles
+Segment: ['Home', 'Office']
+Tags: ['Computer']
+

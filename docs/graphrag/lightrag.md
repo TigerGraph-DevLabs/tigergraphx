@@ -8,8 +8,8 @@ To run this Jupyter Notebook, you can download the original `.ipynb` file from [
 
 - Before proceeding, complete the installation and setup steps outlined in the [Installation Guide](../getting_started/installation.md), including:
 
-- Setting up Python and TigerGraph. See the [Requirements](../../getting_started/installation/#requirements) section for details.
-- Installing TigerGraphX and its development dependencies. See the [Development Installation](../../getting_started/installation/#development-installation) section.
+- Setting up Python and TigerGraph. See the [Requirements](../getting_started/installation.md#requirements) section for details.
+- Installing TigerGraphX and its development dependencies. See the [Development Installation](../getting_started/installation.md#development-installation) section.
 - Setting the required environment variables:  
   
 
@@ -609,3 +609,11 @@ for graph_name in graphs_to_drop:
 
 
 ---
+
+## Next Steps
+
+- [Supporting Microsoft’s GraphRAG: Part 1](msft_graphrag_1.md): Demonstrates how to integrate TigerGraph with Microsoft's GraphRAG.
+
+---
+
+Start transforming your GraphRAG workflows with the power of **TigerGraphX** today!

@@ -1,0 +1,43 @@
+
+Privacy Protection Bundle
+
+Price: $1550.00
+
+Manufacturer: Aura Technologies (AuraBook Air) & SecureView (SecureView Privacy Screen)
+
+Description: The ultimate privacy and security package, bundling the powerful AuraBook Air laptop with the SecureView Privacy Screen for on-the-go protection against visual hacking. Work confidently knowing your data is safe from prying eyes, whether you're in a crowded cafe or a busy airport.
+
+Features:
+
+*   Complete Privacy Solution: Combines hardware and visual security for maximum protection.
+*   Enhanced Productivity: AuraBook Air delivers exceptional performance.
+*   On-the-Go Security: SecureView Privacy Screen ensures confidentiality in public spaces.
+*   Easy Installation: The SecureView Privacy Screen easily attaches and detaches.
+*   Sleek Design: Maintain a professional look while prioritizing security.
+
+AuraBook Air Specifications:
+
+*   Processor: Intel Core i7-1260P
+*   Memory: 16GB LPDDR5 RAM
+*   Storage: 512GB NVMe PCIe Gen4 SSD
+*   Display: 13.3-inch IPS Anti-Glare Display, 2560 x 1600 Resolution
+*   Operating System: Windows 11 Pro
+*   Graphics: Intel Iris Xe Graphics
+*   Ports: 2 x Thunderbolt 4, 1 x USB 3.2 Gen 1, 1 x HDMI 2.0, 1 x 3.5mm Headphone Jack
+*   Wireless: Wi-Fi 6E, Bluetooth 5.2
+*   Battery Life: Up to 12 hours (depending on usage)
+*   Weight: 2.8 lbs
+*   Color: Space Gray
+
+SecureView Privacy Screen Specifications:
+
+*   Compatibility: Specifically designed for the AuraBook Air 13.3-inch model
+*   Viewing Angle: Restricts viewing to +/- 30 degrees
+*   Attachment: Reusable adhesive strips for easy on/off application
+*   Material: Multi-layered optical film
+*   Scratch Resistance: Hard-coated surface to resist scratches and fingerprints
+*   Dimensions: Precisely cut to fit the AuraBook Air screen
+Category: Bundles
+Segment: ['Home', 'Office']
+Tags: ['Computer']
+
