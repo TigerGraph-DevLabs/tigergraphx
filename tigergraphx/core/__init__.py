@@ -8,7 +8,12 @@
 from .graph import (
     Graph,
 )
+from .tigergraph_api import (
+    TigerGraphAPI,
+)
+
 
 __all__ = [
     "Graph",
+    "TigerGraphAPI",
 ]

@@ -22,7 +22,14 @@ class NodeManager(BaseManager):
 
     def add_node(self, node_id: str, node_type: str, **attr):
         try:
-            self._connection.upsertVertex(node_type, node_id, attr)
+            payload = {
+                "vertices": {
+                    node_type: {
+                        node_id: {key: {"value": value} for key, value in attr.items()}
+                    }
+                }
+            }
+            self._tigergraph_api.upsert_graph_data(self._graph_name, payload)
         except Exception as e:
             logger.error(f"Error adding node {node_id}: {e}")
             return None
@@ -32,19 +39,24 @@ class NodeManager(BaseManager):
         normalized_nodes: List[Tuple[str, Dict[str, Any]]],
         node_type: str,
     ) -> Optional[int]:
-        # Call upsertVertices with the list of nodes and attributes
         try:
-            result = self._connection.upsertVertices(
-                vertexType=node_type, vertices=normalized_nodes
-            )
-            return result
+            vertices = {
+                node_id: {key: {"value": value} for key, value in attributes.items()}
+                for node_id, attributes in normalized_nodes
+            }
+            payload = {"vertices": {node_type: vertices}}
+            result = self._tigergraph_api.upsert_graph_data(self._graph_name, payload)
+            return result[0].get("accepted_vertices", 0)
         except Exception as e:
             logger.error(f"Error adding nodes: {e}")
             return None
 
     def remove_node(self, node_id: str, node_type: str) -> bool:
         try:
-            if self._connection.delVerticesById(node_type, node_id) > 0:
+            result = self._tigergraph_api.delete_a_node(
+                self._graph_name, node_type, node_id
+            )
+            if result.get("deleted_vertices", 0) > 0:
                 return True
             else:
                 return False
@@ -54,7 +66,9 @@ class NodeManager(BaseManager):
 
     def has_node(self, node_id: str, node_type: str) -> bool:
         try:
-            result = self._connection.getVerticesById(node_type, node_id)
+            result = self._tigergraph_api.retrieve_a_node(
+                self._graph_name, node_type, node_id
+            )
             return bool(result)
         except Exception:
             return False
@@ -62,9 +76,8 @@ class NodeManager(BaseManager):
     def get_node_data(self, node_id: str, node_type: str) -> Dict | None:
         """Retrieve node attributes by type and ID."""
         try:
-            result = self._connection.getVerticesById(
-                vertexType=node_type,
-                vertexIds=node_id,
+            result = self._tigergraph_api.retrieve_a_node(
+                self._graph_name, node_type, node_id
             )
             if isinstance(result, List) and result:
                 return result[0].get("attributes", None)
@@ -84,7 +97,7 @@ class NodeManager(BaseManager):
             params = {
                 "input": node_id,
             }
-            result = self._connection.runInterpretedQuery(gsql_script, params)
+            result = self._tigergraph_api.run_interpreted_query(gsql_script, params)
             if result and isinstance(result, list):
                 return result[0].get("edges")
         except Exception as e:
@@ -95,7 +108,7 @@ class NodeManager(BaseManager):
         try:
             # Attempt to delete vertices for each node type
             for node_type in self._graph_schema.nodes:
-                self._connection.delVertices(node_type)
+                self._tigergraph_api.delete_nodes(self._graph_name, node_type)
             return True
         except Exception as e:
             logger.error(f"Error clearing graph: {e}")
@@ -107,7 +120,6 @@ class NodeManager(BaseManager):
         """
         Core function to generate a GSQL query to get the edges of a node
         """
-        graph_name = self._graph_schema.graph_name
         if not edge_types:
             from_clause = "FROM Nodes:s -(:e)- :t"
         else:
@@ -122,7 +134,7 @@ class NodeManager(BaseManager):
 
         # Generate the query
         query = f"""
-INTERPRET QUERY(VERTEX<{node_type}> input) FOR GRAPH {graph_name} {{
+INTERPRET QUERY(VERTEX<{node_type}> input) FOR GRAPH {self._graph_name} {{
   SetAccum<EDGE> @@set_edge;
   Nodes = {{input}};
   Nodes =

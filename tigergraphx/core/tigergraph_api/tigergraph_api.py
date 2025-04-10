@@ -14,7 +14,10 @@ from .api import (
     AdminAPI,
     GSQLAPI,
     SchemaAPI,
+    NodeAPI,
+    EdgeAPI,
     QueryAPI,
+    UpsertAPI,
 )
 
 from tigergraphx.config import TigerGraphConnectionConfig
@@ -52,7 +55,10 @@ class TigerGraphAPI:
         self._admin_api = AdminAPI(config, self.endpoint_registry, self.session)
         self._gsql_api = GSQLAPI(config, self.endpoint_registry, self.session)
         self._schema_api = SchemaAPI(config, self.endpoint_registry, self.session)
+        self._node_api = NodeAPI(config, self.endpoint_registry, self.session)
+        self._edge_api = EdgeAPI(config, self.endpoint_registry, self.session)
         self._query_api = QueryAPI(config, self.endpoint_registry, self.session)
+        self._upsert_api = UpsertAPI(config, self.endpoint_registry, self.session)
 
     # ------------------------------ Admin ------------------------------
     def ping(self) -> str:
@@ -75,21 +81,54 @@ class TigerGraphAPI:
         """
         return self._schema_api.get_schema(graph_name)
 
+    # ------------------------------ Node ------------------------------
+    def retrieve_a_node(self, graph_name: str, node_type: str, node_id: str) -> List:
+        return self._node_api.retrieve_a_node(graph_name, node_type, node_id)
+
+    def delete_a_node(self, graph_name: str, node_type: str, node_id: str) -> Dict:
+        return self._node_api.delete_a_node(graph_name, node_type, node_id)
+
+    def delete_nodes(self, graph_name: str, node_type: str) -> Dict:
+        return self._node_api.delete_nodes(graph_name, node_type)
+
+    # ------------------------------ Edge ------------------------------
+    def retrieve_a_edge(
+        self,
+        graph_name: str,
+        source_node_type: str,
+        source_node_id: str,
+        edge_type: str,
+        target_node_type: str,
+        target_node_id: str,
+    ) -> List:
+        return self._edge_api.retrieve_a_edge(
+            graph_name=graph_name,
+            source_node_type=source_node_type,
+            source_node_id=source_node_id,
+            edge_type=edge_type,
+            target_node_type=target_node_type,
+            target_node_id=target_node_id,
+        )
+
     # ------------------------------ Query ------------------------------
     def run_interpreted_query(
-        self, query: str, params: Optional[Dict[str, Any]] = None
+        self, query_text: str, params: Optional[Dict[str, Any]] = None
     ) -> List:
-        return self._query_api.run_interpreted_query(query, params)
+        return self._query_api.run_interpreted_query(query_text, params)
 
-    # def run_installed_query_get(
-    #     self, query_name: str, params: Optional[Dict[str, Any]] = None
-    # ) -> List:
-    #     return self._query_api.run_installed_query_get(query_name, params)
-    #
-    # def run_installed_query_post(
-    #     self, query_name: str, params: Optional[Dict[str, Any]] = None
-    # ) -> List:
-    #     return self._query_api.run_installed_query_post(query_name, params)
+    def run_installed_query_get(
+        self, graph_name: str, query_name: str, params: Optional[Dict[str, Any]] = None
+    ) -> List:
+        return self._query_api.run_installed_query_get(graph_name, query_name, params)
+
+    def run_installed_query_post(
+        self, graph_name: str, query_name: str, params: Optional[Dict[str, Any]] = None
+    ) -> List:
+        return self._query_api.run_installed_query_post(graph_name, query_name, params)
+
+    # ------------------------------ Upsert ------------------------------
+    def upsert_graph_data(self, graph_name: str, payload: Dict) -> List:
+        return self._upsert_api.upsert_graph_data(graph_name, payload)
 
     def _initialize_session(self) -> Session:
         """

@@ -50,17 +50,20 @@ class TestTigerVector(BaseGraphFixture):
         self.setup_graph()
 
         # Adding nodes and edges
+        self.G.upsert(
+            data=[
+                {
+                    "id": "Entity_1",
+                    "entity_type": "Person",
+                    "description": "Desc1",
+                    "source_id": "Source1",
+                    "emb_description": [-0.01773, -0.01019, -0.01657],
+                },
+            ],
+            node_type="Entity",
+        )
         self.G.add_nodes_from(
             [
-                (
-                    "Entity_1",
-                    {
-                        "entity_type": "Person",
-                        "description": "Desc1",
-                        "source_id": "Source1",
-                        "emb_description": [-0.01773, -0.01019, -0.01657],
-                    },
-                ),
                 (
                     "Entity_2",
                     {

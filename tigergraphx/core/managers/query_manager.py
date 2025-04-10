@@ -6,7 +6,7 @@
 # under the License. The software is provided "AS IS", without warranty.
 
 import logging
-from typing import List, Dict, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 import pandas as pd
 
 from tigergraphx.config import (
@@ -28,8 +28,8 @@ class QueryManager(BaseManager):
 
     def run_query(self, query_name: str, params: Dict = {}):
         try:
-            return self._connection.runInstalledQuery(
-                queryName=query_name, params=params
+            return self._tigergraph_api.run_installed_query_get(
+                self._graph_name, query_name, params
             )
         except Exception as e:
             logger.error(f"Error running query {query_name}: {e}")
@@ -64,7 +64,7 @@ class QueryManager(BaseManager):
         """
         gsql_script = self._create_gsql_get_nodes(spec)
         try:
-            result = self._connection.runInterpretedQuery(gsql_script)
+            result = self._tigergraph_api.run_interpreted_query(gsql_script)
             if not result or not isinstance(result, list):
                 return pd.DataFrame()
             nodes = result[0].get("Nodes")
@@ -142,7 +142,7 @@ class QueryManager(BaseManager):
         """
         gsql_script, params = self._create_gsql_get_neighbors(spec)
         try:
-            result = self._connection.runInterpretedQuery(gsql_script, params)
+            result = self._tigergraph_api.run_interpreted_query(gsql_script, params)
             if not result or not isinstance(result, list):
                 return pd.DataFrame()
             neighbors = result[0].get("Neighbors")
@@ -241,7 +241,6 @@ class QueryManager(BaseManager):
         """
         Core function to generate a GSQL query based on a NodeSpec object.
         """
-        graph_name = self._graph_schema.graph_name
         node_type_str = f"{spec.node_type}.*" if not spec.all_node_types else "ANY"
         filter_expression_str = (
             f"WHERE {spec.filter_expression}" if spec.filter_expression else ""
@@ -251,7 +250,7 @@ class QueryManager(BaseManager):
 
         # Generate the base query
         query = f"""
-INTERPRET QUERY() FOR GRAPH {graph_name} {{
+INTERPRET QUERY() FOR GRAPH {self._graph_name} {{
   Nodes = {{{node_type_str}}};
 """
         # Add SELECT block only if filter or limit is specified
@@ -278,22 +277,20 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
         query += "\n}"
         return query.strip()
 
-    def _create_gsql_get_neighbors(self, spec: NeighborSpec) -> Tuple[str, str]:
+    def _create_gsql_get_neighbors(
+        self, spec: NeighborSpec
+    ) -> Tuple[str, Dict[str, Any]]:
         """
         Core function to generate a GSQL query based on a NeighborSpec object.
         """
         # Normalize fields to lists
-        graph_name = self._graph_schema.graph_name
-        params = "&".join(
-            [
-                f"start_nodes={node}"
-                for node in (
-                    [spec.start_nodes]
-                    if isinstance(spec.start_nodes, str)
-                    else spec.start_nodes
-                )
-            ]
-        )
+        params = {
+            "start_nodes": (
+                [spec.start_nodes]
+                if isinstance(spec.start_nodes, str)
+                else spec.start_nodes
+            )
+        }
         return_attributes = (
             [spec.return_attributes]
             if isinstance(spec.return_attributes, str)
@@ -334,7 +331,7 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
         query = f"""
 INTERPRET QUERY(
   SET<VERTEX<{start_node_type}>> start_nodes
-) FOR GRAPH {graph_name} {{
+) FOR GRAPH {self._graph_name} {{
   Nodes = {{start_nodes}};
   Neighbors =
     SELECT {t_alias}

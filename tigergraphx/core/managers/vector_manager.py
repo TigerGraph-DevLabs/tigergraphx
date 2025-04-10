@@ -25,59 +25,46 @@ class VectorManager(BaseManager):
         data: Dict | List[Dict],
         node_type: str,
     ) -> Optional[int]:
-        nodes_to_upsert = []
-        node_schema = self._graph_schema.nodes.get(node_type)
+        payload = {"vertices": {node_type: {}}}
 
+        node_schema = self._graph_schema.nodes.get(node_type)
         if not node_schema:
             logger.error(f"Node type '{node_type}' does not exist in the graph schema.")
             return None
 
-        # Ensure primary key is available in the schema
         primary_key = node_schema.primary_key
+        if not primary_key:
+            logger.error(f"Primary key not defined for node type '{node_type}'.")
+            return None
 
-        # Check if data is a dictionary (single record)
-        if isinstance(data, dict):
-            node_id = data.get(primary_key)
+        records = data if isinstance(data, list) else [data]
+
+        for record in records:
+            if not isinstance(record, dict):
+                logger.error(f"Invalid record format: {record}. Expected a dictionary.")
+                return None
+
+            node_id = record.get(primary_key)
             if not node_id:
                 logger.error(
-                    f"Primary key '{primary_key}' is missing in the node data: {data}"
+                    f"Primary key '{primary_key}' is missing in the node data: {record}"
                 )
                 return None
 
-            # Separate node data from the primary key
-            node_data = {
-                key: value for key, value in data.items() if key != primary_key
+            attr_data = {
+                key: {"value": value}
+                for key, value in record.items()
+                if key != primary_key
             }
-            nodes_to_upsert.append((node_id, node_data))
 
-        # Check if data is a list of dictionaries (multiple records)
-        else:
-            for record in data:
-                if not isinstance(record, dict):
-                    logger.error(
-                        f"Invalid record format: {record}. Expected a dictionary."
-                    )
-                    return None
-
-                node_id = record.get(primary_key)
-                if not node_id:
-                    logger.error(
-                        f"Primary key '{primary_key}' is missing in the node data: {record}"
-                    )
-                    return None
-
-                # Separate node data from the primary key
-                node_data = {
-                    key: value for key, value in record.items() if key != primary_key
-                }
-                nodes_to_upsert.append((node_id, node_data))
+            payload["vertices"][node_type][node_id] = attr_data
 
         # Attempt to upsert the nodes into the graph
         try:
-            result = self._connection.upsertVertices(
-                vertexType=node_type, vertices=nodes_to_upsert
+            result = self._tigergraph_api.upsert_graph_data(
+                self._graph_name, payload
             )
-            return result
+            return result[0].get("accepted_vertices", 0)
         except Exception as e:
             logger.error(f"Error adding nodes: {e}")
             return None
@@ -99,7 +86,9 @@ class VectorManager(BaseManager):
         """
         try:
             params = {"input": [(node_id, node_type) for node_id in node_ids]}
-            result = self._connection.runInstalledQuery("api_fetch", params)
+            result = self._tigergraph_api.run_installed_query_get(
+                self._graph_name, "api_fetch", params
+            )
 
             if not result or not isinstance(result, list):
                 logger.error("Query result is empty or invalid.")
@@ -264,8 +253,8 @@ class VectorManager(BaseManager):
         Executes the search query and performs initial error checks.
         """
         try:
-            result = self._connection.runInstalledQuery(
-                query_name, params, usePost=True
+            result = self._tigergraph_api.run_installed_query_post(
+                self._graph_name, query_name, params
             )
         except Exception as e:
             logger.error(f"Error executing query {query_name}: {e}")

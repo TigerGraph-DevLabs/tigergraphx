@@ -23,7 +23,6 @@ pydantic-settings = "^2.6.1"
 pyyaml = "^6.0.2"
 
 # Database and Storage
-pytigergraph = "^1.8.1"
 nano-vectordb = "^0.0.4.3"
 
 # Large Language Model (LLM) Utilities

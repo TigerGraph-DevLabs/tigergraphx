@@ -30,11 +30,20 @@ class EdgeManager(BaseManager):
         **attr,
     ):
         try:
-            self._connection.upsertEdge(
-                src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id, attr
-            )
+            attributes = {key: {"value": value} for key, value in attr.items()}
+            payload = {
+                "edges": {
+                    src_node_type: {
+                        src_node_id: {
+                            edge_type: {tgt_node_type: {tgt_node_id: attributes}}
+                        }
+                    }
+                }
+            }
+            result = self._tigergraph_api.upsert_graph_data(self._graph_name, payload)
+            return result[0].get("accepted_edges", 0)
         except Exception as e:
-            logger.error(f"Error adding from {src_node_id} to {tgt_node_id}: {e}")
+            logger.error(f"Error adding edge from {src_node_id} to {tgt_node_id}: {e}")
             return None
 
     def add_edges_from(
@@ -45,13 +54,19 @@ class EdgeManager(BaseManager):
         tgt_node_type: str,
     ) -> Optional[int]:
         try:
-            result = self._connection.upsertEdges(
-                sourceVertexType=src_node_type,
-                edgeType=edge_type,
-                targetVertexType=tgt_node_type,
-                edges=normalized_edges,
-            )
-            return result
+            edges = {}
+            for src_id, tgt_id, attributes in normalized_edges:
+                attr_payload = {
+                    key: {"value": value} for key, value in attributes.items()
+                }
+                # Navigate down to the right nested spot
+                edges.setdefault(src_node_type, {}).setdefault(src_id, {}).setdefault(
+                    edge_type, {}
+                ).setdefault(tgt_node_type, {})[tgt_id] = attr_payload
+            payload = {"edges": edges}
+
+            result = self._tigergraph_api.upsert_graph_data(self._graph_name, payload)
+            return result[0].get("accepted_edges", 0)
         except Exception as e:
             logger.error(f"Error adding edges: {e}")
             return None
@@ -65,8 +80,13 @@ class EdgeManager(BaseManager):
         tgt_node_type: str,
     ) -> bool:
         try:
-            result = self._connection.getEdgeCountFrom(
-                src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id
+            result = self._tigergraph_api.retrieve_a_edge(
+                graph_name=self._graph_name,
+                source_node_type=src_node_type,
+                source_node_id=src_node_id,
+                edge_type=edge_type,
+                target_node_type=tgt_node_type,
+                target_node_id=tgt_node_id,
             )
             return bool(result)
         except Exception:
@@ -81,28 +101,28 @@ class EdgeManager(BaseManager):
         tgt_node_type: str,
     ) -> Dict | Dict[int | str, Dict] | None:
         try:
-            result = self._connection.getEdges(
-                src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id
+            result = self._tigergraph_api.retrieve_a_edge(
+                graph_name=self._graph_name,
+                source_node_type=src_node_type,
+                source_node_id=src_node_id,
+                edge_type=edge_type,
+                target_node_type=tgt_node_type,
+                target_node_id=tgt_node_id,
             )
-
-            if isinstance(result, list) and result:  # pyright: ignore
+            if isinstance(result, list) and result:
                 # Ensure elements are dicts
                 valid_edges = [edge for edge in result if isinstance(edge, dict)]
                 if not valid_edges:
                     return None
-
                 # Single edge case
                 if len(valid_edges) == 1:
                     return valid_edges[0].get("attributes", None)
-
                 # Multi-edge case
                 multi_edge_data = {}
                 for index, edge in enumerate(valid_edges):
                     edge_id = edge.get("discriminator", index)
                     multi_edge_data[edge_id] = edge.get("attributes", {})
                 return multi_edge_data
-
             return None  # Return None if result is not a valid list or empty
-
         except Exception:
             return None  # Suppress errors (could log for debugging)

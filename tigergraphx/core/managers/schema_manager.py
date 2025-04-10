@@ -31,17 +31,16 @@ class SchemaManager(BaseManager):
         # Check whether the graph exists
         is_graph_existing = self._check_graph_exists()
 
-        graph_name = self._graph_schema.graph_name
         if drop_existing_graph and is_graph_existing:
             self.drop_graph()
 
         if not is_graph_existing or drop_existing_graph:
             # Create schema
             gsql_graph_schema = self._create_gsql_graph_schema()
-            logger.info(f"Creating schema for graph: {graph_name}...")
-            result = self._connection.gsql(gsql_graph_schema)
+            logger.info(f"Creating schema for graph: {self._graph_name}...")
+            result = self._tigergraph_api.gsql(gsql_graph_schema)
             logger.debug(f"GSQL response: {result}")
-            if f"The graph {graph_name} is created" not in result:
+            if f"The graph {self._graph_name} is created" not in result:
                 error_msg = f"Graph creation failed. GSQL response: {result}"
                 logger.error(error_msg)
                 raise RuntimeError(error_msg)
@@ -64,12 +63,12 @@ class SchemaManager(BaseManager):
             # Add vector attributes
             gsql_add_vector_attr = self._create_gsql_add_vector_attr()
             if gsql_add_vector_attr:
-                logger.info(f"Adding vector attribute(s) for graph: {graph_name}...")
-                result = self._connection.gsql(gsql_add_vector_attr)
+                logger.info(f"Adding vector attribute(s) for graph: {self._graph_name}...")
+                result = self._tigergraph_api.gsql(gsql_add_vector_attr)
                 logger.debug(f"GSQL response: {result}")
-                if f"Using graph '{graph_name}'" not in result:
+                if f"Using graph '{self._graph_name}'" not in result:
                     error_msg = (
-                        f"Failed to use graph '{graph_name}'. GSQL response: {result}"
+                        f"Failed to use graph '{self._graph_name}'. GSQL response: {result}"
                     )
                     logger.error(error_msg)
                     raise RuntimeError(error_msg)
@@ -97,16 +96,15 @@ class SchemaManager(BaseManager):
 
             return True
 
-        logger.debug(f"Graph '{graph_name}' already exists. Skipping graph creation.")
+        logger.debug(f"Graph '{self._graph_name}' already exists. Skipping graph creation.")
         return False
 
     def drop_graph(self) -> None:
-        graph_name = self._graph_schema.graph_name
-        logger.info(f"Dropping graph: {graph_name}...")
+        logger.info(f"Dropping graph: {self._graph_name}...")
         gsql_script = self._create_gsql_drop_graph()
-        result = self._connection.gsql(gsql_script)
+        result = self._tigergraph_api.gsql(gsql_script)
         logger.debug(result)
-        if f"The graph {graph_name} is dropped" not in result:
+        if f"The graph {self._graph_name} is dropped" not in result:
             error_msg = f"Failed to drop the graph. GSQL response: {result}"
             logger.error(error_msg)
             raise RuntimeError(error_msg)
@@ -114,23 +112,21 @@ class SchemaManager(BaseManager):
 
     def _check_graph_exists(self) -> bool:
         """Check if the specified graph name exists in the gsql_script."""
-        graph_name = self._graph_schema.graph_name
-        result = self._connection.gsql(f"USE Graph {graph_name}")
+        result = self._tigergraph_api.gsql(f"USE Graph {self._graph_name}")
         logger.debug(
             "Graph existence check for %s: %s",
-            graph_name,
+            self._graph_name,
             "exists" if "Using graph" in result else "does not exist",
         )
         return "Using graph" in result
 
     def _create_gsql_drop_graph(self) -> str:
         # Generating the gsql script to drop graph
-        graph_name = self._graph_schema.graph_name
         gsql_script = f"""
-USE GRAPH {graph_name}
+USE GRAPH {self._graph_name}
 DROP QUERY *
 DROP JOB *
-DROP GRAPH {graph_name}
+DROP GRAPH {self._graph_name}
 """
         return gsql_script.strip()
 
@@ -364,7 +360,7 @@ INSTALL QUERY *
         )
 
         # Retrieve the schema from TigerGraph DB
-        raw_schema = context.connection.getSchema()
+        raw_schema = context.tigergraph_api.get_schema(graph_name)
         logger.debug(f"The raw schema: {raw_schema}")
 
         # Construct nodes dictionary

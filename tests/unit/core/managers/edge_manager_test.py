@@ -3,17 +3,40 @@ from unittest.mock import MagicMock
 
 from tigergraphx.core.managers.edge_manager import EdgeManager
 
+from tigergraphx.config import (
+    GraphSchema,
+    NodeSchema,
+    EdgeSchema,
+    AttributeSchema,
+    DataType,
+)
+
 
 class TestEdgeManager:
     @pytest.fixture(autouse=True)
     def setup(self):
-        self.mock_connection = MagicMock()
-        self.mock_connection.upsertEdge = MagicMock()
-        self.mock_connection.getEdgeCountFrom = MagicMock()
-        self.mock_connection.getEdges = MagicMock()
+        self.mock_tigergraph_api = MagicMock()
 
         mock_context = MagicMock()
-        mock_context.connection = self.mock_connection
+        mock_context.tigergraph_api = self.mock_tigergraph_api
+        mock_context.graph_schema = GraphSchema(
+            graph_name="MyGraph",
+            nodes={
+                "MyNode": NodeSchema(
+                    primary_key="name",
+                    attributes={
+                        "name": AttributeSchema(data_type=DataType.STRING),
+                        "value": AttributeSchema(data_type=DataType.BOOL),
+                    },
+                ),
+            },
+            edges={
+                "MyEdge": EdgeSchema(
+                    from_node_type="MyNode",
+                    to_node_type="MyNode",
+                )
+            },
+        )
         self.edge_manager = EdgeManager(mock_context)
 
     def test_add_edges_from_valid_data(self):
@@ -22,20 +45,29 @@ class TestEdgeManager:
             ("1", "2", {}),  # Normalized edge with string IDs
             ("NodeB", "NodeC", {"weight": 1.0}),  # Already normalized
         ]
-        src_node_type = "Entity"
-        edge_type = "transfer"
-        tgt_node_type = "Entity"
+        src_node_type = "MyNode"
+        edge_type = "MyEdge"
+        tgt_node_type = "MyNode"
 
-        self.mock_connection.upsertEdges.return_value = len(normalized_edges)
+        self.mock_tigergraph_api.upsert_graph_data.return_value = [
+            {"accepted_vertices": 0, "accepted_edges": len(normalized_edges)}
+        ]
         result = self.edge_manager.add_edges_from(
             normalized_edges, src_node_type, edge_type, tgt_node_type
         )
 
-        self.mock_connection.upsertEdges.assert_called_once_with(
-            sourceVertexType=src_node_type,
-            edgeType=edge_type,
-            targetVertexType=tgt_node_type,
-            edges=normalized_edges,
+        self.mock_tigergraph_api.upsert_graph_data.assert_called_once_with(
+            "MyGraph",
+            {
+                "edges": {
+                    "MyNode": {
+                        "1": {"MyEdge": {"MyNode": {"2": {}}}},
+                        "NodeB": {
+                            "MyEdge": {"MyNode": {"NodeC": {"weight": {"value": 1.0}}}}
+                        },
+                    }
+                }
+            },
         )
         assert result == len(normalized_edges)
 
@@ -45,20 +77,29 @@ class TestEdgeManager:
             ("1", "2", {"attr": "value"}),
             ("NodeA", "NodeB", {}),
         ]
-        src_node_type = "Entity"
-        edge_type = "transfer"
-        tgt_node_type = "Entity"
+        src_node_type = "MyNode"
+        edge_type = "MyEdge"
+        tgt_node_type = "MyNode"
 
-        self.mock_connection.upsertEdges.side_effect = Exception("Upsert error")
+        self.mock_tigergraph_api.upsert_graph_data.side_effect = Exception(
+            "Upsert error"
+        )
         result = self.edge_manager.add_edges_from(
             normalized_edges, src_node_type, edge_type, tgt_node_type
         )
 
-        self.mock_connection.upsertEdges.assert_called_once_with(
-            sourceVertexType=src_node_type,
-            edgeType=edge_type,
-            targetVertexType=tgt_node_type,
-            edges=normalized_edges,
+        self.mock_tigergraph_api.upsert_graph_data.assert_called_once_with(
+            "MyGraph",
+            {
+                "edges": {
+                    "MyNode": {
+                        "1": {
+                            "MyEdge": {"MyNode": {"2": {"attr": {"value": "value"}}}}
+                        },
+                        "NodeA": {"MyEdge": {"MyNode": {"NodeB": {}}}},
+                    }
+                }
+            },
         )
         assert result is None
 
@@ -69,14 +110,29 @@ class TestEdgeManager:
         edge_type = "Friend"
         tgt_node_type = "Person"
 
-        self.mock_connection.getEdgeCountFrom.return_value = 1
+        self.mock_tigergraph_api.retrieve_a_edge.return_value = [
+            {
+                "e_type": edge_type,
+                "directed": False,
+                "from_id": src_node_id,
+                "from_type": src_node_type,
+                "to_id": tgt_node_id,
+                "to_type": tgt_node_id,
+                "attributes": {},
+            }
+        ]
 
         result = self.edge_manager.has_edge(
             src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type
         )
 
-        self.mock_connection.getEdgeCountFrom.assert_called_once_with(
-            src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id
+        self.mock_tigergraph_api.retrieve_a_edge.assert_called_once_with(
+            graph_name="MyGraph",
+            source_node_type=src_node_type,
+            source_node_id=src_node_id,
+            edge_type=edge_type,
+            target_node_type=tgt_node_type,
+            target_node_id=tgt_node_id,
         )
         assert result is True
 
@@ -87,14 +143,19 @@ class TestEdgeManager:
         edge_type = "Friend"
         tgt_node_type = "Person"
 
-        self.mock_connection.getEdgeCountFrom.return_value = 0
+        self.mock_tigergraph_api.retrieve_a_edge.return_value = []
 
         result = self.edge_manager.has_edge(
             src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type
         )
 
-        self.mock_connection.getEdgeCountFrom.assert_called_once_with(
-            src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id
+        self.mock_tigergraph_api.retrieve_a_edge.assert_called_once_with(
+            graph_name="MyGraph",
+            source_node_type=src_node_type,
+            source_node_id=src_node_id,
+            edge_type=edge_type,
+            target_node_type=tgt_node_type,
+            target_node_id=tgt_node_id,
         )
         assert result is False
 
@@ -105,14 +166,29 @@ class TestEdgeManager:
         edge_type = "Friend"
         tgt_node_type = "Person"
 
-        self.mock_connection.getEdges.return_value = [{"attributes": {"since": 2021}}]
+        self.mock_tigergraph_api.retrieve_a_edge.return_value = [
+            {
+                "e_type": edge_type,
+                "directed": False,
+                "from_id": src_node_id,
+                "from_type": src_node_type,
+                "to_id": tgt_node_id,
+                "to_type": tgt_node_id,
+                "attributes": {"since": 2021},
+            }
+        ]
 
         result = self.edge_manager.get_edge_data(
             src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type
         )
 
-        self.mock_connection.getEdges.assert_called_once_with(
-            src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id
+        self.mock_tigergraph_api.retrieve_a_edge.assert_called_once_with(
+            graph_name="MyGraph",
+            source_node_type=src_node_type,
+            source_node_id=src_node_id,
+            edge_type=edge_type,
+            target_node_type=tgt_node_type,
+            target_node_id=tgt_node_id,
         )
         assert result == {"since": 2021}
 
@@ -123,14 +199,19 @@ class TestEdgeManager:
         edge_type = "Friend"
         tgt_node_type = "Person"
 
-        self.mock_connection.getEdges.return_value = []
+        self.mock_tigergraph_api.retrieve_a_edge.return_value = []
 
         result = self.edge_manager.get_edge_data(
             src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type
         )
 
-        self.mock_connection.getEdges.assert_called_once_with(
-            src_node_type, src_node_id, edge_type, tgt_node_type, tgt_node_id
+        self.mock_tigergraph_api.retrieve_a_edge.assert_called_once_with(
+            graph_name="MyGraph",
+            source_node_type=src_node_type,
+            source_node_id=src_node_id,
+            edge_type=edge_type,
+            target_node_type=tgt_node_type,
+            target_node_id=tgt_node_id,
         )
         assert result is None
 
@@ -141,7 +222,7 @@ class TestEdgeManager:
         edge_type = "Friend"
         tgt_node_type = "Person"
 
-        self.mock_connection.getEdges.return_value = [
+        self.mock_tigergraph_api.retrieve_a_edge.return_value = [
             {"discriminator": "best_friend", "attributes": {"since": 2020}},
             {"discriminator": "colleague", "attributes": {"since": 2019}},
         ]
@@ -162,9 +243,25 @@ class TestEdgeManager:
         edge_type = "Friend"
         tgt_node_type = "Person"
 
-        self.mock_connection.getEdges.return_value = [
-            {"attributes": {"since": 2020}},
-            {"attributes": {"since": 2019}},
+        self.mock_tigergraph_api.retrieve_a_edge.return_value = [
+            {
+                "e_type": edge_type,
+                "directed": False,
+                "from_id": src_node_id,
+                "from_type": src_node_type,
+                "to_id": tgt_node_id,
+                "to_type": tgt_node_id,
+                "attributes": {"since": 2020},
+            },
+            {
+                "e_type": edge_type,
+                "directed": False,
+                "from_id": src_node_id,
+                "from_type": src_node_type,
+                "to_id": tgt_node_id,
+                "to_type": tgt_node_id,
+                "attributes": {"since": 2019},
+            },
         ]
 
         result = self.edge_manager.get_edge_data(
@@ -183,9 +280,17 @@ class TestEdgeManager:
         edge_type = "Friend"
         tgt_node_type = "Person"
 
-        self.mock_connection.getEdges.return_value = [
+        self.mock_tigergraph_api.retrieve_a_edge.return_value = [
             "invalid_edge",  # Not a dict
-            {"attributes": {"since": 2021}},  # Valid edge
+            {
+                "e_type": edge_type,
+                "directed": False,
+                "from_id": src_node_id,
+                "from_type": src_node_type,
+                "to_id": tgt_node_id,
+                "to_type": tgt_node_id,
+                "attributes": {"since": 2021},
+            },  # Valid edge
         ]
 
         result = self.edge_manager.get_edge_data(
@@ -201,7 +306,7 @@ class TestEdgeManager:
         edge_type = "Friend"
         tgt_node_type = "Person"
 
-        self.mock_connection.getEdges.return_value = "unexpected_string"
+        self.mock_tigergraph_api.retrieve_a_edge.return_value = "unexpected_string"
 
         result = self.edge_manager.get_edge_data(
             src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type
@@ -216,7 +321,7 @@ class TestEdgeManager:
         edge_type = "Friend"
         tgt_node_type = "Person"
 
-        self.mock_connection.getEdges.side_effect = Exception("Test exception")
+        self.mock_tigergraph_api.retrieve_a_edge.side_effect = Exception("Test exception")
 
         result = self.edge_manager.get_edge_data(
             src_node_id, tgt_node_id, src_node_type, edge_type, tgt_node_type

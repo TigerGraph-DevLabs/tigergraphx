@@ -169,6 +169,9 @@ class TestGraph1(BaseGraphFixture):
         ):
             self.G.add_node("D")
 
+    def test_remove_node(self):
+        assert self.G.remove_node("User_A", "User")
+
     def test_has_nodes(self):
         # Test node existence
         assert self.G.has_node("User_A", "User")

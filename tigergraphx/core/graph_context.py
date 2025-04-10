@@ -9,11 +9,11 @@ from typing import Dict, Optional
 from pathlib import Path
 import logging
 
-from pyTigerGraph import TigerGraphConnection
 from tigergraphx.config import (
     TigerGraphConnectionConfig,
     GraphSchema,
 )
+from tigergraphx.core.tigergraph_api import TigerGraphAPI
 
 logger = logging.getLogger(__name__)
 
@@ -37,13 +37,4 @@ class GraphContext:
                 tigergraph_connection_config
             )
         logger.debug(f"tigergraph_connection_config: {tigergraph_connection_config}")
-        self.connection = TigerGraphConnection(
-            graphname=self.graph_schema.graph_name,
-            host=str(tigergraph_connection_config.host),
-            restppPort=tigergraph_connection_config.restpp_port,
-            gsPort=tigergraph_connection_config.gsql_port,
-            username=tigergraph_connection_config.username or "",
-            password=tigergraph_connection_config.password or "",
-            gsqlSecret=tigergraph_connection_config.secret or "",
-            apiToken=tigergraph_connection_config.token or "",
-        )
+        self.tigergraph_api = TigerGraphAPI(tigergraph_connection_config)

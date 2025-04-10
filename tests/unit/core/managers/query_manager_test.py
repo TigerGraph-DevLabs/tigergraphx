@@ -10,9 +10,9 @@ from tigergraphx.config import NodeSpec, NeighborSpec
 class TestQueryManager:
     @pytest.fixture(autouse=True)
     def setup(self):
-        self.mock_connection = MagicMock()
-        self.mock_connection.runInstalledQuery = MagicMock()
-        self.mock_connection.runInterpretedQuery = MagicMock()
+        self.mock_tigergraph_api = MagicMock()
+        self.mock_tigergraph_api.run_installed_query_get = MagicMock()
+        self.mock_tigergraph_api.run_interpreted_query = MagicMock()
 
         self.mock_graph_schema = MagicMock()
         self.mock_graph_schema.graph_name = "MyGraph"
@@ -21,28 +21,29 @@ class TestQueryManager:
         self.mock_graph_schema.nodes = {"Person": mock_node_schema}
 
         mock_context = MagicMock()
-        # we assume that our QueryManager uses context.connection internally
-        mock_context.connection = self.mock_connection
+        mock_context.tigergraph_api = self.mock_tigergraph_api
         mock_context.graph_schema = self.mock_graph_schema
         self.query_manager = QueryManager(mock_context)
 
     def test_run_query_success(self):
         query_name = "test_query"
         params = {"param1": "value1"}
-        self.mock_connection.runInstalledQuery.return_value = "result"
+        self.mock_tigergraph_api.run_installed_query_get.return_value = "result"
         result = self.query_manager.run_query(query_name, params)
-        self.mock_connection.runInstalledQuery.assert_called_once_with(
-            queryName=query_name, params=params
+        self.mock_tigergraph_api.run_installed_query_get.assert_called_once_with(
+            self.mock_graph_schema.graph_name, query_name, params
         )
         assert result == "result"
 
     def test_run_query_error(self):
         query_name = "test_query"
         params = {"param1": "value1"}
-        self.mock_connection.runInstalledQuery.side_effect = Exception("Error")
+        self.mock_tigergraph_api.run_installed_query_get.side_effect = Exception(
+            "Error"
+        )
         result = self.query_manager.run_query(query_name, params)
-        self.mock_connection.runInstalledQuery.assert_called_once_with(
-            queryName=query_name, params=params
+        self.mock_tigergraph_api.run_installed_query_get.assert_called_once_with(
+            self.mock_graph_schema.graph_name, query_name, params
         )
         assert result is None
 
@@ -61,7 +62,7 @@ class TestQueryManager:
             return_attributes=["name", "id"],
             limit=None,
         )
-        self.mock_connection.runInterpretedQuery.return_value = [
+        self.mock_tigergraph_api.run_interpreted_query.return_value = [
             {
                 "Nodes": [
                     {
@@ -87,7 +88,7 @@ class TestQueryManager:
             return_attributes=None,
             limit=None,
         )
-        self.mock_connection.runInterpretedQuery.return_value = [
+        self.mock_tigergraph_api.run_interpreted_query.return_value = [
             {
                 "Nodes": [
                     {
@@ -111,7 +112,7 @@ class TestQueryManager:
             return_attributes=None,
             limit=None,
         )
-        self.mock_connection.runInterpretedQuery.side_effect = Exception("Error")
+        self.mock_tigergraph_api.run_interpreted_query.side_effect = Exception("Error")
         df = self.query_manager.get_nodes_from_spec(spec)
         assert df.empty, "Expected df to be an empty DataFrame"
 
@@ -146,7 +147,7 @@ class TestQueryManager:
             limit=None,
         )
         # Prepare the mock return value from the connection.
-        self.mock_connection.runInterpretedQuery.return_value = [
+        self.mock_tigergraph_api.run_interpreted_query.return_value = [
             {
                 "Neighbors": [
                     {
@@ -164,11 +165,6 @@ class TestQueryManager:
         assert not df.empty
         assert "id" in df.columns
         assert "name" in df.columns
-        # Optionally, verify that aliases were used in constructing the underlying query.
-        # (This requires that get_neighbors_from_spec exposes its generated query or that the connection mock captured it.)
-        # For example:
-        # generated_query = self.mock_connection.runInterpretedQuery.call_args[0][0]
-        # assert "s" in generated_query and "e" in generated_query and "t" in generated_query
 
     def test_get_neighbors_from_spec_without_attributes_success(self):
         # Create a NeighborSpec with no return attributes.
@@ -184,7 +180,7 @@ class TestQueryManager:
             return_attributes=None,
             limit=None,
         )
-        self.mock_connection.runInterpretedQuery.return_value = [
+        self.mock_tigergraph_api.run_interpreted_query.return_value = [
             {
                 "Neighbors": [
                     {
@@ -216,7 +212,7 @@ class TestQueryManager:
             limit=None,
         )
         # Simulate a failure from the connection's query execution.
-        self.mock_connection.runInterpretedQuery.side_effect = Exception("Error")
+        self.mock_tigergraph_api.run_interpreted_query.side_effect = Exception("Error")
         # The method should catch the exception and return None (or handle it gracefully).
         df = self.query_manager.get_neighbors_from_spec(spec)
         assert df.empty, "Expected df to be an empty DataFrame"

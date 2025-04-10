@@ -9,12 +9,18 @@ from .base_api import TigerGraphAPIError
 from .admin_api import AdminAPI
 from .gsql_api import GSQLAPI
 from .schema_api import SchemaAPI
+from .node_api import NodeAPI
+from .edge_api import EdgeAPI
 from .query_api import QueryAPI 
+from .upsert_api import UpsertAPI
 
 __all__ = [
     "TigerGraphAPIError",
     "AdminAPI",
     "GSQLAPI",
     "SchemaAPI",
+    "NodeAPI",
+    "EdgeAPI",
     "QueryAPI",
+    "UpsertAPI",
 ]
