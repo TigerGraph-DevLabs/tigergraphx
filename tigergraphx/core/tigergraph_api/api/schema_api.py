@@ -10,7 +10,7 @@ from .base_api import BaseAPI
 
 
 class SchemaAPI(BaseAPI):
-    def get_schema(self, graph_name) -> Dict:
+    def get_schema(self, graph_name: str) -> Dict:
         """
         Retrieves the schema for a specific graph.
         """
@@ -18,5 +18,5 @@ class SchemaAPI(BaseAPI):
             endpoint_name="get_schema", version="4.x", graph_name=graph_name
         )
         if not isinstance(result, dict):
-            raise TypeError(f"Expected str, but got {type(result).__name__}: {result}")
+            raise TypeError(f"Expected dict, but got {type(result).__name__}: {result}")
         return result

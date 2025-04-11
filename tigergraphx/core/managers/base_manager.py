@@ -10,5 +10,6 @@ from tigergraphx.core.graph_context import GraphContext
 
 class BaseManager:
     def __init__(self, context: GraphContext):
-        self._connection = context.connection
+        self._tigergraph_api = context.tigergraph_api
         self._graph_schema = context.graph_schema
+        self._graph_name = self._graph_schema.graph_name

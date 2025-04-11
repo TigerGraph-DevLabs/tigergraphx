@@ -66,7 +66,7 @@ class TestQueryAPI:
         """Test parsing a list of primitive values."""
         params = {"values": [1, 2, 3]}
         result = query_api._parse_query_parameters(params)
-        expected = {"values[0]": "1", "values[1]": "2", "values[2]": "3"}
+        expected = {"values": [1, 2, 3]}
         assert result == expected
 
     def test_parse_query_parameters_datetime(self, query_api):

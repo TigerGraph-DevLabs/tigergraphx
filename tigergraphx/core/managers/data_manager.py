@@ -29,15 +29,14 @@ class DataManager(BaseManager):
         )
         gsql_script = self._create_gsql_load_data(loading_job_config)
 
-        result = self._connection.gsql(gsql_script)
-        graph_name = self._graph_schema.graph_name
+        result = self._tigergraph_api.gsql(gsql_script)
         if "LOAD SUCCESSFUL for loading jobid" not in result:
             error_msg = f"Data load process failed. GSQL response: {result}"
             logger.error(error_msg)
             raise RuntimeError(error_msg)
 
-        if f"Using graph '{graph_name}'" not in result:
-            error_msg = f"Failed to set graph context for '{graph_name}'. GSQL response: {result}"
+        if f"Using graph '{self._graph_name}'" not in result:
+            error_msg = f"Failed to set graph context for '{self._graph_name}'. GSQL response: {result}"
             logger.error(error_msg)
             raise RuntimeError(error_msg)
         if "Successfully created loading jobs:" not in result:

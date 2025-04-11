@@ -18,6 +18,26 @@ endpoints:
       # 3.x: "/gsqlserver/gsql/schema"
       4.x: "/gsql/v1/schema/graphs/{graph_name}"
 
+  # ------------------------------ Node ------------------------------
+  retrieve_a_node:
+    path:
+      4.x: "/restpp/graph/{graph_name}/vertices/{node_type}/{node_id}"
+
+  delete_a_node:
+    path:
+      4.x: "/restpp/graph/{graph_name}/vertices/{node_type}/{node_id}"
+    method: "DELETE"
+
+  delete_nodes:
+    path:
+      4.x: "/restpp/graph/{graph_name}/vertices/{node_type}"
+    method: "DELETE"
+
+  # ------------------------------ Node ------------------------------
+  retrieve_a_edge:
+    path:
+      4.x: "/restpp/graph/{graph_name}/edges/{source_node_type}/{source_node_id}/{edge_type}/{target_node_type}/{target_node_id}"
+
   # ------------------------------ Query ------------------------------
   run_interpreted_query:
     path:
@@ -27,7 +47,13 @@ endpoints:
     content_type: "text/plain"
 
   run_installed_query:
-    path: "/query/{graph_name}/{query_name}"
+    path: "/restpp/query/{graph_name}/{query_name}"
+
+  # ------------------------------ Upsert ------------------------------
+  upsert_graph_data:
+    path: "/restpp/graph/{graph_name}"
+    method: "POST"
+
 
 defaults:
   method: "GET"

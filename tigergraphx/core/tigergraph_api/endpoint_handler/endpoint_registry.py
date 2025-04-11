@@ -8,6 +8,7 @@
 from typing import Any, Dict, Literal, Optional
 import yaml
 from pathlib import Path
+from urllib.parse import quote
 
 from tigergraphx.config import TigerGraphConnectionConfig
 
@@ -92,13 +93,18 @@ class EndpointRegistry:
 
         endpoint = self.endpoints[name]
 
+        # Encode each path variable in kwargs
+        safe_kwargs = {
+            key: quote(str(value), safe="") for key, value in kwargs.items()
+        }
+
         # Resolve path
         if version not in endpoint["paths"]:
             raise ValueError(
                 f"Path not defined for version '{version}' in endpoint '{name}'."
             )
         path_template = endpoint["paths"][version]
-        path = path_template.format(**kwargs)
+        path = path_template.format(**safe_kwargs)
 
         # Resolve method
         if version not in endpoint["methods"]:

@@ -14,11 +14,11 @@ from tigergraphx.core.managers.vector_manager import VectorManager
 class TestVectorManager:
     @pytest.fixture(autouse=True)
     def setup(self):
-        self.mock_connection = MagicMock()
-        self.mock_connection.gsql = MagicMock()
+        self.mock_tigergraph_api = MagicMock()
+        self.mock_tigergraph_api.run_installed_query_get = MagicMock()
 
         mock_context = MagicMock()
-        mock_context.connection = self.mock_connection  # Use the mocked connection
+        mock_context.tigergraph_api = self.mock_tigergraph_api
         mock_context.graph_schema = GraphSchema(
             graph_name="MyGraph",
             nodes={
@@ -55,27 +55,31 @@ class TestVectorManager:
         }
         node_type = "Account"
 
-        # Mock the upsertVertices call
-        self.mock_connection.upsertVertices.return_value = 1
+        self.mock_tigergraph_api.upsert_graph_data.return_value = [
+            {"accepted_vertices": 1, "accepted_edges": 0}
+        ]
 
         result = self.vector_manager.upsert(data, node_type)
 
         # Assert that the result is as expected
         assert result == 1
-        self.mock_connection.upsertVertices.assert_called_once_with(
-            vertexType=node_type,
-            vertices=[
-                (
-                    "Scott",
-                    {
-                        "emb1": [
-                            -0.017733968794345856,
-                            -0.01019224338233471,
-                            -0.016571875661611557,
-                        ]
-                    },
-                )
-            ],
+        self.mock_tigergraph_api.upsert_graph_data.assert_called_once_with(
+            "MyGraph",
+            {
+                "vertices": {
+                    "Account": {
+                        "Scott": {
+                            "emb1": {
+                                "value": [
+                                    -0.017733968794345856,
+                                    -0.01019224338233471,
+                                    -0.016571875661611557,
+                                ]
+                            },
+                        }
+                    }
+                }
+            },
         )
 
     def test_upsert_multiple_records(self):
@@ -100,37 +104,40 @@ class TestVectorManager:
         ]
         node_type = "Account"
 
-        # Mock the upsertVertices call
-        self.mock_connection.upsertVertices.return_value = {"status": "success"}
+        self.mock_tigergraph_api.upsert_graph_data.return_value = [
+            {"accepted_vertices": 2, "accepted_edges": 0}
+        ]
 
         result = self.vector_manager.upsert(data, node_type)
 
         # Assert that the result is as expected
-        assert result == {"status": "success"}
-        self.mock_connection.upsertVertices.assert_called_once_with(
-            vertexType=node_type,
-            vertices=[
-                (
-                    "Scott",
-                    {
-                        "emb1": [
-                            -0.017733968794345856,
-                            -0.01019224338233471,
-                            -0.016571875661611557,
-                        ]
-                    },
-                ),
-                (
-                    "Jenny",
-                    {
-                        "emb1": [
-                            -0.019265105947852135,
-                            0.0004929182468913496,
-                            0.006711316294968128,
-                        ]
-                    },
-                ),
-            ],
+        assert result == 2
+        self.mock_tigergraph_api.upsert_graph_data.assert_called_once_with(
+            "MyGraph",
+            {
+                "vertices": {
+                    "Account": {
+                        "Scott": {
+                            "emb1": {
+                                "value": [
+                                    -0.017733968794345856,
+                                    -0.01019224338233471,
+                                    -0.016571875661611557,
+                                ]
+                            },
+                        },
+                        "Jenny": {
+                            "emb1": {
+                                "value": [
+                                    -0.019265105947852135,
+                                    0.0004929182468913496,
+                                    0.006711316294968128,
+                                ]
+                            },
+                        },
+                    }
+                }
+            },
         )
 
     def test_upsert_node_type_not_found(self):
@@ -169,17 +176,20 @@ class TestVectorManager:
                 "Nodes": [
                     {
                         "v_id": "Ed",
-                        "Embeddings": {"emb1": [-0.003692443, 0.01049439, -0.004631793]},
+                        "Embeddings": {
+                            "emb1": [-0.003692443, 0.01049439, -0.004631793]
+                        },
                     }
                 ]
             }
         ]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
+        self.mock_tigergraph_api.run_installed_query_get.return_value = mock_result
 
         expected_embedding = [-0.003692443, 0.01049439, -0.004631793]
-        result = self.vector_manager.fetch_node(node_id, vector_attribute_name, node_type)
+        result = self.vector_manager.fetch_node(
+            node_id, vector_attribute_name, node_type
+        )
         assert result == expected_embedding
-
 
     def test_fetch_node_not_found(self):
         """
@@ -188,11 +198,12 @@ class TestVectorManager:
         node_id = "Ed"
         node_type = "Account"
         vector_attribute_name = "emb1"
-        self.mock_connection.runInstalledQuery.return_value = [{"Nodes": []}]
+        self.mock_tigergraph_api.run_installed_query_get.return_value = [{"Nodes": []}]
 
-        result = self.vector_manager.fetch_node(node_id, vector_attribute_name, node_type)
+        result = self.vector_manager.fetch_node(
+            node_id, vector_attribute_name, node_type
+        )
         assert result is None
-
 
     def test_fetch_node_embedding_not_found(self):
         """
@@ -206,16 +217,19 @@ class TestVectorManager:
                 "Nodes": [
                     {
                         "v_id": "Ed",
-                        "Embeddings": {"emb1": [-0.003692443, 0.01049439, -0.004631793]},
+                        "Embeddings": {
+                            "emb1": [-0.003692443, 0.01049439, -0.004631793]
+                        },
                     }
                 ]
             }
         ]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
+        self.mock_tigergraph_api.run_installed_query_get.return_value = mock_result
 
-        result = self.vector_manager.fetch_node(node_id, vector_attribute_name, node_type)
+        result = self.vector_manager.fetch_node(
+            node_id, vector_attribute_name, node_type
+        )
         assert result is None
-
 
     def test_fetch_nodes_successful(self):
         """
@@ -229,24 +243,29 @@ class TestVectorManager:
                 "Nodes": [
                     {
                         "v_id": "Ed",
-                        "Embeddings": {"emb1": [-0.003692443, 0.01049439, -0.004631793]},
+                        "Embeddings": {
+                            "emb1": [-0.003692443, 0.01049439, -0.004631793]
+                        },
                     },
                     {
                         "v_id": "Scott",
-                        "Embeddings": {"emb1": [-0.015055144, -0.016819345, -0.022187002]},
+                        "Embeddings": {
+                            "emb1": [-0.015055144, -0.016819345, -0.022187002]
+                        },
                     },
                 ]
             }
         ]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
+        self.mock_tigergraph_api.run_installed_query_get.return_value = mock_result
 
         expected_embeddings = {
             "Ed": [-0.003692443, 0.01049439, -0.004631793],
             "Scott": [-0.015055144, -0.016819345, -0.022187002],
         }
-        result = self.vector_manager.fetch_nodes(node_ids, vector_attribute_name, node_type)
+        result = self.vector_manager.fetch_nodes(
+            node_ids, vector_attribute_name, node_type
+        )
         assert result == expected_embeddings
-
 
     def test_fetch_nodes_partial_success(self):
         """
@@ -260,20 +279,23 @@ class TestVectorManager:
                 "Nodes": [
                     {
                         "v_id": "Ed",
-                        "Embeddings": {"emb1": [-0.003692443, 0.01049439, -0.004631793]},
+                        "Embeddings": {
+                            "emb1": [-0.003692443, 0.01049439, -0.004631793]
+                        },
                     },
                     {"v_id": "Scott", "Embeddings": {}},  # No embedding for Scott
                 ]
             }
         ]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
+        self.mock_tigergraph_api.run_installed_query_get.return_value = mock_result
 
         expected_embeddings = {
             "Ed": [-0.003692443, 0.01049439, -0.004631793],
         }
-        result = self.vector_manager.fetch_nodes(node_ids, vector_attribute_name, node_type)
+        result = self.vector_manager.fetch_nodes(
+            node_ids, vector_attribute_name, node_type
+        )
         assert result == expected_embeddings
-
 
     def test_fetch_nodes_invalid_result_format(self):
         """
@@ -282,11 +304,14 @@ class TestVectorManager:
         node_ids = ["Ed", "Scott"]
         node_type = "Account"
         vector_attribute_name = "emb1"
-        self.mock_connection.runInstalledQuery.return_value = None  # Invalid result
+        self.mock_tigergraph_api.run_installed_query_get.return_value = (
+            None  # Invalid result
+        )
 
-        result = self.vector_manager.fetch_nodes(node_ids, vector_attribute_name, node_type)
+        result = self.vector_manager.fetch_nodes(
+            node_ids, vector_attribute_name, node_type
+        )
         assert result == {}
-
 
     def test_fetch_nodes_empty_result(self):
         """
@@ -295,11 +320,12 @@ class TestVectorManager:
         node_ids = ["Ed", "Scott"]
         node_type = "Account"
         vector_attribute_name = "emb1"
-        self.mock_connection.runInstalledQuery.return_value = [{"Nodes": []}]
+        self.mock_tigergraph_api.run_installed_query_get.return_value = [{"Nodes": []}]
 
-        result = self.vector_manager.fetch_nodes(node_ids, vector_attribute_name, node_type)
+        result = self.vector_manager.fetch_nodes(
+            node_ids, vector_attribute_name, node_type
+        )
         assert result == {}
-
 
     def test_fetch_nodes_missing_embeddings_key(self):
         """
@@ -318,11 +344,12 @@ class TestVectorManager:
                 ]
             }
         ]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
+        self.mock_tigergraph_api.run_installed_query_get.return_value = mock_result
 
-        result = self.vector_manager.fetch_nodes(node_ids, vector_attribute_name, node_type)
+        result = self.vector_manager.fetch_nodes(
+            node_ids, vector_attribute_name, node_type
+        )
         assert result == {}
-
 
     def test_fetch_nodes_invalid_embedding_format(self):
         """
@@ -341,9 +368,11 @@ class TestVectorManager:
                 ]
             }
         ]
-        self.mock_connection.runInstalledQuery.return_value = mock_result
+        self.mock_tigergraph_api.run_installed_query_get.return_value = mock_result
 
-        result = self.vector_manager.fetch_nodes(node_ids, vector_attribute_name, node_type)
+        result = self.vector_manager.fetch_nodes(
+            node_ids, vector_attribute_name, node_type
+        )
         assert result == {}
 
     # -------------------------
@@ -360,7 +389,7 @@ class TestVectorManager:
         return_attributes = [["name"], ["number"]]
         limit = 2
 
-        def mock_run_installed_query(query_name, params, usePost=True):
+        def mock_run_installed_query(graph_name, query_name, params):
             if "emb1" in query_name:
                 return [
                     {"map_node_distance": {"Account1": 0.1, "Account2": 0.2}},
@@ -401,7 +430,9 @@ class TestVectorManager:
                 ]
             return []
 
-        self.mock_connection.runInstalledQuery.side_effect = mock_run_installed_query
+        self.mock_tigergraph_api.run_installed_query_post.side_effect = (
+            mock_run_installed_query
+        )
 
         result = self.vector_manager.search_multi_vector_attributes(
             data,
@@ -432,7 +463,7 @@ class TestVectorManager:
         return_attributes = None  # All attributes will be returned
         limit = 2
 
-        def mock_run_installed_query(query_name, params, usePost=True):
+        def mock_run_installed_query(graph_name, query_name, params, usePost=True):
             if "emb1" in query_name:
                 return [
                     {"map_node_distance": {"Account1": 0.1, "Account2": 0.2}},
@@ -473,7 +504,9 @@ class TestVectorManager:
                 ]
             return []
 
-        self.mock_connection.runInstalledQuery.side_effect = mock_run_installed_query
+        self.mock_tigergraph_api.run_installed_query_post.side_effect = (
+            mock_run_installed_query
+        )
 
         result = self.vector_manager.search_multi_vector_attributes(
             data,
@@ -542,7 +575,7 @@ class TestVectorManager:
         limit = 2
 
         # Mock the search result for both attributes to return no results
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_get.return_value = [
             {"map_node_distance": {}},  # No matching nodes found
             {"Nodes": []},
         ]
@@ -569,7 +602,7 @@ class TestVectorManager:
         limit = 2
 
         # Mock run_installed_query to return None
-        self.mock_connection.runInstalledQuery.return_value = None
+        self.mock_tigergraph_api.run_installed_query_get.return_value = None
 
         result = self.vector_manager.search_multi_vector_attributes(
             data,
@@ -593,7 +626,7 @@ class TestVectorManager:
         limit = 2
 
         # Mock run_installed_query to return a list with missing keys
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_get.return_value = [
             {"invalid_key": {}},
             {"Nodes": []},
         ]
@@ -623,7 +656,7 @@ class TestVectorManager:
         limit = 5
         return_attributes = ["name"]
 
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_post.return_value = [
             {"map_node_distance": {"Account1": 0.1, "Account2": 0.2}},
             {
                 "Nodes": [
@@ -664,7 +697,7 @@ class TestVectorManager:
         limit = 3
         return_attributes = None  # All attributes will be returned
 
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_post.return_value = [
             {"map_node_distance": {"Phone1": 0.05, "Phone2": 0.15, "Phone3": 0.25}},
             {
                 "Nodes": [
@@ -713,7 +746,7 @@ class TestVectorManager:
         limit = 2
         return_attributes = ["name"]
 
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_get.return_value = [
             {"map_node_distance": {}},
             {"Nodes": []},
         ]
@@ -736,7 +769,7 @@ class TestVectorManager:
         return_attributes = ["number"]
 
         # Mock run_installed_query to return None
-        self.mock_connection.runInstalledQuery.return_value = None
+        self.mock_tigergraph_api.run_installed_query_get.return_value = None
 
         result = self.vector_manager.search(
             data, vector_attribute_name, node_type, limit, return_attributes
@@ -756,7 +789,7 @@ class TestVectorManager:
         return_attributes = ["name"]
 
         # Mock run_installed_query to return a list with missing keys
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_get.return_value = [
             {"invalid_key": {}},
             {"Nodes": []},
         ]
@@ -779,7 +812,7 @@ class TestVectorManager:
         return_attributes = ["name"]
         candidate_ids = {"Account1", "Account3"}
 
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_post.return_value = [
             {"map_node_distance": {"Account1": 0.1}},
             {
                 "Nodes": [
@@ -817,7 +850,7 @@ class TestVectorManager:
         limit = 2
         return_attributes = []  # Should return no attributes
 
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_post.return_value = [
             {"map_node_distance": {"Phone1": 0.05, "Phone2": 0.15}},
             {
                 "Nodes": [
@@ -859,7 +892,7 @@ class TestVectorManager:
         return_attributes = [["name", 123]]  # Invalid attribute type
 
         # Assuming the method handles non-string attributes gracefully
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_post.return_value = [
             {"map_node_distance": {"Account1": 0.1}},
             {
                 "Nodes": [
@@ -898,7 +931,7 @@ class TestVectorManager:
         limit = 2
         return_attributes = ["number"]
 
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_post.return_value = [
             {"map_node_distance": {"Phone1": 0.05, "Phone2": 0.15}},
             {
                 "Nodes": [
@@ -938,7 +971,7 @@ class TestVectorManager:
         limit = 2
         return_attributes = ["name"]
 
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_post.return_value = [
             {"map_node_distance": {"Account1": 0.1}},
             {
                 "Nodes": [
@@ -983,7 +1016,9 @@ class TestVectorManager:
         return_attributes = ["name"]
 
         # Mock run_installed_query to raise an exception
-        self.mock_connection.runInstalledQuery.side_effect = Exception("Database error")
+        self.mock_tigergraph_api.run_installed_query_get.side_effect = Exception(
+            "Database error"
+        )
 
         result = self.vector_manager.search(
             data,
@@ -1010,7 +1045,7 @@ class TestVectorManager:
         limit = 10
         return_attributes = ["name"]
 
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_post.return_value = [
             {"map_node_distance": {"Account1": 0.1, "Account2": 0.2}},
             {
                 "Nodes": [
@@ -1049,7 +1084,7 @@ class TestVectorManager:
         limit = 0
         return_attributes = ["number"]
 
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_get.return_value = [
             {"map_node_distance": {}},
             {"Nodes": []},
         ]
@@ -1093,7 +1128,7 @@ class TestVectorManager:
         return_attributes = ["name"]
 
         # Mock run_installed_query to return empty results as the vector attribute doesn't exist
-        self.mock_connection.runInstalledQuery.return_value = [
+        self.mock_tigergraph_api.run_installed_query_get.return_value = [
             {"map_node_distance": {}},
             {"Nodes": []},
         ]

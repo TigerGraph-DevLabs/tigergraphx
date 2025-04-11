@@ -2,6 +2,9 @@
 
 ---
 
+## 0.2.2
+- feat: run RESTful APIs directly within TigerGraphX instead of using pyTigerGraph
+
 ## 0.2.1
 - feat: add simple GraphRAG
 - fix: correct the image link

@@ -29,7 +29,7 @@ class StatisticsManager(BaseManager):
         gsql_script = self._create_gsql_degree(node_type, edge_type_set)
         try:
             params = {"input": node_id}
-            result = self._connection.runInterpretedQuery(gsql_script, params)
+            result = self._tigergraph_api.run_interpreted_query(gsql_script, params)
             if not result or not isinstance(result, list):
                 return 0
             return result[0].get("degree", 0)
@@ -41,7 +41,7 @@ class StatisticsManager(BaseManager):
         """Return the number of nodes for the given node type(s)."""
         gsql_script = self._create_gsql_number_of_nodes(node_type)
         try:
-            result = self._connection.runInterpretedQuery(gsql_script)
+            result = self._tigergraph_api.run_interpreted_query(gsql_script)
             # Perform checks
             if not isinstance(result, list):
                 raise ValueError(
@@ -68,7 +68,7 @@ class StatisticsManager(BaseManager):
         """Return the number of edges for the given edge type(s)."""
         gsql_script = self._create_gsql_number_of_edges(edge_type)
         try:
-            result = self._connection.runInterpretedQuery(gsql_script)
+            result = self._tigergraph_api.run_interpreted_query(gsql_script)
             # Perform checks
             if not isinstance(result, list):
                 raise ValueError(
@@ -91,21 +91,6 @@ class StatisticsManager(BaseManager):
             )
             return 0
 
-    # def number_of_edges(self, edge_type: Optional[str] = None) -> int:
-    #     """Return the number of edges for the given edge type(s)."""
-    #     try:
-    #         if edge_type is None or edge_type == "":
-    #             edge_type = "*"
-    #         result = self._connection.getEdgeCount(edge_type)
-    #         if isinstance(result, dict):
-    #             return sum(result.values())
-    #         return result
-    #     except Exception as e:
-    #         logger.error(
-    #             f"Error retrieving number of edges for edge type {edge_type}: {e}"
-    #         )
-    #         return 0
-
     def _create_gsql_degree(
         self,
         node_type: str,
@@ -114,7 +99,6 @@ class StatisticsManager(BaseManager):
         """
         Core function to generate a GSQL query to get the degree of a node
         """
-        graph_name = self._graph_schema.graph_name
         if not edge_type_set:
             from_clause = "FROM Nodes:s -()- :t"
         else:
@@ -133,7 +117,7 @@ class StatisticsManager(BaseManager):
 
         # Generate the query
         query = f"""
-INTERPRET QUERY(VERTEX<{node_type}> input) FOR GRAPH {graph_name} {{
+INTERPRET QUERY(VERTEX<{node_type}> input) FOR GRAPH {self._graph_name} {{
   SumAccum<INT> @@sum_degree;
   Nodes = {{input}};
   Nodes =
@@ -146,17 +130,16 @@ INTERPRET QUERY(VERTEX<{node_type}> input) FOR GRAPH {graph_name} {{
         return query.strip()
 
     def _create_gsql_number_of_nodes(self, node_type: Optional[str] = None) -> str:
-        graph_name = self._graph_schema.graph_name
         # Generate the query
         if node_type is None or node_type == "":
             query = f"""
-INTERPRET QUERY() FOR GRAPH {graph_name} {{
+INTERPRET QUERY() FOR GRAPH {self._graph_name} {{
   Nodes = {{ANY}};
   PRINT Nodes.size() AS number_of_nodes;
 }}"""
         else:
             query = f"""
-INTERPRET QUERY() FOR GRAPH {graph_name} {{
+INTERPRET QUERY() FOR GRAPH {self._graph_name} {{
   Nodes = {{{node_type}.*}};
   PRINT Nodes.size() AS number_of_nodes;
 }}"""
@@ -165,11 +148,10 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
     def _create_gsql_number_of_edges(
         self, edge_type: Optional[str | List[str]] = None
     ) -> str:
-        graph_name = self._graph_schema.graph_name
         # Generate the query
         if edge_type is None or edge_type == "":
             query = f"""
-INTERPRET QUERY() FOR GRAPH {graph_name} {{
+INTERPRET QUERY() FOR GRAPH {self._graph_name} {{
   SumAccum<INT> @@sum;
   Nodes = {{ANY}};
   Nodes =
@@ -185,7 +167,7 @@ INTERPRET QUERY() FOR GRAPH {graph_name} {{
 }}"""
         else:
             query = f"""
-INTERPRET QUERY() FOR GRAPH {graph_name} {{
+INTERPRET QUERY() FOR GRAPH {self._graph_name} {{
   SumAccum<INT> @@sum;
   Nodes = {{ANY}};
   Nodes =
