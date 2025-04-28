@@ -490,7 +490,8 @@ class Graph:
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
-    ) -> pd.DataFrame:
+        output_type: Literal["DataFrame", "List"] = "DataFrame",
+    ) -> pd.DataFrame | List[Dict[str, Any]]:
         """
         Retrieve nodes from the graph.
 
@@ -501,6 +502,7 @@ class Graph:
             filter_expression: Filter expression.
             return_attributes: Attributes to return.
             limit: Maximum number of nodes to return.
+            output_type: Output format, either "DataFrame" (default) or "List".
 
         Returns:
             A DataFrame of nodes.
@@ -514,6 +516,7 @@ class Graph:
             filter_expression=filter_expression,
             return_attributes=return_attributes,
             limit=limit,
+            output_type=output_type,
         )
 
     def get_neighbors(
@@ -528,7 +531,8 @@ class Graph:
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
-    ) -> pd.DataFrame:
+        output_type: Literal["DataFrame", "List"] = "DataFrame",
+    ) -> pd.DataFrame | List[Dict[str, Any]]:
         """
         Get neighbors of specified nodes.
 
@@ -543,6 +547,7 @@ class Graph:
             filter_expression: Filter expression.
             return_attributes: Attributes to return.
             limit: Maximum number of neighbors.
+            output_type: Output format, either "DataFrame" (default) or "List".
 
         Returns:
             A DataFrame of neighbors or None.
@@ -565,6 +570,7 @@ class Graph:
             filter_expression=filter_expression,
             return_attributes=return_attributes,
             limit=limit,
+            output_type=output_type,
         )
 
     def bfs(
@@ -572,10 +578,10 @@ class Graph:
         start_nodes: str | int | List[str] | List[int],
         node_type: Optional[str] = None,
         edge_types: Optional[str | List[str]] = None,
-        target_node_types: Optional[str | List[str]] = None,
         max_hops: Optional[int] = None,
         limit: Optional[int] = None,
-    ) -> pd.DataFrame:
+        output_type: Literal["DataFrame", "List"] = "DataFrame",
+    ) -> pd.DataFrame | List[Dict[str, Any]]:
         """
         Perform BFS traversal from a set of start nodes, using batch processing.
 
@@ -583,12 +589,12 @@ class Graph:
             start_nodes: Starting node(s) for BFS.
             node_type: Type of the nodes.
             edge_types: Edge types to consider.
-            limit: Maximum number of neighbors per hop.
             max_hops: Maximum depth (number of hops) for BFS traversal.
+            limit: Maximum number of neighbors per hop.
+            output_type: Format of the output, either "DataFrame" or "List".
 
         Returns:
-            A DataFrame containing the BFS results with the same structure as get_neighbors(),
-            plus an additional '_bfs_level' column.
+            A DataFrame or List containing the BFS results. If DataFrame, it includes an additional '_bfs_level' column.
         """
         if isinstance(start_nodes, str | int):
             new_start_nodes = self._to_str_node_id(start_nodes)
@@ -603,6 +609,7 @@ class Graph:
             edge_type_set=edge_type_set,
             max_hops=max_hops,
             limit=limit,
+            output_type=output_type,
         )
 
     # ------------------------------ Vector Operations ------------------------------

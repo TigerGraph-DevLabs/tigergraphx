@@ -1148,7 +1148,33 @@ True
 >>> print(df)
    name gender
 0  Mike   Male
->>>
+>>> G.clear()
+True
+```
+
+::: tigergraphx.core.Graph.bfs
+
+**Examples:**
+
+```python
+>>> G = Graph(graph_schema)
+>>> nodes_for_adding = [
+...    ("Alice", {"age": 30, "gender": "Female"}),
+...    ("Mike", {"age": 29, "gender": "Male"}),
+...    ("Emily", {"age": 28, "gender": "Female"}),
+...    ("John", {"age": 27, "gender": "Male"}),
+...    ("Mary", {"age": 28, "gender": "Female"}),
+... ]
+>>> G.add_nodes_from(nodes_for_adding, "Person")
+5
+>>> ebunch_to_add = [
+...    ("Alice", "Mike", {"closeness": 1.5}),
+...    ("Alice", "John", {"closeness": 2.5}),
+...    ("John", "Emily", {"closeness": 3.5}),
+...    ("Emily", "Mary", {"closeness": 3.5}),
+... ]
+>>> G.add_edges_from(ebunch_to_add)
+4
 >>> # Breadth First Search example
 >>> # First hop: Retrieve neighbors of "Alice" of type "Person"
 >>> visited = set(["Alice"])  # Track visited nodes
@@ -1173,8 +1199,8 @@ True
 >>> # Alternatively, you can also use the built-in `bfs` method.
 >>> df = G.bfs(start_nodes=["Alice"], node_type="Person", max_hops=3)
 >>> print(df)
-   gender  name  age
-0  Female  Mary   28
+   gender  name  age  _bfs_level
+0  Female  Mary   28           2
 >>> G.clear()
 True
 ```
@@ -1516,6 +1542,8 @@ Multiple Node Types Example:
 ```
 
 ::: tigergraphx.core.Graph.search_multi_vector_attributes
+
+**Examples:**
 
 Single Node Type Example:
 ```python
