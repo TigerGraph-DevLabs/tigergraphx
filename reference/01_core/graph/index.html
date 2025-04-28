@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../../images/logo.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.11">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.12">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.4af4bdda.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2afb09e1.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
@@ -1511,6 +1511,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.Graph.bfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;bfs
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2895,6 +2904,15 @@
   <a href="#tigergraphx.core.Graph.get_neighbors" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_neighbors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.Graph.bfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;bfs
     </span>
   </a>
   
@@ -5010,7 +5028,7 @@ This section is optional if the user’s configuration matches these defaults.</
 
 
 <h3 id="tigergraphx.core.Graph.get_nodes" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">get_nodes</span><span class="p">(</span><span class="n">node_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">all_node_types</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">node_alias</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">filter_expression</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">get_nodes</span><span class="p">(</span><span class="n">node_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">all_node_types</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">node_alias</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">filter_expression</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;DataFrame&#39;</span><span class="p">)</span></code>
 
 </h3>
 
@@ -5082,13 +5100,23 @@ This section is optional if the user’s configuration matches these defaults.</
             <p>Maximum number of nodes to return.</p>
           </div>
         </li>
+        <li class="doc-section-item field-body">
+            <b><code>output_type</code></b>
+              (<code><span title="typing.Literal">Literal</span>[&#39;DataFrame&#39;, &#39;List&#39;]</code>, default:
+                  <code>&#39;DataFrame&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Output format, either "DataFrame" (default) or "List".</p>
+          </div>
+        </li>
     </ul>
 
 
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><span title="pandas.DataFrame">DataFrame</span></code>
+              <code><span title="pandas.DataFrame">DataFrame</span> | <span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]]</code>
           –
           <div class="doc-md-description">
             <p>A DataFrame of nodes.</p>
@@ -5177,7 +5205,7 @@ This section is optional if the user’s configuration matches these defaults.</
 
 
 <h3 id="tigergraphx.core.Graph.get_neighbors" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">get_neighbors</span><span class="p">(</span><span class="n">start_nodes</span><span class="p">,</span> <span class="n">start_node_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_node_alias</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">edge_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_alias</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="n">target_node_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_node_alias</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">filter_expression</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">get_neighbors</span><span class="p">(</span><span class="n">start_nodes</span><span class="p">,</span> <span class="n">start_node_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_node_alias</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">edge_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_alias</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="n">target_node_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_node_alias</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">filter_expression</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;DataFrame&#39;</span><span class="p">)</span></code>
 
 </h3>
 
@@ -5287,13 +5315,23 @@ This section is optional if the user’s configuration matches these defaults.</
             <p>Maximum number of neighbors.</p>
           </div>
         </li>
+        <li class="doc-section-item field-body">
+            <b><code>output_type</code></b>
+              (<code><span title="typing.Literal">Literal</span>[&#39;DataFrame&#39;, &#39;List&#39;]</code>, default:
+                  <code>&#39;DataFrame&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Output format, either "DataFrame" (default) or "List".</p>
+          </div>
+        </li>
     </ul>
 
 
 <p><span class="doc-section-title">Returns:</span></p>
     <ul>
         <li class="doc-section-item field-body">
-              <code><span title="pandas.DataFrame">DataFrame</span></code>
+              <code><span title="pandas.DataFrame">DataFrame</span> | <span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]]</code>
           –
           <div class="doc-md-description">
             <p>A DataFrame of neighbors or None.</p>
@@ -5384,7 +5422,121 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
    <span class="n">name</span> <span class="n">gender</span>
 <span class="mi">0</span>  <span class="n">Mike</span>   <span class="n">Male</span>
-<span class="o">&gt;&gt;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
+</code></pre></div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="tigergraphx.core.Graph.bfs" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">bfs</span><span class="p">(</span><span class="n">start_nodes</span><span class="p">,</span> <span class="n">node_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_hops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;DataFrame&#39;</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Perform BFS traversal from a set of start nodes, using batch processing.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>start_nodes</code></b>
+              (<code><span title="str">str</span> | <span title="int">int</span> | <span title="typing.List">List</span>[<span title="str">str</span>] | <span title="typing.List">List</span>[<span title="int">int</span>]</code>)
+          –
+          <div class="doc-md-description">
+            <p>Starting node(s) for BFS.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>node_type</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Type of the nodes.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>edge_types</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span> | <span title="typing.List">List</span>[<span title="str">str</span>]]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Edge types to consider.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>max_hops</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="int">int</span>]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Maximum depth (number of hops) for BFS traversal.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>limit</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="int">int</span>]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Maximum number of neighbors per hop.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>output_type</code></b>
+              (<code><span title="typing.Literal">Literal</span>[&#39;DataFrame&#39;, &#39;List&#39;]</code>, default:
+                  <code>&#39;DataFrame&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Format of the output, either "DataFrame" or "List".</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="pandas.DataFrame">DataFrame</span> | <span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]]</code>
+          –
+          <div class="doc-md-description">
+            <p>A DataFrame or List containing the BFS results. If DataFrame, it includes an additional '_bfs_level' column.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nodes_for_adding</span> <span class="o">=</span> <span class="p">[</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Emily&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">27</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Mary&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
+<span class="o">...</span> <span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">nodes_for_adding</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="mi">5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ebunch_to_add</span> <span class="o">=</span> <span class="p">[</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Mike&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Emily&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">}),</span>
+<span class="o">...</span>    <span class="p">(</span><span class="s2">&quot;Emily&quot;</span><span class="p">,</span> <span class="s2">&quot;Mary&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">}),</span>
+<span class="o">...</span> <span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">ebunch_to_add</span><span class="p">)</span>
+<span class="mi">4</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Breadth First Search example</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># First hop: Retrieve neighbors of &quot;Alice&quot; of type &quot;Person&quot;</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="s2">&quot;Alice&quot;</span><span class="p">])</span>  <span class="c1"># Track visited nodes</span>
@@ -5409,8 +5561,8 @@ This section is optional if the user’s configuration matches these defaults.</
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Alternatively, you can also use the built-in `bfs` method.</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">bfs</span><span class="p">(</span><span class="n">start_nodes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Alice&quot;</span><span class="p">],</span> <span class="n">node_type</span><span class="o">=</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="n">max_hops</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
-   <span class="n">gender</span>  <span class="n">name</span>  <span class="n">age</span>
-<span class="mi">0</span>  <span class="n">Female</span>  <span class="n">Mary</span>   <span class="mi">28</span>
+   <span class="n">gender</span>  <span class="n">name</span>  <span class="n">age</span>  <span class="n">_bfs_level</span>
+<span class="mi">0</span>  <span class="n">Female</span>  <span class="n">Mary</span>   <span class="mi">28</span>           <span class="mi">2</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 <span class="kc">True</span>
 </code></pre></div>
@@ -6059,7 +6211,8 @@ The contents of the file "/path/to/your/schema_with_vector.json" are as follows:
 
     </div>
 
-</div><p>Single Node Type Example:
+</div><p><strong>Examples:</strong></p>
+<p>Single Node Type Example:
 <div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="c1"># Upsert multiple nodes with different vector attributes</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">upsert</span><span class="p">(</span>
