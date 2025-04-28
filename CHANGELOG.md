@@ -1,6 +1,8 @@
 # Changelog
 
 ---
+## 0.2.3
+- feat: add support for output_type="List" in get_nodes, get_neighbors, and bfs
 
 ## 0.2.2
 - feat: run RESTful APIs directly within TigerGraphX instead of using pyTigerGraph

@@ -33,7 +33,7 @@ endpoints:
       4.x: "/restpp/graph/{graph_name}/vertices/{node_type}"
     method: "DELETE"
 
-  # ------------------------------ Node ------------------------------
+  # ------------------------------ Edge ------------------------------
   retrieve_a_edge:
     path:
       4.x: "/restpp/graph/{graph_name}/edges/{source_node_type}/{source_node_id}/{edge_type}/{target_node_type}/{target_node_id}"

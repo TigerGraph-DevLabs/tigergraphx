@@ -2,6 +2,7 @@ import pytest
 import time
 import json
 from typing import Dict
+import pandas as pd
 
 from .base_graph_fixture import BaseGraphFixture
 
@@ -339,6 +340,21 @@ class TestGraph1(BaseGraphFixture):
         assert set(neighbors.columns) == set(return_attributes), (
             f"Expected columns {return_attributes}, but got {list(neighbors.columns)}."
         )
+
+    def test_bfs(self):
+        df = self.G.bfs(
+            start_nodes="Product_1",
+            node_type="Product",
+            edge_types=["similar_to"],
+            max_hops=1,
+            output_type="DataFrame",
+        )
+
+        assert isinstance(df, pd.DataFrame)
+        assert not df.empty
+        # Check if all expected products purchased by User_C are found
+        expected_results = {"Product_3"}
+        assert expected_results.issubset(set(df["id"]))
 
 
 class TestGraph2(BaseGraphFixture):

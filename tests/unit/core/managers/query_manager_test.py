@@ -114,7 +114,72 @@ class TestQueryManager:
         )
         self.mock_tigergraph_api.run_interpreted_query.side_effect = Exception("Error")
         df = self.query_manager.get_nodes_from_spec(spec)
+        assert isinstance(df, pd.DataFrame)
         assert df.empty, "Expected df to be an empty DataFrame"
+
+    def test_get_nodes_from_spec_with_attributes_success_list_output(self):
+        spec = NodeSpec(
+            node_type="Person",
+            all_node_types=False,
+            node_alias="s",
+            filter_expression=None,
+            return_attributes=["name", "id"],
+            limit=None,
+        )
+        self.mock_tigergraph_api.run_interpreted_query.return_value = [
+            {
+                "Nodes": [
+                    {
+                        "v_id": "test_node_id",
+                        "attributes": {"name": "test_name", "id": "test_node_id"},
+                        "v_type": "Entity",
+                    }
+                ]
+            }
+        ]
+        result = self.query_manager.get_nodes_from_spec(spec, output_type="List")
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert "name" in result[0] and "id" in result[0]
+
+    def test_get_nodes_from_spec_without_attributes_success_list_output(self):
+        spec = NodeSpec(
+            node_type="Person",
+            all_node_types=False,
+            node_alias="s",
+            filter_expression=None,
+            return_attributes=None,
+            limit=None,
+        )
+        self.mock_tigergraph_api.run_interpreted_query.return_value = [
+            {
+                "Nodes": [
+                    {
+                        "v_id": "test_node_id",
+                        "attributes": {"name": "test_name", "id": "test_node_id"},
+                        "v_type": "Entity",
+                    }
+                ]
+            }
+        ]
+        result = self.query_manager.get_nodes_from_spec(spec, output_type="List")
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert "name" in result[0] and "id" in result[0]
+
+    def test_get_nodes_from_spec_failure_list_output(self):
+        spec = NodeSpec(
+            node_type="Person",
+            all_node_types=False,
+            node_alias="s",
+            filter_expression=None,
+            return_attributes=None,
+            limit=None,
+        )
+        self.mock_tigergraph_api.run_interpreted_query.side_effect = Exception("Error")
+        result = self.query_manager.get_nodes_from_spec(spec, output_type="List")
+        assert isinstance(result, list)
+        assert result == [], "Expected an empty list when query fails"
 
     def test_get_neighbors_success(self):
         # Test the simpler get_neighbors() path, where only start_nodes and start_node_type are provided.
@@ -215,7 +280,74 @@ class TestQueryManager:
         self.mock_tigergraph_api.run_interpreted_query.side_effect = Exception("Error")
         # The method should catch the exception and return None (or handle it gracefully).
         df = self.query_manager.get_neighbors_from_spec(spec)
+        assert isinstance(df, pd.DataFrame)
         assert df.empty, "Expected df to be an empty DataFrame"
+
+    def test_get_neighbors_from_spec_with_attributes_list_output(self):
+        # NeighborSpec with return_attributes and output_type = "List"
+        spec = NeighborSpec(
+            start_nodes="node1",
+            start_node_type="Person",
+            start_node_alias="s",
+            edge_type_set={"relationship"},
+            edge_alias="e",
+            target_node_type_set={"Person"},
+            target_node_alias="t",
+            filter_expression=None,
+            return_attributes=["id", "name"],
+            limit=None,
+        )
+        self.mock_tigergraph_api.run_interpreted_query.return_value = [
+            {
+                "Neighbors": [
+                    {
+                        "v_id": "test_node_id",
+                        "attributes": {"name": "test_name", "id": "test_node_id"},
+                        "v_type": "Entity",
+                    }
+                ]
+            }
+        ]
+        df_or_list = self.query_manager.get_neighbors_from_spec(
+            spec, output_type="List"
+        )
+        assert isinstance(df_or_list, list)
+        assert len(df_or_list) == 1
+        assert df_or_list[0]["id"] == "test_node_id"
+        assert df_or_list[0]["name"] == "test_name"
+
+    def test_get_neighbors_from_spec_without_attributes_list_output(self):
+        # NeighborSpec without return_attributes and output_type = "List"
+        spec = NeighborSpec(
+            start_nodes="node1",
+            start_node_type="Person",
+            start_node_alias="s",
+            edge_type_set={"relationship"},
+            edge_alias="e",
+            target_node_type_set={"Person"},
+            target_node_alias="t",
+            filter_expression=None,
+            return_attributes=None,
+            limit=None,
+        )
+        self.mock_tigergraph_api.run_interpreted_query.return_value = [
+            {
+                "Neighbors": [
+                    {
+                        "v_id": "test_node_id",
+                        "attributes": {"name": "test_name", "id": "test_node_id"},
+                        "v_type": "Entity",
+                    }
+                ]
+            }
+        ]
+        df_or_list = self.query_manager.get_neighbors_from_spec(
+            spec, output_type="List"
+        )
+        assert isinstance(df_or_list, list)
+        assert len(df_or_list) == 1
+        assert "name" in df_or_list[0]
+        assert "id" in df_or_list[0]
 
     def test_bfs_single_level(self):
         self.query_manager.get_neighbors = MagicMock(
@@ -226,8 +358,10 @@ class TestQueryManager:
 
         df = self.query_manager.bfs(start_nodes="Alice", node_type="Person", max_hops=1)
 
+        assert isinstance(df, pd.DataFrame)
         assert not df.empty
         assert set(df["id"]) == {"Bob", "Charlie"}
+        assert "_bfs_level" in df.columns
 
     def test_bfs_multi_level(self):
         bfs_results = [
@@ -241,8 +375,10 @@ class TestQueryManager:
 
         df = self.query_manager.bfs(start_nodes="Alice", node_type="Person", max_hops=2)
 
+        assert isinstance(df, pd.DataFrame)
         assert not df.empty
         assert set(df["id"]) == {"David"}
+        assert "_bfs_level" in df.columns
 
     def test_bfs_respects_max_hops(self):
         bfs_results = [
@@ -257,15 +393,19 @@ class TestQueryManager:
 
         df = self.query_manager.bfs(start_nodes="Alice", node_type="Person", max_hops=2)
 
+        assert isinstance(df, pd.DataFrame)
         assert not df.empty
         assert set(df["id"]) == {"David"}
+        assert "_bfs_level" in df.columns
 
     def test_bfs_no_neighbors(self):
         self.query_manager.get_neighbors = MagicMock(return_value=pd.DataFrame())
 
         df = self.query_manager.bfs(start_nodes="Alice", node_type="Person", max_hops=3)
 
+        assert isinstance(df, pd.DataFrame)
         assert df.empty
+        assert "_bfs_level" in df.columns or "_bfs_level" not in df.columns  # OK: empty
 
     def test_bfs_multiple_start_nodes(self):
         bfs_results = [
@@ -281,8 +421,10 @@ class TestQueryManager:
             start_nodes=["Alice", "Ed"], node_type="Person", max_hops=3
         )
 
+        assert isinstance(df, pd.DataFrame)
         assert not df.empty
         assert set(df["id"]) == {"Eve"}
+        assert "_bfs_level" in df.columns
 
     def test_bfs_with_limit(self):
         self.query_manager.get_neighbors = MagicMock(
@@ -295,8 +437,132 @@ class TestQueryManager:
             start_nodes="Alice", node_type="Person", limit=2, max_hops=1
         )
 
+        assert isinstance(df, pd.DataFrame)
         assert not df.empty
         assert len(df) <= 2
+        assert "_bfs_level" in df.columns
+
+    def test_bfs_single_level_list_output(self):
+        self.query_manager.get_neighbors = MagicMock(
+            return_value=[
+                {"id": "Bob", "age": 30, "gender": "M"},
+                {"id": "Charlie", "age": 25, "gender": "M"},
+            ]
+        )
+
+        result = self.query_manager.bfs(
+            start_nodes="Alice", node_type="Person", max_hops=1, output_type="List"
+        )
+
+        assert isinstance(result, list)
+        assert result
+        assert {item["id"] for item in result} == {"Bob", "Charlie"}
+        assert all("_bfs_level" in item for item in result)
+
+    def test_bfs_multi_level_list_output(self):
+        bfs_results = [
+            [
+                {"id": "Bob", "age": 30, "gender": "M"},
+                {"id": "Charlie", "age": 25, "gender": "M"},
+            ],
+            [
+                {"id": "David", "age": 35, "gender": "M"},
+            ],
+        ]
+
+        self.query_manager.get_neighbors = MagicMock(side_effect=bfs_results)
+
+        result = self.query_manager.bfs(
+            start_nodes="Alice", node_type="Person", max_hops=2, output_type="List"
+        )
+
+        assert isinstance(result, list)
+        assert result
+        assert {item["id"] for item in result} == {"David"}
+        assert all("_bfs_level" in item for item in result)
+
+    def test_bfs_respects_max_hops_list_output(self):
+        bfs_results = [
+            [
+                {"id": "Bob", "age": 30, "gender": "M"},
+                {"id": "Charlie", "age": 25, "gender": "M"},
+            ],
+            [
+                {"id": "David", "age": 35, "gender": "M"},
+            ],
+            [
+                {"id": "Eve", "age": 28, "gender": "F"},
+            ],
+        ]
+
+        self.query_manager.get_neighbors = MagicMock(side_effect=bfs_results)
+
+        result = self.query_manager.bfs(
+            start_nodes="Alice", node_type="Person", max_hops=2, output_type="List"
+        )
+
+        assert isinstance(result, list)
+        assert result
+        assert {item["id"] for item in result} == {"David"}
+        assert all("_bfs_level" in item for item in result)
+
+    def test_bfs_no_neighbors_list_output(self):
+        self.query_manager.get_neighbors = MagicMock(return_value=[])
+
+        result = self.query_manager.bfs(
+            start_nodes="Alice", node_type="Person", max_hops=3, output_type="List"
+        )
+
+        assert isinstance(result, list)
+        assert not result  # Should be empty
+
+    def test_bfs_multiple_start_nodes_list_output(self):
+        bfs_results = [
+            [
+                {"id": "Bob", "age": 30, "gender": "M"},
+                {"id": "Charlie", "age": 25, "gender": "M"},
+            ],
+            [
+                {"id": "David", "age": 35, "gender": "M"},
+            ],
+            [
+                {"id": "Eve", "age": 28, "gender": "F"},
+            ],
+        ]
+        self.query_manager.get_neighbors = MagicMock(side_effect=bfs_results)
+
+        result = self.query_manager.bfs(
+            start_nodes=["Alice", "Ed"],
+            node_type="Person",
+            max_hops=3,
+            output_type="List",
+        )
+
+        assert isinstance(result, list)
+        assert result
+        assert {item["id"] for item in result} == {"Eve"}
+        assert all("_bfs_level" in item for item in result)
+
+    def test_bfs_with_limit_list_output(self):
+        self.query_manager.get_neighbors = MagicMock(
+            return_value=[
+                {"id": "Bob", "age": 30, "gender": "M"},
+                {"id": "Charlie", "age": 25, "gender": "M"},
+            ]
+        )
+
+        result = self.query_manager.bfs(
+            start_nodes="Alice",
+            node_type="Person",
+            limit=2,
+            max_hops=1,
+            output_type="List",
+        )
+
+        assert isinstance(result, list)
+        assert result
+        assert len(result) <= 2
+        assert all("_bfs_level" in item for item in result)
 
     # --- GSQL Query Creation Tests for get_nodes ---
     def create_gsql_get_nodes(

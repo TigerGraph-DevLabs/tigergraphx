@@ -6,7 +6,7 @@
 # under the License. The software is provided "AS IS", without warranty.
 
 import logging
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Literal, Optional, Set, Tuple
 import pandas as pd
 
 from tigergraphx.config import (
@@ -43,7 +43,8 @@ class QueryManager(BaseManager):
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
-    ) -> pd.DataFrame:
+        output_type: Literal["DataFrame", "List"] = "DataFrame",
+    ) -> pd.DataFrame | List[Dict[str, Any]]:
         """
         High-level function to retrieve nodes with multiple parameters.
         Converts parameters into a NodeSpec and delegates to `_get_nodes_from_spec`.
@@ -56,9 +57,11 @@ class QueryManager(BaseManager):
             return_attributes=return_attributes,
             limit=limit,
         )
-        return self.get_nodes_from_spec(spec)
+        return self.get_nodes_from_spec(spec, output_type)
 
-    def get_nodes_from_spec(self, spec: NodeSpec) -> pd.DataFrame:
+    def get_nodes_from_spec(
+        self, spec: NodeSpec, output_type: Literal["DataFrame", "List"] = "DataFrame"
+    ) -> pd.DataFrame | List[Dict[str, Any]]:
         """
         Core function to retrieve nodes based on a NodeSpec object.
         """
@@ -66,44 +69,62 @@ class QueryManager(BaseManager):
         try:
             result = self._tigergraph_api.run_interpreted_query(gsql_script)
             if not result or not isinstance(result, list):
-                return pd.DataFrame()
+                return self._initialize_empty_result(output_type)
             nodes = result[0].get("Nodes")
             if not nodes or not isinstance(nodes, list):
-                return pd.DataFrame()
-            df = pd.DataFrame(pd.json_normalize(nodes))
-            if df.empty:
-                return pd.DataFrame()
-            attribute_columns = [
-                col for col in df.columns if col.startswith("attributes.")
-            ]
-            if spec.return_attributes is None:
-                rename_map = {
-                    col: col.replace("attributes.", "") for col in attribute_columns
-                }
-                reordered_columns = []
-            else:
-                rename_map = {
-                    f"attributes.{attr}": attr for attr in spec.return_attributes
-                }
-                reordered_columns = [
-                    attr
-                    for attr in spec.return_attributes
-                    if attr in rename_map.values()
+                return self._initialize_empty_result(output_type)
+            if output_type == "List":
+                clean_nodes = []
+                for node in nodes:
+                    attributes = node.get("attributes", {})
+                    if spec.return_attributes is None:
+                        clean_nodes.append(attributes)
+                    else:
+                        clean_nodes.append(
+                            {
+                                attr: attributes.get(attr)
+                                for attr in spec.return_attributes
+                            }
+                        )
+                return clean_nodes
+            elif output_type == "DataFrame":
+                df = pd.DataFrame(pd.json_normalize(nodes))
+                if df.empty:
+                    return pd.DataFrame()
+                attribute_columns = [
+                    col for col in df.columns if col.startswith("attributes.")
                 ]
-            df.rename(columns=rename_map, inplace=True)
-            drop_columns = []
-            if spec.return_attributes is not None:
-                drop_columns = ["v_id"]
-                if spec.node_type is not None and "v_type" in df.columns:
-                    drop_columns.append("v_type")
-            df.drop(columns=drop_columns, inplace=True)
-            remaining_columns = [
-                col for col in df.columns if col not in reordered_columns
-            ]
-            return pd.DataFrame(df[reordered_columns + remaining_columns])
+                if spec.return_attributes is None:
+                    rename_map = {
+                        col: col.replace("attributes.", "") for col in attribute_columns
+                    }
+                    reordered_columns = []
+                else:
+                    rename_map = {
+                        f"attributes.{attr}": attr for attr in spec.return_attributes
+                    }
+                    reordered_columns = [
+                        attr
+                        for attr in spec.return_attributes
+                        if attr in rename_map.values()
+                    ]
+                df.rename(columns=rename_map, inplace=True)
+                drop_columns = []
+                if spec.return_attributes is not None:
+                    drop_columns = ["v_id"]
+                    if spec.node_type is not None and "v_type" in df.columns:
+                        drop_columns.append("v_type")
+                df.drop(
+                    columns=[col for col in drop_columns if col in df.columns],
+                    inplace=True,
+                )
+                remaining_columns = [
+                    col for col in df.columns if col not in reordered_columns
+                ]
+                return pd.DataFrame(df[reordered_columns + remaining_columns])
         except Exception as e:
             logger.error(f"Error retrieving nodes for type {spec.node_type}: {e}")
-        return pd.DataFrame()
+        return self._initialize_empty_result(output_type)
 
     def get_neighbors(
         self,
@@ -117,7 +138,8 @@ class QueryManager(BaseManager):
         filter_expression: Optional[str] = None,
         return_attributes: Optional[str | List[str]] = None,
         limit: Optional[int] = None,
-    ) -> pd.DataFrame:
+        output_type: Literal["DataFrame", "List"] = "DataFrame",
+    ) -> pd.DataFrame | List[Dict[str, Any]]:
         """
         High-level function to retrieve neighbors with multiple parameters.
         Converts parameters into a NeighborSpec and delegates to `_get_neighbors_from_spec`.
@@ -134,9 +156,13 @@ class QueryManager(BaseManager):
             return_attributes=return_attributes,
             limit=limit,
         )
-        return self.get_neighbors_from_spec(spec)
+        return self.get_neighbors_from_spec(spec, output_type=output_type)
 
-    def get_neighbors_from_spec(self, spec: NeighborSpec) -> pd.DataFrame:
+    def get_neighbors_from_spec(
+        self,
+        spec: NeighborSpec,
+        output_type: Literal["DataFrame", "List"] = "DataFrame",
+    ) -> pd.DataFrame | List[Dict[str, Any]]:
         """
         Core function to retrieve neighbors based on a NeighborSpec object.
         """
@@ -144,42 +170,57 @@ class QueryManager(BaseManager):
         try:
             result = self._tigergraph_api.run_interpreted_query(gsql_script, params)
             if not result or not isinstance(result, list):
-                return pd.DataFrame()
+                return self._initialize_empty_result(output_type)
             neighbors = result[0].get("Neighbors")
             if not neighbors or not isinstance(neighbors, list):
-                return pd.DataFrame()
-            df = pd.DataFrame(pd.json_normalize(neighbors))
-            if df.empty:
-                return pd.DataFrame()
-            attribute_columns = [
-                col for col in df.columns if col.startswith("attributes.")
-            ]
-            if spec.return_attributes is None:
-                rename_map = {
-                    col: col.replace("attributes.", "") for col in attribute_columns
-                }
-                reordered_columns = []
-            else:
-                rename_map = {
-                    f"attributes.{attr}": attr for attr in spec.return_attributes
-                }
-                reordered_columns = [
-                    attr
-                    for attr in spec.return_attributes
-                    if attr in rename_map.values()
+                return self._initialize_empty_result(output_type)
+            if output_type == "List":
+                clean_neighbors = []
+                for neighbor in neighbors:
+                    attributes = neighbor.get("attributes", {})
+                    if spec.return_attributes is None:
+                        clean_neighbors.append(attributes)
+                    else:
+                        clean_neighbors.append(
+                            {
+                                attr: attributes.get(attr)
+                                for attr in spec.return_attributes
+                            }
+                        )
+                return clean_neighbors
+            elif output_type == "DataFrame":
+                df = pd.DataFrame(pd.json_normalize(neighbors))
+                if df.empty:
+                    return pd.DataFrame()
+                attribute_columns = [
+                    col for col in df.columns if col.startswith("attributes.")
                 ]
-            df.rename(columns=rename_map, inplace=True)
-            drop_columns = [col for col in ["v_id", "v_type"] if col in df.columns]
-            df.drop(columns=drop_columns, inplace=True)
-            remaining_columns = [
-                col for col in df.columns if col not in reordered_columns
-            ]
-            return pd.DataFrame(df[reordered_columns + remaining_columns])
+                if spec.return_attributes is None:
+                    rename_map = {
+                        col: col.replace("attributes.", "") for col in attribute_columns
+                    }
+                    reordered_columns = []
+                else:
+                    rename_map = {
+                        f"attributes.{attr}": attr for attr in spec.return_attributes
+                    }
+                    reordered_columns = [
+                        attr
+                        for attr in spec.return_attributes
+                        if attr in rename_map.values()
+                    ]
+                df.rename(columns=rename_map, inplace=True)
+                drop_columns = [col for col in ["v_id", "v_type"] if col in df.columns]
+                df.drop(columns=drop_columns, inplace=True)
+                remaining_columns = [
+                    col for col in df.columns if col not in reordered_columns
+                ]
+                return pd.DataFrame(df[reordered_columns + remaining_columns])
         except Exception as e:
             logger.error(
                 f"Error retrieving neighbors for node(s) {spec.start_nodes}: {e}"
             )
-        return pd.DataFrame()
+        return self._initialize_empty_result(output_type)
 
     def bfs(
         self,
@@ -188,7 +229,8 @@ class QueryManager(BaseManager):
         edge_type_set: Optional[Set[str]] = None,
         max_hops: Optional[int] = 3,
         limit: Optional[int] = None,
-    ) -> pd.DataFrame:
+        output_type: Literal["DataFrame", "List"] = "DataFrame",
+    ) -> pd.DataFrame | List[Dict[str, Any]]:
         """
         Perform BFS traversal from a set of start nodes, using batch processing.
 
@@ -198,44 +240,68 @@ class QueryManager(BaseManager):
             edge_type_set: Edge types to consider.
             max_hops: Maximum depth (number of hops) for BFS traversal.
             limit: Maximum number of neighbors per hop.
+            output_type: Format of the output, either "DataFrame" or "List".
 
         Returns:
-            A DataFrame containing the BFS results with the same structure as get_neighbors(),
-            plus an additional '_bfs_level' column.
+            A DataFrame or List containing the BFS results, with an added '_bfs_level'.
         """
         start_node_set = (
             {start_nodes} if isinstance(start_nodes, str) else set(start_nodes)
         )
         visited = start_node_set.copy()
         queue = start_node_set.copy()
-        level = 0  # BFS level counter
-        last_level_df = pd.DataFrame()
+        level = 0
+
+        last_level_result = self._initialize_empty_result(output_type)
+
         primary_key = self._graph_schema.nodes[node_type].primary_key
 
         while queue and (not max_hops or level < max_hops):
-            df = self.get_neighbors(
+            neighbors = self.get_neighbors(
                 start_nodes=list(queue),
                 start_node_type=node_type,
                 edge_type_set=edge_type_set,
                 target_node_type_set={node_type},
                 limit=limit,
+                output_type=output_type,
             )
 
-            if df.empty:
-                break  # No more neighbors to explore
+            # Handle DataFrame case
+            if isinstance(neighbors, pd.DataFrame):
+                if neighbors.empty:
+                    break
+                neighbor_ids = set(neighbors[primary_key])
+                neighbors = neighbors.copy()
+                neighbors["_bfs_level"] = level  # Add bfs level here
 
-            next_queue = set(df[primary_key]) - visited
+            # Handle List case
+            else:
+                if not neighbors:
+                    break
+                neighbor_ids = {n[primary_key] for n in neighbors}
+                # Add _bfs_level for each neighbor dict
+                for neighbor in neighbors:
+                    neighbor["_bfs_level"] = level
+
+            next_queue = neighbor_ids - visited
             if not next_queue:
-                break  # No new nodes to explore
+                break
 
             if max_hops and level == max_hops - 1:
-                last_level_df = pd.DataFrame(df[~df[primary_key].isin(list(visited))])
+                if isinstance(neighbors, pd.DataFrame):
+                    last_level_result = pd.DataFrame(
+                        neighbors[~neighbors[primary_key].isin(list(visited))]
+                    )
+                else:
+                    last_level_result = [
+                        n for n in neighbors if n[primary_key] not in visited
+                    ]
 
             visited.update(next_queue)
             queue = next_queue
-            level += 1  # Increment BFS depth
+            level += 1
 
-        return last_level_df
+        return last_level_result
 
     def _create_gsql_get_nodes(self, spec: NodeSpec) -> str:
         """
@@ -355,3 +421,11 @@ INTERPRET QUERY(
 
         query += "\n}"
         return (query.strip(), params)
+
+    def _initialize_empty_result(
+        self, output_type: Literal["DataFrame", "List"]
+    ) -> pd.DataFrame | List:
+        if output_type == "DataFrame":
+            return pd.DataFrame()
+        elif output_type == "List":
+            return []
