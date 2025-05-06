@@ -38,6 +38,7 @@ class TestGraph1(BaseGraphFixture):
                     "is_directed_edge": True,
                     "from_node_type": "User",
                     "to_node_type": "Product",
+                    "discriminator": "purchase_date",
                     "attributes": {
                         "purchase_date": "DATETIME",
                         "quantity": "DOUBLE",
@@ -72,7 +73,14 @@ class TestGraph1(BaseGraphFixture):
         self.G.add_node("Product_1", "Product")
         self.G.add_node("Product_2", "Product", name="2")
         self.G.add_node("Product_3", "Product", name="3", price=50)
-        self.G.add_edge("User_A", "Product_1", "User", "purchased", "Product")
+        self.G.add_edge(
+            "User_A",
+            "Product_1",
+            "User",
+            "purchased",
+            "Product",
+            purchase_date="2024-01-12",
+        )
         self.G.add_edge(
             "User_B",
             "Product_2",
@@ -100,7 +108,8 @@ class TestGraph1(BaseGraphFixture):
             quantity=15.5,
         )
         ebunch_to_add = [
-            ("User_C", "Product_3", {"purchase_date": "2024-01-12", "quantity": 25.5})
+            ("User_C", "Product_3", {"purchase_date": "2024-01-12", "quantity": 25.5}),
+            ("User_C", "Product_3", {"purchase_date": "2024-01-13", "quantity": 25.5}),
         ]
         self.G.add_edges_from(
             ebunch_to_add,
@@ -205,7 +214,7 @@ class TestGraph1(BaseGraphFixture):
             lambda: self.G.get_node_edges("User_C", "User", "purchased"),
             "get_node_edges",
         )
-        assert len(node_edges) == 3
+        assert len(node_edges) == 4
 
     # ------------------------------ Edge Operations ------------------------------
     def test_add_edge_without_target_node_type(self):
@@ -278,6 +287,11 @@ class TestGraph1(BaseGraphFixture):
             lambda: self.G.degree("Product_1", "Product", []), "degree"
         )
         assert degree == 3
+
+        degree = self.time_execution(
+            lambda: self.G.degree("User_C", "User", []), "degree"
+        )
+        assert degree == 4
 
     def test_number_of_nodes(self):
         # Test number of nodes for specific node types

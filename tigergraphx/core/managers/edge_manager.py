@@ -54,17 +54,26 @@ class EdgeManager(BaseManager):
         tgt_node_type: str,
     ) -> Optional[int]:
         try:
-            edges = {}
+            edges: Dict[str, Any] = {}
+            edge_type_obj = self._graph_schema.edges.get(edge_type)
+            is_multi_edge = bool(getattr(edge_type_obj, "discriminator", None))
             for src_id, tgt_id, attributes in normalized_edges:
                 attr_payload = {
                     key: {"value": value} for key, value in attributes.items()
                 }
-                # Navigate down to the right nested spot
-                edges.setdefault(src_node_type, {}).setdefault(src_id, {}).setdefault(
-                    edge_type, {}
-                ).setdefault(tgt_node_type, {})[tgt_id] = attr_payload
+                edge_dict = (
+                    edges.setdefault(src_node_type, {})
+                    .setdefault(src_id, {})
+                    .setdefault(edge_type, {})
+                    .setdefault(tgt_node_type, {})
+                )
+                if is_multi_edge:
+                    # Multi-edge: store as list of payloads
+                    edge_dict.setdefault(tgt_id, []).append(attr_payload)
+                else:
+                    # Single-edge: store as a single payload
+                    edge_dict[tgt_id] = attr_payload
             payload = {"edges": edges}
-
             result = self._tigergraph_api.upsert_graph_data(self._graph_name, payload)
             return result[0].get("accepted_edges", 0)
         except Exception as e:

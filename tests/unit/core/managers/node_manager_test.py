@@ -166,15 +166,21 @@ class TestNodeManager:
         node_id = "node1"
         node_type = "Person"
         edge_types = {"Friend"}
-
         self.mock_tigergraph_api.run_interpreted_query.return_value = [
-            {"edges": ["edge1", "edge2"]}
+            {
+                "edges": [
+                    {"from_id": "node1", "to_id": "node2"},
+                    {
+                        "from_id": "node1",
+                        "to_id": "node3",
+                        "discriminator": "2024-01-01T00:00:00",
+                    },
+                ]
+            }
         ]
-
         result = self.node_manager.get_node_edges(node_id, node_type, edge_types)
-
         self.mock_tigergraph_api.run_interpreted_query.assert_called_once()
-        assert result == ["edge1", "edge2"]
+        assert result == [("node1", "node2"), ("node1", "node3", "2024-01-01T00:00:00")]
 
     def test_get_node_edges_failure(self):
         node_id = "node2"

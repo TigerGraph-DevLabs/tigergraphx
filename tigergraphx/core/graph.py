@@ -287,9 +287,7 @@ class Graph:
         node_id = self._to_str_node_id(node_id)
         node_type = self._validate_node_type(node_type)
         edge_type_set = self._validate_edge_types_as_set(edge_types)
-        edges = self._node_manager.get_node_edges(node_id, node_type, edge_type_set)
-        result = [(edge["from_id"], edge["to_id"]) for edge in edges]
-        return result
+        return self._node_manager.get_node_edges(node_id, node_type, edge_type_set)
 
     def clear(self) -> bool:
         """
@@ -505,7 +503,7 @@ class Graph:
             output_type: Output format, either "DataFrame" (default) or "List".
 
         Returns:
-            A DataFrame of nodes.
+            A DataFrame or List containing the nodes.
         """
         if not all_node_types:
             node_type = self._validate_node_type(node_type)
@@ -550,7 +548,7 @@ class Graph:
             output_type: Output format, either "DataFrame" (default) or "List".
 
         Returns:
-            A DataFrame of neighbors or None.
+            A DataFrame or List containing the neighbors.
         """
         if isinstance(start_nodes, str | int):
             new_start_nodes = self._to_str_node_id(start_nodes)
@@ -594,7 +592,7 @@ class Graph:
             output_type: Format of the output, either "DataFrame" or "List".
 
         Returns:
-            A DataFrame or List containing the BFS results. If DataFrame, it includes an additional '_bfs_level' column.
+            A DataFrame or List containing the BFS results, with an added '_bfs_level'.
         """
         if isinstance(start_nodes, str | int):
             new_start_nodes = self._to_str_node_id(start_nodes)
