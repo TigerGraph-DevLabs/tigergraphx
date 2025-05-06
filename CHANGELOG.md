@@ -1,6 +1,9 @@
 # Changelog
 
 ---
+## 0.2.4
+- fix: handle multi-edge support in add_edges_from using discriminator logic
+
 ## 0.2.3
 - feat: add support for output_type="List" in get_nodes, get_neighbors, and bfs
 
