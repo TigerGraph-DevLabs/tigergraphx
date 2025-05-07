@@ -39,6 +39,15 @@ endpoints:
       4.x: "/restpp/graph/{graph_name}/edges/{source_node_type}/{source_node_id}/{edge_type}/{target_node_type}/{target_node_id}"
 
   # ------------------------------ Query ------------------------------
+  create_query:
+    path: "/gsql/v1/queries?graph={graph_name}"
+    method: "POST"
+    content_type: "text/plain"
+
+  drop_query:
+    path: "/gsql/v1/queries?graph={graph_name}&query={query_name}"
+    method: "DELETE"
+
   run_interpreted_query:
     path:
       # 3.x: "/gsqlserver/interpreted_query"
@@ -46,8 +55,13 @@ endpoints:
     method: "POST"
     content_type: "text/plain"
 
-  run_installed_query:
+  run_installed_query_get:
     path: "/restpp/query/{graph_name}/{query_name}"
+    method: "GET"
+
+  run_installed_query_post:
+    path: "/restpp/query/{graph_name}/{query_name}"
+    method: "POST"
 
   # ------------------------------ Upsert ------------------------------
   upsert_graph_data:
