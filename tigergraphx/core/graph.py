@@ -464,6 +464,11 @@ class Graph:
         Returns:
             The number of edges.
         """
+        if edge_type is not None:
+            if edge_type not in self.edge_types:
+                raise ValueError(
+                    f"Invalid edge type '{edge_type}'. Must be one of {self.edge_types}."
+                )
         return self._statistics_manager.number_of_edges(edge_type)
 
     # ------------------------------ Query Operations ------------------------------

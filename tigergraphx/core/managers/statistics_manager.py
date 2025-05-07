@@ -6,7 +6,7 @@
 # under the License. The software is provided "AS IS", without warranty.
 
 import logging
-from typing import List, Optional, Set
+from typing import Optional, Set
 
 from .base_manager import BaseManager
 
@@ -146,7 +146,7 @@ INTERPRET QUERY() FOR GRAPH {self._graph_name} {{
         return query.strip()
 
     def _create_gsql_number_of_edges(
-        self, edge_type: Optional[str | List[str]] = None
+        self, edge_type: Optional[str] = None
     ) -> str:
         # Generate the query
         if edge_type is None or edge_type == "":
@@ -157,7 +157,8 @@ INTERPRET QUERY() FOR GRAPH {self._graph_name} {{
   Nodes =
     SELECT s
     FROM Nodes:s -(:e)- :t
-    ACCUM IF s == t AND NOT e.isDirected() THEN
+    ACCUM VERTEX a = s, VERTEX b = t,
+          IF a == b AND NOT e.isDirected() THEN
             @@sum += 2
           ELSE
             @@sum += 1
@@ -173,7 +174,9 @@ INTERPRET QUERY() FOR GRAPH {self._graph_name} {{
   Nodes =
     SELECT s
     FROM Nodes:s -({edge_type}:e)- :t
-    ACCUM IF s == t AND NOT e.isDirected() THEN
+    ACCUM VERTEX a = s, VERTEX b = t,
+          IF (a == b AND NOT e.isDirected())
+             OR e.isDirected() THEN
             @@sum += 2
           ELSE
             @@sum += 1
