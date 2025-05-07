@@ -425,15 +425,19 @@ class Graph:
         edge_types: Optional[List[str] | str] = None,
     ) -> int:
         """
-        Get the degree of a node.
+        Get the out-degree of a node based on the specified edge types.
+
+        If the node has both a directed edge (e.g., "transfer") and its reverse
+        (e.g., "reverse_transfer"), only the directed edge is counted unless both are
+        explicitly included in edge_types.
 
         Args:
             node_id: Node identifier.
             node_type: Node type.
-            edge_types: A list of edge types. If None, consider all edge types.
+            edge_types: List of edge types to consider. If None, use all edge types.
 
         Returns:
-            The degree of the node.
+            The out-degree of the node.
         """
         node_id = self._to_str_node_id(node_id)
         node_type = self._validate_node_type(node_type)
