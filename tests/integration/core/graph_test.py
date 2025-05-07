@@ -53,6 +53,11 @@ class TestGraph1(BaseGraphFixture):
                         "quantity": "DOUBLE",
                     },
                 },
+                "follows": {
+                    "is_directed_edge": True,
+                    "from_node_type": "User",
+                    "to_node_type": "User",
+                },
             },
         }
         self.G = Graph(
@@ -117,12 +122,23 @@ class TestGraph1(BaseGraphFixture):
             "purchased",
             "Product",
         )
-        ebunch_to_add = [("Product_1", "Product_3")]
+        ebunch_to_add = [("Product_1", "Product_3"), ("Product_1", "Product_1")]
         self.G.add_edges_from(
             ebunch_to_add,
             "Product",
             "similar_to",
             "Product",
+        )
+        ebunch_to_add = [
+            ("User_B", "User_B"),
+            ("User_B", "User_C"),
+            ("User_C", "User_B"),
+        ]
+        self.G.add_edges_from(
+            ebunch_to_add,
+            "User",
+            "follows",
+            "User",
         )
         time.sleep(1)
 
@@ -273,7 +289,7 @@ class TestGraph1(BaseGraphFixture):
         degree = self.time_execution(
             lambda: self.G.degree("Product_1", "Product", ["similar_to"]), "degree"
         )
-        assert degree == 1
+        assert degree == 2
 
         degree = self.time_execution(
             lambda: self.G.degree(
@@ -281,17 +297,17 @@ class TestGraph1(BaseGraphFixture):
             ),
             "degree",
         )
-        assert degree == 3
+        assert degree == 4
 
         degree = self.time_execution(
             lambda: self.G.degree("Product_1", "Product", []), "degree"
         )
-        assert degree == 3
+        assert degree == 4
 
         degree = self.time_execution(
             lambda: self.G.degree("User_C", "User", []), "degree"
         )
-        assert degree == 4
+        assert degree == 6
 
     def test_number_of_nodes(self):
         # Test number of nodes for specific node types
@@ -310,6 +326,29 @@ class TestGraph1(BaseGraphFixture):
         # Test with an invalid node type
         with pytest.raises(ValueError, match="Invalid node type"):
             self.G.number_of_nodes(node_type="InvalidType")
+
+    def test_number_of_edges(self):
+        # Test number of edges for valid edge types
+        purchased_edges = self.G.number_of_edges(edge_type="purchased")
+        assert purchased_edges == 6, (
+            f"Expected 6 'purchased' edges, got {purchased_edges}"
+        )
+
+        similar_to_edges = self.G.number_of_edges(edge_type="similar_to")
+        assert similar_to_edges == 2, (
+            f"Expected 2 'similar_to' edges, got {similar_to_edges}"
+        )
+
+        follows_edges = self.G.number_of_edges(edge_type="follows")
+        assert follows_edges == 3, f"Expected 3 'follows' edges, got {follows_edges}"
+
+        # Test total number of edges without specifying an edge type
+        total_edges = self.G.number_of_edges()
+        assert total_edges == 11, f"Expected 11 total edges, got {total_edges}"
+
+        # Test behavior with an invalid edge type
+        with pytest.raises(ValueError, match="Invalid edge type"):
+            self.G.number_of_edges(edge_type="InvalidType")
 
     # ------------------------------ Query Operations ------------------------------
     def test_get_nodes(self):
