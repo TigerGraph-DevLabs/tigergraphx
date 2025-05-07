@@ -1,6 +1,9 @@
 # Changelog
 
 ---
+## 0.2.5
+- fix: resolve incorrect edge count when edge_type is specified
+
 ## 0.2.4
 - fix: handle multi-edge support in add_edges_from using discriminator logic
 
