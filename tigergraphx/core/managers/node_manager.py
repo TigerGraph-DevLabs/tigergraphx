@@ -91,18 +91,26 @@ class NodeManager(BaseManager):
         node_id: str,
         node_type: str,
         edge_types: Optional[Set[str]] = None,
-    ) -> List:
+    ) -> List[Tuple]:
         gsql_script = self._create_gsql_get_node_edges(node_type, edge_types)
         try:
-            params = {
-                "input": node_id,
-            }
+            params = {"input": node_id}
             result = self._tigergraph_api.run_interpreted_query(gsql_script, params)
-            if result and isinstance(result, list):
-                return result[0].get("edges")
+            if not result or not isinstance(result, list):
+                return []
+            edges = result[0].get("edges", [])
+            final_result = []
+            for edge in edges:
+                from_id = edge.get("from_id")
+                to_id = edge.get("to_id")
+                if "discriminator" in edge:
+                    final_result.append((from_id, to_id, edge["discriminator"]))
+                else:
+                    final_result.append((from_id, to_id))
+            return final_result
         except Exception as e:
             logger.error(f"Error retrieving edges for node {node_id}: {e}")
-        return []
+            return []
 
     def clear(self) -> bool:
         try:
