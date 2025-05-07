@@ -4806,7 +4806,10 @@ This section is optional if the user’s configuration matches these defaults.</
 
     <div class="doc doc-contents first">
 
-        <p>Get the degree of a node.</p>
+        <p>Get the out-degree of a node based on the specified edge types.</p>
+<p>If the node has both a directed edge (e.g., "transfer") and its reverse
+(e.g., "reverse_transfer"), only the directed edge is counted unless both are
+explicitly included in edge_types.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -4836,7 +4839,7 @@ This section is optional if the user’s configuration matches these defaults.</
 )
           –
           <div class="doc-md-description">
-            <p>A list of edge types. If None, consider all edge types.</p>
+            <p>List of edge types to consider. If None, use all edge types.</p>
           </div>
         </li>
     </ul>
@@ -4848,7 +4851,7 @@ This section is optional if the user’s configuration matches these defaults.</
               <code><span title="int">int</span></code>
           –
           <div class="doc-md-description">
-            <p>The degree of the node.</p>
+            <p>The out-degree of the node.</p>
           </div>
         </li>
     </ul>
