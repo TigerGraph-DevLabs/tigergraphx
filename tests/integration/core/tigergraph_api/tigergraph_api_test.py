@@ -156,7 +156,7 @@ class TestTigerGraphAPI:
             self.api.get_schema(graph_name)
 
     # ------------------------------ Query ------------------------------
-    def test_create_query_and_drop_query(self):
+    def test_create_install_and_drop_query(self):
         """
         Integration test for creating query and dropping query successfully.
         """
@@ -165,11 +165,14 @@ CREATE QUERY q1(VERTEX input) for Graph ERGraph {
   Nodes = {input};
   PRINT Nodes;
 }
-"""
+""".strip()
         result = self.api.create_query(self.graph_name, gsql_query)
 
         assert isinstance(result, str), "Response should be a str."
         assert "Successfully created queries" in result
+
+        result = self.api.install_query(self.graph_name, "q1")
+        assert "Query installed successfully" in result
 
         result = self.api.drop_query(self.graph_name, "q1")
 

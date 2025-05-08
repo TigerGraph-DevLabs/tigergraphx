@@ -44,6 +44,9 @@ endpoints:
     method: "POST"
     content_type: "text/plain"
 
+  install_query:
+    path: "/gsql/v1/queries/install?graph={graph_name}&queries={query_names}"
+
   drop_query:
     path: "/gsql/v1/queries?graph={graph_name}&query={query_name}"
     method: "DELETE"

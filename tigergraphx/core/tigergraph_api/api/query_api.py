@@ -23,6 +23,20 @@ class QueryAPI(BaseAPI):
             raise TypeError(f"Expected str, but got {type(result).__name__}: {result}")
         return result
 
+    def install_query(self, graph_name: str, query_names: str | List[str]) -> str:
+        query_names = (
+            query_names if isinstance(query_names, str) else ",".join(query_names)
+        )
+        result = self._request(
+            endpoint_name="install_query",
+            version="4.x",
+            graph_name=graph_name,
+            query_names=query_names,
+        )
+        if not isinstance(result, str):
+            raise TypeError(f"Expected str, but got {type(result).__name__}: {result}")
+        return result
+
     def drop_query(self, graph_name: str, query_name: str) -> Dict:
         result = self._request(
             endpoint_name="drop_query",

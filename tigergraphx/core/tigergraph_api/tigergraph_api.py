@@ -114,6 +114,9 @@ class TigerGraphAPI:
     def create_query(self, graph_name: str, gsql_query: str) -> str:
         return self._query_api.create_query(graph_name, gsql_query)
 
+    def install_query(self, graph_name: str, query_names: str | List[str]) -> str:
+        return self._query_api.install_query(graph_name, query_names)
+
     def drop_query(self, graph_name: str, query_name: str) -> Dict:
         return self._query_api.drop_query(graph_name, query_name)
 
