@@ -987,6 +987,65 @@ True
 
 The following methods perform query operations:
 
+::: tigergraphx.core.Graph.create_query
+
+**Examples:**
+
+See usage examples under [`run_query()`](#tigergraphx.core.Graph.run_query).
+
+::: tigergraphx.core.Graph.install_query
+
+**Examples:**
+
+See usage examples under [`run_query()`](#tigergraphx.core.Graph.run_query).
+
+::: tigergraphx.core.Graph.drop_query
+
+**Examples:**
+
+See usage examples under [`run_query()`](#tigergraphx.core.Graph.run_query).
+
+::: tigergraphx.core.Graph.run_query
+
+**Examples:**
+
+```python
+>>> G = Graph(graph_schema)
+>>> nodes = [
+...     ("Alice", {"age": 30, "gender": "Female"}),
+...     ("Bob", {"age": 32, "gender": "Male"}),
+...     ("Carol", {"age": 29, "gender": "Female"}),
+... ]
+>>> G.add_nodes_from(nodes, "Person")
+3
+>>> edges = [
+...     ("Alice", "Bob", {"closeness": 2.0}),
+...     ("Bob", "Carol", {"closeness": 3.0}),
+... ]
+>>> G.add_edges_from(edges)
+2
+>>> gsql_query = f'''
+... CREATE QUERY getFriends(VERTEX<Person> person) FOR GRAPH Social {{
+...     Start = {{person}};
+...     Friends = SELECT tgt FROM Start:s -(Friendship:e)->:tgt;
+...     PRINT Friends;
+... }}
+... '''
+>>> G.create_query(gsql_query)
+True
+>>> G.install_query("getFriends")
+2025-05-08 11:31:28,441 - tigergraphx.core.managers.query_manager - INFO - Installing query 'getFriends' for graph 'Social'...
+2025-05-08 11:32:17,250 - tigergraphx.core.managers.query_manager - INFO - Query 'getFriends' installed successfully.
+True
+>>> result = G.run_query("getFriends", {"person": "Alice"})
+>>> print(result)
+[{'Friends': [{'v_id': 'Bob', 'v_type': 'Person', 'attributes': {'name': 'Bob', 'age': 32, 'gender': 'Male'}}]}]
+>>> G.drop_query("getFriends")
+True
+>>> G.clear()
+True
+```
+
 ::: tigergraphx.core.Graph.get_nodes
 
 **Examples:**

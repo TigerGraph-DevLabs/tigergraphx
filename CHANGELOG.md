@@ -1,6 +1,10 @@
 # Changelog
 
 ---
+## 0.2.6
+- feat: add Graph methods for creating, installing, and dropping queries
+- feat: add TigerGraph API support for creating, installing and dropping queries
+
 ## 0.2.5
 - fix: resolve incorrect edge count when edge_type is specified
 

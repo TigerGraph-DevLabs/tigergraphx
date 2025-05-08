@@ -12,14 +12,50 @@ from .base_api import BaseAPI
 
 
 class QueryAPI(BaseAPI):
+    def create_query(self, graph_name: str, gsql_query: str) -> str:
+        result = self._request(
+            endpoint_name="create_query",
+            version="4.x",
+            data=gsql_query,
+            graph_name=graph_name,
+        )
+        if not isinstance(result, str):
+            raise TypeError(f"Expected str, but got {type(result).__name__}: {result}")
+        return result
+
+    def install_query(self, graph_name: str, query_names: str | List[str]) -> str:
+        query_names = (
+            query_names if isinstance(query_names, str) else ",".join(query_names)
+        )
+        result = self._request(
+            endpoint_name="install_query",
+            version="4.x",
+            graph_name=graph_name,
+            query_names=query_names,
+        )
+        if not isinstance(result, str):
+            raise TypeError(f"Expected str, but got {type(result).__name__}: {result}")
+        return result
+
+    def drop_query(self, graph_name: str, query_name: str) -> Dict:
+        result = self._request(
+            endpoint_name="drop_query",
+            version="4.x",
+            graph_name=graph_name,
+            query_name=query_name,
+        )
+        if not isinstance(result, dict):
+            raise TypeError(f"Expected dict, but got {type(result).__name__}: {result}")
+        return result
+
     def run_interpreted_query(
-        self, query_text: str, params: Optional[Dict[str, Any]] = None
+        self, gsql_query: str, params: Optional[Dict[str, Any]] = None
     ) -> List:
         parsed_params = self._parse_query_parameters(params) if params else None
         result = self._request(
             endpoint_name="run_interpreted_query",
             version="4.x",
-            data=query_text,
+            data=gsql_query,
             params=parsed_params,
         )
         if not isinstance(result, list):
@@ -31,12 +67,11 @@ class QueryAPI(BaseAPI):
     ) -> List:
         parsed_params = self._parse_query_parameters(params) if params else None
         result = self._request(
-            endpoint_name="run_installed_query",
+            endpoint_name="run_installed_query_get",
             version="4.x",
             params=parsed_params,
-            method="GET",
-            query_name=query_name,
             graph_name=graph_name,
+            query_name=query_name,
         )
         if not isinstance(result, list):
             raise TypeError(f"Expected list, but got {type(result).__name__}: {result}")
@@ -46,12 +81,11 @@ class QueryAPI(BaseAPI):
         self, graph_name: str, query_name: str, json: Optional[Dict[str, Any]] = None
     ) -> List:
         result = self._request(
-            endpoint_name="run_installed_query",
+            endpoint_name="run_installed_query_post",
             version="4.x",
             json=json,
-            method="POST",
-            query_name=query_name,
             graph_name=graph_name,
+            query_name=query_name,
         )
         if not isinstance(result, list):
             raise TypeError(f"Expected list, but got {type(result).__name__}: {result}")

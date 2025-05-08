@@ -476,7 +476,46 @@ class Graph:
         return self._statistics_manager.number_of_edges(edge_type)
 
     # ------------------------------ Query Operations ------------------------------
-    def run_query(self, query_name: str, params: Dict = {}):
+    def create_query(self, gsql_query: str) -> bool:
+        """
+        Create a GSQL query on the graph.
+
+        Args:
+            gsql_query: A valid GSQL query string to be created.
+                The query must follow TigerGraph's GSQL syntax.
+                See the [GSQL Query Language Reference](https://docs.tigergraph.com/gsql-ref/current/intro/)
+                for guidance on writing GSQL queries.
+
+        Returns:
+            True if the query was successfully installed, False otherwise.
+        """
+        return self._query_manager.create_query(gsql_query)
+
+    def install_query(self, query_name: str) -> bool:
+        """
+        Install a GSQL query on the graph.
+
+        Args:
+            query_name: Name of the query to install.
+
+        Returns:
+            True if the query was successfully installed, False otherwise.
+        """
+        return self._query_manager.install_query(query_name)
+
+    def drop_query(self, query_name: str) -> bool:
+        """
+        Drop a GSQL query from the graph.
+
+        Args:
+            query_name: Name of the query to drop.
+
+        Returns:
+            True if the query was successfully dropped, False otherwise.
+        """
+        return self._query_manager.drop_query(query_name)
+
+    def run_query(self, query_name: str, params: Dict = {}) -> Optional[List]:
         """
         Run a pre-installed query on the graph.
 

@@ -26,7 +26,40 @@ class QueryManager(BaseManager):
     def __init__(self, context: GraphContext):
         super().__init__(context)
 
-    def run_query(self, query_name: str, params: Dict = {}):
+    def create_query(self, gsql_query: str) -> bool:
+        try:
+            result = self._tigergraph_api.create_query(self._graph_name, gsql_query)
+            return "Successfully created queries" in result
+        except Exception as e:
+            logger.error(f"Error creating query: {e}")
+            return False
+
+    def install_query(self, query_name: str) -> bool:
+        try:
+            logger.info(
+                f"Installing query '{query_name}' for graph '{self._graph_name}'..."
+            )
+            result = self._tigergraph_api.install_query(self._graph_name, query_name)
+            if "Query installed successfully" in result:
+                logger.info(f"Query '{query_name}' installed successfully.")
+                return True
+            logger.warning(
+                f"Query installation failed for '{query_name}'. Result: {result}"
+            )
+            return False
+        except Exception as e:
+            logger.error(f"Exception while installing query '{query_name}': {e}")
+            return False
+
+    def drop_query(self, query_name: str) -> bool:
+        try:
+            result = self._tigergraph_api.drop_query(self._graph_name, query_name)
+            return query_name in result.get("dropped", [])
+        except Exception as e:
+            logger.error(f"Error dropping query '{query_name}': {e}")
+            return False
+
+    def run_query(self, query_name: str, params: Dict = {}) -> Optional[List]:
         try:
             return self._tigergraph_api.run_installed_query_get(
                 self._graph_name, query_name, params

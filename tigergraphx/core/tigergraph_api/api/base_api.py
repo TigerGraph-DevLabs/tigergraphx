@@ -98,7 +98,9 @@ class BaseAPI:
                     )
 
                 # Check if TigerGraph API returned an error
-                if response_json.get("error", False):
+                if response_json.get("error", False) or response_json.get(
+                    "isDraft", False
+                ):
                     raise TigerGraphAPIError(
                         response_json.get("message", "Unknown error"),
                         status_code=response.status_code,
@@ -107,9 +109,17 @@ class BaseAPI:
 
                 self._raise_for_status(response)
 
-                # Extract results; if empty, return message
                 results = response_json.get("results")
-                return results if results else response_json.get("message", None)
+                if results:
+                    return results
+                # Check for drop-specific keys if no results
+                if "dropped" in response_json or "failedToDrop" in response_json:
+                    return {
+                        "dropped": response_json.get("dropped", []),
+                        "failedToDrop": response_json.get("failedToDrop", []),
+                    }
+                # Fallback to message
+                return response_json.get("message", None)
 
             # Handle text/plain responses
             elif "text/plain" in content_type or content_type == "":

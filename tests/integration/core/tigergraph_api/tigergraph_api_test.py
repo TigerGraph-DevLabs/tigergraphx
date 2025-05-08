@@ -12,8 +12,9 @@ from tigergraphx.config import TigerGraphConnectionConfig
 class TestTigerGraphAPI:
     def setup_graph(self):
         """Set up the graph and add nodes and edges."""
+        self.graph_name = "ERGraph"
         graph_schema = {
-            "graph_name": "ERGraph",
+            "graph_name": self.graph_name,
             "nodes": {
                 "Entity": {
                     "primary_key": "id",
@@ -40,7 +41,9 @@ class TestTigerGraphAPI:
             },
         }
         # Load config from YAML
-        config_path = Path(__file__).parent.parent / "config" / "tigergraph_connection.yaml"
+        config_path = (
+            Path(__file__).parent.parent / "config" / "tigergraph_connection.yaml"
+        )
         with open(config_path, "r") as f:
             config_dict = yaml.safe_load(f)
 
@@ -127,15 +130,16 @@ class TestTigerGraphAPI:
         Assumes the TigerGraph instance is running and accessible with default settings.
         """
 
-        graph_name = "ERGraph"
-        result = self.api.get_schema(graph_name)
+        result = self.api.get_schema(self.graph_name)
 
         # Assertions for structured response
         assert isinstance(result, dict), "Response should be a dictionary."
 
         # JSON response (schema)
         assert "GraphName" in result, "Schema should contain 'GraphName'."
-        assert result["GraphName"] == graph_name, f"GraphName should be '{graph_name}'."
+        assert result["GraphName"] == self.graph_name, (
+            f"GraphName should be '{self.graph_name}'."
+        )
         assert "VertexTypes" in result, "Schema should contain 'VertexTypes'."
         assert "EdgeTypes" in result, "Schema should contain 'EdgeTypes'."
 
@@ -152,18 +156,61 @@ class TestTigerGraphAPI:
             self.api.get_schema(graph_name)
 
     # ------------------------------ Query ------------------------------
+    def test_create_install_and_drop_query(self):
+        """
+        Integration test for creating query and dropping query successfully.
+        """
+        gsql_query = """
+CREATE QUERY q1(VERTEX input) for Graph ERGraph {
+  Nodes = {input};
+  PRINT Nodes;
+}
+""".strip()
+        result = self.api.create_query(self.graph_name, gsql_query)
+
+        assert isinstance(result, str), "Response should be a str."
+        assert "Successfully created queries" in result
+
+        result = self.api.install_query(self.graph_name, "q1")
+        assert "Query installed successfully" in result
+
+        result = self.api.drop_query(self.graph_name, "q1")
+
+        assert isinstance(result, dict), "Response should be a dict."
+        assert "failedToDrop" in result
+        assert result["failedToDrop"] == []
+        assert "dropped" in result
+        assert result["dropped"] == ["q1"]
+
+    def test_create_query_syntax_error(self):
+        """
+        Integration test for creating query with syntax errors.
+        """
+        gsql_query = """
+CREATE QUERY q2(VERTEX input) for Graph ERGraph {
+  Nodes = {input}
+  PRINT Nodes;
+}
+"""
+
+        with pytest.raises(
+            TigerGraphAPIError,
+            match="Saved as draft query with type/semantic error",
+        ):
+            self.api.create_query(self.graph_name, gsql_query)
+
     def test_run_interpreted_query_success(self):
         """
         Integration test for running an interpreted query successfully.
         """
-        query = """
+        gsql_query = """
 INTERPRET QUERY(VERTEX<Entity> input) for Graph ERGraph {
   Nodes = {input};
   PRINT Nodes;
 }
 """
         params = {"input": "Entity_1"}
-        result = self.api.run_interpreted_query(query, params)
+        result = self.api.run_interpreted_query(gsql_query, params)
 
         assert isinstance(result, list), "Response should be a list."
 
@@ -171,7 +218,7 @@ INTERPRET QUERY(VERTEX<Entity> input) for Graph ERGraph {
         """
         Test behavior when running an interpreted query with syntax errors.
         """
-        query = """
+        gsql_query = """
 INTERPRET QUERY(VERTEX<Entity> input) for Graph ERGraph {
   Nodes = {input}
   PRINT Nodes;
@@ -181,4 +228,4 @@ INTERPRET QUERY(VERTEX<Entity> input) for Graph ERGraph {
             TigerGraphAPIError,
             match="line 5:2 no viable alternative at input ",
         ):
-            self.api.run_interpreted_query(query)
+            self.api.run_interpreted_query(gsql_query)

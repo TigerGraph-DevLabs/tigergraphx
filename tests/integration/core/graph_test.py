@@ -351,6 +351,38 @@ class TestGraph1(BaseGraphFixture):
             self.G.number_of_edges(edge_type="InvalidType")
 
     # ------------------------------ Query Operations ------------------------------
+    def test_create_install_run_and_drop_query(self):
+        """
+        Test creating, running, and dropping a GSQL query using the integration setup.
+        """
+        # Define a GSQL query to install
+        gsql_query = f"""
+        CREATE QUERY getUserPurchases(VERTEX<User> user) FOR GRAPH {self.G.name} {{
+            Start = {{user}};
+            Purchases = SELECT tgt FROM Start:s - (purchased:e) -> :tgt;
+            PRINT Purchases;
+        }}
+        """
+
+        # Create the query
+        success = self.G.create_query(gsql_query)
+        assert success is True, "Expected query to be successfully created"
+
+        # Install the query
+        query_name = "getUserPurchases"
+        success = self.G.install_query(query_name)
+        assert success is True, "Expected query to be successfully created"
+
+        # Run the query
+        result = self.G.run_query(query_name, {"user": "User_C"})
+        assert isinstance(result, list), "Expected result to be a dictionary"
+        assert len(result) == 1, "Expected len(result) to 1"
+        assert "Purchases" in result[0], "Expected 'Purchases' in result[0]"
+
+        # Drop the query
+        success = self.G.drop_query(query_name)
+        assert success is True, "Expected query to be successfully dropped"
+
     def test_get_nodes(self):
         # Define the return attributes and test parameters
         return_attributes = ["id", "name", "age"]
