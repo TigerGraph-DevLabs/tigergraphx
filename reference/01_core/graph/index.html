@@ -1494,6 +1494,42 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#tigergraphx.core.Graph.create_query" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;create_query
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.Graph.install_query" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;install_query
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.Graph.drop_query" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;drop_query
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.Graph.run_query" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;run_query
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tigergraphx.core.Graph.get_nodes" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_nodes
@@ -2890,6 +2926,42 @@
   
     <nav class="md-nav" aria-label="Query Operations">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.Graph.create_query" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;create_query
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.Graph.install_query" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;install_query
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.Graph.drop_query" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;drop_query
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.Graph.run_query" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;run_query
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#tigergraphx.core.Graph.get_nodes" class="md-nav__link">
@@ -5025,6 +5097,233 @@ explicitly included in edge_types.</p>
 </code></pre></div>
 <h2 id="query-operations">Query Operations</h2>
 <p>The following methods perform query operations:</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="tigergraphx.core.Graph.create_query" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">create_query</span><span class="p">(</span><span class="n">gsql_query</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Create a GSQL query on the graph.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>gsql_query</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>A valid GSQL query string to be created.
+The query must follow TigerGraph's GSQL syntax.
+See the <a href="https://docs.tigergraph.com/gsql-ref/current/intro/">GSQL Query Language Reference</a>
+for guidance on writing GSQL queries.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="bool">bool</span></code>
+          –
+          <div class="doc-md-description">
+            <p>True if the query was successfully installed, False otherwise.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><p><strong>Examples:</strong></p>
+<p>See usage examples under <a href="#tigergraphx.core.Graph.run_query"><code>run_query()</code></a>.</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="tigergraphx.core.Graph.install_query" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">install_query</span><span class="p">(</span><span class="n">query_name</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Install a GSQL query on the graph.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>query_name</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Name of the query to install.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="bool">bool</span></code>
+          –
+          <div class="doc-md-description">
+            <p>True if the query was successfully installed, False otherwise.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><p><strong>Examples:</strong></p>
+<p>See usage examples under <a href="#tigergraphx.core.Graph.run_query"><code>run_query()</code></a>.</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="tigergraphx.core.Graph.drop_query" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">drop_query</span><span class="p">(</span><span class="n">query_name</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Drop a GSQL query from the graph.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>query_name</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Name of the query to drop.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="bool">bool</span></code>
+          –
+          <div class="doc-md-description">
+            <p>True if the query was successfully dropped, False otherwise.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><p><strong>Examples:</strong></p>
+<p>See usage examples under <a href="#tigergraphx.core.Graph.run_query"><code>run_query()</code></a>.</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="tigergraphx.core.Graph.run_query" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">run_query</span><span class="p">(</span><span class="n">query_name</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{})</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Run a pre-installed query on the graph.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>query_name</code></b>
+              (<code><span title="str">str</span></code>)
+          –
+          <div class="doc-md-description">
+            <p>Name of the query.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>params</code></b>
+              (<code><span title="typing.Dict">Dict</span></code>, default:
+                  <code>{}</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Parameters for the query.</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="typing.Optional">Optional</span>[<span title="typing.List">List</span>]</code>
+          –
+          <div class="doc-md-description">
+            <p>The query result or None if an error occurred.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span>
+<span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
+<span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">}),</span>
+<span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Carol&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">29</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
+<span class="o">...</span> <span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">edges</span> <span class="o">=</span> <span class="p">[</span>
+<span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">}),</span>
+<span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;Carol&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">}),</span>
+<span class="o">...</span> <span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+<span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">gsql_query</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">... CREATE QUERY getFriends(VERTEX&lt;Person&gt; person) FOR GRAPH Social </span><span class="se">{{</span>
+<span class="s1">...     Start = </span><span class="se">{{</span><span class="s1">person</span><span class="se">}}</span><span class="s1">;</span>
+<span class="s1">...     Friends = SELECT tgt FROM Start:s -(Friendship:e)-&gt;:tgt;</span>
+<span class="s1">...     PRINT Friends;</span>
+<span class="s1">... </span><span class="se">}}</span>
+<span class="s1">... &#39;&#39;&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">create_query</span><span class="p">(</span><span class="n">gsql_query</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">install_query</span><span class="p">(</span><span class="s2">&quot;getFriends&quot;</span><span class="p">)</span>
+<span class="mi">2025</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">08</span> <span class="mi">11</span><span class="p">:</span><span class="mi">31</span><span class="p">:</span><span class="mi">28</span><span class="p">,</span><span class="mi">441</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">query_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Installing</span> <span class="n">query</span> <span class="s1">&#39;getFriends&#39;</span> <span class="k">for</span> <span class="n">graph</span> <span class="s1">&#39;Social&#39;</span><span class="o">...</span>
+<span class="mi">2025</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">08</span> <span class="mi">11</span><span class="p">:</span><span class="mi">32</span><span class="p">:</span><span class="mi">17</span><span class="p">,</span><span class="mi">250</span> <span class="o">-</span> <span class="n">tigergraphx</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">managers</span><span class="o">.</span><span class="n">query_manager</span> <span class="o">-</span> <span class="n">INFO</span> <span class="o">-</span> <span class="n">Query</span> <span class="s1">&#39;getFriends&#39;</span> <span class="n">installed</span> <span class="n">successfully</span><span class="o">.</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">run_query</span><span class="p">(</span><span class="s2">&quot;getFriends&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;person&quot;</span><span class="p">:</span> <span class="s2">&quot;Alice&quot;</span><span class="p">})</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="p">[{</span><span class="s1">&#39;Friends&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;v_id&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;v_type&#39;</span><span class="p">:</span> <span class="s1">&#39;Person&#39;</span><span class="p">,</span> <span class="s1">&#39;attributes&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;Male&#39;</span><span class="p">}}]}]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">drop_query</span><span class="p">(</span><span class="s2">&quot;getFriends&quot;</span><span class="p">)</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
+</code></pre></div>
 
 
 <div class="doc doc-object doc-function">
