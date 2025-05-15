@@ -18,6 +18,43 @@ endpoints:
       # 3.x: "/gsqlserver/gsql/schema"
       4.x: "/gsql/v1/schema/graphs/{graph_name}"
 
+  # ------------------------------ Data ------------------------------
+  create_data_source:
+    path:
+      4.x: "/gsql/v1/data-sources"
+    method: "POST"
+
+  update_data_source:
+    path:
+      4.x: "/gsql/v1/data-sources/{data_source_name}"
+    method: "PUT"
+
+  drop_data_source:
+    path:
+      4.x: "/gsql/v1/data-sources/{data_source_name}"
+    method: "DELETE"
+
+  drop_all_data_sources:
+    path:
+      4.x: "/gsql/v1/data-sources/dropAll"
+    method: "DELETE"
+    content_type: "text/plain"
+
+  get_data_source:
+    path:
+      4.x: "/gsql/v1/data-sources/{data_source_name}"
+    method: "GET"
+
+  get_all_data_sources:
+    path:
+      4.x: "/gsql/v1/data-sources"
+    method: "GET"
+
+  preview_sample_data:
+    path:
+      4.x: "/gsql/v1/sample-data"
+    method: "POST"
+
   # ------------------------------ Node ------------------------------
   retrieve_a_node:
     path:

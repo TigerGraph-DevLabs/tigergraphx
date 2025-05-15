@@ -5,12 +5,12 @@
 # Permission is granted to use, copy, modify, and distribute this software
 # under the License. The software is provided "AS IS", without warranty.
 
-from typing import Dict, List
+from typing import Any, Dict, List
 from .base_api import BaseAPI
 
 
 class UpsertAPI(BaseAPI):
-    def upsert_graph_data(self, graph_name: str, payload: Dict) -> List:
+    def upsert_graph_data(self, graph_name: str, payload: Dict[str, Any]) -> List:
         """
         Upsert data (nodes and/or edges) into a specific graph.
         """

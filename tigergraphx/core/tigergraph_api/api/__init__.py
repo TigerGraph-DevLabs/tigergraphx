@@ -9,6 +9,7 @@ from .base_api import TigerGraphAPIError
 from .admin_api import AdminAPI
 from .gsql_api import GSQLAPI
 from .schema_api import SchemaAPI
+from .data_source_api import DataSourceAPI
 from .node_api import NodeAPI
 from .edge_api import EdgeAPI
 from .query_api import QueryAPI 
@@ -19,6 +20,7 @@ __all__ = [
     "AdminAPI",
     "GSQLAPI",
     "SchemaAPI",
+    "DataSourceAPI",
     "NodeAPI",
     "EdgeAPI",
     "QueryAPI",
