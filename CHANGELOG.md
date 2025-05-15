@@ -1,6 +1,12 @@
 # Changelog
 
 ---
+
+Note: version releases in the 0.x.y range may include both bug fixes and new features, not strictly limited to patches.
+
+## 0.2.7
+- feat: add support for previewing sample data and managing data sources (create, update, drop, get)
+
 ## 0.2.6
 - feat: add Graph methods for creating, installing, and dropping queries
 - feat: add TigerGraph API support for creating, installing and dropping queries

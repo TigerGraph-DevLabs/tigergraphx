@@ -5,7 +5,7 @@
 # Permission is granted to use, copy, modify, and distribute this software
 # under the License. The software is provided "AS IS", without warranty.
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 from requests import Session
 from requests.auth import AuthBase, HTTPBasicAuth
 
@@ -14,11 +14,13 @@ from .api import (
     AdminAPI,
     GSQLAPI,
     SchemaAPI,
+    DataSourceAPI,
     NodeAPI,
     EdgeAPI,
     QueryAPI,
     UpsertAPI,
 )
+from .api.data_source_api import DataSourceType
 
 from tigergraphx.config import TigerGraphConnectionConfig
 
@@ -55,6 +57,7 @@ class TigerGraphAPI:
         self._admin_api = AdminAPI(config, self.endpoint_registry, self.session)
         self._gsql_api = GSQLAPI(config, self.endpoint_registry, self.session)
         self._schema_api = SchemaAPI(config, self.endpoint_registry, self.session)
+        self._data_api = DataSourceAPI(config, self.endpoint_registry, self.session)
         self._node_api = NodeAPI(config, self.endpoint_registry, self.session)
         self._edge_api = EdgeAPI(config, self.endpoint_registry, self.session)
         self._query_api = QueryAPI(config, self.endpoint_registry, self.session)
@@ -80,6 +83,161 @@ class TigerGraphAPI:
             The schema as JSON.
         """
         return self._schema_api.get_schema(graph_name)
+
+    # ------------------------------ Data ------------------------------
+    def create_data_source(
+        self,
+        name: str,
+        data_source_type: str | DataSourceType,
+        access_key: Optional[str] = None,
+        secret_key: Optional[str] = None,
+        extra_config: Optional[Dict[str, Any]] = None,
+        graph: Optional[str] = None,
+    ) -> str:
+        """
+        Create a new data source configuration.
+
+        Args:
+            name: Name of the data source.
+            source_type: The type of the source (s3, gcs, abs).
+            access_key: Optional access key for cloud storage.
+            secret_key: Optional secret key for cloud storage.
+            extra_config: Additional configuration values to merge into the request payload.
+            graph: Optional graph name.
+
+        Returns:
+            API response message.
+        """
+        return self._data_api.create_data_source(
+            name=name,
+            data_source_type=data_source_type,
+            access_key=access_key,
+            secret_key=secret_key,
+            extra_config=extra_config,
+            graph=graph,
+        )
+
+    def update_data_source(
+        self,
+        name: str,
+        data_source_type: str | DataSourceType,
+        access_key: Optional[str] = None,
+        secret_key: Optional[str] = None,
+        extra_config: Optional[Dict[str, Any]] = None,
+        graph: Optional[str] = None,
+    ) -> str:
+        """
+        Update an existing data source configuration.
+
+        Args:
+            name: Name of the data source.
+            data_source_type: Type of the source (e.g., s3, gcs, abs).
+            access_key: Optional access key.
+            secret_key: Optional secret key.
+            extra_config: Extra config values to merge in.
+            graph: Optional graph name.
+
+        Returns:
+            API response message.
+        """
+        return self._data_api.update_data_source(
+            name=name,
+            data_source_type=data_source_type,
+            access_key=access_key,
+            secret_key=secret_key,
+            extra_config=extra_config,
+            graph=graph,
+        )
+
+    def get_all_data_sources(self, graph: Optional[str] = None) -> List[Dict[str, Any]]:
+        """
+        Retrieve a list of all data sources, optionally filtered by graph name.
+
+        Args:
+            graph: Optional graph name.
+
+        Returns:
+            List of data source dictionaries.
+        """
+        return self._data_api.get_all_data_sources(graph=graph)
+
+    def drop_data_source(self, name: str, graph: Optional[str] = None) -> str:
+        """
+        Drop a data source by name. Can specify a graph if removing from a graph-specific context.
+
+        Args:
+            name: Name of the data source to remove.
+            graph: Optional graph name, required if the data source is local.
+
+        Returns:
+            API response message.
+        """
+        return self._data_api.drop_data_source(name=name, graph=graph)
+
+    def drop_all_data_sources(self, graph: Optional[str] = None) -> str:
+        """
+        Drop all data source configurations, optionally within a specific graph.
+
+        Args:
+            graph: Optional graph name.
+
+        Returns:
+            API response message.
+        """
+        return self._data_api.drop_all_data_sources(graph=graph)
+
+    def get_data_source(self, name: str) -> Dict[str, Any]:
+        """
+        Get a data source's configuration.
+
+        Args:
+            name: Name of the data source.
+
+        Returns:
+            A dictionary with data source configuration.
+        """
+        return self._data_api.get_data_source(name=name)
+
+    def preview_sample_data(
+        self,
+        path: str,
+        data_source_type: Optional[str | DataSourceType] = None,
+        data_source: Optional[str] = None,
+        data_format: Optional[Literal["csv", "json"]] = "csv",
+        size: Optional[int] = 10,
+        has_header: bool = True,
+        separator: Optional[str] = ",",
+        eol: Optional[str] = "\\n",
+        quote: Optional[Literal["'", '"']] = '"',
+    ) -> Dict[str, Any]:
+        """
+        Preview sample data from a file path
+
+        Args:
+            path: The full file path or URI to preview data from.
+            source_type: The source type, e.g., 's3', 'gcs', 'abs', etc.
+            data_source: Optional named data source configuration.
+            data_format: Format of the file, either 'csv' or 'json'.
+            size: Number of rows to preview (default 10).
+            has_header: Whether the file contains a header row.
+            separator: Field separator used in the file.
+            eol: End-of-line character.
+            quote: Optional quote character used in the file.
+
+        Returns:
+            A dictionary containing the previewed sample data.
+        """
+        return self._data_api.preview_sample_data(
+            path=path,
+            data_source_type=data_source_type,
+            data_source=data_source,
+            data_format=data_format,
+            size=size,
+            has_header=has_header,
+            separator=separator,
+            eol=eol,
+            quote=quote,
+        )
 
     # ------------------------------ Node ------------------------------
     def retrieve_a_node(self, graph_name: str, node_type: str, node_id: str) -> List:
@@ -136,7 +294,7 @@ class TigerGraphAPI:
         return self._query_api.run_installed_query_post(graph_name, query_name, params)
 
     # ------------------------------ Upsert ------------------------------
-    def upsert_graph_data(self, graph_name: str, payload: Dict) -> List:
+    def upsert_graph_data(self, graph_name: str, payload: Dict[str, Any]) -> List:
         return self._upsert_api.upsert_graph_data(graph_name, payload)
 
     def _initialize_session(self) -> Session:
