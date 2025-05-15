@@ -156,7 +156,7 @@ class TestTigerGraphAPI:
             self.api.get_schema(graph_name)
 
     # ------------------------------ Data Source ------------------------------
-    def test_data_source_case(self):
+    def test_data_source_CRUD(self):
         data_source_name = "data_source_test"
         data_source_type = "s3"
 
