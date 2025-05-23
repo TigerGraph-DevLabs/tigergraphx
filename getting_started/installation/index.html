@@ -651,6 +651,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#activate-the-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Activate the Virtual Environment
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2361,6 +2370,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#activate-the-virtual-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Activate the Virtual Environment
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2400,21 +2418,25 @@
 <p>Follow this guide to install and set up <strong>TigerGraphX</strong> in your environment.</p>
 <hr />
 <h2 id="requirements">Requirements</h2>
-<p>This project requires <strong>Python 3.10, 3.11 or 3.12</strong> and <strong>TigerGraph</strong>. Ensure you meet the following prerequisites before proceeding:</p>
+<p>This project requires <strong>Python 3.10, 3.11, or 3.12</strong> and <strong>TigerGraph 4.1 or later</strong>. Ensure you meet the following prerequisites before proceeding:</p>
 <h3 id="1-python"><strong>1. Python</strong></h3>
 <ul>
-<li>Please ensure Python 3.10, 3.11 or 3.12 is installed on your system.</li>
+<li>Ensure Python 3.10, 3.11, or 3.12 is installed on your system.</li>
 <li>You can download and install it from the <a href="https://www.python.org/downloads/">official Python website</a>.</li>
 </ul>
 <h3 id="2-tigergraph"><strong>2. TigerGraph</strong></h3>
-<p>TigerGraph is required for this project and can be set up in one of the following ways:</p>
+<p>TigerGraph **version 4.1 or ** is required for this project. You can set up TigerGraph in one of the following ways:</p>
 <ul>
 <li><strong>TigerGraph DB</strong>: Install and configure a local instance of TigerGraph.</li>
 <li><strong>TigerGraph Cloud</strong>: Use a cloud-hosted instance of TigerGraph.</li>
-<li><strong>TigerGraph Docker</strong>: Use a Docker container to run TigerGraph.</li>
+<li><strong>TigerGraph Docker</strong>: Run TigerGraph using a Docker container.</li>
 </ul>
-<p>It is recommended to use <strong>TigerGraph LTS (Long-Term Support) Versions</strong>, which can be downloaded from the <a href="https://dl.tigergraph.com/">TigerGraph Downloads page</a>. To enable support for <strong>TigerVector</strong> and leverage advanced features like hybrid retrieval, ensure you are using <strong>TigerGraph 4.2 or above</strong>.</p>
-<p>Refer to the official <a href="https://docs.tigergraph.com/home/">TigerGraph Documentation</a> for detailed installation and configuration instructions.</p>
+<blockquote>
+<p>⚠️ <strong>Minimum Required Version: TigerGraph 4.1</strong>
+✅ <strong>Recommended Version: TigerGraph 4.2+</strong> to enable <strong>TigerVector</strong> support and advanced features such as hybrid retrieval.</p>
+</blockquote>
+<p>We recommend using <strong>TigerGraph LTS (Long-Term Support) versions</strong>, available from the <a href="https://dl.tigergraph.com/">TigerGraph Downloads page</a>.</p>
+<p>For installation and configuration guidance, refer to the official <a href="https://docs.tigergraph.com/home/">TigerGraph Documentation</a>.</p>
 <hr />
 <h2 id="installation-steps">Installation Steps</h2>
 <h3 id="option-1-install-from-pypi"><strong>Option 1: Install from PyPI</strong></h3>
@@ -2458,10 +2480,15 @@
 <div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>show<span class="w"> </span>--with<span class="w"> </span>dev
 </code></pre></div></p>
 <p>This ensures all required dependencies (including optional ones) are successfully installed.</p>
+<h4 id="activate-the-virtual-environment"><strong>Activate the Virtual Environment</strong></h4>
+<p>Activate the environment using:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">eval</span><span class="w"> </span><span class="k">$(</span>poetry<span class="w"> </span>env<span class="w"> </span>activate<span class="k">)</span>
+</code></pre></div>
+<p>For more information about managing virtual environments in Poetry, please refer to the official documentation: <a href="https://python-poetry.org/docs/managing-environments/">Managing Environments</a>.</p>
 <hr />
 <h2 id="next-steps">Next Steps</h2>
 <ul>
-<li><a href="../quick_start_graph.ipynb">TigerGraphX Quick Start</a>: Learn how to build your first graph with TigerGraphX.</li>
+<li><a href="../quick_start_graph/">TigerGraphX Quick Start</a>: Learn how to build your first graph with TigerGraphX.</li>
 </ul>
 <hr />
 <p>Start unlocking the power of graphs with <strong>TigerGraphX</strong> today!</p>
