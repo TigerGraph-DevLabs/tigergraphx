@@ -373,7 +373,7 @@ To clear the data and completely remove the graph—including schema, loading jo
 
 Now that you've learned how to use TigerGraph for storing both graph data and vectors, you can dive into more advanced features of TigerGraphX:
 
-- [GraphRAG Overview](../graphrag/graphrag_overview.md): Learn about integrating graphs with LLMs.
+- [TigerGraph Quick Start Guide for Graph and Vector Storage](quick_start_both.md): Quickly get started with TigerGraph for storing both graph and vector data.
 - [API Reference](../reference/introduction.md): Dive deeper into TigerGraphX APIs.
 
 ---

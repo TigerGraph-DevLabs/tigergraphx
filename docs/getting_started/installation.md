@@ -6,23 +6,27 @@ Follow this guide to install and set up **TigerGraphX** in your environment.
 
 ## Requirements
 
-This project requires **Python 3.10, 3.11 or 3.12** and **TigerGraph**. Ensure you meet the following prerequisites before proceeding:
+This project requires **Python 3.10, 3.11, or 3.12** and **TigerGraph 4.1 or later**. Ensure you meet the following prerequisites before proceeding:
 
 ### **1. Python**
-- Please ensure Python 3.10, 3.11 or 3.12 is installed on your system.
+
+- Ensure Python 3.10, 3.11, or 3.12 is installed on your system.
 - You can download and install it from the [official Python website](https://www.python.org/downloads/).
 
 ### **2. TigerGraph**
 
-TigerGraph is required for this project and can be set up in one of the following ways:
+TigerGraph **version 4.1 or ** is required for this project. You can set up TigerGraph in one of the following ways:
 
 - **TigerGraph DB**: Install and configure a local instance of TigerGraph.
 - **TigerGraph Cloud**: Use a cloud-hosted instance of TigerGraph.
-- **TigerGraph Docker**: Use a Docker container to run TigerGraph.
+- **TigerGraph Docker**: Run TigerGraph using a Docker container.
 
-It is recommended to use **TigerGraph LTS (Long-Term Support) Versions**, which can be downloaded from the [TigerGraph Downloads page](https://dl.tigergraph.com/). To enable support for **TigerVector** and leverage advanced features like hybrid retrieval, ensure you are using **TigerGraph 4.2 or above**.
+> ⚠️ **Minimum Required Version: TigerGraph 4.1**
+> ✅ **Recommended Version: TigerGraph 4.2+** to enable **TigerVector** support and advanced features such as hybrid retrieval.
 
-Refer to the official [TigerGraph Documentation](https://docs.tigergraph.com/home/) for detailed installation and configuration instructions.
+We recommend using **TigerGraph LTS (Long-Term Support) versions**, available from the [TigerGraph Downloads page](https://dl.tigergraph.com/).
+
+For installation and configuration guidance, refer to the official [TigerGraph Documentation](https://docs.tigergraph.com/home/).
 
 ---
 
@@ -93,11 +97,22 @@ poetry show --with dev
 
 This ensures all required dependencies (including optional ones) are successfully installed.
 
+
+#### **Activate the Virtual Environment**
+
+Activate the environment using:
+
+```bash
+eval $(poetry env activate)
+```
+
+For more information about managing virtual environments in Poetry, please refer to the official documentation: [Managing Environments](https://python-poetry.org/docs/managing-environments/).
+
 ---
 
 ## Next Steps
 
-- [TigerGraphX Quick Start](quick_start_graph.ipynb): Learn how to build your first graph with TigerGraphX.
+- [TigerGraphX Quick Start](quick_start_graph.md): Learn how to build your first graph with TigerGraphX.
 
 ---
 

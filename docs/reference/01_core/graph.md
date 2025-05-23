@@ -157,7 +157,7 @@ Running the command will create a graph using the user-defined schema if it does
 
 ---
 
-**Alternative Connection Setup Methods**
+### Alternative Connection Setup Methods
 
 An alternative way to set up the connection is by directly assigning the `tigergraph_connection_config` parameter. Suppose we have already defined the same `graph_schema` as before. Now let's define the connection. Like the schema, the connection can be defined using a Python dictionary, YAML file, or JSON file. Below are examples of defining the same connection using all three approaches:
 
