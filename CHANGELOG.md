@@ -4,6 +4,9 @@
 
 Note: version releases in the 0.x.y range may include both bug fixes and new features, not strictly limited to patches.
 
+## 0.2.8
+- feat: add get_edges method to Graph class
+
 ## 0.2.7
 - feat: add support for previewing sample data and managing data sources (create, update, drop, get)
 
