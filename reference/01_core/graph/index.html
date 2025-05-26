@@ -1548,6 +1548,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tigergraphx.core.Graph.get_edges" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_edges
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tigergraphx.core.Graph.get_neighbors" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_neighbors
@@ -2985,6 +2994,15 @@
   <a href="#tigergraphx.core.Graph.get_nodes" class="md-nav__link">
     <span class="md-ellipsis">
       <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_nodes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tigergraphx.core.Graph.get_edges" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;get_edges
     </span>
   </a>
   
@@ -5516,6 +5534,209 @@ for guidance on writing GSQL queries.</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
    <span class="n">name</span>  <span class="n">age</span>
 <span class="mi">0</span>  <span class="n">Mike</span>   <span class="mi">29</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="kc">True</span>
+</code></pre></div>
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="tigergraphx.core.Graph.get_edges" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">get_edges</span><span class="p">(</span><span class="n">source_node_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">source_node_alias</span><span class="o">=</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="n">edge_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">edge_alias</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">,</span> <span class="n">target_node_types</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">target_node_alias</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">filter_expression</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_attributes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="s1">&#39;DataFrame&#39;</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents first">
+
+        <p>Retrieve edges from the graph.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+            <b><code>source_node_types</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span> | <span title="typing.List">List</span>[<span title="str">str</span>]]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Source node types.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>source_node_alias</code></b>
+              (<code><span title="str">str</span></code>, default:
+                  <code>&#39;s&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Alias for the source node. Used in filter_expression.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>edge_types</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span> | <span title="typing.List">List</span>[<span title="str">str</span>]]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Edge types to consider.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>edge_alias</code></b>
+              (<code><span title="str">str</span></code>, default:
+                  <code>&#39;e&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Alias for the edge. Used in filter_expression.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>target_node_types</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span> | <span title="typing.List">List</span>[<span title="str">str</span>]]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Target node types.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>target_node_alias</code></b>
+              (<code><span title="str">str</span></code>, default:
+                  <code>&#39;t&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Alias for the target node. Used in filter_expression.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>filter_expression</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span>]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Filter expression.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>return_attributes</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="str">str</span> | <span title="typing.List">List</span>[<span title="str">str</span>]]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Attributes to return.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>limit</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="int">int</span>]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Maximum number of edges.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>output_type</code></b>
+              (<code><span title="typing.Literal">Literal</span>[&#39;DataFrame&#39;, &#39;List&#39;]</code>, default:
+                  <code>&#39;DataFrame&#39;</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Output format, either "DataFrame" (default) or "List".</p>
+          </div>
+        </li>
+    </ul>
+
+
+<p><span class="doc-section-title">Returns:</span></p>
+    <ul>
+        <li class="doc-section-item field-body">
+              <code><span title="pandas.DataFrame">DataFrame</span> | <span title="typing.List">List</span>[<span title="typing.Dict">Dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]]</code>
+          –
+          <div class="doc-md-description">
+            <p>A DataFrame or List containing the edges.</p>
+          </div>
+        </li>
+    </ul>
+
+
+    </div>
+
+</div><p><strong>Examples:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">G</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">graph_schema</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">persons</span> <span class="o">=</span> <span class="p">[</span>
+<span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
+<span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Male&quot;</span><span class="p">}),</span>
+<span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Carol&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="s2">&quot;gender&quot;</span><span class="p">:</span> <span class="s2">&quot;Female&quot;</span><span class="p">}),</span>
+<span class="o">...</span> <span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_nodes_from</span><span class="p">(</span><span class="n">persons</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">friendships</span> <span class="o">=</span> <span class="p">[</span>
+<span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">}),</span>
+<span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">,</span> <span class="s2">&quot;Carol&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">}),</span>
+<span class="o">...</span>     <span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">,</span> <span class="s2">&quot;Carol&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;closeness&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">}),</span>
+<span class="o">...</span> <span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">friendships</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="s2">&quot;Friendship&quot;</span><span class="p">,</span> <span class="s2">&quot;Person&quot;</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_edges</span><span class="p">(</span><span class="n">edge_types</span><span class="o">=</span><span class="s2">&quot;Friendship&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+       <span class="n">s</span>      <span class="n">t</span>
+<span class="mi">0</span>    <span class="n">Bob</span>  <span class="n">Carol</span>
+<span class="mi">1</span>    <span class="n">Bob</span>  <span class="n">Alice</span>
+<span class="mi">2</span>  <span class="n">Carol</span>    <span class="n">Bob</span>
+<span class="mi">3</span>  <span class="n">Carol</span>  <span class="n">Alice</span>
+<span class="mi">4</span>  <span class="n">Alice</span>    <span class="n">Bob</span>
+<span class="mi">5</span>  <span class="n">Alice</span>  <span class="n">Carol</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_edges</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">edge_types</span><span class="o">=</span><span class="s2">&quot;Friendship&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">filter_expression</span><span class="o">=</span><span class="s2">&quot;e.closeness &gt; 0.7&quot;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+       <span class="n">s</span>      <span class="n">t</span>
+<span class="mi">0</span>    <span class="n">Bob</span>  <span class="n">Alice</span>
+<span class="mi">1</span>  <span class="n">Carol</span>  <span class="n">Alice</span>
+<span class="mi">2</span>  <span class="n">Alice</span>    <span class="n">Bob</span>
+<span class="mi">3</span>  <span class="n">Alice</span>  <span class="n">Carol</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_edges</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">edge_types</span><span class="o">=</span><span class="s2">&quot;Friendship&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">return_attributes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;closeness&quot;</span><span class="p">],</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+       <span class="n">s</span>      <span class="n">t</span>  <span class="n">closeness</span>
+<span class="mi">0</span>    <span class="n">Bob</span>  <span class="n">Carol</span>        <span class="mf">0.6</span>
+<span class="mi">1</span>    <span class="n">Bob</span>  <span class="n">Alice</span>        <span class="mf">0.8</span>
+<span class="mi">2</span>  <span class="n">Carol</span>    <span class="n">Bob</span>        <span class="mf">0.6</span>
+<span class="mi">3</span>  <span class="n">Carol</span>  <span class="n">Alice</span>        <span class="mf">0.9</span>
+<span class="mi">4</span>  <span class="n">Alice</span>    <span class="n">Bob</span>        <span class="mf">0.8</span>
+<span class="mi">5</span>  <span class="n">Alice</span>  <span class="n">Carol</span>        <span class="mf">0.9</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_edges</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">edge_types</span><span class="o">=</span><span class="s2">&quot;Friendship&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">limit</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+     <span class="n">s</span>      <span class="n">t</span>
+<span class="mi">0</span>  <span class="n">Bob</span>  <span class="n">Carol</span>
+<span class="mi">1</span>  <span class="n">Bob</span>  <span class="n">Alice</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">get_edges</span><span class="p">(</span>
+<span class="o">...</span>     <span class="n">edge_types</span><span class="o">=</span><span class="s2">&quot;Friendship&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">source_node_alias</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">edge_alias</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">target_node_alias</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span>
+<span class="o">...</span>     <span class="n">filter_expression</span><span class="o">=</span><span class="s1">&#39;s.gender == &quot;Female&quot; and t.age &gt; 30&#39;</span><span class="p">,</span>
+<span class="o">...</span> <span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+       <span class="n">s</span>      <span class="n">t</span>
+<span class="mi">0</span>  <span class="n">Alice</span>  <span class="n">Carol</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">G</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 <span class="kc">True</span>
 </code></pre></div>
