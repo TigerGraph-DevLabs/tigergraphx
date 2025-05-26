@@ -403,6 +403,32 @@ class TestGraph1(BaseGraphFixture):
             f"Expected columns {return_attributes}, but got {list(nodes.columns)}."
         )
 
+    def test_get_edges(self):
+        # Define return attributes and test parameters
+        return_attributes = ["purchase_date", "quantity"]
+        edges = self.time_execution(
+            lambda: self.G.get_edges(
+                edge_types="purchased",
+                source_node_types="User",
+                source_node_alias="s",
+                target_node_types="Product",
+                target_node_alias="t",
+                edge_alias="e",
+                filter_expression="e.quantity >= 5.5",
+                return_attributes=return_attributes,
+                limit=10,
+            ),
+            "get_edges",
+        )
+
+        # Assertions to verify the test output
+        assert edges is not None, "No edges returned."
+        assert len(edges) <= 10, "Expected at most 10 edges, but got more."
+        assert isinstance(edges, pd.DataFrame), "Expected a DataFrame."
+        assert set(return_attributes).issubset(edges.columns), (
+            f"Expected columns to include {return_attributes}, but got {list(edges.columns)}."
+        )
+
     def test_get_neighbors(self):
         # Define return attributes and test parameters
         return_attributes = ["id", "name", "price"]

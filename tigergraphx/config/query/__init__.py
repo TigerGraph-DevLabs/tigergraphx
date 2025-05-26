@@ -6,9 +6,11 @@
 # under the License. The software is provided "AS IS", without warranty.
 
 from .node_spec import NodeSpec
+from .edge_spec import EdgeSpec
 from .neighbor_spec import NeighborSpec
 
 __all__ = [
     "NodeSpec",
+    "EdgeSpec",
     "NeighborSpec",
 ]
