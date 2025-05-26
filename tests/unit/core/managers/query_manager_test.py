@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 import pandas as pd
 
 from tigergraphx.core.managers.query_manager import QueryManager
-from tigergraphx.config import NodeSpec, NeighborSpec
+from tigergraphx.config import NodeSpec, EdgeSpec, NeighborSpec
 
 
 class TestQueryManager:
@@ -180,6 +180,135 @@ class TestQueryManager:
         result = self.query_manager.get_nodes_from_spec(spec, output_type="List")
         assert isinstance(result, list)
         assert result == [], "Expected an empty list when query fails"
+
+    def test_get_edges_success(self):
+        spec = EdgeSpec(
+            source_node_type_set={"Person"},
+            source_node_alias="a",
+            edge_type_set={"knows"},
+            edge_alias="r",
+            target_node_type_set={"Person"},
+            target_node_alias="b",
+            filter_expression=None,
+            return_attributes=None,
+            limit=None,
+        )
+        self.query_manager.get_edges_from_spec = MagicMock(return_value="edges_df")
+        result = self.query_manager.get_edges_from_spec(spec)
+        assert result == "edges_df"
+
+    def test_get_edges_from_spec_with_attributes_success(self):
+        spec = EdgeSpec(
+            source_node_type_set={"Person"},
+            source_node_alias="a",
+            edge_type_set={"knows"},
+            edge_alias="r",
+            target_node_type_set={"Person"},
+            target_node_alias="b",
+            filter_expression=None,
+            return_attributes=["since"],
+            limit=None,
+        )
+        self.mock_tigergraph_api.run_interpreted_query.return_value = [
+            {"T": [{"a": "Alice", "b": "Bob", "since": "2020-01-01 00:00:00"}]}
+        ]
+        df = self.query_manager.get_edges_from_spec(spec)
+        assert isinstance(df, pd.DataFrame)
+        assert not df.empty
+        assert "since" in df.columns
+
+    def test_get_edges_from_spec_without_attributes_success(self):
+        spec = EdgeSpec(
+            source_node_type_set={"Person"},
+            source_node_alias="a",
+            edge_type_set={"knows"},
+            edge_alias="r",
+            target_node_type_set={"Person"},
+            target_node_alias="b",
+            filter_expression=None,
+            return_attributes=None,
+            limit=None,
+        )
+        self.mock_tigergraph_api.run_interpreted_query.return_value = [
+            {"T": [{"a": "Alice", "b": "Bob"}]}
+        ]
+        df = self.query_manager.get_edges_from_spec(spec)
+        assert isinstance(df, pd.DataFrame)
+        assert not df.empty
+
+    def test_get_edges_from_spec_failure(self):
+        spec = EdgeSpec(
+            source_node_type_set={"Person"},
+            source_node_alias="a",
+            edge_type_set={"knows"},
+            edge_alias="r",
+            target_node_type_set={"Person"},
+            target_node_alias="b",
+            filter_expression=None,
+            return_attributes=None,
+            limit=None,
+        )
+        self.mock_tigergraph_api.run_interpreted_query.side_effect = Exception("Error")
+        df = self.query_manager.get_edges_from_spec(spec)
+        assert isinstance(df, pd.DataFrame)
+        assert df.empty
+
+    def test_get_edges_from_spec_with_attributes_success_list_output(self):
+        spec = EdgeSpec(
+            source_node_type_set={"Person"},
+            source_node_alias="a",
+            edge_type_set={"knows"},
+            edge_alias="r",
+            target_node_type_set={"Person"},
+            target_node_alias="b",
+            filter_expression=None,
+            return_attributes=["since"],
+            limit=None,
+        )
+        self.mock_tigergraph_api.run_interpreted_query.return_value = [
+            {"T": [{"a": "Alice", "b": "Bob", "since": "2020-01-01 00:00:00"}]}
+        ]
+        result = self.query_manager.get_edges_from_spec(spec, output_type="List")
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert "since" in result[0]
+
+    def test_get_edges_from_spec_without_attributes_success_list_output(self):
+        spec = EdgeSpec(
+            source_node_type_set={"Person"},
+            source_node_alias="a",
+            edge_type_set={"knows"},
+            edge_alias="r",
+            target_node_type_set={"Person"},
+            target_node_alias="b",
+            filter_expression=None,
+            return_attributes=None,
+            limit=None,
+        )
+        self.mock_tigergraph_api.run_interpreted_query.return_value = [
+            {"T": [{"a": "Alice", "b": "Bob"}]}
+        ]
+        result = self.query_manager.get_edges_from_spec(spec, output_type="List")
+        assert isinstance(result, list)
+        assert len(result) == 1
+        assert "a" in result[0] and "b" in result[0]
+
+    def test_get_edges_from_spec_failure_list_output(self):
+        spec = EdgeSpec(
+            source_node_type_set={"Person"},
+            source_node_alias="a",
+            edge_type_set={"knows"},
+            edge_alias="r",
+            target_node_type_set={"Person"},
+            target_node_alias="b",
+            filter_expression=None,
+            return_attributes=None,
+            limit=None,
+        )
+        self.mock_tigergraph_api.run_interpreted_query.side_effect = Exception("Error")
+        result = self.query_manager.get_edges_from_spec(spec, output_type="List")
+        assert isinstance(result, list)
+        assert result == []
 
     def test_get_neighbors_success(self):
         # Test the simpler get_neighbors() path, where only start_nodes and start_node_type are provided.
@@ -679,6 +808,139 @@ class TestQueryManager:
             "}"
         )
         assert actual_gsql_script == expected_gsql_script
+
+    def create_gsql_get_edges(
+        self,
+        source_node_type_set: Optional[Set[str]] = None,
+        edge_type_set: Optional[Set[str]] = None,
+        target_node_type_set: Optional[Set[str]] = None,
+        source_node_alias: str = "s",
+        edge_alias: str = "e",
+        target_node_alias: str = "t",
+        filter_expression: Optional[str] = None,
+        return_attributes: Optional[List[str]] = None,
+        limit: Optional[int] = None,
+    ) -> str:
+        """
+        Helper function to generate a GSQL query using _create_gsql_get_edges.
+        """
+        spec = EdgeSpec(
+            source_node_type_set=source_node_type_set,
+            edge_type_set=edge_type_set,
+            target_node_type_set=target_node_type_set,
+            source_node_alias=source_node_alias,
+            edge_alias=edge_alias,
+            target_node_alias=target_node_alias,
+            filter_expression=filter_expression,
+            return_attributes=return_attributes,
+            limit=limit,
+        )
+        return self.query_manager._create_gsql_get_edges(spec)
+
+    def test_create_gsql_get_edges_basic(self):
+        actual = self.create_gsql_get_edges(
+            source_node_type_set={"Person"},
+            edge_type_set={"works_for"},
+            target_node_type_set={"Company"},
+        )
+        expected = (
+            "INTERPRET QUERY() FOR GRAPH MyGraph SYNTAX V3 {\n"
+            "  SELECT s, t INTO T\n"
+            "  FROM (s:Person) -[e:works_for]- (t:Company)\n"
+            "  ;\n"
+            "  PRINT T;\n"
+            "}"
+        )
+        assert actual == expected
+
+    def test_create_gsql_get_edges_with_filter(self):
+        actual = self.create_gsql_get_edges(
+            source_node_type_set={"Person"},
+            edge_type_set={"works_for"},
+            target_node_type_set={"Company"},
+            filter_expression="s.name != t.name",
+        )
+        expected = (
+            "INTERPRET QUERY() FOR GRAPH MyGraph SYNTAX V3 {\n"
+            "  SELECT s, t INTO T\n"
+            "  FROM (s:Person) -[e:works_for]- (t:Company)\n"
+            "  WHERE s.name != t.name\n"
+            "  ;\n"
+            "  PRINT T;\n"
+            "}"
+        )
+        assert actual == expected
+
+    def test_create_gsql_get_edges_with_limit(self):
+        actual = self.create_gsql_get_edges(
+            source_node_type_set={"Person"},
+            edge_type_set={"works_for"},
+            target_node_type_set={"Company"},
+            limit=10,
+        )
+        expected = (
+            "INTERPRET QUERY() FOR GRAPH MyGraph SYNTAX V3 {\n"
+            "  SELECT s, t INTO T\n"
+            "  FROM (s:Person) -[e:works_for]- (t:Company)\n"
+            "  LIMIT 10\n"
+            "  ;\n"
+            "  PRINT T;\n"
+            "}"
+        )
+        assert actual == expected
+
+    def test_create_gsql_get_edges_with_attributes(self):
+        actual = self.create_gsql_get_edges(
+            source_node_type_set={"Person"},
+            edge_type_set={"works_for"},
+            target_node_type_set={"Company"},
+            return_attributes=["role"],
+        )
+        expected = (
+            "INTERPRET QUERY() FOR GRAPH MyGraph SYNTAX V3 {\n"
+            "  SELECT s, t, e.role INTO T\n"
+            "  FROM (s:Person) -[e:works_for]- (t:Company)\n"
+            "  ;\n"
+            "  PRINT T;\n"
+            "}"
+        )
+        assert actual == expected
+
+    def test_create_gsql_get_edges_all_edge_types(self):
+        actual = self.create_gsql_get_edges(return_attributes=["role"])
+        expected = (
+            "INTERPRET QUERY() FOR GRAPH MyGraph SYNTAX V3 {\n"
+            "  SELECT s, t, e.role INTO T\n"
+            "  FROM (s) -[e]- (t)\n"
+            "  ;\n"
+            "  PRINT T;\n"
+            "}"
+        )
+        assert actual == expected
+
+    def test_create_gsql_get_edges_multiple_types_and_attrs(self):
+        actual = self.create_gsql_get_edges(
+            source_node_type_set={"Person"},
+            edge_type_set={"works_for", "knows"},
+            target_node_type_set={"Person", "Company"},
+            source_node_alias="a",
+            edge_alias="r",
+            target_node_alias="b",
+            filter_expression="a.name != b.name",
+            return_attributes=["since"],
+            limit=5,
+        )
+        expected = (
+            "INTERPRET QUERY() FOR GRAPH MyGraph SYNTAX V3 {\n"
+            "  SELECT a, b, r.since INTO T\n"
+            "  FROM (a:Person) -[r:(knows|works_for)]- (b:(Company|Person))\n"
+            "  WHERE a.name != b.name\n"
+            "  LIMIT 5\n"
+            "  ;\n"
+            "  PRINT T;\n"
+            "}"
+        )
+        assert actual == expected
 
     # --- GSQL Query Creation Tests for get_neighbors ---
     def create_gsql_get_neighbors(

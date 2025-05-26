@@ -30,6 +30,7 @@ from .graph_db import (
 )
 from .query import (
     NodeSpec,
+    EdgeSpec,
     NeighborSpec,
 )
 

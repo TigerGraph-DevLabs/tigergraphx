@@ -11,6 +11,7 @@ import pandas as pd
 
 from tigergraphx.config import (
     NodeSpec,
+    EdgeSpec,
     NeighborSpec,
 )
 
@@ -157,6 +158,77 @@ class QueryManager(BaseManager):
                 return pd.DataFrame(df[reordered_columns + remaining_columns])
         except Exception as e:
             logger.error(f"Error retrieving nodes for type {spec.node_type}: {e}")
+        return self._initialize_empty_result(output_type)
+
+    def get_edges(
+        self,
+        source_node_type_set: Optional[Set[str]] = None,
+        source_node_alias: str = "s",
+        edge_type_set: Optional[Set[str]] = None,
+        edge_alias: str = "e",
+        target_node_type_set: Optional[Set[str]] = None,
+        target_node_alias: str = "t",
+        filter_expression: Optional[str] = None,
+        return_attributes: Optional[str | List[str]] = None,
+        limit: Optional[int] = None,
+        output_type: Literal["DataFrame", "List"] = "DataFrame",
+    ) -> pd.DataFrame | List[Dict[str, Any]]:
+        spec = EdgeSpec(
+            source_node_type_set=source_node_type_set,
+            source_node_alias=source_node_alias,
+            edge_type_set=edge_type_set,
+            edge_alias=edge_alias,
+            target_node_type_set=target_node_type_set,
+            target_node_alias=target_node_alias,
+            filter_expression=filter_expression,
+            return_attributes=return_attributes,
+            limit=limit,
+        )
+        return self.get_edges_from_spec(spec, output_type)
+
+    def get_edges_from_spec(
+        self, spec: EdgeSpec, output_type: Literal["DataFrame", "List"] = "DataFrame"
+    ) -> pd.DataFrame | List[Dict[str, Any]]:
+        gsql_script = self._create_gsql_get_edges(spec)
+        try:
+            result = self._tigergraph_api.run_interpreted_query(gsql_script)
+            if not result or not isinstance(result, list):
+                return self._initialize_empty_result(output_type)
+            rows = result[0].get("T")
+            if not rows or not isinstance(rows, list):
+                return self._initialize_empty_result(output_type)
+
+            if output_type == "List":
+                if spec.return_attributes is None:
+                    return rows
+                if isinstance(spec.return_attributes, str):
+                    spec.return_attributes = [spec.return_attributes]
+                return [
+                    {
+                        key: row.get(key)
+                        for key in [spec.source_node_alias, spec.target_node_alias]
+                        + spec.return_attributes
+                    }
+                    for row in rows
+                ]
+
+            elif output_type == "DataFrame":
+                df = pd.DataFrame(rows)
+                if df.empty:
+                    return pd.DataFrame()
+                if spec.return_attributes is None:
+                    return df
+                if isinstance(spec.return_attributes, str):
+                    spec.return_attributes = [spec.return_attributes]
+                ordered_cols = [
+                    spec.source_node_alias,
+                    spec.target_node_alias,
+                    *spec.return_attributes,
+                ]
+                remaining_cols = [col for col in df.columns if col not in ordered_cols]
+                return pd.DataFrame(df[ordered_cols + remaining_cols])
+        except Exception as e:
+            logger.error(f"Error retrieving edges: {e}")
         return self._initialize_empty_result(output_type)
 
     def get_neighbors(
@@ -376,6 +448,64 @@ INTERPRET QUERY() FOR GRAPH {self._graph_name} {{
         query += "\n}"
         return query.strip()
 
+    def _create_gsql_get_edges(self, spec: EdgeSpec) -> str:
+        """
+        Core function to generate a query based on an EdgeSpec object.
+        """
+        source_types = self._format_type_set(spec.source_node_type_set)
+        edge_types = self._format_type_set(spec.edge_type_set)
+        target_types = self._format_type_set(spec.target_node_type_set)
+
+        # Build FROM clause triple
+        source_part = (
+            f"{spec.source_node_alias}:{source_types}"
+            if source_types
+            else spec.source_node_alias
+        )
+        edge_part = f"{spec.edge_alias}:{edge_types}" if edge_types else spec.edge_alias
+        target_part = (
+            f"{spec.target_node_alias}:{target_types}"
+            if target_types
+            else spec.target_node_alias
+        )
+
+        from_clause = f"FROM ({source_part}) -[{edge_part}]- ({target_part})"
+
+        # Build SELECT clause
+        select_items = [spec.source_node_alias, spec.target_node_alias]
+        if spec.return_attributes:
+            attrs = (
+                [spec.return_attributes]
+                if isinstance(spec.return_attributes, str)
+                else spec.return_attributes
+            )
+            for attr in attrs:
+                select_items.append(f"{spec.edge_alias}.{attr}")
+
+        select_clause = f"SELECT {', '.join(select_items)} INTO T"
+
+        # Optional clauses
+        where_clause = (
+            f"  WHERE {spec.filter_expression}" if spec.filter_expression else ""
+        )
+        limit_clause = f"  LIMIT {spec.limit}" if spec.limit else ""
+
+        # Compose query
+        query = f"""
+INTERPRET QUERY() FOR GRAPH {self._graph_name} SYNTAX V3 {{
+  {select_clause}
+  {from_clause}
+"""
+        if where_clause:
+            query += f"{where_clause}\n"
+        if limit_clause:
+            query += f"{limit_clause}\n"
+        query += """  ;
+  PRINT T;
+}"""
+
+        return query.strip()
+
     def _create_gsql_get_neighbors(
         self, spec: NeighborSpec
     ) -> Tuple[str, Dict[str, Any]]:
@@ -462,3 +592,20 @@ INTERPRET QUERY(
             return pd.DataFrame()
         elif output_type == "List":
             return []
+
+    def _format_type_set(
+        self, types: Optional[Set[str]], wrap_always: bool = False
+    ) -> str:
+        """
+        Format a set of types for GSQL V3 syntax:
+        - If None: return ""
+        - If one type: return it as-is
+        - If multiple types: return (type1|type2)
+        - If wrap_always: force parentheses even for one type
+        """
+        if types is None:
+            return ""
+        type_str = "|".join(sorted(types))
+        if len(types) > 1 or wrap_always:
+            return f"({type_str})"
+        return type_str

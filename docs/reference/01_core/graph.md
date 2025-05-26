@@ -1123,6 +1123,79 @@ True
 True
 ```
 
+::: tigergraphx.core.Graph.get_edges
+
+**Examples:**
+
+```python
+>>> G = Graph(graph_schema)
+>>> persons = [
+...     ("Alice", {"age": 30, "gender": "Female"}),
+...     ("Bob", {"age": 28, "gender": "Male"}),
+...     ("Carol", {"age": 32, "gender": "Female"}),
+... ]
+>>> G.add_nodes_from(persons, "Person")
+3
+>>> friendships = [
+...     ("Alice", "Bob", {"closeness": 0.8}),
+...     ("Bob", "Carol", {"closeness": 0.6}),
+...     ("Alice", "Carol", {"closeness": 0.9}),
+... ]
+>>> G.add_edges_from(friendships, "Person", "Friendship", "Person")
+3
+>>> df = G.get_edges(edge_types="Friendship")
+>>> print(df)
+       s      t
+0    Bob  Carol
+1    Bob  Alice
+2  Carol    Bob
+3  Carol  Alice
+4  Alice    Bob
+5  Alice  Carol
+>>> df = G.get_edges(
+...     edge_types="Friendship",
+...     filter_expression="e.closeness > 0.7",
+... )
+>>> print(df)
+       s      t
+0    Bob  Alice
+1  Carol  Alice
+2  Alice    Bob
+3  Alice  Carol
+>>> df = G.get_edges(
+...     edge_types="Friendship",
+...     return_attributes=["closeness"],
+... )
+>>> print(df)
+       s      t  closeness
+0    Bob  Carol        0.6
+1    Bob  Alice        0.8
+2  Carol    Bob        0.6
+3  Carol  Alice        0.9
+4  Alice    Bob        0.8
+5  Alice  Carol        0.9
+>>> df = G.get_edges(
+...     edge_types="Friendship",
+...     limit=2,
+... )
+>>> print(df)
+     s      t
+0  Bob  Carol
+1  Bob  Alice
+>>> df = G.get_edges(
+...     edge_types="Friendship",
+...     source_node_alias="s",
+...     edge_alias="e",
+...     target_node_alias="t",
+...     filter_expression='s.gender == "Female" and t.age > 30',
+... )
+>>> print(df)
+       s      t
+0  Alice  Carol
+>>> G.clear()
+True
+```
+
 ::: tigergraphx.core.Graph.get_neighbors
 
 **Examples:**

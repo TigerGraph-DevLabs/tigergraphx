@@ -565,6 +565,53 @@ class Graph:
             output_type=output_type,
         )
 
+    def get_edges(
+        self,
+        source_node_types: Optional[str | List[str]] = None,
+        source_node_alias: str = "s",
+        edge_types: Optional[str | List[str]] = None,
+        edge_alias: str = "e",
+        target_node_types: Optional[str | List[str]] = None,
+        target_node_alias: str = "t",
+        filter_expression: Optional[str] = None,
+        return_attributes: Optional[str | List[str]] = None,
+        limit: Optional[int] = None,
+        output_type: Literal["DataFrame", "List"] = "DataFrame",
+    ) -> pd.DataFrame | List[Dict[str, Any]]:
+        """
+        Retrieve edges from the graph.
+
+        Args:
+            source_node_types: Source node types.
+            source_node_alias: Alias for the source node. Used in filter_expression.
+            edge_types: Edge types to consider.
+            edge_alias: Alias for the edge. Used in filter_expression.
+            target_node_types: Target node types.
+            target_node_alias: Alias for the target node. Used in filter_expression.
+            filter_expression: Filter expression.
+            return_attributes: Attributes to return.
+            limit: Maximum number of edges.
+            output_type: Output format, either "DataFrame" (default) or "List".
+
+        Returns:
+            A DataFrame or List containing the edges.
+        """
+        source_node_type_set = self._validate_node_types_as_set(source_node_types)
+        edge_type_set = self._validate_edge_types_as_set(edge_types)
+        target_node_type_set = self._validate_node_types_as_set(target_node_types)
+        return self._query_manager.get_edges(
+            source_node_type_set=source_node_type_set,
+            source_node_alias=source_node_alias,
+            edge_type_set=edge_type_set,
+            edge_alias=edge_alias,
+            target_node_type_set=target_node_type_set,
+            target_node_alias=target_node_alias,
+            filter_expression=filter_expression,
+            return_attributes=return_attributes,
+            limit=limit,
+            output_type=output_type,
+        )
+
     def get_neighbors(
         self,
         start_nodes: str | int | List[str] | List[int],
