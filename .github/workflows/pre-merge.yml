@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   ci:
+    name: Build and Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +36,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pylint-json2html
+          pip install pylint-json2html PyYAML jinja2-cli
+
+      - name: Replace Config
+        run: |
+          cd tests/integration/core/config
+          jinja2 tigergraph_connection.yaml --format=yaml --strict -D TIGERGRAPH_HOST=${{ secrets.TIGERGRAPH_HOST }} -o temp.yaml
+          mv temp.yaml tigergraph_connection.yaml
 
       - name: Cache Poetry dependencies
         id: cache-poetry
