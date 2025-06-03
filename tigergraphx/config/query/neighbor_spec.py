@@ -16,7 +16,7 @@ class NeighborSpec(BaseConfig):
     Specification for selecting neighbors in a graph query.
     """
 
-    start_nodes: str | List[str] = Field(..., description="List of starting node IDs.")
+    start_nodes: str | List[str] | int | List[int] = Field(..., description="List of starting node IDs.")
     start_node_type: str = Field(..., description="The type of the start node.")
     start_node_alias: str = Field("s", description="Alias for the source node.")
     edge_type_set: Optional[Set[str]] = Field(
