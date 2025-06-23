@@ -49,7 +49,6 @@ class DataSourceAPI(BaseAPI):
 
         result = self._request(
             endpoint_name="create_data_source",
-            version="4.x",
             params={"graph": graph_name} if graph_name else None,
             json=payload,
         )
@@ -77,7 +76,6 @@ class DataSourceAPI(BaseAPI):
 
         result = self._request(
             endpoint_name="update_data_source",
-            version="4.x",
             params={"graph": graph_name} if graph_name else None,
             json=payload,
             data_source_name=name,
@@ -94,7 +92,6 @@ class DataSourceAPI(BaseAPI):
     ) -> str:
         result = self._request(
             endpoint_name="drop_data_source",
-            version="4.x",
             params={"graph": graph_name} if graph_name else None,
             data_source_name=name,
         )
@@ -106,7 +103,6 @@ class DataSourceAPI(BaseAPI):
     def drop_all_data_sources(self, graph_name: Optional[str] = None) -> str:
         result = self._request(
             endpoint_name="drop_all_data_sources",
-            version="4.x",
             params={"graph": graph_name} if graph_name else None,
         )
 
@@ -117,7 +113,6 @@ class DataSourceAPI(BaseAPI):
     def get_data_source(self, name: str) -> Dict[str, Any]:
         result = self._request(
             endpoint_name="get_data_source",
-            version="4.x",
             data_source_name=name,
         )
 
@@ -128,7 +123,6 @@ class DataSourceAPI(BaseAPI):
     def get_all_data_sources(self, graph_name: Optional[str] = None) -> List[Dict[str, Any]]:
         result = self._request(
             endpoint_name="get_all_data_sources",
-            version="4.x",
             params={"graph": graph_name} if graph_name else None,
         )
         if not isinstance(result, list):
@@ -170,7 +164,6 @@ class DataSourceAPI(BaseAPI):
 
         result = self._request(
             endpoint_name="preview_sample_data",
-            version="4.x",
             json=payload,
         )
 

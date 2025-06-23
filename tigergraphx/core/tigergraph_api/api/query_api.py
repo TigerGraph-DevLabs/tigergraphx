@@ -15,7 +15,6 @@ class QueryAPI(BaseAPI):
     def create_query(self, graph_name: str, gsql_query: str) -> str:
         result = self._request(
             endpoint_name="create_query",
-            version="4.x",
             data=gsql_query,
             graph_name=graph_name,
         )
@@ -29,7 +28,6 @@ class QueryAPI(BaseAPI):
         )
         result = self._request(
             endpoint_name="install_query",
-            version="4.x",
             graph_name=graph_name,
             query_names=query_names,
         )
@@ -40,7 +38,6 @@ class QueryAPI(BaseAPI):
     def drop_query(self, graph_name: str, query_name: str) -> Dict:
         result = self._request(
             endpoint_name="drop_query",
-            version="4.x",
             graph_name=graph_name,
             query_name=query_name,
         )
@@ -54,7 +51,6 @@ class QueryAPI(BaseAPI):
         parsed_params = self._parse_query_parameters(params) if params else None
         result = self._request(
             endpoint_name="run_interpreted_query",
-            version="4.x",
             data=gsql_query,
             params=parsed_params,
         )
@@ -68,7 +64,6 @@ class QueryAPI(BaseAPI):
         parsed_params = self._parse_query_parameters(params) if params else None
         result = self._request(
             endpoint_name="run_installed_query_get",
-            version="4.x",
             params=parsed_params,
             graph_name=graph_name,
             query_name=query_name,
@@ -82,7 +77,6 @@ class QueryAPI(BaseAPI):
     ) -> List:
         result = self._request(
             endpoint_name="run_installed_query_post",
-            version="4.x",
             json=json,
             graph_name=graph_name,
             query_name=query_name,

@@ -14,9 +14,7 @@ class SchemaAPI(BaseAPI):
         """
         Retrieves the schema for a specific graph.
         """
-        result = self._request(
-            endpoint_name="get_schema", version="4.x", graph_name=graph_name
-        )
+        result = self._request(endpoint_name="get_schema", graph_name=graph_name)
         if not isinstance(result, dict):
             raise TypeError(f"Expected dict, but got {type(result).__name__}: {result}")
         return result

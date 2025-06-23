@@ -16,7 +16,6 @@ class NodeAPI(BaseAPI):
         """
         result = self._request(
             endpoint_name="retrieve_a_node",
-            version="4.x",
             graph_name=graph_name,
             node_type=node_type,
             node_id=node_id,
@@ -31,7 +30,6 @@ class NodeAPI(BaseAPI):
         """
         result = self._request(
             endpoint_name="delete_a_node",
-            version="4.x",
             graph_name=graph_name,
             node_type=node_type,
             node_id=node_id,
@@ -46,7 +44,6 @@ class NodeAPI(BaseAPI):
         """
         result = self._request(
             endpoint_name="delete_nodes",
-            version="4.x",
             graph_name=graph_name,
             node_type=node_type,
         )

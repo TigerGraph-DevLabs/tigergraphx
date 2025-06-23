@@ -35,6 +35,7 @@ class BaseAPI:
         config: TigerGraphConnectionConfig,
         endpoint_registry: EndpointRegistry,
         session: Session,
+        version: Literal["3.x", "4.x"] = "4.x",
     ):
         """
         Initializes the BaseAPI with a shared session and endpoint registry.
@@ -42,11 +43,11 @@ class BaseAPI:
         self.config = config
         self.endpoint_registry = endpoint_registry
         self.session = session
+        self.version: Literal["3.x", "4.x"] = version
 
     def _request(
         self,
         endpoint_name: str,
-        version: Literal["4.x", "3.x"] = "4.x",
         params: Optional[Dict] = None,
         data: Optional[Dict | str] = None,
         json: Optional[Dict] = None,
@@ -59,7 +60,7 @@ class BaseAPI:
         try:
             # Resolve endpoint details
             endpoint = self.endpoint_registry.get_endpoint(
-                endpoint_name, version, **path_kwargs
+                endpoint_name, self.version, **path_kwargs
             )
             base_url = f"{str(self.config.host).rstrip('/')}"
             url = (

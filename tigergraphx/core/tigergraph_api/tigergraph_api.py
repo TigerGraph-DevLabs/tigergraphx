@@ -71,22 +71,44 @@ class TigerGraphAPI:
         self.config = config
 
         # Initialize the EndpointRegistry
-        self.endpoint_registry = EndpointRegistry(config=config)
+        self.endpoint_registry = EndpointRegistry(config=self.config)
 
         # Create a shared session
         self.session = self._initialize_session()
 
+        # Get the version of TigerGraph
+        self.full_version, self.version = self._fetch_and_validate_version()
+
+        if self.version != "4.x":
+            raise ValueError(
+                f"Only TigerGraph 4.x is supported, but found {self.full_version}."
+            )
+
         # Initialize API classes
-        self._admin_api = AdminAPI(config, self.endpoint_registry, self.session)
-        self._gsql_api = GSQLAPI(config, self.endpoint_registry, self.session)
-        self._data_source_api = DataSourceAPI(
-            config, self.endpoint_registry, self.session
+        self._admin_api = AdminAPI(
+            self.config, self.endpoint_registry, self.session, self.version
         )
-        self._schema_api = SchemaAPI(config, self.endpoint_registry, self.session)
-        self._node_api = NodeAPI(config, self.endpoint_registry, self.session)
-        self._edge_api = EdgeAPI(config, self.endpoint_registry, self.session)
-        self._query_api = QueryAPI(config, self.endpoint_registry, self.session)
-        self._upsert_api = UpsertAPI(config, self.endpoint_registry, self.session)
+        self._gsql_api = GSQLAPI(
+            self.config, self.endpoint_registry, self.session, self.version
+        )
+        self._data_source_api = DataSourceAPI(
+            self.config, self.endpoint_registry, self.session, self.version
+        )
+        self._schema_api = SchemaAPI(
+            self.config, self.endpoint_registry, self.session, self.version
+        )
+        self._node_api = NodeAPI(
+            self.config, self.endpoint_registry, self.session, self.version
+        )
+        self._edge_api = EdgeAPI(
+            self.config, self.endpoint_registry, self.session, self.version
+        )
+        self._query_api = QueryAPI(
+            self.config, self.endpoint_registry, self.session, self.version
+        )
+        self._upsert_api = UpsertAPI(
+            self.config, self.endpoint_registry, self.session, self.version
+        )
 
     # ------------------------------ Admin ------------------------------
     def ping(self) -> str:
@@ -97,6 +119,15 @@ class TigerGraphAPI:
             Response string from the server.
         """
         return self._admin_api.ping()
+
+    def get_version(self) -> str:
+        """
+        Get the version string of the connected TigerGraph instance.
+
+        Returns:
+            Version string from the TigerGraph server.
+        """
+        return self._admin_api.get_version()
 
     # ------------------------------ GSQL ------------------------------
     def gsql(self, command: str) -> str:
@@ -176,7 +207,9 @@ class TigerGraphAPI:
             graph_name=graph_name,
         )
 
-    def get_all_data_sources(self, graph_name: Optional[str] = None) -> List[Dict[str, Any]]:
+    def get_all_data_sources(
+        self, graph_name: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
         """
         Retrieve a list of all data sources, optionally filtered by graph name.
 
@@ -455,7 +488,6 @@ class TigerGraphAPI:
         """
         return self._upsert_api.upsert_graph_data(graph_name, payload)
 
-
     def _initialize_session(self) -> Session:
         """
         Create a shared requests.Session with retries and default headers.
@@ -483,3 +515,26 @@ class TigerGraphAPI:
         elif self.config.token:
             return BearerAuth(self.config.token)  # Use custom class for Bearer token
         return None  # No authentication needed
+
+    def _fetch_and_validate_version(self) -> tuple[str, Literal["3.x", "4.x"]]:
+        """
+        Retrieve TigerGraph version and determine major version group.
+
+        Returns:
+            A tuple of (full_version, major_version_literal).
+
+        Raises:
+            ValueError: If the version is not supported.
+        """
+        admin_api = AdminAPI(self.config, self.endpoint_registry, self.session, "4.x")
+        full_version = admin_api.get_version()
+
+        if full_version.startswith("4."):
+            return full_version, "4.x"
+        elif full_version.startswith("3."):
+            return full_version, "3.x"
+        else:
+            raise ValueError(
+                f"Unsupported TigerGraph version: {full_version}. "
+                f"Only 3.x and 4.x are supported."
+            )

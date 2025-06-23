@@ -16,7 +16,6 @@ class UpsertAPI(BaseAPI):
         """
         result = self._request(
             endpoint_name="upsert_graph_data",
-            version="4.x",
             graph_name=graph_name,
             json=payload,
         )
