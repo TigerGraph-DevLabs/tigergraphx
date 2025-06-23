@@ -13,14 +13,16 @@ from .api import (
     GSQLAPI,
     SchemaAPI,
     QueryAPI,
+    DataSourceType,
 )
 
 __all__ = [
-    "EndpointRegistry",
     "TigerGraphAPI",
+    "EndpointRegistry",
     "TigerGraphAPIError",
     "AdminAPI",
     "GSQLAPI",
     "SchemaAPI",
     "QueryAPI",
+    "DataSourceType",
 ]

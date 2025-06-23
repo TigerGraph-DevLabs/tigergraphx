@@ -37,7 +37,7 @@ class DataSourceAPI(BaseAPI):
         access_key: Optional[str] = None,
         secret_key: Optional[str] = None,
         extra_config: Optional[Dict[str, Any]] = None,
-        graph: Optional[str] = None,
+        graph_name: Optional[str] = None,
     ) -> str:
         payload = self._build_data_source_payload(
             name=name,
@@ -50,7 +50,7 @@ class DataSourceAPI(BaseAPI):
         result = self._request(
             endpoint_name="create_data_source",
             version="4.x",
-            params={"graph": graph} if graph else None,
+            params={"graph": graph_name} if graph_name else None,
             json=payload,
         )
 
@@ -65,7 +65,7 @@ class DataSourceAPI(BaseAPI):
         access_key: Optional[str] = None,
         secret_key: Optional[str] = None,
         extra_config: Optional[Dict[str, Any]] = None,
-        graph: Optional[str] = None,
+        graph_name: Optional[str] = None,
     ) -> str:
         payload = self._build_data_source_payload(
             name=name,
@@ -78,7 +78,7 @@ class DataSourceAPI(BaseAPI):
         result = self._request(
             endpoint_name="update_data_source",
             version="4.x",
-            params={"graph": graph} if graph else None,
+            params={"graph": graph_name} if graph_name else None,
             json=payload,
             data_source_name=name,
         )
@@ -90,12 +90,12 @@ class DataSourceAPI(BaseAPI):
     def drop_data_source(
         self,
         name: str,
-        graph: Optional[str] = None,
+        graph_name: Optional[str] = None,
     ) -> str:
         result = self._request(
             endpoint_name="drop_data_source",
             version="4.x",
-            params={"graph": graph} if graph else None,
+            params={"graph": graph_name} if graph_name else None,
             data_source_name=name,
         )
 
@@ -103,11 +103,11 @@ class DataSourceAPI(BaseAPI):
             raise TypeError(f"Expected str, but got {type(result).__name__}: {result}")
         return result
 
-    def drop_all_data_sources(self, graph: Optional[str] = None) -> str:
+    def drop_all_data_sources(self, graph_name: Optional[str] = None) -> str:
         result = self._request(
             endpoint_name="drop_all_data_sources",
             version="4.x",
-            params={"graph": graph} if graph else None,
+            params={"graph": graph_name} if graph_name else None,
         )
 
         if not isinstance(result, str):
@@ -125,11 +125,11 @@ class DataSourceAPI(BaseAPI):
             raise TypeError(f"Expected dict, but got {type(result).__name__}: {result}")
         return result
 
-    def get_all_data_sources(self, graph: Optional[str] = None) -> List[Dict[str, Any]]:
+    def get_all_data_sources(self, graph_name: Optional[str] = None) -> List[Dict[str, Any]]:
         result = self._request(
             endpoint_name="get_all_data_sources",
             version="4.x",
-            params={"graph": graph} if graph else None,
+            params={"graph": graph_name} if graph_name else None,
         )
         if not isinstance(result, list):
             raise TypeError(f"Expected list, but got {type(result).__name__}: {result}")

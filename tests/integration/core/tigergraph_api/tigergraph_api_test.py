@@ -1,12 +1,10 @@
 import pytest
 from requests.exceptions import ConnectionError
-from pydantic import HttpUrl
 from pathlib import Path
 import yaml
 
 from tigergraphx.core import Graph
 from tigergraphx.core.tigergraph_api import TigerGraphAPI, TigerGraphAPIError
-from tigergraphx.config import TigerGraphConnectionConfig
 
 
 class TestTigerGraphAPI:
@@ -45,14 +43,8 @@ class TestTigerGraphAPI:
             Path(__file__).parent.parent / "config" / "tigergraph_connection.yaml"
         )
         with open(config_path, "r") as f:
-            config_dict = yaml.safe_load(f)
+            self.tigergraph_connection_config = yaml.safe_load(f)
 
-        # Parse with TigerGraphConnectionConfig
-        self.tigergraph_connection_config = TigerGraphConnectionConfig(
-            host=HttpUrl(config_dict["host"]),
-            username=config_dict["username"],
-            password=config_dict["password"],
-        )
         self.G = Graph(
             graph_schema=graph_schema,
             tigergraph_connection_config=self.tigergraph_connection_config,
