@@ -1,8 +1,18 @@
 import pytest
+from unittest.mock import patch
+
 from tigergraphx.core.graph import Graph
 
 
 class TestGraph:
+    @pytest.fixture(autouse=True)
+    def mock_api(self):
+        with patch(
+            "tigergraphx.core.tigergraph_api.api.admin_api.AdminAPI.get_version"
+        ) as mock_get_version:
+            mock_get_version.return_value = "4.2.0"
+            yield
+
     def test_initialize_graph_with_lazy_mode(self):
         schema = {
             "graph_name": "LazyGraph",
