@@ -4,6 +4,12 @@
 
 Note: version releases in the 0.x.y range may include both bug fixes and new features, not strictly limited to patches.
 
+## 0.2.9
+- fix: ensure primary keys are compared as strings in neighbor ID tracking in the method bfs
+- feat: add TigerGraphDatabase abstraction class for database operations
+- feat: store TigerGraph version in TigerGraphAPI and enforce minimum version check in VectorManager
+- docs: add MkDocs documentation for class TigerGraphDatabase
+
 ## 0.2.8
 - feat: add get_edges method to Graph class
 
