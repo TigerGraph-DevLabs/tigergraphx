@@ -1,15 +1,13 @@
 import pytest
 from requests.exceptions import ConnectionError
-from pydantic import HttpUrl
 from pathlib import Path
 import yaml
 
 from tigergraphx.core import Graph
 from tigergraphx.core.tigergraph_api import TigerGraphAPI, TigerGraphAPIError
-from tigergraphx.config import TigerGraphConnectionConfig
 
 
-class TestTigerGraphAPI:
+class TestGraphAPIs:
     def setup_graph(self):
         """Set up the graph and add nodes and edges."""
         self.graph_name = "ERGraph"
@@ -45,14 +43,8 @@ class TestTigerGraphAPI:
             Path(__file__).parent.parent / "config" / "tigergraph_connection.yaml"
         )
         with open(config_path, "r") as f:
-            config_dict = yaml.safe_load(f)
+            self.tigergraph_connection_config = yaml.safe_load(f)
 
-        # Parse with TigerGraphConnectionConfig
-        self.tigergraph_connection_config = TigerGraphConnectionConfig(
-            host=HttpUrl(config_dict["host"]),
-            username=config_dict["username"],
-            password=config_dict["password"],
-        )
         self.G = Graph(
             graph_schema=graph_schema,
             tigergraph_connection_config=self.tigergraph_connection_config,
@@ -102,26 +94,6 @@ class TestTigerGraphAPI:
         with pytest.raises(ConnectionError, match="Failed to connect to TigerGraph"):
             self.api.get_schema(graph_name)
 
-    # ------------------------------ Admin ------------------------------
-    def test_ping(self):
-        """
-        Integration test for the TigerGraph ping endpoint.
-        """
-        result = self.api.ping()
-
-        assert isinstance(result, str), "Response should be a str."
-        assert result == "pong", "Response should be 'pong'."
-
-    # ------------------------------ GSQL ------------------------------
-    def test_gsql(self):
-        """
-        Integration test for the TigerGraph gsql endpoint.
-        """
-        result = self.api.gsql("ls")
-
-        assert isinstance(result, str), "Response should be a string."
-        assert "Global vertices, edges, and all graphs" in result
-
     # ------------------------------ Schema ------------------------------
     def test_get_schema_integration(self):
         """
@@ -154,6 +126,125 @@ class TestTigerGraphAPI:
             match="Graph 'NonExistentGraph' does not exist.",
         ):
             self.api.get_schema(graph_name)
+
+    # ------------------------------ Query ------------------------------
+    def test_create_install_and_drop_query(self):
+        """
+        Integration test for creating query and dropping query successfully.
+        """
+        gsql_query = """
+CREATE QUERY q1(VERTEX input) for Graph ERGraph {
+  Nodes = {input};
+  PRINT Nodes;
+}
+""".strip()
+        result = self.api.create_query(self.graph_name, gsql_query)
+
+        assert isinstance(result, str), "Response should be a str."
+        assert "Successfully created queries" in result
+
+        result = self.api.install_query(self.graph_name, "q1")
+        assert "Query installed successfully" in result
+
+        result = self.api.drop_query(self.graph_name, "q1")
+
+        assert isinstance(result, dict), "Response should be a dict."
+        assert "failedToDrop" in result
+        assert result["failedToDrop"] == []
+        assert "dropped" in result
+        assert result["dropped"] == ["q1"]
+
+    def test_create_query_syntax_error(self):
+        """
+        Integration test for creating query with syntax errors.
+        """
+        gsql_query = """
+CREATE QUERY q2(VERTEX input) for Graph ERGraph {
+  Nodes = {input}
+  PRINT Nodes;
+}
+"""
+
+        with pytest.raises(
+            TigerGraphAPIError,
+            match="Saved as draft query with type/semantic error",
+        ):
+            self.api.create_query(self.graph_name, gsql_query)
+
+    def test_run_interpreted_query_success(self):
+        """
+        Integration test for running an interpreted query successfully.
+        """
+        gsql_query = """
+INTERPRET QUERY(VERTEX<Entity> input) for Graph ERGraph {
+  Nodes = {input};
+  PRINT Nodes;
+}
+"""
+        params = {"input": "Entity_1"}
+        result = self.api.run_interpreted_query(gsql_query, params)
+
+        assert isinstance(result, list), "Response should be a list."
+
+    def test_run_interpreted_query_syntax_error(self):
+        """
+        Test behavior when running an interpreted query with syntax errors.
+        """
+        gsql_query = """
+INTERPRET QUERY(VERTEX<Entity> input) for Graph ERGraph {
+  Nodes = {input}
+  PRINT Nodes;
+}
+"""
+        with pytest.raises(
+            TigerGraphAPIError,
+            match="line 5:2 no viable alternative at input ",
+        ):
+            self.api.run_interpreted_query(gsql_query)
+
+
+class TestDatabaseAPIs:
+    @pytest.fixture(autouse=True)
+    def init(self):
+        config_path = (
+            Path(__file__).parent.parent / "config" / "tigergraph_connection.yaml"
+        )
+        with open(config_path, "r") as f:
+            self.tigergraph_connection_config = yaml.safe_load(f)
+
+        # Initialize the TigerGraphAPI
+        self.api = TigerGraphAPI(self.tigergraph_connection_config)
+
+    # ------------------------------ Admin ------------------------------
+    def test_ping(self):
+        """
+        Integration test for the TigerGraph ping endpoint.
+        """
+        result = self.api.ping()
+
+        assert isinstance(result, str), "Response should be a str."
+        assert result == "pong", "Response should be 'pong'."
+
+    def test_get_version(self):
+        """
+        Integration test for the TigerGraph get_version endpoint.
+        """
+        result = self.api.get_version()
+
+        assert isinstance(result, str), "Response should be a str."
+        assert result.startswith("3.") or result.startswith("4."), (
+            f"Unexpected version format: {result}"
+        )
+
+    # ------------------------------ GSQL ------------------------------
+    def test_gsql(self):
+        """
+        Integration test for the TigerGraph gsql endpoint.
+        """
+        result = self.api.gsql("ls")
+
+        assert isinstance(result, str), "Response should be a string."
+        assert "Global vertices, edges, and all graphs" in result
 
     # ------------------------------ Data Source ------------------------------
     def test_data_source_CRUD(self):
@@ -276,78 +367,3 @@ class TestTigerGraphAPI:
             assert f"Data source {data_source_name} is dropped" in drop_result, (
                 f"Unexpected drop response: {drop_result}"
             )
-
-    # ------------------------------ Query ------------------------------
-    def test_create_install_and_drop_query(self):
-        """
-        Integration test for creating query and dropping query successfully.
-        """
-        gsql_query = """
-CREATE QUERY q1(VERTEX input) for Graph ERGraph {
-  Nodes = {input};
-  PRINT Nodes;
-}
-""".strip()
-        result = self.api.create_query(self.graph_name, gsql_query)
-
-        assert isinstance(result, str), "Response should be a str."
-        assert "Successfully created queries" in result
-
-        result = self.api.install_query(self.graph_name, "q1")
-        assert "Query installed successfully" in result
-
-        result = self.api.drop_query(self.graph_name, "q1")
-
-        assert isinstance(result, dict), "Response should be a dict."
-        assert "failedToDrop" in result
-        assert result["failedToDrop"] == []
-        assert "dropped" in result
-        assert result["dropped"] == ["q1"]
-
-    def test_create_query_syntax_error(self):
-        """
-        Integration test for creating query with syntax errors.
-        """
-        gsql_query = """
-CREATE QUERY q2(VERTEX input) for Graph ERGraph {
-  Nodes = {input}
-  PRINT Nodes;
-}
-"""
-
-        with pytest.raises(
-            TigerGraphAPIError,
-            match="Saved as draft query with type/semantic error",
-        ):
-            self.api.create_query(self.graph_name, gsql_query)
-
-    def test_run_interpreted_query_success(self):
-        """
-        Integration test for running an interpreted query successfully.
-        """
-        gsql_query = """
-INTERPRET QUERY(VERTEX<Entity> input) for Graph ERGraph {
-  Nodes = {input};
-  PRINT Nodes;
-}
-"""
-        params = {"input": "Entity_1"}
-        result = self.api.run_interpreted_query(gsql_query, params)
-
-        assert isinstance(result, list), "Response should be a list."
-
-    def test_run_interpreted_query_syntax_error(self):
-        """
-        Test behavior when running an interpreted query with syntax errors.
-        """
-        gsql_query = """
-INTERPRET QUERY(VERTEX<Entity> input) for Graph ERGraph {
-  Nodes = {input}
-  PRINT Nodes;
-}
-"""
-        with pytest.raises(
-            TigerGraphAPIError,
-            match="line 5:2 no viable alternative at input ",
-        ):
-            self.api.run_interpreted_query(gsql_query)

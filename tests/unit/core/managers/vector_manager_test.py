@@ -16,6 +16,7 @@ class TestVectorManager:
     def setup(self):
         self.mock_tigergraph_api = MagicMock()
         self.mock_tigergraph_api.run_installed_query_get = MagicMock()
+        self.mock_tigergraph_api.full_version = "4.2.0"
 
         mock_context = MagicMock()
         mock_context.tigergraph_api = self.mock_tigergraph_api
@@ -1143,3 +1144,20 @@ class TestVectorManager:
 
         # Assert that the result is empty
         assert result == []
+
+    def test_version_check_fails_below_4_2(self):
+        """
+        Ensure that using VectorManager methods on versions below 4.2.0 raises an error.
+        """
+        self.mock_tigergraph_api.full_version = "4.1.9"  # Simulate unsupported version
+
+        with pytest.raises(RuntimeError, match="require.*>= 4.2.0.*but found 4.1.9"):
+            self.vector_manager._ensure_minimum_version("4.2.0")
+
+    def test_version_check_passes_for_4_2_or_above(self):
+        """
+        Ensure that version check passes for version 4.2.0 or newer.
+        """
+        self.mock_tigergraph_api.full_version = "4.2.1"
+        # Should not raise
+        self.vector_manager._ensure_minimum_version("4.2.0")

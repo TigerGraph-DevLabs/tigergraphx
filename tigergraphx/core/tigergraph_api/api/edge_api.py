@@ -24,7 +24,6 @@ class EdgeAPI(BaseAPI):
         """
         result = self._request(
             endpoint_name="retrieve_a_edge",
-            version="4.x",
             graph_name=graph_name,
             source_node_type=source_node_type,
             source_node_id=source_node_id,

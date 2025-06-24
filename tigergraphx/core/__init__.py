@@ -5,15 +5,13 @@
 # Permission is granted to use, copy, modify, and distribute this software
 # under the License. The software is provided "AS IS", without warranty.
 
-from .graph import (
-    Graph,
-)
-from .tigergraph_api import (
-    TigerGraphAPI,
-)
+from .graph import Graph
+from .tigergraph_api import TigerGraphAPI
+from .tigergraph_database import TigerGraphDatabase
 
 
 __all__ = [
     "Graph",
     "TigerGraphAPI",
+    "TigerGraphDatabase",
 ]

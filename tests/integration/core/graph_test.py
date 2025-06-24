@@ -75,12 +75,12 @@ class TestGraph1(BaseGraphFixture):
         self.G.add_node("User_A", "User")
         self.G.add_node("User_B", "User", name="B")
         self.G.add_node("User_C", "User", name="C", age=30)
-        self.G.add_node("Product_1", "Product")
-        self.G.add_node("Product_2", "Product", name="2")
-        self.G.add_node("Product_3", "Product", name="3", price=50)
+        self.G.add_node(1, "Product")
+        self.G.add_node(2, "Product", name="2")
+        self.G.add_node(3, "Product", name="3", price=50)
         self.G.add_edge(
             "User_A",
-            "Product_1",
+            1,
             "User",
             "purchased",
             "Product",
@@ -88,7 +88,7 @@ class TestGraph1(BaseGraphFixture):
         )
         self.G.add_edge(
             "User_B",
-            "Product_2",
+            2,
             "User",
             "purchased",
             "Product",
@@ -96,7 +96,7 @@ class TestGraph1(BaseGraphFixture):
         )
         self.G.add_edge(
             "User_C",
-            "Product_1",
+            1,
             "User",
             "purchased",
             "Product",
@@ -105,7 +105,7 @@ class TestGraph1(BaseGraphFixture):
         )
         self.G.add_edge(
             "User_C",
-            "Product_2",
+            2,
             "User",
             "purchased",
             "Product",
@@ -113,8 +113,8 @@ class TestGraph1(BaseGraphFixture):
             quantity=15.5,
         )
         ebunch_to_add = [
-            ("User_C", "Product_3", {"purchase_date": "2024-01-12", "quantity": 25.5}),
-            ("User_C", "Product_3", {"purchase_date": "2024-01-13", "quantity": 25.5}),
+            ("User_C", 3, {"purchase_date": "2024-01-12", "quantity": 25.5}),
+            ("User_C", 3, {"purchase_date": "2024-01-13", "quantity": 25.5}),
         ]
         self.G.add_edges_from(
             ebunch_to_add,
@@ -122,7 +122,7 @@ class TestGraph1(BaseGraphFixture):
             "purchased",
             "Product",
         )
-        ebunch_to_add = [("Product_1", "Product_3"), ("Product_1", "Product_1")]
+        ebunch_to_add = [(1, 2), (1, 1), (2, 3)]
         self.G.add_edges_from(
             ebunch_to_add,
             "Product",
@@ -177,9 +177,9 @@ class TestGraph1(BaseGraphFixture):
             ("User", "User_A"),
             ("User", "User_B"),
             ("User", "User_C"),
-            ("Product", "Product_1"),
-            ("Product", "Product_2"),
-            ("Product", "Product_3"),
+            ("Product", "1"),
+            ("Product", "2"),
+            ("Product", "3"),
         }
         assert node_ids == expected_ids, (
             f"Expected node ids {expected_ids}, got {node_ids}"
@@ -203,9 +203,9 @@ class TestGraph1(BaseGraphFixture):
         assert self.G.has_node("User_A", "User")
         assert self.G.has_node("User_B", "User")
         assert self.G.has_node("User_C", "User")
-        assert self.G.has_node("Product_1", "Product")
-        assert self.G.has_node("Product_2", "Product")
-        assert self.G.has_node("Product_3", "Product")
+        assert self.G.has_node(1, "Product")
+        assert self.G.has_node(2, "Product")
+        assert self.G.has_node(3, "Product")
         assert not self.G.has_node("User_D", "User")
 
     def test_has_node_without_type(self):
@@ -238,39 +238,39 @@ class TestGraph1(BaseGraphFixture):
             ValueError,
             match="Multiple node types detected. Please specify a node type.",
         ):
-            self.G.add_edge("User_A", "Product_2", "User", "purchased")
+            self.G.add_edge("User_A", 2, "User", "purchased")
 
     def test_add_edge_without_source_node_type(self):
         with pytest.raises(
             ValueError,
             match="Multiple node types detected. Please specify a node type.",
         ):
-            self.G.add_edge("User_A", "Product_2", None, "purchased", "Product")
+            self.G.add_edge("User_A", 2, None, "purchased", "Product")
 
     def test_add_edge_without_edge_type(self):
         with pytest.raises(
             ValueError,
             match="Multiple edge types detected. Please specify an edge type.",
         ):
-            self.G.add_edge("User_A", "Product_2", "User", None, "Product")
+            self.G.add_edge("User_A", 2, "User", None, "Product")
 
     def test_has_edges(self):
         # Test edge existence
         assert not self.G.has_edge(
-            "User_A", "Product_2", "User", "purchased", "Product"
+            "User_A", 2, "User", "purchased", "Product"
         )
         assert not self.G.has_edge(
-            "User_A", "Product_3", "User", "purchased", "Product"
+            "User_A", 3, "User", "purchased", "Product"
         )
-        assert self.G.has_edge("User_C", "Product_1", "User", "purchased", "Product")
-        assert self.G.has_edge("User_C", "Product_2", "User", "purchased", "Product")
-        assert self.G.has_edge("User_C", "Product_3", "User", "purchased", "Product")
+        assert self.G.has_edge("User_C", 1, "User", "purchased", "Product")
+        assert self.G.has_edge("User_C", 2, "User", "purchased", "Product")
+        assert self.G.has_edge("User_C", 3, "User", "purchased", "Product")
 
     def test_get_edge_data(self):
         # Test fetching edge data
         edge_data = self.time_execution(
             lambda: self.G.get_edge_data(
-                "User_C", "Product_2", "User", "purchased", "Product"
+                "User_C", 2, "User", "purchased", "Product"
             ),
             "get_edge_data",
         )
@@ -281,26 +281,26 @@ class TestGraph1(BaseGraphFixture):
     def test_degree(self):
         # Test degree calculations
         degree = self.time_execution(
-            lambda: self.G.degree("Product_1", "Product", ["reverse_purchased"]),
+            lambda: self.G.degree(1, "Product", ["reverse_purchased"]),
             "degree",
         )
         assert degree == 2
 
         degree = self.time_execution(
-            lambda: self.G.degree("Product_1", "Product", ["similar_to"]), "degree"
+            lambda: self.G.degree(1, "Product", ["similar_to"]), "degree"
         )
         assert degree == 2
 
         degree = self.time_execution(
             lambda: self.G.degree(
-                "Product_1", "Product", ["reverse_purchased", "similar_to"]
+                1, "Product", ["reverse_purchased", "similar_to"]
             ),
             "degree",
         )
         assert degree == 4
 
         degree = self.time_execution(
-            lambda: self.G.degree("Product_1", "Product", []), "degree"
+            lambda: self.G.degree(1, "Product", []), "degree"
         )
         assert degree == 4
 
@@ -335,8 +335,8 @@ class TestGraph1(BaseGraphFixture):
         )
 
         similar_to_edges = self.G.number_of_edges(edge_type="similar_to")
-        assert similar_to_edges == 2, (
-            f"Expected 2 'similar_to' edges, got {similar_to_edges}"
+        assert similar_to_edges == 3, (
+            f"Expected 3 'similar_to' edges, got {similar_to_edges}"
         )
 
         follows_edges = self.G.number_of_edges(edge_type="follows")
@@ -344,7 +344,7 @@ class TestGraph1(BaseGraphFixture):
 
         # Test total number of edges without specifying an edge type
         total_edges = self.G.number_of_edges()
-        assert total_edges == 11, f"Expected 11 total edges, got {total_edges}"
+        assert total_edges == 12, f"Expected 12 total edges, got {total_edges}"
 
         # Test behavior with an invalid edge type
         with pytest.raises(ValueError, match="Invalid edge type"):
@@ -454,17 +454,17 @@ class TestGraph1(BaseGraphFixture):
 
     def test_bfs(self):
         df = self.G.bfs(
-            start_nodes="Product_1",
+            start_nodes=1,
             node_type="Product",
             edge_types=["similar_to"],
-            max_hops=1,
+            max_hops=2,
             output_type="DataFrame",
         )
 
         assert isinstance(df, pd.DataFrame)
         assert not df.empty
         # Check if all expected products purchased by User_C are found
-        expected_results = {"Product_3"}
+        expected_results = {"3"}
         assert expected_results.issubset(set(df["id"]))
 
 

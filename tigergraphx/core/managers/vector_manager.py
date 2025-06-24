@@ -25,6 +25,7 @@ class VectorManager(BaseManager):
         data: Dict | List[Dict],
         node_type: str,
     ) -> Optional[int]:
+        self._ensure_minimum_version("4.2.0")
         payload = {"vertices": {node_type: {}}}
 
         node_schema = self._graph_schema.nodes.get(node_type)
@@ -61,9 +62,7 @@ class VectorManager(BaseManager):
 
         # Attempt to upsert the nodes into the graph
         try:
-            result = self._tigergraph_api.upsert_graph_data(
-                self._graph_name, payload
-            )
+            result = self._tigergraph_api.upsert_graph_data(self._graph_name, payload)
             return result[0].get("accepted_vertices", 0)
         except Exception as e:
             logger.error(f"Error adding nodes: {e}")
@@ -75,6 +74,7 @@ class VectorManager(BaseManager):
         """
         Retrieve the embedding vector of a single node by its ID and type.
         """
+        self._ensure_minimum_version("4.2.0")
         result = self.fetch_nodes([node_id], vector_attribute_name, node_type)
         return result.get(node_id)
 
@@ -84,6 +84,7 @@ class VectorManager(BaseManager):
         """
         Retrieve the embedding vectors of multiple nodes by their IDs and type.
         """
+        self._ensure_minimum_version("4.2.0")
         try:
             params = {"input": [(node_id, node_type) for node_id in node_ids]}
             result = self._tigergraph_api.run_installed_query_get(
@@ -135,6 +136,7 @@ class VectorManager(BaseManager):
         return_attributes: Optional[str | List[str]] = None,
         candidate_ids: Optional[Set[str]] = None,
     ) -> List[Dict]:
+        self._ensure_minimum_version("4.2.0")
         try:
             query_name = f"api_search_{node_type}_{vector_attribute_name}"
             set_candidate = []
@@ -166,6 +168,7 @@ class VectorManager(BaseManager):
         limit: int = 10,
         return_attributes_list: Optional[List[List[str]]] = None,
     ) -> List[Dict]:
+        self._ensure_minimum_version("4.2.0")
         if len(vector_attribute_names) != len(node_types):
             logger.error(
                 "The number of vector_attribute_names must be equal to the number of node_types."
@@ -225,6 +228,7 @@ class VectorManager(BaseManager):
         """
         Retrieve the top-k similar nodes based on a source node's specified embedding.
         """
+        self._ensure_minimum_version("4.2.0")
         query_vector = self.fetch_node(node_id, vector_attribute_name, node_type)
         if not query_vector:
             logger.error(
@@ -252,6 +256,7 @@ class VectorManager(BaseManager):
         """
         Executes the search query and performs initial error checks.
         """
+        self._ensure_minimum_version("4.2.0")
         try:
             result = self._tigergraph_api.run_installed_query_post(
                 self._graph_name, query_name, params
@@ -283,6 +288,7 @@ class VectorManager(BaseManager):
         """
         Processes the raw search results into a combined and formatted list.
         """
+        self._ensure_minimum_version("4.2.0")
         node_distances = result[0]["map_node_distance"]
         nodes = result[1]["Nodes"]
 
@@ -329,3 +335,24 @@ class VectorManager(BaseManager):
             combined_result.append(combined_node)
 
         return combined_result
+
+    def _ensure_minimum_version(self, required_version: str = "4.2.0"):
+        current_version = self._tigergraph_api.full_version
+        if self._compare_versions(current_version, required_version) < 0:
+            raise RuntimeError(
+                f"{self.__class__.__name__} methods require TigerGraph version >= {required_version}, "
+                f"but found {current_version}."
+            )
+
+    @staticmethod
+    def _compare_versions(v1: str, v2: str) -> int:
+        """Compare two version strings (e.g., '4.2.0' vs '4.1.1').
+
+        Returns:
+            -1 if v1 < v2, 0 if equal, 1 if v1 > v2
+        """
+        from packaging import version
+
+        return (version.parse(v1) > version.parse(v2)) - (
+            version.parse(v1) < version.parse(v2)
+        )

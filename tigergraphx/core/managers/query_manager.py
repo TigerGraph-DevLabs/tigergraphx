@@ -375,7 +375,7 @@ class QueryManager(BaseManager):
             if isinstance(neighbors, pd.DataFrame):
                 if neighbors.empty:
                     break
-                neighbor_ids = set(neighbors[primary_key])
+                neighbor_ids = set(neighbors[primary_key].astype(str))
                 neighbors = neighbors.copy()
                 neighbors["_bfs_level"] = level  # Add bfs level here
 
@@ -383,7 +383,7 @@ class QueryManager(BaseManager):
             else:
                 if not neighbors:
                     break
-                neighbor_ids = {n[primary_key] for n in neighbors}
+                neighbor_ids = {str(n[primary_key]) for n in neighbors}
                 # Add _bfs_level for each neighbor dict
                 for neighbor in neighbors:
                     neighbor["_bfs_level"] = level

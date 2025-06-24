@@ -4,6 +4,9 @@ endpoints:
   ping:
     path: "/api/ping"
 
+  get_version:
+    path: "/restpp/version"
+
   # ------------------------------ GSQL ------------------------------
   gsql:
     path:
