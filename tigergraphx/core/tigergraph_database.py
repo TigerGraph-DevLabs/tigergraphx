@@ -16,12 +16,27 @@ logger = logging.getLogger(__name__)
 
 
 class TigerGraphDatabase:
+    """
+    High-level interface for managing TigerGraph database operations.
+
+    Provides access to general database-level functionality such as admin tasks,
+    running GSQL commands, and managing data sources.
+
+    For graph-specific operations, use the `Graph` class instead.
+    """
+
     def __init__(
         self,
         tigergraph_connection_config: Optional[
             TigerGraphConnectionConfig | Dict | str | Path
         ] = None,
     ):
+        """
+        Initialize the TigerGraphDatabase with the given connection configuration.
+
+        Args:
+            tigergraph_connection_config: Connection settings for TigerGraph.
+        """
         self._tigergraph_api = TigerGraphAPI(tigergraph_connection_config)
 
     # ------------------------------ Admin ------------------------------
@@ -112,17 +127,17 @@ class TigerGraphDatabase:
             graph_name=graph_name,
         )
 
-    def get_all_data_sources(self, graph_name: Optional[str] = None) -> List[Dict[str, Any]]:
+    def get_data_source(self, name: str) -> Dict[str, Any]:
         """
-        Retrieve a list of all data sources, optionally filtered by graph name.
+        Get a data source's configuration.
 
         Args:
-            graph_name: Optional graph name.
+            name: Name of the data source.
 
         Returns:
-            List of data source dictionaries.
+            A dictionary with data source configuration.
         """
-        return self._tigergraph_api.get_all_data_sources(graph_name=graph_name)
+        return self._tigergraph_api.get_data_source(name=name)
 
     def drop_data_source(self, name: str, graph_name: Optional[str] = None) -> str:
         """
@@ -137,6 +152,20 @@ class TigerGraphDatabase:
         """
         return self._tigergraph_api.drop_data_source(name=name, graph_name=graph_name)
 
+    def get_all_data_sources(
+        self, graph_name: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        Retrieve a list of all data sources, optionally filtered by graph name.
+
+        Args:
+            graph_name: Optional graph name.
+
+        Returns:
+            List of data source dictionaries.
+        """
+        return self._tigergraph_api.get_all_data_sources(graph_name=graph_name)
+
     def drop_all_data_sources(self, graph_name: Optional[str] = None) -> str:
         """
         Drop all data source configurations, optionally within a specific graph.
@@ -148,18 +177,6 @@ class TigerGraphDatabase:
             API response message.
         """
         return self._tigergraph_api.drop_all_data_sources(graph_name=graph_name)
-
-    def get_data_source(self, name: str) -> Dict[str, Any]:
-        """
-        Get a data source's configuration.
-
-        Args:
-            name: Name of the data source.
-
-        Returns:
-            A dictionary with data source configuration.
-        """
-        return self._tigergraph_api.get_data_source(name=name)
 
     def preview_sample_data(
         self,

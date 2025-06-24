@@ -7,10 +7,12 @@
 
 from .core import (
     Graph,
+    TigerGraphDatabase,
 )
 from .utils import setup_logging
 
 __all__ = [
     "Graph",
+    "TigerGraphDatabase",
     "setup_logging",
 ]

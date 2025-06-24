@@ -85,6 +85,16 @@ class DataSourceAPI(BaseAPI):
             raise TypeError(f"Expected str, but got {type(result).__name__}: {result}")
         return result
 
+    def get_data_source(self, name: str) -> Dict[str, Any]:
+        result = self._request(
+            endpoint_name="get_data_source",
+            data_source_name=name,
+        )
+
+        if not isinstance(result, dict):
+            raise TypeError(f"Expected dict, but got {type(result).__name__}: {result}")
+        return result
+
     def drop_data_source(
         self,
         name: str,
@@ -100,6 +110,17 @@ class DataSourceAPI(BaseAPI):
             raise TypeError(f"Expected str, but got {type(result).__name__}: {result}")
         return result
 
+    def get_all_data_sources(
+        self, graph_name: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        result = self._request(
+            endpoint_name="get_all_data_sources",
+            params={"graph": graph_name} if graph_name else None,
+        )
+        if not isinstance(result, list):
+            raise TypeError(f"Expected list, but got {type(result).__name__}: {result}")
+        return result
+
     def drop_all_data_sources(self, graph_name: Optional[str] = None) -> str:
         result = self._request(
             endpoint_name="drop_all_data_sources",
@@ -108,25 +129,6 @@ class DataSourceAPI(BaseAPI):
 
         if not isinstance(result, str):
             raise TypeError(f"Expected str, but got {type(result).__name__}: {result}")
-        return result
-
-    def get_data_source(self, name: str) -> Dict[str, Any]:
-        result = self._request(
-            endpoint_name="get_data_source",
-            data_source_name=name,
-        )
-
-        if not isinstance(result, dict):
-            raise TypeError(f"Expected dict, but got {type(result).__name__}: {result}")
-        return result
-
-    def get_all_data_sources(self, graph_name: Optional[str] = None) -> List[Dict[str, Any]]:
-        result = self._request(
-            endpoint_name="get_all_data_sources",
-            params={"graph": graph_name} if graph_name else None,
-        )
-        if not isinstance(result, list):
-            raise TypeError(f"Expected list, but got {type(result).__name__}: {result}")
         return result
 
     def preview_sample_data(

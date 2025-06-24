@@ -28,6 +28,7 @@ nav:
       - Core:
           - Graph: reference/01_core/graph.md
           - NodeView: reference/01_core/nodeview.md
+          - TigerGraphDatabase: reference/01_core/tigergraph_database.md
       - Vector Search:
           - Vector DB: reference/02_vector_search/vector_db.md
           - Embedding: reference/02_vector_search/embedding.md
