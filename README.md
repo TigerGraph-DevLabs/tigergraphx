@@ -4,6 +4,6 @@ TigerGraphX is a high-level Python library offering a unified, Python-native int
 
 ## Documentation
 
-📖 **[Explore the Full Documentation Here](https://tigergraph-devlabs.github.io/tigergraphx/)**
+📖 **[Explore the Full Documentation Here](https://tigergraph-devlabs.github.io/tigergraph-mcp-utils/)**
 
 The documentation provides detailed guides, examples, and API references to help you get started with TigerGraphX and utilize its powerful features effectively.

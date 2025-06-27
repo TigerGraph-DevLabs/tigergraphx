@@ -62,6 +62,26 @@ class TigerGraphDatabase:
         """
         return self._tigergraph_api.gsql(command)
 
+    def list_metadata(self, graph_name: Optional[str] = None) -> str:
+        """
+        List metadata in the TigerGraph database, including vertex/edge types, graphs, jobs,
+        data sources, and packages.
+
+        If a graph name is provided, runs `USE GRAPH {graph_name}` followed by `LS`.
+        Otherwise, runs global `LS`.
+
+        Args:
+            graph_name: Optional graph name to scope the metadata listing.
+
+        Returns:
+            The string output of the LS command.
+        """
+        if graph_name:
+            command = f"USE GRAPH {graph_name}\nLS"
+        else:
+            command = "LS"
+        return self._tigergraph_api.gsql(command)
+
     # ------------------------------ Data Source ------------------------------
     def create_data_source(
         self,

@@ -1,7 +1,8 @@
 import pytest
 import yaml
 from pathlib import Path
-from tigergraphx.core import TigerGraphDatabase
+
+from tigergraphx import Graph, TigerGraphDatabase
 from tigergraphx.core.tigergraph_api import TigerGraphAPIError
 
 
@@ -27,6 +28,47 @@ class TestTigerGraphDatabase:
         result = self.db.gsql("ls")
         assert isinstance(result, str)
         assert "Global vertices, edges, and all graphs" in result
+
+    def test_list_metadata(self):
+        result = self.db.list_metadata()
+        assert isinstance(result, str)
+        assert "Global vertices, edges, and all graphs" in result
+        graph_name = "TestListMetadata"
+        graph_schema = {
+            "graph_name": graph_name,
+            "nodes": {
+                "Person": {
+                    "primary_key": "name",
+                    "attributes": {
+                        "name": "STRING",
+                        "age": "UINT",
+                        "gender": "STRING",
+                    },
+                },
+            },
+            "edges": {
+                "Friendship": {
+                    "is_directed_edge": False,
+                    "from_node_type": "Person",
+                    "to_node_type": "Person",
+                    "attributes": {
+                        "closeness": "DOUBLE",
+                    },
+                },
+            },
+        }
+        G = Graph(
+            graph_schema=graph_schema,
+            tigergraph_connection_config=self.tigergraph_connection_config,
+        )
+        try:
+            result = self.db.list_metadata(graph_name=graph_name)
+            assert isinstance(result, str)
+            assert "VERTEX Person" in result
+            assert "UNDIRECTED EDGE Friendship" in result
+            assert f"Graph {graph_name}(Person:v, Friendship:e)" in result
+        finally:
+            G.drop_graph()
 
     def test_data_source_CRUD(self):
         data_source_name = "db_data_source_test"
