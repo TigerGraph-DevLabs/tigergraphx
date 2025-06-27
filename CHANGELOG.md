@@ -4,6 +4,10 @@
 
 Note: version releases in the 0.x.y range may include both bug fixes and new features, not strictly limited to patches.
 
+## 0.2.10
+- test: mock AdminAPI.get_version to prevent real HTTP calls during Graph initialization
+- feat: add method list_metadata to class TigerGraphDatabase
+
 ## 0.2.9
 - fix: ensure primary keys are compared as strings in neighbor ID tracking in the method bfs
 - feat: add TigerGraphDatabase abstraction class for database operations
